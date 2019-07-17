@@ -2,7 +2,6 @@ package org.bawaweb.ui.sierpinkski;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -26,7 +25,6 @@ public class SierpinskiTriangle extends JFrame implements Runnable {
 
 	/** Constructor: an instance */
 	public SierpinskiTriangle() {
-		Container cont = getContentPane();
 		setSize(WIDTH, HEIGHT);
 		setVisible(true);
 	}

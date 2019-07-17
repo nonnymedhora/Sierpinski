@@ -5,14 +5,10 @@ package org.bawaweb.ui.sierpinkski;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Paint;
 import java.awt.Point;
-import java.awt.RenderingHints;
-import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
@@ -54,8 +50,6 @@ public class SierpinskiSquare extends JFrame implements Runnable {
 		g.setColor(Color.black);
 		if (depth==0) {
 			g.fillRect(0, 0, getWidth(), getHeight());
-			//		g.fillRect(OFFSET,OFFSET,getWidth() - OFFSET, getHeight() - OFFSET);
-			//		g.setColor(Color.blue);
 		}
 		// Initialize p1, p2, p3, p4 based on frame size */
 		Point p1 = new Point(OFFSET, OFFSET);
@@ -128,71 +122,24 @@ public class SierpinskiSquare extends JFrame implements Runnable {
 		
 	}
 
-	private static void drawSquares(Graphics g, int d, Point p1, Point p2, Point p3, Point p4) {
-		if (d == 0) { // depth is 0, draw the square
-			drawLine(g, p1, p2);
-			drawLine(g, p2, p3);
-			drawLine(g, p3, p4);
-			drawLine(g, p4, p1);
-			return;
-		}
-		// Draw three Sierpinski squares of depth d-1
-		Point m12 = midpoint(p1, p2);
-		Point m23 = midpoint(p2, p3);
-		Point m34 = midpoint(p3, p4);
-		Point m41 = midpoint(p4, p1);
-
-		Point p132 = thirdPt(p1, p2);
-		Point p122 = twoThirdPt(p1, p2);
-		Point p13d2 = new Point(p132.x, p132.y + (p132.x - p1.x));
-		Point p12d2 = new Point(p122.x, p122.y + (p122.x - p1.x));
-
-		drawSquares(g, d - 1, p132, p122, p12d2, p13d2);
-
-		Point p233 = thirdPt(p2, p3);
-		Point p223 = twoThirdPt(p2, p3);
-		Point p23l3 = new Point(p233.x, p233.y - (p233.x - p2.x));
-		Point p22l3 = new Point(p223.x, p223.y - (p223.x - p2.x));
-
-		drawSquares(g, d - 1, p233, p223, p22l3, p23l3);
+	private static Point thirdPtH(Point pLeft, Point pRight) {
+		return new Point((int) (pLeft.x + (pRight.x - pLeft.x) / 3), pLeft.y);
 	}
 
-	private static void drawLine(Graphics g, Point p1, Point p2) {
-		g.drawLine(p1.x, p1.y, p2.x, p2.y);
+	private static Point thirdPtV(Point pTop, Point pBottom) {
+		return new Point(pTop.x, (int) (pTop.y + (pBottom.y - pTop.y) / 3));
 	}
 
-	/** = the midpoint between p1 and p2 */
-	private static Point midpoint(Point p1, Point p2) {
-		return new Point((int)(p1.x + p2.x) / 2, (int)(p1.y + p2.y) / 2);
+	private static Point twoThirdPtH(Point pLeft, Point pRight) {
+		return new Point((int) (pLeft.x + (pRight.x - pLeft.x) * 2 / 3), pLeft.y);
 	}
 
-	private static Point thirdPt(Point p1, Point p2) {
-		return new Point((int)(p1.x + p2.x) / 3, (int)(p1.y + p2.y) / 3);
-	}
-	
-	private static Point thirdPtH(Point pLeft, Point pRight){
-		return new Point((int)(pLeft.x+(pRight.x-pLeft.x)/3),pLeft.y);
-	}
-	
-	private static Point thirdPtV(Point pTop, Point pBottom){
-		return new Point(pTop.x,(int)(pTop.y+(pBottom.y-pTop.y)/3));
+	private static Point twoThirdPtV(Point pTop, Point pBottom) {
+		return new Point(pTop.x, (int) (pTop.y + (pBottom.y - pTop.y) * 2 / 3));
 	}
 
-	private static Point twoThirdPt(Point p1, Point p2) {
-		return new Point((int)(p1.x + p2.x) * 2 / 3, (int)(p1.y + p2.y) * 2 / 3);
-	}
-	
-	private static Point twoThirdPtH(Point pLeft, Point pRight){
-		return new Point((int)(pLeft.x+(pRight.x-pLeft.x)*2/3),pLeft.y);
-	}
-	
-	private static Point twoThirdPtV(Point pTop, Point pBottom){
-		return new Point(pTop.x,(int)(pTop.y+(pBottom.y-pTop.y)*2/3));
-	}
-	
-	
-	private static Point mergeXYPt(Point p1, Point p2){
-		return new Point(p1.x,p2.y);
+	private static Point mergeXYPt(Point p1, Point p2) {
+		return new Point(p1.x, p2.y);
 	}
 
 	/*
