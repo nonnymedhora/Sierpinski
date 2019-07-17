@@ -70,40 +70,6 @@ public class SierpinskiSquare extends JFrame implements Runnable {
 		
 		return bufferedImage;
 	}
-
-
-//	
-//	@Override 
-//	public void paint(Graphics g1) {
-//		Graphics2D g = (Graphics2D)g1;
-//		// Clear the frame
-//		g.setColor(Color.black);
-//		if (depth==0) {
-//			g.fillRect(0, 0, getWidth(), getHeight());
-//			//		g.fillRect(OFFSET,OFFSET,getWidth() - OFFSET, getHeight() - OFFSET);
-//			//		g.setColor(Color.blue);
-//		}
-//		// Initialize p1, p2, p3, p4 based on frame size */
-//		Point p1 = new Point(OFFSET, OFFSET);
-//		Point p2 = new Point(getWidth() - OFFSET, OFFSET);
-//		Point p3 = new Point(getWidth() - OFFSET, getHeight() - OFFSET);
-//		Point p4 = new Point(OFFSET, getHeight() - OFFSET);
-//		
-//		System.out.println("depth== "+depth);
-//		/*System.out.println("p1	(" + p1.x+", "+p1.y+")");
-//		System.out.println("p2	(" + p2.x+", "+p2.y+")");
-//		System.out.println("p3	(" + p3.x+", "+p3.y+")");
-//		System.out.println("p4	(" + p4.x+", "+p4.y+")");
-//		*/
-////		p1	(25, 25)
-////		p2	(575, 25)
-////		p3	(575, 575)
-////		p4	(25, 575)
-//
-//		// Draw Sierpinski's triangle
-//		fillSquares(g, depth, p1, p2, p3, p4);
-//	}
-	
 	
 	/*
 
@@ -118,8 +84,6 @@ public class SierpinskiSquare extends JFrame implements Runnable {
 	 */
 
 	private void fillSquares(Graphics2D g, int dep, Point p1, Point p2, Point p3, Point p4) {
-//		assert(dep<10);
-//		System.out.println("dep is -- " + dep);
 		
 		if (dep % 2 == 0) {
 			g.setColor(Color.red);
@@ -153,45 +117,14 @@ public class SierpinskiSquare extends JFrame implements Runnable {
 
 		fillSquares(g, dep - 1, p1, p132, p11, p134); 		// top-left
 		fillSquares(g, dep - 1, p132, p122, p22, p11); 		// top-mid
-		fillSquares(g, dep - 1, p122, p2, p233, p11); 		// top-right
+		fillSquares(g, dep - 1, p122, p2, p233, p22); 		// top-right
 
 		fillSquares(g, dep - 1, p134, p11, p44, p124); 		// mid-left
 		fillSquares(g, dep - 1, p22, p233, p223, p33); 		// mid-right
 
 		fillSquares(g, dep - 1, p124, p44, p334, p4); 		// bot-left
 		fillSquares(g, dep - 1, p44, p33, p324, p334); 		// bot-mid
-		fillSquares(g, dep - 1, p33, p223, p3, p324); 		// bot-right	
-		
-		
-//		fillSquares(g, dep - 1, p11, p22, p33, p44);		//	//mid-big
-		
-		
-		/*
-		
-		
-		
-		
-//		Path2D myPath = new Path2D.Double();
-//		myPath.moveTo(p1.x, p1.y);
-//		myPath.lineTo(p2.x, p2.y);
-//		myPath.lineTo(p3.x, p3.y);
-//		myPath.lineTo(p4.x, p4.y);
-//		myPath.closePath();
-//		
-////		g.setPaint(Color.red);
-//		/*==Paint GRADIENT_PAINT = new GradientPaint(0, 0, Color.BLUE, 20, 20, Color.RED, true);
-//		
-//		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//		g.setPaint(GRADIENT_PAINT);===/
-//		g.fill(myPath);
-		
-		
-		
-		
-		
-		
-		*/
-		
+		fillSquares(g, dep - 1, p33, p223, p3, p324); 		// bot-right
 		
 	}
 
@@ -211,25 +144,17 @@ public class SierpinskiSquare extends JFrame implements Runnable {
 
 		Point p132 = thirdPt(p1, p2);
 		Point p122 = twoThirdPt(p1, p2);
-		Point p13d2 = new Point(p132.x,p132.y+(p132.x-p1.x));
-		Point p12d2 = new Point(p122.x,p122.y+(p122.x-p1.x));
-		
-		drawSquares(g,d-1,p132,p122,p12d2,p13d2);
-		
-		Point p233 = thirdPt(p2,p3);
-		Point p223 = twoThirdPt(p2,p3);
-		Point p23l3 = new Point(p233.x,p233.y-(p233.x-p2.x));
-		Point p22l3 = new Point(p223.x,p223.y-(p223.x-p2.x));
-		
-		drawSquares(g,d-1,p233,p223,p22l3,p23l3);
-		
-		
-		
-		
+		Point p13d2 = new Point(p132.x, p132.y + (p132.x - p1.x));
+		Point p12d2 = new Point(p122.x, p122.y + (p122.x - p1.x));
 
-		// drawSquares(g, d - 1, p1, m12, m34);
-		// drawSquares(g, d - 1, m12, p2,m23);
-		// drawSquares(g, d - 1, m34, m23, p3);
+		drawSquares(g, d - 1, p132, p122, p12d2, p13d2);
+
+		Point p233 = thirdPt(p2, p3);
+		Point p223 = twoThirdPt(p2, p3);
+		Point p23l3 = new Point(p233.x, p233.y - (p233.x - p2.x));
+		Point p22l3 = new Point(p223.x, p223.y - (p223.x - p2.x));
+
+		drawSquares(g, d - 1, p233, p223, p22l3, p23l3);
 	}
 
 	private static void drawLine(Graphics g, Point p1, Point p2) {
