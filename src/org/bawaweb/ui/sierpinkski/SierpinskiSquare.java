@@ -8,10 +8,12 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Paint;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.geom.Path2D;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -36,9 +38,18 @@ public class SierpinskiSquare extends JFrame implements Runnable {
 		setVisible(true);
 	}
 	
-	@Override 
+
+	@Override
 	public void paint(Graphics g1) {
-		Graphics2D g = (Graphics2D)g1;
+		Image img = createSierpinskiSquares();
+		Graphics2D g = (Graphics2D) g1;
+		g.drawImage(img, null, null);
+		g.dispose();
+	}
+
+	private Image createSierpinskiSquares() {
+		BufferedImage bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+		Graphics2D g = bufferedImage.createGraphics();
 		// Clear the frame
 		g.setColor(Color.black);
 		if (depth==0) {
@@ -53,19 +64,45 @@ public class SierpinskiSquare extends JFrame implements Runnable {
 		Point p4 = new Point(OFFSET, getHeight() - OFFSET);
 		
 		System.out.println("depth== "+depth);
-		/*System.out.println("p1	(" + p1.x+", "+p1.y+")");
-		System.out.println("p2	(" + p2.x+", "+p2.y+")");
-		System.out.println("p3	(" + p3.x+", "+p3.y+")");
-		System.out.println("p4	(" + p4.x+", "+p4.y+")");
-		*/
-//		p1	(25, 25)
-//		p2	(575, 25)
-//		p3	(575, 575)
-//		p4	(25, 575)
-
-		// Draw Sierpinski's triangle
+		
+		// Draw Sierpinski's squares
 		fillSquares(g, depth, p1, p2, p3, p4);
+		
+		return bufferedImage;
 	}
+
+
+//	
+//	@Override 
+//	public void paint(Graphics g1) {
+//		Graphics2D g = (Graphics2D)g1;
+//		// Clear the frame
+//		g.setColor(Color.black);
+//		if (depth==0) {
+//			g.fillRect(0, 0, getWidth(), getHeight());
+//			//		g.fillRect(OFFSET,OFFSET,getWidth() - OFFSET, getHeight() - OFFSET);
+//			//		g.setColor(Color.blue);
+//		}
+//		// Initialize p1, p2, p3, p4 based on frame size */
+//		Point p1 = new Point(OFFSET, OFFSET);
+//		Point p2 = new Point(getWidth() - OFFSET, OFFSET);
+//		Point p3 = new Point(getWidth() - OFFSET, getHeight() - OFFSET);
+//		Point p4 = new Point(OFFSET, getHeight() - OFFSET);
+//		
+//		System.out.println("depth== "+depth);
+//		/*System.out.println("p1	(" + p1.x+", "+p1.y+")");
+//		System.out.println("p2	(" + p2.x+", "+p2.y+")");
+//		System.out.println("p3	(" + p3.x+", "+p3.y+")");
+//		System.out.println("p4	(" + p4.x+", "+p4.y+")");
+//		*/
+////		p1	(25, 25)
+////		p2	(575, 25)
+////		p3	(575, 575)
+////		p4	(25, 575)
+//
+//		// Draw Sierpinski's triangle
+//		fillSquares(g, depth, p1, p2, p3, p4);
+//	}
 	
 	
 	/*
