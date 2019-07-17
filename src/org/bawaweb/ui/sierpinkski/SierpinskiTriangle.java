@@ -22,10 +22,10 @@ public class SierpinskiTriangle extends JFrame implements Runnable {
 	public static int OFFSET = 25; // pixel offset from edge
 
 	private static int depth; // recursion depth
+	private static final int MAX_DEPTH = 10;
 
 	/** Constructor: an instance */
 	public SierpinskiTriangle() {
-		// super("Sierpinski triangle");
 		Container cont = getContentPane();
 		setSize(WIDTH, HEIGHT);
 		setVisible(true);
@@ -33,23 +33,21 @@ public class SierpinskiTriangle extends JFrame implements Runnable {
 	
 	@Override
 	public void paint(Graphics g1) {
-//		super.paint(g);
 		Image img = createSierpinskiT();
-		Graphics2D g = (Graphics2D)g1;
-		g.drawImage(img, null,null);//getWidth(), getHeight(), this);
+		Graphics2D g = (Graphics2D) g1;
+		g.drawImage(img, null, null);
 		g.dispose();
 	}
 
 	private Image createSierpinskiT() {
 		BufferedImage bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
 		Graphics2D g = bufferedImage.createGraphics();
-//		Graphics2D g = (Graphics2D) g1;
 		// Clear the frame
 		g.setColor(Color.black);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		g.setColor(Color.red);
 
-		// Initialize p1, p2, p3 based on frame size =/
+		// Initialize p1, p2, p3 based on frame size
 		Point p1 = new Point(getWidth() / 2, OFFSET);
 		Point p2 = new Point(OFFSET, getHeight() - OFFSET);
 		Point p3 = new Point(getWidth() - OFFSET, getHeight() - OFFSET);
@@ -59,27 +57,8 @@ public class SierpinskiTriangle extends JFrame implements Runnable {
 		return bufferedImage;
 	}
 
-	/*@Override
-	public void paint(Graphics g1) {
-		super.paint(g1);
-		Graphics2D g = (Graphics2D) g1;
-		// Clear the frame
-		g.setColor(Color.black);
-		g.fillRect(0, 0, getWidth(), getHeight());
-		g.setColor(Color.red);
-
-		// Initialize p1, p2, p3 based on frame size //
-		Point p1 = new Point(getWidth() / 2, OFFSET);
-		Point p2 = new Point(OFFSET, getHeight() - OFFSET);
-		Point p3 = new Point(getWidth() - OFFSET, getHeight() - OFFSET);
-
-		// Draw Sierpinski's triangle
-		drawTriangles(g, depth, p1, p2, p3);
-	}*/
-
 	/** Draw a line between p1 and p2 on g. */
 	private static void drawLine(Graphics2D g, Point p1, Point p2) {
-//		g.setStroke(new BasicStroke(3));
 		g.drawLine(p1.x, p1.y, p2.x, p2.y);
 	}
 
@@ -95,7 +74,7 @@ public class SierpinskiTriangle extends JFrame implements Runnable {
 	private static void drawTriangles(Graphics2D g, int d, Point p1, Point p2, Point p3) {
 		g.setColor(Color.red);
 		if (d == 0) { // depth is 0, draw the triangle
-			g.setStroke(new BasicStroke((int)3/(d+1)));
+			g.setStroke(new BasicStroke(1));//((int)3/(d+1)));
 			drawLine(g, p1, p2);
 			drawLine(g, p2, p3);
 			drawLine(g, p3, p1);
@@ -154,7 +133,7 @@ public class SierpinskiTriangle extends JFrame implements Runnable {
 	@Override
 	public void run() {
 		try {
-			while (depth < 10) {
+			while (depth < MAX_DEPTH) {
 				System.out.println("depth is " + depth);
 				depth += 1;
 				Thread.sleep(6000);
