@@ -5,8 +5,10 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.geom.Path2D;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -28,8 +30,36 @@ public class SierpinskiTriangle extends JFrame implements Runnable {
 		setSize(WIDTH, HEIGHT);
 		setVisible(true);
 	}
-
+	
 	@Override
+	public void paint(Graphics g1) {
+//		super.paint(g);
+		Image img = createSierpinskiT();
+		Graphics2D g = (Graphics2D)g1;
+		g.drawImage(img, null,null);//getWidth(), getHeight(), this);
+		g.dispose();
+	}
+
+	private Image createSierpinskiT() {
+		BufferedImage bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+		Graphics2D g = bufferedImage.createGraphics();
+//		Graphics2D g = (Graphics2D) g1;
+		// Clear the frame
+		g.setColor(Color.black);
+		g.fillRect(0, 0, getWidth(), getHeight());
+		g.setColor(Color.red);
+
+		// Initialize p1, p2, p3 based on frame size =/
+		Point p1 = new Point(getWidth() / 2, OFFSET);
+		Point p2 = new Point(OFFSET, getHeight() - OFFSET);
+		Point p3 = new Point(getWidth() - OFFSET, getHeight() - OFFSET);
+
+		// Draw Sierpinski's triangle
+		drawTriangles(g, depth, p1, p2, p3);
+		return bufferedImage;
+	}
+
+	/*@Override
 	public void paint(Graphics g1) {
 		super.paint(g1);
 		Graphics2D g = (Graphics2D) g1;
@@ -38,14 +68,14 @@ public class SierpinskiTriangle extends JFrame implements Runnable {
 		g.fillRect(0, 0, getWidth(), getHeight());
 		g.setColor(Color.red);
 
-		// Initialize p1, p2, p3 based on frame size */
+		// Initialize p1, p2, p3 based on frame size //
 		Point p1 = new Point(getWidth() / 2, OFFSET);
 		Point p2 = new Point(OFFSET, getHeight() - OFFSET);
 		Point p3 = new Point(getWidth() - OFFSET, getHeight() - OFFSET);
 
 		// Draw Sierpinski's triangle
 		drawTriangles(g, depth, p1, p2, p3);
-	}
+	}*/
 
 	/** Draw a line between p1 and p2 on g. */
 	private static void drawLine(Graphics2D g, Point p1, Point p2) {
@@ -76,11 +106,11 @@ public class SierpinskiTriangle extends JFrame implements Runnable {
 		Point m23 = midpoint(p2, p3);
 		Point m31 = midpoint(p3, p1);
 
+		fillTriangle(g, m12, m23, m31);
+
 		drawTriangles(g, d - 1, p1, m12, m31);
 		drawTriangles(g, d - 1, m12, p2, m23);
 		drawTriangles(g, d - 1, m31, m23, p3);
-
-		fillTriangle(g, m12, m23, m31);
 	}
 
 	private static void fillTriangle(Graphics2D g, Point m12, Point m23, Point m31) {
