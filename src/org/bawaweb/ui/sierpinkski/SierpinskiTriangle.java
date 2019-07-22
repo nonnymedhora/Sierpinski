@@ -99,13 +99,33 @@ public class SierpinskiTriangle extends JFrame implements Runnable {
 
 		g.setPaint(Color.blue);
 		g.fill(myPath);
+		
+		/*//extra
+		g.setPaint(Color.green);
+		Point mid1223 = midpoint(m12,m23);
+		Point mid1231 = midpoint(m12,m31);
+		Point mid2331 = midpoint(m23,m31);
+		
+		drawLine(g,mid1223,mid1231);
+		drawLine(g,mid1223,mid2331);
+		drawLine(g,mid1231,mid2331);
+		
+		Path2D innerPath = new Path2D.Double();
+		innerPath.moveTo(mid1223.x,mid1223.y);
+		innerPath.lineTo(mid1231.x,mid1231.y);
+		innerPath.lineTo(mid2331.x,mid2331.y);
+		innerPath.closePath();
+		g.setPaint(Color.yellow);
+		g.fill(innerPath);
+		//ends-extra
+*/		
 
 	}
 
 	/**
 	 * Draw a Sierpinski triangle of depth d. Precondition: d >= 0.
 	 */
-	public void Sierpinski(int d) {
+	private void Sierpinski(int d) {
 		depth = d;
 		repaint();
 	}

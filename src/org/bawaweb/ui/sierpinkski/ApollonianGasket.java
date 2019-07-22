@@ -7,7 +7,9 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -16,7 +18,7 @@ import javax.swing.SwingUtilities;
  * @author Navroz
  *
  */
-public class ApollonianGasket extends JFrame implements Runnable{
+public class ApollonianGasket extends JFrame implements Runnable {
 	
 	private static final long 	serialVersionUID 	= 126543L;
 	private static final int 	HEIGHT 				= 600;
@@ -27,20 +29,25 @@ public class ApollonianGasket extends JFrame implements Runnable{
 	private static int depth; 			// recursion depth
 	private static final int MAX_DEPTH = 10;
 	
-	public ApollonianGasket (){
+	public ApollonianGasket() {
 		setSize(WIDTH,HEIGHT);
 		setVisible(true);
 	}
 	
-	@Override 
+
+	@Override
 	public void paint(Graphics g1) {
-		Graphics2D g = (Graphics2D)g1;
+		Image img = createSierpinskiAppolonianGasket();
+		Graphics2D g = (Graphics2D) g1;
+		g.drawImage(img, null, null);
+		g.dispose();
+	}
+
+	private Image createSierpinskiAppolonianGasket() {
+		BufferedImage bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+		Graphics2D g = bufferedImage.createGraphics();
 		// Clear the frame
 		g.setColor(Color.black);
-		if (depth==0) {
-			g.fillOval(OFFSET, OFFSET, getWidth()-OFFSET, getHeight()-OFFSET);
-			return;
-		}
 		
 		Point p1 = new Point(OFFSET, OFFSET);
 		Point p2 = new Point(getWidth() - OFFSET, OFFSET);
@@ -48,16 +55,15 @@ public class ApollonianGasket extends JFrame implements Runnable{
 		Point p4 = new Point(OFFSET, getHeight() - OFFSET);
 		
 		fillCircles(g,depth,p1,p2,p3,p4);
-//		g.drawOval(OFFSET+10, OFFSET+10, getWidth()-OFFSET-40, getHeight()-OFFSET-40);
-		
-		
+		return bufferedImage;
 	}
+
 
 	private void fillCircles(Graphics2D g, int dep, Point p1, Point p2, Point p3, Point p4) {
 		if (dep == 0) {
 			g.setColor(Color.blue);
 
-			g.drawOval(p1.x, p1.y, p3.x-p1.x, p3.y-p1.y);
+			g.fillOval(p1.x, p1.y, p3.x-p1.x, p3.y-p1.y);
 			return;
 		}
 		if (dep % 2 == 0) {
@@ -88,7 +94,7 @@ public class ApollonianGasket extends JFrame implements Runnable{
 		Point p33 = mergeXYPt(p122, p223);			//	merged pt (p122.X, p223.Y)		
 		Point p44 = mergeXYPt(p132, p223);			// 	merged pt (p132.X, p223.Y)
 
-		g.setStroke(new BasicStroke((int)(3/(dep+1))));
+//		g.setStroke(new BasicStroke((int)(3/(dep+1))));
 		
 		g.fillOval(p132.x,p132.y,(int)((p3.x-p1.x)/3),(int)((p3.y-p1.y)/3));
 		
@@ -96,7 +102,7 @@ public class ApollonianGasket extends JFrame implements Runnable{
 		
 		fillCircles(g, dep - 1, p1, p132, p11, p134); 		// top-left
 		fillCircles(g, dep - 1, p132, p122, p22, p11); 		// top-mid
-		fillCircles(g, dep - 1, p122, p2, p233, p11); 		// top-right
+		fillCircles(g, dep - 1, p122, p2, p233, p22); 		// top-right
 
 		fillCircles(g, dep - 1, p134, p11, p44, p124); 		// mid-left
 		fillCircles(g, dep - 1, p22, p233, p223, p33); 		// mid-right
