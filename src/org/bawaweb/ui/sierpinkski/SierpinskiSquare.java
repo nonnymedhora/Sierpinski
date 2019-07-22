@@ -160,7 +160,7 @@ public class SierpinskiSquare extends JFrame implements Runnable {
 		}
 	}
 
-	public void Sierpinski(int d) {
+	private void Sierpinski(int d) {
 		depth = d;
 		repaint();
 	}
