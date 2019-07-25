@@ -9,10 +9,68 @@ import java.awt.Point;
 import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
 
+import javax.swing.JApplet;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 public class SierpinskiTriangle extends JFrame implements Runnable {
+	
+	public class TestApplet extends JApplet{
+		private static final long serialVersionUID = 738383094219856453L;
+		private int radius=25;
+
+		/* (non-Javadoc)
+		 * @see java.applet.Applet#init()
+		 */
+		@Override
+		public void init() {
+			// TODO Auto-generated method stub
+			super.init();
+		}
+
+		/* (non-Javadoc)
+		 * @see java.awt.Container#paint(java.awt.Graphics)
+		 */
+		@Override
+		public void paint(Graphics gr) {
+			gr.setColor(Color.white);
+			gr.fillRect(0, 0, 150, 150);
+			gr.setColor(Color.black);
+
+			gr.drawOval((150 / 2 - radius), (150 / 2 - radius), radius * 2, radius * 2);
+		}
+		
+	}
+	
+	
+	public class SierpinkskiApplet extends JApplet {
+		
+		private SierpinskiTriangle st;
+
+		/* (non-Javadoc)
+		 * @see java.awt.Container#paint(java.awt.Graphics)
+		 */
+		@Override
+		public void paint(Graphics g) {
+			super.paint(g);
+			st.paint(g);
+		}
+
+		/* (non-Javadoc)
+		 * @see java.applet.Applet#init()
+		 */
+		@Override
+		public void init() {
+			// TODO Auto-generated method stub
+			super.init();
+			st=new SierpinskiTriangle();
+			new Thread(st).start();
+		}
+
+		private static final long serialVersionUID = 1876L;
+		
+		
+	}
 
 	private static final long serialVersionUID = 123456543L;
 	private static final int HEIGHT = 600;
@@ -82,22 +140,34 @@ public class SierpinskiTriangle extends JFrame implements Runnable {
 		Point m12 = midpoint(p1, p2);
 		Point m23 = midpoint(p2, p3);
 		Point m31 = midpoint(p3, p1);
+		
+		Color fillColor = Color.green;
+		Color emptyColor = Color.blue;
+		
+		if(depth%2==0){
+			fillColor=Color.yellow;
+		}
+		
+//		
+//		fillTriangle(g,p1,m12,m31,fillColor);
+//		fillTriangle(g,m12,p2,m23,fillColor);
+//		fillTriangle(g,p3,m23,m31,fillColor);
 
-		fillTriangle(g, m12, m23, m31);
+		fillTriangle(g, m12, m23, m31,emptyColor);
 
 		drawTriangles(g, d - 1, p1, m12, m31);
 		drawTriangles(g, d - 1, m12, p2, m23);
 		drawTriangles(g, d - 1, m31, m23, p3);
 	}
 
-	private static void fillTriangle(Graphics2D g, Point m12, Point m23, Point m31) {
+	private static void fillTriangle(Graphics2D g, Point p1, Point p2, Point p3, Color color) {
 		Path2D myPath = new Path2D.Double();
-		myPath.moveTo(m12.x, m12.y);
-		myPath.lineTo(m23.x, m23.y);
-		myPath.lineTo(m31.x, m31.y);
+		myPath.moveTo(p1.x, p1.y);
+		myPath.lineTo(p2.x, p2.y);
+		myPath.lineTo(p3.x, p3.y);
 		myPath.closePath();
 
-		g.setPaint(Color.blue);
+		g.setPaint(color);
 		g.fill(myPath);
 		
 		/*//extra

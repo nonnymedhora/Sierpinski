@@ -101,7 +101,7 @@ public class KochFractal extends JFrame implements Runnable {
 	public void run() {
 		try {
 			while (depth < 7/*MAX_DEPTH*/) {
-//				Thread.sleep(9000);
+				Thread.sleep(3000);
 				depth += 1;
 				Thread.sleep(3000);
 				kochFractal(depth);
@@ -154,40 +154,8 @@ public class KochFractal extends JFrame implements Runnable {
 
 		for (int i = 0; i < lines.size(); i++) {
 			Line aLine = lines.get(i);
-			double x_l1 = aLine.x;
-			double y_l1 = aLine.y;
-			double len_l1 = aLine.length / 3.0;
-			double ang_l1 = aLine.angle;
-
-			double x_l2 = aLine.x + (Math.cos(aLine.angle * (Math.PI / 180.0)) * aLine.length / 1.5);
-			double y_l2 = aLine.y + (Math.sin(aLine.angle * (Math.PI / 180.0)) * aLine.length / 1.5);
-			double len_l2 = aLine.length / 3.0;
-			double ang_l2 = aLine.angle;
-
-			double x_l3 = aLine.x + (Math.cos(aLine.angle * (Math.PI / 180.0)) * aLine.length / 3.0);
-			double y_l3 = aLine.y + (Math.sin(aLine.angle * (Math.PI / 180.0)) * aLine.length / 3.0);
-			double len_l3 = aLine.length / 3.0;
-			double ang_l3 = aLine.angle - 300.0;
-
-			double x_l4 = aLine.x + (Math.cos(aLine.angle * (Math.PI / 180.0)) * aLine.length / 1.5);
-			double y_l4 = aLine.y + (Math.sin(aLine.angle * (Math.PI / 180.0)) * aLine.length / 1.5);
-			double len_l4 = aLine.length / 3.0;
-			double ang_l4 = aLine.angle - 240.0;
-			
-			x_l4 = x_l4 + Math.cos(ang_l4 * (Math.PI / 180.0)) * len_l4;
-			y_l4 = y_l4 + Math.sin(ang_l4 * (Math.PI / 180.0)) * len_l4;
-			ang_l4 -= 180.0;
-			
-			newLines.add(new Line(x_l1,y_l1,len_l1,ang_l1));				
-			newLines.add(new Line(x_l2,y_l2,len_l2,ang_l2));				
-			newLines.add(new Line(x_l3,y_l3,len_l3,ang_l3));				
-			newLines.add(new Line(x_l4,y_l4,len_l4,ang_l4));
-			
-			
-			
+			create4NewLines(newLines, aLine);
 			delLines.add(aLine);
-			
-			
 		}
 		
 		for(int j=0;j<newLines.size();j++){
@@ -208,6 +176,39 @@ public class KochFractal extends JFrame implements Runnable {
 			/*Line aLine = line2Del;
 			aLine=null;*/
 		}
+		
+//		drawKochFractal(lines,g);
+	}
+
+	private void create4NewLines(List<Line> newLines, Line aLine) {
+		double x_l1 = aLine.x;
+		double y_l1 = aLine.y;
+		double len_l1 = aLine.length / 3.0;
+		double ang_l1 = aLine.angle;
+
+		double x_l2 = aLine.x + (Math.cos(aLine.angle * (Math.PI / 180.0)) * aLine.length / 1.5);
+		double y_l2 = aLine.y + (Math.sin(aLine.angle * (Math.PI / 180.0)) * aLine.length / 1.5);
+		double len_l2 = aLine.length / 3.0;
+		double ang_l2 = aLine.angle;
+
+		double x_l3 = aLine.x + (Math.cos(aLine.angle * (Math.PI / 180.0)) * aLine.length / 3.0);
+		double y_l3 = aLine.y + (Math.sin(aLine.angle * (Math.PI / 180.0)) * aLine.length / 3.0);
+		double len_l3 = aLine.length / 3.0;
+		double ang_l3 = aLine.angle - 300.0;
+
+		double x_l4 = aLine.x + (Math.cos(aLine.angle * (Math.PI / 180.0)) * aLine.length / 1.5);
+		double y_l4 = aLine.y + (Math.sin(aLine.angle * (Math.PI / 180.0)) * aLine.length / 1.5);
+		double len_l4 = aLine.length / 3.0;
+		double ang_l4 = aLine.angle - 240.0;
+		
+		x_l4 = x_l4 + Math.cos(ang_l4 * (Math.PI / 180.0)) * len_l4;
+		y_l4 = y_l4 + Math.sin(ang_l4 * (Math.PI / 180.0)) * len_l4;
+		ang_l4 -= 180.0;
+		
+		newLines.add(new Line(x_l1,y_l1,len_l1,ang_l1));				
+		newLines.add(new Line(x_l2,y_l2,len_l2,ang_l2));				
+		newLines.add(new Line(x_l3,y_l3,len_l3,ang_l3));				
+		newLines.add(new Line(x_l4,y_l4,len_l4,ang_l4));
 	}
 	
 	//http://www.cplusplus.com/articles/iE86b7Xj/
