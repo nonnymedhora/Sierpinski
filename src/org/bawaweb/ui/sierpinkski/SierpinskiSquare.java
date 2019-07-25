@@ -57,7 +57,7 @@ public class SierpinskiSquare extends JFrame implements Runnable {
 		Point p3 = new Point(getWidth() - OFFSET, getHeight() - OFFSET);
 		Point p4 = new Point(OFFSET, getHeight() - OFFSET);
 		
-		System.out.println("depth== "+depth);
+//		System.out.println("depth== "+depth);
 		
 		// Draw Sierpinski's squares
 		fillSquares(g, depth, p1, p2, p3, p4);

@@ -51,20 +51,21 @@ public class KochSnowFlakeFractal extends JFrame implements Runnable {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		g.setColor(Color.red);
-		
-		Line l1 = new Line(getWidth()-100,150,getWidth()-200,180.0);
-		Line l2 = new Line(100,150,getWidth()-200,60.0);
-		Line l3 = new Line(getWidth()-100,150,getWidth()-200,120.0);
-		l3.x += Math.cos(l3.angle*(Math.PI/180.0))*l3.length;
-		l3.y += Math.sin(l3.angle*(Math.PI/180.0))*l3.length;
-		l3.angle-=180.0;
-		
+
+		Line l1 = new Line(getWidth() - 100, 150, getWidth() - 200, 180.0);
+		Line l2 = new Line(100, 150, getWidth() - 200, 60.0);
+		Line l3 = new Line(getWidth() - 100, 150, getWidth() - 200, 120.0);
+			//	for angle re-orientation
+		l3.x += Math.cos(l3.angle * (Math.PI / 180.0)) * l3.length;
+		l3.y += Math.sin(l3.angle * (Math.PI / 180.0)) * l3.length;
+		l3.angle -= 180.0;
+
 		List<Line> theLines = new ArrayList<Line>();
 		theLines.add(l1);
 		theLines.add(l2);
 		theLines.add(l3);
-		
-		drawKochSnowFractal(g,depth,theLines);
+
+		drawKochSnowFractal(g, depth, theLines);
 		return bufferedImage;
 	}
 
@@ -78,24 +79,36 @@ public class KochSnowFlakeFractal extends JFrame implements Runnable {
 			}
 			return;
 		}
-		
+
 		// deleted lines
 		List<Line> delLines = new ArrayList<Line>();
+		// new added lines
 		List<Line> addedLines = new ArrayList<Line>();
-		
+
 		for (int i = 0; i < lines.size(); i++) {
 			Line aLine = lines.get(i);
 			List<Line> newLines = create4NewLines(aLine);
 			addedLines.addAll(newLines);
-			delLines.add(aLine);
+			delLines.add(aLine);		//	delete itself
 		}
-		
+
 		lines.addAll(addedLines);
 		lines.removeAll(delLines);
-		
-		drawKochSnowFractal(g,d-1,lines);
+
+		drawKochSnowFractal(g, d - 1, lines);
 	}
 	
+	/**
+	 * 
+	 * @param aLine	--	the line to create 4 lines from
+	 * @return the list of lines created
+	 * 
+	 * input-line		________________________
+	 * will
+	 * then						/\
+	 * become 				   /  \
+	 * 4 lines			______/    \______	
+	 */
 	private List<Line> create4NewLines(Line aLine) {
 		double x_l1 = aLine.x;
 		double y_l1 = aLine.y;
@@ -116,7 +129,8 @@ public class KochSnowFlakeFractal extends JFrame implements Runnable {
 		double y_l4 = aLine.y + (Math.sin(aLine.angle * (Math.PI / 180.0)) * aLine.length / 1.5);
 		double len_l4 = aLine.length / 3.0;
 		double ang_l4 = aLine.angle - 240.0;
-		
+			
+			// for angle re-orientation
 		x_l4 = x_l4 + Math.cos(ang_l4 * (Math.PI / 180.0)) * len_l4;
 		y_l4 = y_l4 + Math.sin(ang_l4 * (Math.PI / 180.0)) * len_l4;
 		ang_l4 -= 180.0;

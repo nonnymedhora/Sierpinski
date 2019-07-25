@@ -9,69 +9,11 @@ import java.awt.Point;
 import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
 
-import javax.swing.JApplet;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 public class SierpinskiTriangle extends JFrame implements Runnable {
 	
-	public class TestApplet extends JApplet{
-		private static final long serialVersionUID = 738383094219856453L;
-		private int radius=25;
-
-		/* (non-Javadoc)
-		 * @see java.applet.Applet#init()
-		 */
-		@Override
-		public void init() {
-			// TODO Auto-generated method stub
-			super.init();
-		}
-
-		/* (non-Javadoc)
-		 * @see java.awt.Container#paint(java.awt.Graphics)
-		 */
-		@Override
-		public void paint(Graphics gr) {
-			gr.setColor(Color.white);
-			gr.fillRect(0, 0, 150, 150);
-			gr.setColor(Color.black);
-
-			gr.drawOval((150 / 2 - radius), (150 / 2 - radius), radius * 2, radius * 2);
-		}
-		
-	}
-	
-	
-	public class SierpinkskiApplet extends JApplet {
-		
-		private SierpinskiTriangle st;
-
-		/* (non-Javadoc)
-		 * @see java.awt.Container#paint(java.awt.Graphics)
-		 */
-		@Override
-		public void paint(Graphics g) {
-			super.paint(g);
-			st.paint(g);
-		}
-
-		/* (non-Javadoc)
-		 * @see java.applet.Applet#init()
-		 */
-		@Override
-		public void init() {
-			// TODO Auto-generated method stub
-			super.init();
-			st=new SierpinskiTriangle();
-			new Thread(st).start();
-		}
-
-		private static final long serialVersionUID = 1876L;
-		
-		
-	}
-
 	private static final long serialVersionUID = 123456543L;
 	private static final int HEIGHT = 600;
 	private static final int WIDTH = 600;
@@ -148,11 +90,12 @@ public class SierpinskiTriangle extends JFrame implements Runnable {
 			fillColor=Color.yellow;
 		}
 		
-//		
-//		fillTriangle(g,p1,m12,m31,fillColor);
-//		fillTriangle(g,m12,p2,m23,fillColor);
-//		fillTriangle(g,p3,m23,m31,fillColor);
-
+		/*//		extra
+		fillTriangle(g,p1,m12,m31,fillColor);
+		fillTriangle(g,m12,p2,m23,fillColor);
+		fillTriangle(g,p3,m23,m31,fillColor);
+		//		ends-extra
+*/		
 		fillTriangle(g, m12, m23, m31,emptyColor);
 
 		drawTriangles(g, d - 1, p1, m12, m31);
@@ -222,7 +165,7 @@ public class SierpinskiTriangle extends JFrame implements Runnable {
 	public void run() {
 		try {
 			while (depth < MAX_DEPTH) {
-				System.out.println("depth is " + depth);
+//				System.out.println("depth is " + depth);
 				depth += 1;
 				Thread.sleep(6000);
 				Sierpinski(depth);
