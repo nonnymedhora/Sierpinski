@@ -45,13 +45,20 @@ public class SierpinskiTriangle extends JFrame implements Runnable {
 		g.fillRect(0, 0, getWidth(), getHeight());
 		g.setColor(Color.red);
 
-		// Initialize p1, p2, p3 based on frame size
+		/*// Initialize p1, p2, p3 based on frame size
 		Point p1 = new Point(getWidth() / 2, OFFSET);
 		Point p2 = new Point(OFFSET, getHeight() - OFFSET);
 		Point p3 = new Point(getWidth() - OFFSET, getHeight() - OFFSET);
 
 		// Draw Sierpinski's triangle
 		drawTriangles(g, depth, p1, p2, p3);
+		*/
+		
+		//upsideDown
+		Point p1d = new Point(OFFSET, OFFSET);
+		Point p2d = new Point(getWidth()-OFFSET, OFFSET);
+		Point p3d = new Point(getWidth() /2, getHeight()-OFFSET);
+		drawTriangles(g,depth,p1d,p2d,p3d);
 		return bufferedImage;
 	}
 
