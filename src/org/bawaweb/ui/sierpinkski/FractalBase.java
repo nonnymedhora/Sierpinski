@@ -28,15 +28,17 @@ class FractalBaseSample extends FractalBase {
 	@Override
 	public void createFractalShape(Graphics2D g) {
 		final Point center = new Point((WIDTH - OFFSET * 2) / 2, (HEIGHT - OFFSET * 2) / 2);
-		System.out.println("Center is P(" + center.x + "," + center.y + ")");
+//		System.out.println("Center is P(" + center.x + "," + center.y + ")");
 		
 		g.setStroke(new BasicStroke(4));
 		setPixel(center.y,center.x,Color.cyan.getRGB());
 		
 		final int length = 50 * depth + 1;
-		System.out.println("length is " + length);
+//		System.out.println("length is " + length);
 
-		drawSquare(g, center, length * 2, Color.blue);
+		
+		g.setStroke(new BasicStroke(1));
+		drawSquare(g, center, length * 2, Color.cyan);
 
 		g.setColor(Color.green);
 		drawSquare(g, center, length);
@@ -47,10 +49,11 @@ class FractalBaseSample extends FractalBase {
 		drawCircle(g, center, length / 2, Color.yellow);
 		fillSquare(g, center, length / 4, Color.orange);
 
-		g.setStroke(new BasicStroke(2));
-		g.setColor(Color.blue);
+//		g.setStroke(new BasicStroke(2));
+		g.setColor(Color.white);
 		drawEquilateralTriangle(g, center, length*2,"up");
 		drawEquilateralTriangle(g, center, length*2, "down");
+		
 		g.setColor(Color.red);
 		drawEquilateralTriangle(g, center, length,"up");
 		drawEquilateralTriangle(g, center, length, "down");
@@ -88,13 +91,13 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	static final int HEIGHT = 600;
 	static final int WIDTH = 600;
 
-    boolean isOriginUpperLeft = true;  // location of origin
-	static int OFFSET = 25; // pixel offset from edge
+    boolean isOriginUpperLeft = true;  	// location of origin
+	static int OFFSET = 25; 			// pixel offset from edge
 
-	static int depth; // recursion depth
+	static int depth; 					// recursion depth
 	static final int MAX_DEPTH = 10;
 	
-	final static int maxIter = 255;	//	maximum iterations to check for Mandelbrot
+	final static int maxIter = 255;		//	maximum iterations to check for Mandelbrot
 	
 	BufferedImage bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 
@@ -104,49 +107,43 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		setVisible(true);
 	}
 	
-	public void drawEquilateralTriangle(Graphics2D g, Point center, int length, String dir) {
-		System.out.println("In createET");
-		System.out.println("Cenetr---P("+center.x+","+center.y+")");
-		System.out.println("L is "+length);
-		
-		
-		/*Line vrtxLn = new Line(center.x, center.y, length * 2 / 3, 90.0);
-		Point vertex = new Point((int) vrtxLn.getX2(), (int) vrtxLn.getY2());*/
+	protected void drawEquilateralTriangle(Graphics2D g, Point center, int length, String dir) {
 		Line vrtxDirLn;
 		Line baseDirLn;
 		if("up".equals(dir)){// -- go up 4 vertex
 			vrtxDirLn = new Line(center.x, center.y, length * 2 / 3, 90.0);
 			// -- go down next for base
 			baseDirLn = new Line(center.x, center.y, length / 3, 270.0);
-		}else{// -- go down 4 vertex
+		} else {// -- go down 4 vertex
 			vrtxDirLn = new Line(center.x, center.y, length * 2 / 3, 270.0);
 			// -- go up next for base
 			baseDirLn = new Line(center.x, center.y, length / 3, 90.0);
 		}
 		
 		Point vertex = new Point((int) vrtxDirLn.getX2(), (int) vrtxDirLn.getY2());
-		System.out.println("Vertex is P("+vertex.x+","+vertex.y+")");
-
+//		System.out.println("Vertex is P("+vertex.x+","+vertex.y+")");
 		
 		Point midBase = new Point((int) baseDirLn.getX2(), (int) baseDirLn.getY2());
 
 		// --go-left
 		Line leftB = new Line(midBase.x, midBase.y, length / 2, 180.0);
-		Line rightB = new Line(midBase.x, midBase.y, length / 2, 0.0);
-
 		Point lftB = new Point((int) leftB.getX2(), (int) leftB.getY2());
+		// --go-right
+		Line rightB = new Line(midBase.x, midBase.y, length / 2, 0.0);
 		Point rtB = new Point((int) rightB.getX2(), (int) rightB.getY2());
-		System.out.println("lftB is P("+lftB.x+","+lftB.y+")");
-		System.out.println("rtB is P("+rtB.x+","+rtB.y+")");
+//		System.out.println("lftB is P("+lftB.x+","+lftB.y+")");
+//		System.out.println("rtB is P("+rtB.x+","+rtB.y+")");
+		
+		drawTriangle(g,vertex,lftB,rtB,g.getColor());
 		
 		
-		Path2D myPath = new Path2D.Double();
+		/*Path2D myPath = new Path2D.Double();
 		myPath.moveTo(vertex.x,vertex.y);
 		myPath.lineTo(lftB.x,lftB.y);
 		myPath.lineTo(rtB.x,rtB.y);
 		myPath.closePath();
 		
-		g.draw(myPath);
+		g.draw(myPath);*/
 //==============================================================//		
 //		/*g.drawLine(vertex.x,vertex.y,lftB.x,lftB.y);
 //		g.drawLine(vertex.x,vertex.y,rtB.x,rtB.y);
@@ -220,7 +217,6 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	 */
 	@Override
 	public void paint(Graphics g1) {
-		// TODO Auto-generated method stub
 		super.paint(g1);
 		Image img = createFractalImage();
 		Graphics2D g2 = (Graphics2D) g1;
@@ -241,12 +237,13 @@ public abstract class FractalBase extends JFrame implements Runnable {
 
 	public abstract void createFractalShape(Graphics2D g);
 	
-	protected void setPixel(int col,int row,int rgbColor){
-//		bufferedImage.setRGB(col, row, rgbColor);
+	protected void setPixel(int col, int row, int rgbColor) {
 		validateColumnIndex(col);
-        validateRowIndex(row);
-        if (isOriginUpperLeft) bufferedImage.setRGB(col, row, rgbColor);
-        else                   bufferedImage.setRGB(col, HEIGHT - row - 1, rgbColor);
+		validateRowIndex(row);
+		if (isOriginUpperLeft)
+			bufferedImage.setRGB(col, row, rgbColor);
+		else
+			bufferedImage.setRGB(col, HEIGHT - row - 1, rgbColor);
 	}
 	
 	private void validateRowIndex(int row) {
@@ -332,6 +329,17 @@ public abstract class FractalBase extends JFrame implements Runnable {
 
 		g.setPaint(color);
 		g.fill(myPath);
+	}
+	
+	protected void drawTriangle(Graphics2D g, Point p1, Point p2, Point p3, Color color) {
+		Path2D myPath = new Path2D.Double();
+		myPath.moveTo(p1.x, p1.y);
+		myPath.lineTo(p2.x, p2.y);
+		myPath.lineTo(p3.x, p3.y);
+		myPath.closePath();
+
+		g.setPaint(color);
+		g.draw(myPath);
 	}
 
 	
