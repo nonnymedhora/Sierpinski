@@ -28,14 +28,13 @@ class FractalBaseSample extends FractalBase {
 	@Override
 	public void createFractalShape(Graphics2D g) {
 		final Point center = new Point((WIDTH - OFFSET * 2) / 2, (HEIGHT - OFFSET * 2) / 2);
-//		System.out.println("Center is P(" + center.x + "," + center.y + ")");
-		
+		// System.out.println("Center is P(" + center.x + "," + center.y + ")");
+
 		g.setStroke(new BasicStroke(4));
-		setPixel(center.y,center.x,Color.cyan.getRGB());
-		
+		setPixel(center.y, center.x, Color.cyan.getRGB());
+
 		final int length = 50 * depth + 1;
 //		System.out.println("length is " + length);
-
 		
 		g.setStroke(new BasicStroke(1));
 		drawSquare(g, center, length * 2, Color.cyan);
@@ -47,16 +46,21 @@ class FractalBaseSample extends FractalBase {
 		drawCircle(g, center, length);
 
 		drawCircle(g, center, length / 2, Color.yellow);
-		fillSquare(g, center, length / 4, Color.orange);
+		fillCircle(g, center, length / 3, Color.green);
+		fillSquare(g, center, length / 4, Color.blue);
 
 //		g.setStroke(new BasicStroke(2));
 		g.setColor(Color.white);
-		drawEquilateralTriangle(g, center, length*2,"up");
-		drawEquilateralTriangle(g, center, length*2, "down");
-		
+		drawEquilateralTriangle(g, center, length * 2, "up");
+		drawEquilateralTriangle(g, center, length * 2, "down");
+
 		g.setColor(Color.red);
-		drawEquilateralTriangle(g, center, length,"up");
+		drawEquilateralTriangle(g, center, length, "up");
 		drawEquilateralTriangle(g, center, length, "down");
+
+		g.setColor(Color.red);
+		fillEquilateralTriangle(g, center, length / 6, "up");
+		fillEquilateralTriangle(g, center, length / 6, "down");
 		
 	}
 	
@@ -105,6 +109,31 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	public FractalBase() {
 		setSize(WIDTH, HEIGHT);
 		setVisible(true);
+	}
+	
+	protected void fillEquilateralTriangle(Graphics2D g, Point center, int length, String dir) {
+		Line vrtxDirLn;
+		Line baseDirLn;
+		if ("up".equals(dir)) {// -- go up 4 vertex
+			vrtxDirLn = new Line(center.x, center.y, length * 2 / 3, 90.0);
+			// -- go down next for base
+			baseDirLn = new Line(center.x, center.y, length / 3, 270.0);
+		} else {// -- go down 4 vertex
+			vrtxDirLn = new Line(center.x, center.y, length * 2 / 3, 270.0);
+			// -- go up next for base
+			baseDirLn = new Line(center.x, center.y, length / 3, 90.0);
+		}
+		Point vertex = new Point((int) vrtxDirLn.getX2(), (int) vrtxDirLn.getY2());
+		Point midBase = new Point((int) baseDirLn.getX2(), (int) baseDirLn.getY2());
+
+		// --go-left
+		Line leftB = new Line(midBase.x, midBase.y, length / 2, 180.0);
+		Point lftB = new Point((int) leftB.getX2(), (int) leftB.getY2());
+		// --go-right
+		Line rightB = new Line(midBase.x, midBase.y, length / 2, 0.0);
+		Point rtB = new Point((int) rightB.getX2(), (int) rightB.getY2());
+
+		fillTriangle(g, vertex, lftB, rtB, g.getColor());
 	}
 	
 	protected void drawEquilateralTriangle(Graphics2D g, Point center, int length, String dir) {
@@ -256,9 +285,6 @@ public abstract class FractalBase extends JFrame implements Runnable {
             throw new IllegalArgumentException("column index must be between 0 and " + (WIDTH - 1) + ": " + col);
     }
     
-
-
-    
 	protected void fillCircle(Graphics2D g, Point center, int radius, Color color) {
 		g.setColor(color);
 		this.fillCircle(g,center,radius);
@@ -297,8 +323,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	/** = the midpoint between p1 and p2 */
 	protected Point midpoint(Point p1, Point p2) {
 		return new Point((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
-	}
-	
+	}	
 
 	protected Point thirdPtH(Point pLeft, Point pRight) {
 		return new Point((int) (pLeft.x + (pRight.x - pLeft.x) / 3), pLeft.y);
@@ -319,24 +344,25 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	protected Point mergeXYPt(Point p1, Point p2) {
 		return new Point(p1.x, p2.y);
 	}
-	
-	protected void fillTriangle(Graphics2D g, Point p1, Point p2, Point p3, Color color) {
+
+	private Path2D getTrianglePath(Point p1, Point p2, Point p3) {
 		Path2D myPath = new Path2D.Double();
 		myPath.moveTo(p1.x, p1.y);
 		myPath.lineTo(p2.x, p2.y);
 		myPath.lineTo(p3.x, p3.y);
 		myPath.closePath();
+		return myPath;
+	}
+	
+	protected void fillTriangle(Graphics2D g, Point p1, Point p2, Point p3, Color color) {
+		Path2D myPath = getTrianglePath(p1, p2, p3);
 
 		g.setPaint(color);
 		g.fill(myPath);
 	}
 	
 	protected void drawTriangle(Graphics2D g, Point p1, Point p2, Point p3, Color color) {
-		Path2D myPath = new Path2D.Double();
-		myPath.moveTo(p1.x, p1.y);
-		myPath.lineTo(p2.x, p2.y);
-		myPath.lineTo(p3.x, p3.y);
-		myPath.closePath();
+		Path2D myPath = getTrianglePath(p1, p2, p3);
 
 		g.setPaint(color);
 		g.draw(myPath);
