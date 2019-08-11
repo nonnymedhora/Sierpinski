@@ -18,7 +18,7 @@ class FractalBaseSample extends FractalBase {
 
 	@Override
 	public void createFractalShape(Graphics2D g) {
-		final Point center = new Point((WIDTH - OFFSET * 2) / 2, (HEIGHT - OFFSET * 2) / 2);
+		final Point center = new Point(WIDTH / 2, HEIGHT / 2);
 		// System.out.println("Center is P(" + center.x + "," + center.y + ")");
 
 		g.setStroke(new BasicStroke(4));
