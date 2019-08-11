@@ -34,6 +34,8 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	final static int maxIter = 255;		//	maximum iterations to check for Mandelbrot
 	
 	BufferedImage bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+	
+	final Point center = new Point(WIDTH / 2, HEIGHT / 2);
 
 	/** Constructor: an instance */
 	public FractalBase() {

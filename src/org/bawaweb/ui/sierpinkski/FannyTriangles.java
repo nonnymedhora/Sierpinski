@@ -28,7 +28,6 @@ public class FannyTriangles extends FractalBase {
 	 */
 	@Override
 	public void createFractalShape(Graphics2D g) {
-		final Point center = new Point(WIDTH / 2, HEIGHT / 2);
 		final int length = 150 * depth + 1;		//	manipulate variable 50-350
 		drawFannyTriangles(g, depth, center, length);
 	}
