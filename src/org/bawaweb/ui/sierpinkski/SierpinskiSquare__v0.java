@@ -18,15 +18,34 @@ import javax.swing.SwingUtilities;
  * @author Navroz
  *
  */
-public class SierpinskiSquare extends FractalBase {
+public class SierpinskiSquare__v0 extends JFrame implements Runnable {
 
 	private static final long 	serialVersionUID 	= 123456543L;
+	private static final int 	HEIGHT 				= 600;
+	private static final int 	WIDTH 				= 600;
 
-	public SierpinskiSquare() {
-		super();
+	public static int OFFSET = 25; 		// pixel offset from edge
+
+	private static int depth; 			// recursion depth
+	private static final int MAX_DEPTH = 10;
+
+	public SierpinskiSquare__v0() {
+		setSize(WIDTH, HEIGHT);
+		setVisible(true);
+	}
+	
+
+	@Override
+	public void paint(Graphics g1) {
+		Image img = createSierpinskiSquares();
+		Graphics2D g = (Graphics2D) g1;
+		g.drawImage(img, null, null);
+		g.dispose();
 	}
 
-	private Image createSierpinskiSquares(Graphics2D g, int d) {
+	private Image createSierpinskiSquares() {
+		BufferedImage bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+		Graphics2D g = bufferedImage.createGraphics();
 		// Clear the frame
 		g.setColor(Color.black);
 		if (depth==0) {
@@ -41,7 +60,7 @@ public class SierpinskiSquare extends FractalBase {
 //		System.out.println("depth== "+depth);
 		
 		// Draw Sierpinski's squares
-		fillSquares(g, d, p1, p2, p3, p4);
+		fillSquares(g, depth, p1, p2, p3, p4);
 		
 		return bufferedImage;
 	}
@@ -103,6 +122,49 @@ public class SierpinskiSquare extends FractalBase {
 		
 	}
 
+	private static Point thirdPtH(Point pLeft, Point pRight) {
+		return new Point((int) (pLeft.x + (pRight.x - pLeft.x) / 3), pLeft.y);
+	}
+
+	private static Point thirdPtV(Point pTop, Point pBottom) {
+		return new Point(pTop.x, (int) (pTop.y + (pBottom.y - pTop.y) / 3));
+	}
+
+	private static Point twoThirdPtH(Point pLeft, Point pRight) {
+		return new Point((int) (pLeft.x + (pRight.x - pLeft.x) * 2 / 3), pLeft.y);
+	}
+
+	private static Point twoThirdPtV(Point pTop, Point pBottom) {
+		return new Point(pTop.x, (int) (pTop.y + (pBottom.y - pTop.y) * 2 / 3));
+	}
+
+	private static Point mergeXYPt(Point p1, Point p2) {
+		return new Point(p1.x, p2.y);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Runnable#run()
+	 */
+	@Override
+	public void run() {
+		try {
+			while (depth < MAX_DEPTH) {
+				depth += 1;
+				Thread.sleep(3000);
+				Sierpinski(depth);
+				run();
+			}
+		} catch (InterruptedException ex) {
+		}
+	}
+
+	private void Sierpinski(int d) {
+		depth = d;
+		repaint();
+	}
+
 	/**
 	 * @param args
 	 */
@@ -110,7 +172,7 @@ public class SierpinskiSquare extends FractalBase {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				final FractalBase frame = new SierpinskiSquare();
+				final SierpinskiSquare__v0 frame = new SierpinskiSquare__v0();
 				frame.setTitle("Bawaz _ Sierpinski'Square");
 				frame.setSize(WIDTH, HEIGHT);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -121,12 +183,6 @@ public class SierpinskiSquare extends FractalBase {
 
 			}
 		});
-	}
-
-
-	@Override
-	public void createFractalShape(Graphics2D g) {
-		createSierpinskiSquares(g, depth);		
 	}
 
 }
