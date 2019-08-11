@@ -41,6 +41,12 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		setVisible(true);
 	}
 	
+	protected void fillEquilateralTriangle(Graphics2D g, Point center, int length, String dir, Color color) {
+		g.setColor(color);
+		this.fillEquilateralTriangle(g,center,length,dir);
+	}
+	
+	
 	protected void fillEquilateralTriangle(Graphics2D g, Point center, int length, String dir) {
 		Line vrtxDirLn;
 		Line baseDirLn;
@@ -66,6 +72,10 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		fillTriangle(g, vertex, lftB, rtB, g.getColor());
 	}
 	
+	protected void drawEquilateralTriangle(Graphics2D g, Point center, int length, String dir, Color color) {
+		g.setColor(color);
+		this.drawEquilateralTriangle(g,center,length,dir);
+	}
 	protected void drawEquilateralTriangle(Graphics2D g, Point center, int length, String dir) {
 		Line vrtxDirLn;
 		Line baseDirLn;

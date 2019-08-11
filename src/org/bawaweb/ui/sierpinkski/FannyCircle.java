@@ -32,7 +32,7 @@ public class FannyCircle extends FractalBase {
 	@Override
 	public void createFractalShape(Graphics2D g) {
 		final Point center = new Point(WIDTH / 2, HEIGHT / 2);
-		final int length = 300 * depth + 1;	// ranging 50-350
+		final int length = 50 * depth + 1;	// ranging 50-350
 //System.out.println("in createFractalShape -  depth is "+depth+" and length is "+length);
 		drawFannyCircle(g, depth, center.x, center.y, length);
 
@@ -55,7 +55,7 @@ public class FannyCircle extends FractalBase {
 			return;
 		}
 
-		int cutRadius = radius / 5;		// diff designs for 2-5, but needs higher radii
+		int cutRadius = radius / 2;		// diff designs for 2-5, but needs higher radii
 
 		drawFannyCircle(g, d - 1, px - cutRadius, py, cutRadius);
 		drawFannyCircle(g, d - 1, px, py - cutRadius, cutRadius);	
