@@ -531,4 +531,9 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	}
 
 
+	public void reset() {
+		depth=0;
+	}
+
+
 }

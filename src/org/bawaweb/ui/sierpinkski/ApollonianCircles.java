@@ -31,34 +31,49 @@ public class ApollonianCircles extends FractalBase {
 		final int windowSize = WIDTH;
 		final double scaleMin = -2.5;
 		final double scaleMax = 2.5;
-		
+
 		final double scaleMult = windowSize / (scaleMax - scaleMin);
 		final double windowMid = windowSize / 2.0;
 
 		//
-		final int d = 2;
+		final int dims = 2;
 		
-		final double r1 = m*1.0/c[0];
-		final double r2 = m*1.0/c[1];
-		final double r3 = m*1.0/c[2];
-		
+		final double r1 = m * 1.0 / c[0];
+		final double r2 = m * 1.0 / c[1];
+		final double r3 = m * 1.0 / c[2];
+
 		final double x1 = 0.0;
 		final double y1 = 0.0;
 		final double x2 = r1 + r2;
 		final double y2 = 0.0;
-		
+
 		final double[] xy = getXY(r1, r2, r3);
 		final double[] o = getOffset(x1, y1, x2, y2, xy[0], xy[1]);
+		if(dpth==0){
+			Element e = new Element(dims, 0, r1, o[0] + x1, o[1] + y1);
+			drawCircle(g,
+					new Point((int)(windowMid + e.getX(0)*scaleMult), (int)(windowMid - e.getX(1)*scaleMult)),
+					(int) (e.getRadius()*scaleMult),
+					colors[e.getIteration()]);//colors[i]);//
+			
+			fillCircle(g,
+					new Point((int)(windowMid + e.getX(0)*scaleMult), (int)(windowMid - e.getX(1)*scaleMult)),
+					(int) (e.getRadius()*scaleMult),
+					new Color(0f, 0f, 0f, 0f));
+			
+			return;
+		}
+		
 		/*if (d==0) {*/
 			final ArrayList<Element> elements = new ArrayList<>();
 			
 			
-				elements.add(new Element(d, 0, r1, o[0] + x1, o[1] + y1));
-				elements.add(new Element(d, 0, r2, o[0] + x2, o[1] + y2));
-				elements.add(new Element(d, 0, r3, o[0] + xy[0], o[1] + xy[1]));
+				elements.add(new Element(dims, 0, r1, o[0] + x1, o[1] + y1));
+				elements.add(new Element(dims, 0, r2, o[0] + x2, o[1] + y2));
+				elements.add(new Element(dims, 0, r3, o[0] + xy[0], o[1] + xy[1]));
 				
-//			Gasket.generate(d, elements, d);
-			Gasket.generate(d,elements,colors.length-1);
+			Gasket.generate(dims, elements, dpth-1);
+//			Gasket.generate(dims,elements,colors.length-1);
 				
 			
 			for (int i = 0; i < elements.size(); i++) {
@@ -87,7 +102,7 @@ public class ApollonianCircles extends FractalBase {
 			/*	return;
 		}*/
 		
-//		createApollonianCircles(g,colors,c,m,dpth-1);
+		createApollonianCircles(g,colors,c,m,dpth-1);
 		
 //		root.getChildren().add(new Text(10, windowSize-10, String.format("Iterations: %d, Circles: %,d", colors.length-1, elements.size())));
 		
@@ -173,8 +188,8 @@ public class ApollonianCircles extends FractalBase {
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setResizable(false);
 				frame.setVisible(true);
-	
-//				new Thread(frame).start();
+	frame.depth=2;
+				new Thread(frame).start();
 	
 			}
 		});
@@ -217,20 +232,16 @@ class Element {
 	/**
 	 * Creates a new element
 	 * 
-	 * @param d
-	 *            number of dimensions
-	 * @param iteration
-	 *            iteration of creation
-	 * @param r
-	 *            radius
-	 * @param x
-	 *            coordinates of element
+	 * @param d - number of dimensions
+	 * @param iteration - iteration of creation
+	 * @param r - radius
+	 * @param x - coordinates of element
 	 */
 	public Element(int d, int iteration, double r, double... x) {
 		this(d, iteration);
 
 		this.r = r;
-		this.b = (1. / r);
+		this.b = (1.0 / r);
 
 		for (int i = 1; i < (x.length + 1); i++) {
 			this.x[i] = x[i - 1];
@@ -252,8 +263,7 @@ class Element {
 	/**
 	 * Get coordinate via dimension
 	 * 
-	 * @param d
-	 *            dimension
+	 * @param d - dimension
 	 * @return coordinate
 	 */
 	public double getX(int d) {
@@ -300,6 +310,7 @@ class Gasket {
 			int[] indexes, double A, double B_c, double C_c, boolean includeNeg) {
 		final double B;
 		final double C;
+		
 		{
 			double sum_b = 0;
 			double sum_b2 = 0;
@@ -481,40 +492,37 @@ class Gasket {
 	 * Generates an Apollonian sphere in a specified dimension for a specified
 	 * number of iterations
 	 * 
-	 * @param d
-	 *            dimensions
-	 * @param elements
-	 *            destination list (includes seed elements)
-	 * @param iterations
-	 *            number of iterations for which to generate
+	 * @param dim - dimensions
+	 * @param elements - destination list (includes seed elements)
+	 * @param iterations - number of iterations for which to generate
 	 */
-	public static void generate(int d, List<Element> elements, int iterations) {
+	public static void generate(int dim, List<Element> elements, int iterations) {
 		if (iterations > 0) {
 			final Stack<int[]> indexPool = new Stack<>();
 			final ArrayList<int[]> last = new ArrayList<>();
 			final ArrayList<int[]> newbies = new ArrayList<>();
 
 			final ArrayList<Integer> added = new ArrayList<>();
-			final double[][] qr = new double[d][2];
+			final double[][] qr = new double[dim][2];
 
-			final double A = ((double) d - 1) / ((double) d);
-			final double B_c = -2.0 / d;
-			final double C_c = 1.0 / d;
+			final double A = ((double) dim - 1) / ((double) dim);
+			final double B_c = -2.0 / dim;
+			final double C_c = 1.0 / dim;
 
-			final double[] exp = new double[d + 1];
-			final double[] combo = new double[d];
-			final double[] combo2 = new double[d];
-			final int[][] combos = new int[(int) Math.pow(2, d)][d];
+			final double[] exp = new double[dim + 1];
+			final double[] combo = new double[dim];
+			final double[] combo2 = new double[dim];
+			final int[][] combos = new int[(int) Math.pow(2, dim)][dim];
 			for (int i = 0; i < combos.length; i++) {
-				final String s = String.format("%0" + d + "d", Integer.valueOf(Integer.toString(i, 2)));
-				for (int j = 0; j < d; j++) {
+				final String s = String.format("%0" + dim + "d", Integer.valueOf(Integer.toString(i, 2)));
+				for (int j = 0; j < dim; j++) {
 					combos[i][j] = s.charAt(j) - '0';
 				}
 			}
 
 			{
-				final int[] indexes = getFromPool(d, indexPool);
-				for (int i = 0; i <= d; i++) {
+				final int[] indexes = getFromPool(dim, indexPool);
+				for (int i = 0; i <= dim; i++) {
 					indexes[i] = i;
 				}
 
@@ -525,15 +533,15 @@ class Gasket {
 			for (int iteration = 1; iteration <= iterations; iteration++) {
 				for (int[] l : last) {
 					added.clear();
-					computeCurvature(d, iteration, elements, added, l, A, B_c, C_c, first);
+					computeCurvature(dim, iteration, elements, added, l, A, B_c, C_c, first);
 
 					for (int a : added) {
-						l[d + 1] = a;
-						computePosition(d, elements, l, qr, combos, combo, combo2, exp);
+						l[dim + 1] = a;
+						computePosition(dim, elements, l, qr, combos, combo, combo2, exp);
 
-						for (int i = 0; i <= d; i++) {
-							final int[] indexes = getFromPool(d, indexPool);
-							for (int j = 0; j <= d; j++) {
+						for (int i = 0; i <= dim; i++) {
+							final int[] indexes = getFromPool(dim, indexPool);
+							for (int j = 0; j <= dim; j++) {
 								if (i == j) {
 									indexes[j] = a;
 								} else {

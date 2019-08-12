@@ -211,6 +211,7 @@ class SierpinskiComboPanel extends JPanel implements ActionListener {
 					
 				
 //				ff.depth=0;
+				ff.reset();
 				final String title = ff.getFractalShapeTitle();
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
