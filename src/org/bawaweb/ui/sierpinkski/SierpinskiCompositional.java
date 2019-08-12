@@ -29,15 +29,17 @@ import javax.swing.SwingUtilities;
 class SierpinskiComboPanel extends JPanel implements ActionListener {
 
 	private static final String SIERPINSKI_SQUARES = "SierpinskiSquares";
-
+	private static final String APOLLONIAN_CIRCLES = "ApollonianCircles";
 	private static final String SIERPINSKI_TRIANGLES = "SierpinskiTriangles";
-
+	private static final String CST_FRACTAL="CSTFractal";
+	private static final String SAMPLE="Sample";
+	private static final String MANDELBROT="Mandelbrot";
 	private static final String FANNY_TRIANGLES = "FannyTriangles";
-
 	private static final String FANNY_CIRCLE = "FannyCircle";
+	private static final String KOCHSNOWFLAKE="KochSnowFlake";
 
 	private static final long serialVersionUID = 156478L;
-	private final String[] comboOptions = new String[]{FANNY_CIRCLE,FANNY_TRIANGLES,SIERPINSKI_TRIANGLES,SIERPINSKI_SQUARES/*,"KochSnowfalke"*/};
+	private final String[] comboOptions = new String[]{FANNY_CIRCLE,FANNY_TRIANGLES,SIERPINSKI_TRIANGLES,SIERPINSKI_SQUARES,APOLLONIAN_CIRCLES,CST_FRACTAL,SAMPLE,MANDELBROT,KOCHSNOWFLAKE};
 	private final JComboBox<String> combos = new JComboBox<String>(comboOptions);
 	private final Integer[] sideOptions = new Integer[]{50,70,100,150,200,250,300,350};
 	private final JComboBox<Integer> sideCombos	= new JComboBox<Integer>(sideOptions);
@@ -160,16 +162,55 @@ class SierpinskiComboPanel extends JPanel implements ActionListener {
 				} else if (choice.equals(SIERPINSKI_TRIANGLES)) {
 					ff=new SierpinskiTriangle();
 
-				} else if (choice.equals(SIERPINSKI_SQUARES)) {ff=new SierpinskiSquare();
+				} else if (choice.equals(SIERPINSKI_SQUARES)) {
+					ff=new SierpinskiSquare();
 
-				} /*else if (choice.equals("KochSnowfalke")) {
+				} else if(choice.equals(APOLLONIAN_CIRCLES)){
+					ff=new ApollonianCircles();
+				} else if(choice.equals(SAMPLE)){
+					ff=new FractalBaseSample();
+				} else if(choice.equals(MANDELBROT)){
+					ff=new Mandelbrot();
+				} else if(choice.equals(CST_FRACTAL)){
+					ff=new CSTFractal();
+				} else if(choice.equals(SAMPLE)){
+					ff=new FractalBaseSample();
+				}
+				
+				
+				
+				else if (choice.equals(KOCHSNOWFLAKE)) {
 					KochSnowFlakeFractal kfframe = new KochSnowFlakeFractal();
-					new Thread(kf).start();
-				}*/
+					new Thread(kfframe).start();
+					
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							final JFrame frame = kfframe;
+							frame.setTitle("BawazKochSnowFlake");
+							frame.setSize(FractalBase.WIDTH, FractalBase.HEIGHT);
+							frame.setDefaultCloseOperation(closeIt(frame));//(JFrame.EXIT_ON_CLOSE);
+							frame.setResizable(false);
+							frame.setVisible(true);
+				
+							new Thread(kfframe).start();
+				
+						}
+
+						private int closeIt(JFrame frame) {
+							frame.dispose();
+							return JFrame.DISPOSE_ON_CLOSE;
+						}
+					});
+					return;
+				}
 				else{
 					ff=null;
 				}
 //				new Thread(ff).start();
+					
+				
+//				ff.depth=0;
 				final String title = ff.getFractalShapeTitle();
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override

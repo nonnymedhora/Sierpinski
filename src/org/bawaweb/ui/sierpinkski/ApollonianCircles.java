@@ -1,24 +1,285 @@
 /**
  * 
  */
-package org.bawaweb.fx.sierpinski;
+package org.bawaweb.ui.sierpinkski;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import javafx.application.Application;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
+
 
 /**
  * @author Navroz
- *https://github.com/natederbinsky/apollonian/blob/java/src/edu/wit/epic/CirclesFX.java
+ * @see CirclesFX
  */
+public class ApollonianCircles extends FractalBase {
+
+	public ApollonianCircles() {
+		super();
+	}
+	
+	private void createApollonianCircles(Graphics2D g, Color[] colors, double[] c, double m, int dpth) {
+		final int windowSize = WIDTH;
+		final double scaleMin = -2.5;
+		final double scaleMax = 2.5;
+		
+		final double scaleMult = windowSize / (scaleMax - scaleMin);
+		final double windowMid = windowSize / 2.0;
+
+		//
+		final int d = 2;
+		
+		final double r1 = m*1.0/c[0];
+		final double r2 = m*1.0/c[1];
+		final double r3 = m*1.0/c[2];
+		
+		final double x1 = 0.0;
+		final double y1 = 0.0;
+		final double x2 = r1 + r2;
+		final double y2 = 0.0;
+		
+		final double[] xy = getXY(r1, r2, r3);
+		final double[] o = getOffset(x1, y1, x2, y2, xy[0], xy[1]);
+		/*if (d==0) {*/
+			final ArrayList<Element> elements = new ArrayList<>();
+			
+			
+				elements.add(new Element(d, 0, r1, o[0] + x1, o[1] + y1));
+				elements.add(new Element(d, 0, r2, o[0] + x2, o[1] + y2));
+				elements.add(new Element(d, 0, r3, o[0] + xy[0], o[1] + xy[1]));
+				
+//			Gasket.generate(d, elements, d);
+			Gasket.generate(d,elements,colors.length-1);
+				
+			
+			for (int i = 0; i < elements.size(); i++) {
+				final Element e = elements.get(i);
+				g.setStroke(new BasicStroke(2));
+				drawCircle(g,
+						new Point((int)(windowMid + e.getX(0)*scaleMult), (int)(windowMid - e.getX(1)*scaleMult)),
+						(int) (e.getRadius()*scaleMult),
+						colors[e.getIteration()]);//colors[i]);//
+				
+				fillCircle(g,
+						new Point((int)(windowMid + e.getX(0)*scaleMult), (int)(windowMid - e.getX(1)*scaleMult)),
+						(int) (e.getRadius()*scaleMult),
+						new Color(0f, 0f, 0f, 0f));
+				
+				//public static final Color TRANSPARENT          = new Color(0f, 0f, 0f, 0f);
+				
+	//			
+	//			final Ellipse2D.Double circ = new Ellipse2D.Double(windowMid + e.getX(0)*scaleMult, windowMid - e.getX(1)*scaleMult, e.getRadius()*scaleMult);
+	//			circ.setStroke(colors[e.getIteration()]);
+	//			circ.setStrokeWidth(0.9);
+	//			circ.setFill(Color.TRANSPARENT);
+	//			root.getChildren().add(circ);
+			}
+			
+			/*	return;
+		}*/
+		
+//		createApollonianCircles(g,colors,c,m,dpth-1);
+		
+//		root.getChildren().add(new Text(10, windowSize-10, String.format("Iterations: %d, Circles: %,d", colors.length-1, elements.size())));
+		
+	}
+	
+	private static double[] getXY(double r1, double r2, double r3) {
+		final double a = r2 + r3;
+		final double b = r1 + r3;
+		final double c = r1 + r2;
+		
+		final double x = (b*b + c*c - a*a) / (2 * c);
+		final double y = Math.sqrt(b*b - x*x);
+		
+		return new double[] {x, y};
+	}
+	
+	private static double[] getOffset(double x1, double y1, double x2, double y2, double x3, double y3) {
+		final double cx = 1./3.*(x1 + x2 + x3);
+		final double cy = 1./3.*(y1 + y2 + y3);
+		
+		return new double[] {-cx, -cy};
+	}
+
+	/* (non-Javadoc)
+	 * @see org.bawaweb.ui.sierpinkski.FractalBase#createFractalShape(java.awt.Graphics2D)
+	 */
+	@Override
+	public void createFractalShape(Graphics2D g) {
+		////////////////////////////////////////////////////
+		// Step 1: Choose seed circle sizes
+		////////////////////////////////////////////////////
+		
+		final double[] c; // initial curvatures
+		final double m; // visual multiplier
+		
+		// some initial configuration options
+		// leave only one uncommented
+		c = new double[] { 1.0, 1.0, 1.0 };
+		m = 1.0;
+		// c = new double[] {25., 25.0, 28.0}; m = 20.0;
+		// c = new double[] {5.0, 8.0, 8.0}; m = 6.0;
+		// c = new double[] {10.0, 15.0, 19.0}; m = 6.0;
+		// c = new double[] {23.0, 27.0, 18.0}; m = 16.0;
+		// c = new double[] {2.0, 2.0, 3.0}; m = 1.0;
+		
+		////////////////////////////////////////////////////
+		// Step 2: Set max iterations via colors
+		////////////////////////////////////////////////////
+		
+		// first = seed color
+		// iterations = colors.length - 1
+		final Color[] colors = { 
+				Color.BLACK, Color.ORANGE, Color.BLUE, Color.GRAY, 
+				Color.RED, Color.GREEN, Color.MAGENTA, Color.YELLOW,
+				Color.CYAN, Color.PINK, Color.LIGHT_GRAY};
+		
+		////////////////////////////////////////////////////
+		////////////////////////////////////////////////////
+		
+		createApollonianCircles(g, colors, c, m,depth);
+
+	}
+
+	/* (non-Javadoc)
+	 * @see org.bawaweb.ui.sierpinkski.FractalBase#getFractalShapeTitle()
+	 */
+	@Override
+	protected String getFractalShapeTitle() {		
+		return "BaswaZ Apollonion Circles";
+	}
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		final FractalBase ff = new ApollonianCircles();
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				final FractalBase frame = ff;
+				frame.setTitle(ff.getFractalShapeTitle());
+				frame.setSize(FractalBase.WIDTH, FractalBase.HEIGHT);
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frame.setResizable(false);
+				frame.setVisible(true);
+	
+//				new Thread(frame).start();
+	
+			}
+		});
+	}
+
+}
+
+
+class Element {
+	// intentional direct
+	// accessibility only
+	// within the package
+	final int iteration;
+	final double[] x;
+	double r;
+	double b;
+
+	// common constructor code
+	private Element(int d, int iteration) {
+		this.iteration = iteration;
+		x = new double[d + 1];
+		x[0] = 1.;
+	}
+
+	/**
+	 * Convenience package method to generate an element via curvature without
+	 * knowing coordinates
+	 * 
+	 * @param d - dimensions
+	 * @param iteration - iteration of creation
+	 * @param b - curvature
+	 */
+	Element(int d, int iteration, double b) {
+		this(d, iteration);
+
+		this.b = b;
+		this.r = 1. / b;
+	}
+
+	/**
+	 * Creates a new element
+	 * 
+	 * @param d
+	 *            number of dimensions
+	 * @param iteration
+	 *            iteration of creation
+	 * @param r
+	 *            radius
+	 * @param x
+	 *            coordinates of element
+	 */
+	public Element(int d, int iteration, double r, double... x) {
+		this(d, iteration);
+
+		this.r = r;
+		this.b = (1. / r);
+
+		for (int i = 1; i < (x.length + 1); i++) {
+			this.x[i] = x[i - 1];
+		}
+	}
+
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder(String.format("%d: %.3f/%.3f @ (%.3f", iteration, r, b, x[0]));
+
+		for (int i = 1; i < x.length; i++) {
+			sb.append(String.format(", %.3f", x[i]));
+		}
+		sb.append(")");
+
+		return sb.toString();
+	}
+
+	/**
+	 * Get coordinate via dimension
+	 * 
+	 * @param d
+	 *            dimension
+	 * @return coordinate
+	 */
+	public double getX(int d) {
+		return x[d + 1];
+	}
+
+	/**
+	 * Get creation iteration
+	 * 
+	 * @return iteration of creation
+	 */
+	public int getIteration() {
+		return iteration;
+	}
+
+	/**
+	 * Get element radius
+	 * 
+	 * @return radius
+	 */
+	public double getRadius() {
+		return (r < 0) ? (-r) : (r);
+	}
+}
+
+
 
 class Gasket {
 	private static final double THRESH = 1.0E-10;
@@ -295,236 +556,4 @@ class Gasket {
 			}
 		}
 	}
-}
-
-class Element {
-
-	// intentional direct
-	// accessibility only
-	// within the package
-	final int iteration;
-	final double[] x;
-	double r;
-	double b;
-
-	// common constructor code
-	private Element(int d, int iteration) {
-		this.iteration = iteration;
-		x = new double[d + 1];
-		x[0] = 1.;
-	}
-
-	/**
-	 * Convenience package method to generate an element via curvature without
-	 * knowing coordinates
-	 * 
-	 * @param d
-	 *            dimensions
-	 * @param iteration
-	 *            iteration of creation
-	 * @param b
-	 *            curvature
-	 */
-	Element(int d, int iteration, double b) {
-		this(d, iteration);
-
-		this.b = b;
-		this.r = 1. / b;
-	}
-
-	/**
-	 * Creates a new element
-	 * 
-	 * @param d
-	 *            number of dimensions
-	 * @param iteration
-	 *            iteration of creation
-	 * @param r
-	 *            radius
-	 * @param x
-	 *            coordinates of element
-	 */
-	public Element(int d, int iteration, double r, double... x) {
-		this(d, iteration);
-
-		this.r = r;
-		this.b = (1. / r);
-
-		for (int i = 1; i < (x.length + 1); i++) {
-			this.x[i] = x[i - 1];
-		}
-	}
-
-	@Override
-	public String toString() {
-		final StringBuilder sb = new StringBuilder(String.format("%d: %.3f/%.3f @ (%.3f", iteration, r, b, x[0]));
-
-		for (int i = 1; i < x.length; i++) {
-			sb.append(String.format(", %.3f", x[i]));
-		}
-		sb.append(")");
-
-		return sb.toString();
-	}
-
-	/**
-	 * Get coordinate via dimension
-	 * 
-	 * @param d
-	 *            dimension
-	 * @return coordinate
-	 */
-	public double getX(int d) {
-		return x[d + 1];
-	}
-
-	/**
-	 * Get creation iteration
-	 * 
-	 * @return iteration of creation
-	 */
-	public int getIteration() {
-		return iteration;
-	}
-
-	/**
-	 * Get element radius
-	 * 
-	 * @return radius
-	 */
-	public double getRadius() {
-		return (r < 0) ? (-r) : (r);
-	}
-}
-
-
-
-public class CirclesFX extends Application {
-
-	public CirclesFX() {
-		super();
-	}
-	
-	private static double[] getXY(double r1, double r2, double r3) {
-		final double a = r2 + r3;
-		final double b = r1 + r3;
-		final double c = r1 + r2;
-		
-		final double x = (b*b + c*c - a*a) / (2 * c);
-		final double y = Math.sqrt(b*b - x*x);
-		
-		return new double[] {x, y};
-	}
-	
-	private static double[] getOffset(double x1, double y1, double x2, double y2, double x3, double y3) {
-		final double cx = 1./3.*(x1 + x2 + x3);
-		final double cy = 1./3.*(y1 + y2 + y3);
-		
-		return new double[] {-cx, -cy};
-	}
-	
-	private void _start(Stage ps, Color[] colors, double[] c, double m) {
-		final int windowSize = 600;
-		final double scaleMin = -2.5;
-		final double scaleMax = 2.5;
-		
-		final double scaleMult = windowSize / (scaleMax - scaleMin);
-		final double windowMid = windowSize / 2.;
-		
-		//
-		
-		final Group root = new Group();
-		final Scene scene = new Scene(root, windowSize, windowSize, Color.WHITE);
-		
-		//
-		
-		final int d = 2;
-		
-		//
-		
-		final double r1 = m*1./c[0];
-		final double r2 = m*1./c[1];
-		final double r3 = m*1./c[2];
-		
-		final double x1 = 0.;
-		final double y1 = 0.;
-		final double x2 = r1 + r2;
-		final double y2 = 0.;
-		
-		final double[] xy = getXY(r1, r2, r3);
-		final double[] o = getOffset(x1, y1, x2, y2, xy[0], xy[1]);
-
-		final ArrayList<Element> elements = new ArrayList<>();
-		elements.add(new Element(d, 0, r1, o[0] + x1, o[1] + y1));
-		elements.add(new Element(d, 0, r2, o[0] + x2, o[1] + y2));
-		elements.add(new Element(d, 0, r3, o[0] + xy[0], o[1] + xy[1]));
-		
-		Gasket.generate(d, elements, colors.length-1);
-		
-		//
-
-		for (int i=0; i<elements.size(); i++) {
-			final Element e = elements.get(i);
-			
-			final Circle circ = new Circle(windowMid + e.getX(0)*scaleMult, windowMid - e.getX(1)*scaleMult, e.getRadius()*scaleMult);
-			circ.setStroke(colors[e.getIteration()]);
-			circ.setStrokeWidth(0.9);
-			circ.setFill(Color.TRANSPARENT);
-			root.getChildren().add(circ);
-		}
-		
-		root.getChildren().add(new Text(10, windowSize-10, String.format("Iterations: %d, Circles: %,d", colors.length-1, elements.size())));
-		
-		//
-		
-		ps.setScene(scene);
-		ps.setResizable(false);
-		ps.setTitle("Apollonia!");
-		ps.show();
-	}
-
-	/* (non-Javadoc)
-	 * @see javafx.application.Application#start(javafx.stage.Stage)
-	 */
-	@Override
-	public void start(Stage ps) throws Exception {
-		////////////////////////////////////////////////////
-		// Step 1: Choose seed circle sizes
-		////////////////////////////////////////////////////
-
-		final double[] c; // initial curvatures
-		final double m; // visual multiplier
-
-		// some initial configuration options
-		// leave only one uncommented
-		c = new double[] { 1., 1., 1. };
-		m = 1.;
-		// c = new double[] {25., 25., 28.}; m = 20.;
-		// c = new double[] {5., 8., 8.}; m = 6.;
-		// c = new double[] {10., 15., 19.}; m = 6.;
-		// c = new double[] {23., 27., 18.}; m = 16.;
-		// c = new double[] {2., 2., 3.}; m = 1.;
-
-		////////////////////////////////////////////////////
-		// Step 2: Set max iterations via colors
-		////////////////////////////////////////////////////
-
-		// first = seed color
-		// iterations = colors.length - 1
-		final Color[] colors = { Color.BLACK, Color.ORANGE, Color.BLUE, Color.GRAY, Color.RED, Color.GREEN,
-				Color.MAGENTA, Color.YELLOW,Color.CYAN,Color.PINK,Color.BROWN};
-
-		////////////////////////////////////////////////////
-		////////////////////////////////////////////////////
-
-		_start(ps, colors, c, m);
-	}
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		Application.launch(args);
-	}
-
 }
