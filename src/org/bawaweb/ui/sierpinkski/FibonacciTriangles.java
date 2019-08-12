@@ -90,7 +90,7 @@ public class FibonacciTriangles extends FractalBase {
 			@Override
 			public void run() {
 				final FractalBase frame = ff;
-				frame.setTitle("Bawaz _ FibonacciTriangles");
+				frame.setTitle(ff.getFractalShapeTitle());
 				frame.setSize(FractalBase.WIDTH, FractalBase.HEIGHT);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setResizable(false);
@@ -100,6 +100,11 @@ public class FibonacciTriangles extends FractalBase {
 	
 			}
 		});
+	}
+
+	@Override
+	protected String getFractalShapeTitle() {
+		return "Bawaz _ FibonacciTriangles";
 	}
 
 }

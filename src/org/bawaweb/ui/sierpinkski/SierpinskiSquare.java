@@ -111,7 +111,7 @@ public class SierpinskiSquare extends FractalBase {
 			@Override
 			public void run() {
 				final FractalBase frame = new SierpinskiSquare();
-				frame.setTitle("Bawaz _ Sierpinski'Square");
+				frame.setTitle(frame.getFractalShapeTitle());
 				frame.setSize(WIDTH, HEIGHT);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setResizable(false);
@@ -127,6 +127,11 @@ public class SierpinskiSquare extends FractalBase {
 	@Override
 	public void createFractalShape(Graphics2D g) {
 		createSierpinskiSquares(g, depth);		
+	}
+
+	@Override
+	protected String getFractalShapeTitle() {
+		return "Bawaz _ Sierpinski'Square";
 	}
 
 }

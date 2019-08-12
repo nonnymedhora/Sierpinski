@@ -160,6 +160,10 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		Point pu1 = setupSquare(center, length);
 		g.drawRect(pu1.x, pu1.y, length, length);
 	}
+	
+	private void startThread(){
+		this.run();
+	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Runnable#run()
@@ -207,6 +211,8 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	}
 
 	public abstract void createFractalShape(Graphics2D g);
+
+	protected abstract String getFractalShapeTitle();
 	
 	protected void setPixel(int col, int row, int rgbColor) {
 		validateColumnIndex(col);
@@ -523,5 +529,6 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	    }
 		
 	}
+
 
 }

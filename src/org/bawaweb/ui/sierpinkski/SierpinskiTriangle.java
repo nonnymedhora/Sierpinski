@@ -87,7 +87,7 @@ public class SierpinskiTriangle extends FractalBase {
 			@Override
 			public void run() {
 				final FractalBase frame = new SierpinskiTriangle();
-				frame.setTitle("Bawaz _ Sierpinski'Triangle");
+				frame.setTitle(frame.getFractalShapeTitle());
 				frame.setSize(WIDTH, HEIGHT);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setResizable(false);
@@ -104,5 +104,10 @@ public class SierpinskiTriangle extends FractalBase {
 	public void createFractalShape(Graphics2D g) {
 		createSierpinskiT(g,depth);
 		
+	}
+
+	@Override
+	protected String getFractalShapeTitle() {
+		return "Bawaz _ Sierpinski'Triangle";
 	}
 }

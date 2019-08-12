@@ -61,7 +61,7 @@ class FractalBaseSample extends FractalBase {
 			@Override
 			public void run() {
 				final FractalBase frame = ff;
-				frame.setTitle("Bawaz _ FractalBaseSample");
+				frame.setTitle(ff.getFractalShapeTitle());
 				frame.setSize(FractalBase.WIDTH, FractalBase.HEIGHT);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setResizable(false);
@@ -71,6 +71,11 @@ class FractalBaseSample extends FractalBase {
 	
 			}
 		});
+	}
+
+	@Override
+	protected String getFractalShapeTitle() {
+		return "Bawaz _ FractalBaseSample";
 	}
 	
 }

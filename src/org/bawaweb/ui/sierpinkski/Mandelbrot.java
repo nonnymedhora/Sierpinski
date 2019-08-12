@@ -72,7 +72,7 @@ public class Mandelbrot extends FractalBase {
 			public void run() {
 				final FractalBase frame = new Mandelbrot();
 				frame.depth = 5;
-				frame.setTitle("Bawaz _ Mandelbrot");
+				frame.setTitle(frame.getFractalShapeTitle());
 				frame.setSize(frame.WIDTH, frame.HEIGHT);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setResizable(false);
@@ -80,6 +80,11 @@ public class Mandelbrot extends FractalBase {
 
 			}
 		});
+	}
+
+	@Override
+	protected String getFractalShapeTitle() {
+		return "Bawaz _ Mandelbrot";
 	}
 
 }

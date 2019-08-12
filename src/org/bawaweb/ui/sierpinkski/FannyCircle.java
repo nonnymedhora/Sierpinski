@@ -16,6 +16,8 @@ import javax.swing.SwingUtilities;
  *
  */
 public class FannyCircle extends FractalBase {
+	private int cutDim = 2;
+	private int length = 50;// * depth + 1;	// ranging 50-350
 	//	NOTE		--	change variables for different designs
 	//	length 		--	(50 -to- 350)	* depth + 1
 	//	cutRadius	--	radius / (2 to 5)
@@ -25,15 +27,21 @@ public class FannyCircle extends FractalBase {
 	public FannyCircle() {
 		super();
 	}
+	
+	public FannyCircle(int len, int cut){
+		this.setCutDim(cut);
+		this.setLength(len);
+	}
 
 	/* (non-Javadoc)
 	 * @see org.bawaweb.ui.sierpinkski.FractalBase#createFractalShape(java.awt.Graphics2D)
 	 */
 	@Override
 	public void createFractalShape(Graphics2D g) {
-		final int length = 50 * depth + 1;	// ranging 50-350
-//System.out.println("in createFractalShape -  depth is "+depth+" and length is "+length);
-		drawFannyCircle(g, depth, center.x, center.y, length);
+		
+		int sideLength=length*depth+1;
+		//System.out.println("in createFractalShape -  depth is "+depth+" and length is "+length);
+		drawFannyCircle(g, depth, center.x, center.y, sideLength);
 
 	}
 
@@ -54,7 +62,7 @@ public class FannyCircle extends FractalBase {
 			return;
 		}
 
-		int cutRadius = radius / 2;		// diff designs for 2-5, but needs higher radii
+		int cutRadius = radius / cutDim;		// diff designs for 2-5, but needs higher radii
 
 		drawFannyCircle(g, d - 1, px - cutRadius, py, cutRadius);
 		drawFannyCircle(g, d - 1, px, py - cutRadius, cutRadius);	
@@ -66,12 +74,12 @@ public class FannyCircle extends FractalBase {
 	}
 
 	public static void main(String[] args) {
-		final FractalBase ff = new FannyCircle();
+		final FractalBase ff = new FannyCircle(350,5);//new FannyCircle();
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				final FractalBase frame = ff;
-				frame.setTitle("Bawaz _ FannyCircle");
+				frame.setTitle(ff.getFractalShapeTitle());
 				frame.setSize(FractalBase.WIDTH, FractalBase.HEIGHT);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setResizable(false);
@@ -81,6 +89,25 @@ public class FannyCircle extends FractalBase {
 	
 			}
 		});
+	}
+
+	/**
+	 * @param cutDim the cutDim to set
+	 */
+	public void setCutDim(int cutDim) {
+		this.cutDim = cutDim;
+	}
+
+	/**
+	 * @param length the length to set
+	 */
+	public void setLength(int length) {
+		this.length = length;
+	}
+
+	@Override
+	protected String getFractalShapeTitle() {
+		return "Bawaz _ FannyCircle";
 	}
 
 }
