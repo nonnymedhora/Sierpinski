@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package org.bawaweb.ui.sierpinkski;
 
 import java.awt.BasicStroke;
@@ -22,6 +20,8 @@ import javax.swing.SwingUtilities;
  * @see CirclesFX
  */
 public class ApollonianCircles extends FractalBase {
+	
+	public static final Color TRANSPARENT = new Color(0f, 0f, 0f, 0f);
 
 	public ApollonianCircles() {
 		super();
@@ -35,7 +35,6 @@ public class ApollonianCircles extends FractalBase {
 		final double scaleMult = windowSize / (scaleMax - scaleMin);
 		final double windowMid = windowSize / 2.0;
 
-		//
 		final int dims = 2;
 		
 		final double r1 = m * 1.0 / c[0];
@@ -52,78 +51,58 @@ public class ApollonianCircles extends FractalBase {
 		if(dpth==0){
 			Element e = new Element(dims, 0, r1, o[0] + x1, o[1] + y1);
 			drawCircle(g,
-					new Point((int)(windowMid + e.getX(0)*scaleMult), (int)(windowMid - e.getX(1)*scaleMult)),
-					(int) (e.getRadius()*scaleMult),
-					colors[e.getIteration()]);//colors[i]);//
-			
+					new Point((int) (windowMid + e.getX(0) * scaleMult), (int) (windowMid - e.getX(1) * scaleMult)),
+					(int) (e.getRadius() * scaleMult), colors[e.getIteration()]);
+
 			fillCircle(g,
-					new Point((int)(windowMid + e.getX(0)*scaleMult), (int)(windowMid - e.getX(1)*scaleMult)),
-					(int) (e.getRadius()*scaleMult),
-					new Color(0f, 0f, 0f, 0f));
-			
+					new Point((int) (windowMid + e.getX(0) * scaleMult), (int) (windowMid - e.getX(1) * scaleMult)),
+					(int) (e.getRadius() * scaleMult), new Color(0f, 0f, 0f, 0f));
+
 			return;
 		}
+
+		final ArrayList<Element> elements = new ArrayList<>();	
 		
-		/*if (d==0) {*/
-			final ArrayList<Element> elements = new ArrayList<>();
+		elements.add(new Element(dims, 0, r1, o[0] + x1, o[1] + y1));
+		elements.add(new Element(dims, 0, r2, o[0] + x2, o[1] + y2));
+		elements.add(new Element(dims, 0, r3, o[0] + xy[0], o[1] + xy[1]));
 			
+		Gasket.generate(dims, elements, dpth - 1);
 			
-				elements.add(new Element(dims, 0, r1, o[0] + x1, o[1] + y1));
-				elements.add(new Element(dims, 0, r2, o[0] + x2, o[1] + y2));
-				elements.add(new Element(dims, 0, r3, o[0] + xy[0], o[1] + xy[1]));
-				
-			Gasket.generate(dims, elements, dpth-1);
-//			Gasket.generate(dims,elements,colors.length-1);
-				
-			
-			for (int i = 0; i < elements.size(); i++) {
-				final Element e = elements.get(i);
-				g.setStroke(new BasicStroke(2));
-				drawCircle(g,
-						new Point((int)(windowMid + e.getX(0)*scaleMult), (int)(windowMid - e.getX(1)*scaleMult)),
-						(int) (e.getRadius()*scaleMult),
-						colors[e.getIteration()]);//colors[i]);//
-				
-				fillCircle(g,
-						new Point((int)(windowMid + e.getX(0)*scaleMult), (int)(windowMid - e.getX(1)*scaleMult)),
-						(int) (e.getRadius()*scaleMult),
-						new Color(0f, 0f, 0f, 0f));
-				
-				//public static final Color TRANSPARENT          = new Color(0f, 0f, 0f, 0f);
-				
-	//			
-	//			final Ellipse2D.Double circ = new Ellipse2D.Double(windowMid + e.getX(0)*scaleMult, windowMid - e.getX(1)*scaleMult, e.getRadius()*scaleMult);
-	//			circ.setStroke(colors[e.getIteration()]);
-	//			circ.setStrokeWidth(0.9);
-	//			circ.setFill(Color.TRANSPARENT);
-	//			root.getChildren().add(circ);
-			}
-			
-			/*	return;
-		}*/
 		
-		createApollonianCircles(g,colors,c,m,dpth-1);
-		
-//		root.getChildren().add(new Text(10, windowSize-10, String.format("Iterations: %d, Circles: %,d", colors.length-1, elements.size())));
-		
+		for (int i = 0; i < elements.size(); i++) {
+			final Element e = elements.get(i);
+			g.setStroke(new BasicStroke(2));
+			drawCircle(g,
+					new Point((int) (windowMid + e.getX(0) * scaleMult), (int) (windowMid - e.getX(1) * scaleMult)),
+					(int) (e.getRadius() * scaleMult), colors[e.getIteration()]);
+
+			fillCircle(g,
+					new Point((int) (windowMid + e.getX(0) * scaleMult), (int) (windowMid - e.getX(1) * scaleMult)),
+					(int) (e.getRadius() * scaleMult), TRANSPARENT);
+	
+		}
+
+		createApollonianCircles(g, colors, c, m, dpth - 1);
+
 	}
 	
 	private static double[] getXY(double r1, double r2, double r3) {
 		final double a = r2 + r3;
 		final double b = r1 + r3;
 		final double c = r1 + r2;
-		
-		final double x = (b*b + c*c - a*a) / (2 * c);
-		final double y = Math.sqrt(b*b - x*x);
-		
-		return new double[] {x, y};
+
+		final double x = (b * b + c * c - a * a) / (2 * c);
+		final double y = Math.sqrt(b * b - x * x);
+
+		return new double[] { x, y };
 	}
-	
+
 	private static double[] getOffset(double x1, double y1, double x2, double y2, double x3, double y3) {
-		final double cx = 1./3.*(x1 + x2 + x3);
-		final double cy = 1./3.*(y1 + y2 + y3);
-		
-		return new double[] {-cx, -cy};
+		final double cx = 1. / 3. * (x1 + x2 + x3);
+		final double cy = 1. / 3. * (y1 + y2 + y3);
+
+		return new double[] { -cx, -cy };
 	}
 
 	/* (non-Javadoc)
@@ -131,6 +110,7 @@ public class ApollonianCircles extends FractalBase {
 	 */
 	@Override
 	public void createFractalShape(Graphics2D g) {
+		g.setBackground(Color.white);
 		////////////////////////////////////////////////////
 		// Step 1: Choose seed circle sizes
 		////////////////////////////////////////////////////
@@ -161,8 +141,8 @@ public class ApollonianCircles extends FractalBase {
 		
 		////////////////////////////////////////////////////
 		////////////////////////////////////////////////////
-		
-		createApollonianCircles(g, colors, c, m,depth);
+
+		createApollonianCircles(g, colors, c, m, depth);
 
 	}
 
@@ -188,9 +168,9 @@ public class ApollonianCircles extends FractalBase {
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setResizable(false);
 				frame.setVisible(true);
-	frame.depth=2;
+				frame.depth = 2;
 				new Thread(frame).start();
-	
+
 			}
 		});
 	}
@@ -310,7 +290,7 @@ class Gasket {
 			int[] indexes, double A, double B_c, double C_c, boolean includeNeg) {
 		final double B;
 		final double C;
-		
+
 		{
 			double sum_b = 0;
 			double sum_b2 = 0;
