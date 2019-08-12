@@ -19,17 +19,16 @@ import javax.swing.SwingUtilities;
  *
  */
 public class ApollonionFractal extends JFrame implements Runnable {
-	
+
 	private static final long serialVersionUID = 1232366543L;
 	private static final int HEIGHT = 700;
 	private static final int WIDTH = 700;
 
-
 	public static int OFFSET = 25; // pixel offset from edge
 
 	private static int depth; // recursion depth
-	private static final int MAX_DEPTH = 4;
-	private boolean debug=false;
+	private static final int MAX_DEPTH = 10;
+	private boolean debug = false;
 
 	public ApollonionFractal() {
 		setSize(WIDTH, HEIGHT);
@@ -39,6 +38,8 @@ public class ApollonionFractal extends JFrame implements Runnable {
 
 	@Override
 	public void paint(Graphics g1) {
+		if (debug)
+			System.out.println("paint---depth " + depth);
 		Image img = createApollonionFractal();
 		Graphics2D g = (Graphics2D) g1;
 		g.drawImage(img, null, null);
@@ -56,26 +57,27 @@ public class ApollonionFractal extends JFrame implements Runnable {
 		Point p1 = new Point(OFFSET, OFFSET);
 		Point p2 = new Point(getWidth() - OFFSET, OFFSET);
 		Point p3 = new Point(getWidth() - OFFSET, getHeight() - OFFSET);
-
+		if (debug)
+			System.out.println("in createApollonionFractal depth == " + depth);
 		drawApollonionFractal(g, depth, p1, p2, p3);
 		return bufferedImage;
 
 	}
 	
-	private void drawApollonionFractal(Graphics2D g, int d, Point p1, Point p2, Point p3) {
+	private void drawApollonionFractal(Graphics2D g, int dep, Point p1, Point p2, Point p3) {
 		g.setColor(Color.white);
 		if (debug) {
-			System.out.println("depth===" + d);
+			System.out.println("[drawApollonionFractal] depth===" + depth+" and d== "+dep);
 			System.out.println("P1(" + p1.x + "," + p1.y + ")");
 			System.out.println("P2(" + p2.x + "," + p2.y + ")");
 			System.out.println("P3(" + p3.x + "," + p3.y + ")");
 		}
-		if (d == 0) {
+		if (dep == 0) {
 			g.fillRect(0, 0, getWidth(), getHeight());
 
 			g.setStroke(new BasicStroke(2));
 			Apollo app = new Apollo(p1, (int) distance(p1, p3) / 2);
-			app.draw(g, true, Color.black);
+			app.draw(g, true, Color.black, true);
 
 			return;
 		}
@@ -100,23 +102,28 @@ public class ApollonionFractal extends JFrame implements Runnable {
 
 		int size1 = (int) distance(p132, p122);
 
-		Apollo ap1 = new Apollo(p132, size1);
-		Apollo ap2 = new Apollo(mrg132223, size1);
-		Apollo ap3 = new Apollo(mrg133122, size1);
+		Apollo ap1 = new Apollo(p132, size1/3);
+		Apollo ap2 = new Apollo(mrg132223, size1/2);
+		Apollo ap3 = new Apollo(mrg133122, size1/5);
 
-		ap1.draw(g, false, Color.blue);
-		ap2.draw(g, false, Color.yellow);
-		ap3.draw(g, false, Color.green);
+		
+		drawApollonionFractal(g, dep - 1, p1, 			p132, 		mrg133122);
+		drawApollonionFractal(g, dep - 1, p132, 		p2, 		mrg132223);
+		drawApollonionFractal(g, dep - 1, mrg133122,	mrg132223, 	p3);
+		
+		ap1.draw(g, false, Color.blue,true);
+		ap2.draw(g, false, Color.red,false);
+		ap3.draw(g, false, Color.green,true);
 
-		drawApollonionFractal(g, d - 1, p1, p132, mrg133122);
-		drawApollonionFractal(g, d - 1, p132, p2, mrg132223);
-		drawApollonionFractal(g, d - 1, mrg133122, mrg132223, p3);
 
 	}
 
 
 	private void ApollonionFractal(int d){
 		depth=d;
+		if (debug) {
+			System.out.println("in generate-ApollonionFractal--- depth==" + depth);
+		}
 		repaint();
 	}
 
@@ -127,7 +134,9 @@ public class ApollonionFractal extends JFrame implements Runnable {
 	public void run() {
 		try {
 			while (depth < MAX_DEPTH) {
-//				System.out.println("depth is " + depth);
+				if (debug) {
+					System.out.println("depth is " + depth);
+				}
 				Thread.sleep(2000);
 				depth += 1;
 				Thread.sleep(2000);
@@ -226,13 +235,17 @@ public class ApollonionFractal extends JFrame implements Runnable {
 			distance = d;
 		}
 
-		public void draw(Graphics g, boolean drawSquare, Color color) {
+		public void draw(Graphics g, boolean drawSquare, Color color, boolean fillOval) {
 			if (drawSquare) {
 				g.setColor(Color.cyan);
 				g.drawRect(start.x, start.y, distance, distance);
 			}
 			g.setColor(color);
-			g.drawOval(start.x, start.y, distance, distance);
+			if (fillOval) {
+				g.fillOval(start.x, start.y, distance, distance);
+			}else{
+				g.drawOval(start.x, start.y, distance, distance);
+			}
 		}
 
 	}

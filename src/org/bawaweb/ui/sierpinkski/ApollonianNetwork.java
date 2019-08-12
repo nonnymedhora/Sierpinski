@@ -98,6 +98,7 @@ public class ApollonianNetwork extends JFrame implements Runnable {
 		
 		drawNetwork(g,dep-1,m1,m2);
 		drawNetwork(g,dep-1,m1,m3);
+		drawNetwork(g,dep-1,m2,m3);
 		
 	}
 
