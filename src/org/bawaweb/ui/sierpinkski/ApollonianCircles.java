@@ -22,9 +22,24 @@ import javax.swing.SwingUtilities;
 public class ApollonianCircles extends FractalBase {
 	
 	public static final Color TRANSPARENT = new Color(0f, 0f, 0f, 0f);
+	
+	private double[] curvatures;
+	private double multiplier;
 
 	public ApollonianCircles() {
 		super();
+	}
+	
+	public ApollonianCircles(double[] curves, double mult) {
+		super();
+		this.setCurvatures(curves);
+		this.setMultiplier(mult);
+	}
+	
+	@Override
+	public Color getBGColor(){
+		return Color.white;
+		
 	}
 	
 	private void createApollonianCircles(Graphics2D g, Color[] colors, double[] c, double m, int dpth) {
@@ -115,13 +130,13 @@ public class ApollonianCircles extends FractalBase {
 		// Step 1: Choose seed circle sizes
 		////////////////////////////////////////////////////
 		
-		final double[] c; // initial curvatures
-		final double m; // visual multiplier
+		final double[] c=this.getCurvatures(); // initial curvatures
+		final double m=this.getMultiplier(); // visual multiplier
 		
 		// some initial configuration options
 		// leave only one uncommented
-		c = new double[] { 1.0, 1.0, 1.0 };
-		m = 1.0;
+		/*c = new double[] { 1.0, 1.0, 1.0 };
+		m = 1.0;*/
 		// c = new double[] {25., 25.0, 28.0}; m = 20.0;
 		// c = new double[] {5.0, 8.0, 8.0}; m = 6.0;
 		// c = new double[] {10.0, 15.0, 19.0}; m = 6.0;
@@ -158,7 +173,9 @@ public class ApollonianCircles extends FractalBase {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		final FractalBase ff = new ApollonianCircles();
+		final double[] initCurves = new double[] { 1.0, 1.0, 1.0 };
+		double mXr=1.0;
+		final FractalBase ff = new ApollonianCircles(initCurves,mXr);
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -173,6 +190,34 @@ public class ApollonianCircles extends FractalBase {
 
 			}
 		});
+	}
+
+	/**
+	 * @return the curvatures
+	 */
+	public double[] getCurvatures() {
+		return curvatures;
+	}
+
+	/**
+	 * @param curvatures the curvatures to set
+	 */
+	public void setCurvatures(double[] curvatures) {
+		this.curvatures = curvatures;
+	}
+
+	/**
+	 * @return the multiplier
+	 */
+	public double getMultiplier() {
+		return multiplier;
+	}
+
+	/**
+	 * @param mult the multiplier to set
+	 */
+	public void setMultiplier(double mult) {
+		this.multiplier = mult;
 	}
 
 }

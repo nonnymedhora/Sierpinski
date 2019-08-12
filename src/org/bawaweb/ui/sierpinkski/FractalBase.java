@@ -202,12 +202,16 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	private Image createFractalImage(){
 		Graphics2D g = bufferedImage.createGraphics();
 		// Clear the frame
-		g.setColor(Color.black);
+		g.setColor(getBGColor());
 		g.fillRect(0, 0, getWidth(), getHeight());
 		g.setColor(Color.red);
 
 		createFractalShape(g);
 		return bufferedImage;
+	}
+
+	protected Color getBGColor() {
+		return Color.black;
 	}
 
 	public abstract void createFractalShape(Graphics2D g);

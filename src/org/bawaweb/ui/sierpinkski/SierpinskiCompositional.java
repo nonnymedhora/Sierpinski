@@ -28,6 +28,15 @@ import javax.swing.SwingUtilities;
 
 class SierpinskiComboPanel extends JPanel implements ActionListener {
 
+	// curvature & multiplier options for @see ApollonianCircles
+	private static final String A6 = "C[2, 2, 3] M[1]";
+	private static final String A5 = "C[23, 27, 18] M[16]";
+	private static final String A4 = "C[10, 15, 19] M[6]";
+	private static final String A3 = "C[50, 80, 8] M[6]";
+	private static final String A2 = "C[25, 25, 28] M[20]";
+	private static final String A1 = "C[1, 1, 1] M[1]";
+	
+	// class names sub to FractalBase
 	private static final String SIERPINSKI_SQUARES = "SierpinskiSquares";
 	private static final String APOLLONIAN_CIRCLES = "ApollonianCircles";
 	private static final String SIERPINSKI_TRIANGLES = "SierpinskiTriangles";
@@ -36,7 +45,7 @@ class SierpinskiComboPanel extends JPanel implements ActionListener {
 	private static final String MANDELBROT = "Mandelbrot";
 	private static final String FANNY_TRIANGLES = "FannyTriangles";
 	private static final String FANNY_CIRCLE = "FannyCircle";
-	private static final String KOCHSNOWFLAKE = "KochSnowFlake";
+	private static final String KOCHSNOWFLAKE = "KochSnowFlake";	//not-yet
 
 	private static final long serialVersionUID = 156478L;
 	private final String[] comboOptions = new String[]{FANNY_CIRCLE,FANNY_TRIANGLES,SIERPINSKI_TRIANGLES,SIERPINSKI_SQUARES,APOLLONIAN_CIRCLES,CST_FRACTAL,SAMPLE,MANDELBROT,KOCHSNOWFLAKE};
@@ -45,13 +54,37 @@ class SierpinskiComboPanel extends JPanel implements ActionListener {
 	private final JComboBox<Integer> sideCombos = new JComboBox<Integer>(sideOptions);
 	private final Integer[] ratioOptions = new Integer[] { 2, 3, 4, 5, 6, 7 };
 	private final JComboBox<Integer> ratioCombos = new JComboBox<Integer>(ratioOptions);
-	private final JButton buStart = new JButton("Start");
+	
+	
+	/*private final Double[] multOptions = new Double[]{1.0,2.0,6.0,16.0,20.0};
+	private final JComboBox<Double> multCombos = new JComboBox<Double>(multOptions);*/
 
+	private final String[] curvOptions = new String[] { A1, A2, A3, A4, A5, A6 };
+	private final JComboBox<String> curvCombos = new JComboBox<String>(curvOptions);
+
+	/*private final Double[][] curvOptionsD = new Double[][]{
+												new Double[] { 1.0, 1.0, 1.0 },
+												new Double[] {25., 25.0, 28.0},
+												new Double[] {5.0, 8.0, 8.0},
+												new Double[] {10.0, 15.0, 19.0},
+												new Double[] {23.0, 27.0, 18.0},
+												new Double[] {2.0, 2.0, 3.0}
+											};	
+	private final JComboBox<Double[]> curvCombosD = new JComboBox<Double[]>(curvOptionsD);*/
+	
+	private final JButton buStart = new JButton("Start");
+	
+	// for running sub-implementation of FractalBase
 	protected String comboChoice;
 
+	// FannyCircle & FannyTriangles	--	side Length & ratio
 	protected int sideChoice;
 	
 	protected int ratioChoice;
+	
+	// forApollonianCircles -- curvatures & multiplier options
+	protected double[] curvChoices;
+	protected double mult;
 	
 	public SierpinskiComboPanel(){
 		super();
@@ -68,6 +101,9 @@ class SierpinskiComboPanel extends JPanel implements ActionListener {
 
 		this.add(new JLabel("Ratio:"));
 		this.add(this.ratioCombos);
+		
+		this.add(new JLabel("CurvaturesOptions:"));
+		this.add(this.curvCombos);
 
 		this.add(this.buStart);
 		
@@ -77,10 +113,12 @@ class SierpinskiComboPanel extends JPanel implements ActionListener {
 		this.combos.setSelectedIndex(0);
 		this.sideCombos.setSelectedIndex(0);
 		this.ratioCombos.setSelectedIndex(0);
+		this.curvCombos.setSelectedIndex(0);
 		
 		this.combos.setSelectedItem(this.comboOptions[0]);		
 		this.sideCombos.setSelectedItem(this.sideOptions[0]);		
-		this.ratioCombos.setSelectedItem(this.ratioOptions[0]);
+		this.ratioCombos.setSelectedItem(this.ratioOptions[0]);		
+		this.curvCombos.setSelectedItem(this.ratioOptions[0]);
 	}
 
 	private void setUpListeners() {
@@ -132,6 +170,57 @@ class SierpinskiComboPanel extends JPanel implements ActionListener {
 			}	    	
 	    });
 		
+		this.curvCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<String> cb = (JComboBox<String>)e.getSource();
+				String curvComboOption = (String)cb.getSelectedItem();
+		        System.out.println("curvComboOption==="+curvComboOption);
+				doSelectCurvCombosCommand(curvComboOption);				
+			}
+
+			private void doSelectCurvCombosCommand(String cOption) {
+				switch (cOption) {
+					case A1: // A1 = "C[1, 1, 1] M[1]";
+						curvChoices = new double[] { 1.0, 1.0, 1.0 };
+						mult = 1.0;
+						break;
+	
+					case A2: // A2 = "C[25, 25, 28] M[20]";
+						curvChoices = new double[] { 25.0, 25.0, 28.0 };
+						mult = 20.0;
+						break;
+	
+					case A3: // A3 = "C[50, 80, 8] M[6]";
+						curvChoices = new double[] { 50.0, 80.0, 8.0 };
+						mult = 6.0;
+						break;
+	
+					case A4: // A4 = "C[10, 15, 19] M[6]";
+						curvChoices = new double[] { 10.0, 15.0, 19.0 };
+						mult = 6.0;
+						break;
+	
+					case A5: // A5 = "C[23, 27, 18] M[16]";
+						curvChoices = new double[] { 23.0, 27.0, 16.0 };
+						mult = 16.0;
+						break;
+	
+					case A6: // A6 = "C[2, 2, 3] M[1]";
+						curvChoices = new double[] { 2.0, 2.0, 3.0 };
+						mult = 1.0;
+						break;
+	
+					default:
+						// use--a1
+						curvChoices = new double[] { 1.0, 1.0, 1.0 };
+						mult = 1.0;
+						break;
+				}
+			}	    	
+	    });
+		
 		this.buStart.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -142,7 +231,7 @@ class SierpinskiComboPanel extends JPanel implements ActionListener {
 				String choice = getComboChoice();
 				int length = getSideComboChoice();
 				int ratio = getRatioChoice();
-				System.out.println("choice is " + choice + " and length is " + length + " and ratio is " + ratio);
+//				System.out.println("choice is " + choice + " and length is " + length + " and ratio is " + ratio);
 				final FractalBase ff;
 				if (choice.equals(FANNY_CIRCLE)) {
 					ff = new FannyCircle(length, ratio);
@@ -153,7 +242,7 @@ class SierpinskiComboPanel extends JPanel implements ActionListener {
 				} else if (choice.equals(SIERPINSKI_SQUARES)) {
 					ff = new SierpinskiSquare();
 				} else if (choice.equals(APOLLONIAN_CIRCLES)) {
-					ff = new ApollonianCircles();
+					ff = new ApollonianCircles(curvChoices,mult);
 				} else if (choice.equals(SAMPLE)) {
 					ff = new FractalBaseSample();
 				} else if (choice.equals(MANDELBROT)) {
@@ -230,6 +319,14 @@ class SierpinskiComboPanel extends JPanel implements ActionListener {
 	
 	protected int getRatioChoice(){
 		return this.ratioChoice;
+	}
+	
+	protected double[] getCurvChoice(){
+		return this.curvChoices;
+	}
+	
+	protected double getMultiplier(){
+		return this.mult;
 	}
 
 	@Override
