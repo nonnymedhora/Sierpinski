@@ -21,6 +21,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
+
 /**
  * @author Navroz
  *
@@ -34,7 +36,11 @@ class SierpinskiComboPanel extends JPanel {
 	private static final String J3 = "P[4] C[0.484]";	//f(z) = z^4 + 0.484
 	private static final String J4 = "P[5] C[0.544]";	//f(z) = z^5 + 0.544
 	private static final String J5 = "P[6] C[0.59]";	//f(z) = z^6 + 0.590
-	private static final String J6 = "P[7] C[0.626]";	//f(z) = z^7 + 0.626	
+	private static final String J6 = "P[7] C[0.626]";	//f(z) = z^7 + 0.626
+
+	private static final String J7 = "P[2] C1";//[-0.74543+0.11301*i]";	//f(z) = z^2 + ...
+	private static final String J8 = "P[2] C2";//[-0.75+0.11*i]";	//f(z) = z^2 + ....
+	private static final String J9 = "P[2] C3";//[-0.1+0.651*i]";	//f(z) = z^2 + ...
 	
 	
 	//	for	ApollonianCircles
@@ -68,7 +74,7 @@ class SierpinskiComboPanel extends JPanel {
 	private final JComboBox<Integer> ratioCombos = new JComboBox<Integer>(ratioOptions);
 	
 	// for Julia
-	private final String[] juliaOptions = new String[] { J1, J2, J3, J4, J5, J6 };
+	private final String[] juliaOptions = new String[] { J1, J2, J3, J4, J5, J6, J7, J8, J9 };
 	private final JComboBox<String> juliaCombos = new JComboBox<String>(juliaOptions);
 
 	//	for	Apollo
@@ -97,6 +103,7 @@ class SierpinskiComboPanel extends JPanel {
 	// for Julia -- power & constant
 	protected int power;
 	protected double compConst;
+	protected String complex;
 
 	
 	private Thread fbf;
@@ -244,6 +251,18 @@ class SierpinskiComboPanel extends JPanel {
 			case J6: //  J6 = "P[7] C[0.626]";	//f(z) = z^7 + 0.626
 				this.power = 7;
 				this.compConst = 0.626;
+				break;	
+			case J7: //  J7 = "P[2] C1[-0.74543+0.11301*i]";
+				this.power = 2;
+				this.complex = "C1";
+				break;	
+			case J8: //  J8 = "P[2] C2";//[-0.75+0.11*i]";
+				this.power = 2;
+				this.complex = "C2";
+				break;
+			case J9: //  J9 = "P[2] C3";//[-0.1+0.651*i]";
+				this.power = 2;
+				this.complex = "C3";
 				break;
 				
 			default:
@@ -263,6 +282,7 @@ class SierpinskiComboPanel extends JPanel {
 		double mXt = this.getMultiplier();
 		int pow = this.getPower();
 		double con = this.getComplexConst();
+		String comp = this.getComplex();
 
 //		System.out.println("choice is " + choice + " and length is " + length + " and ratio is " + ratio);
 		final FractalBase ff;
@@ -281,7 +301,13 @@ class SierpinskiComboPanel extends JPanel {
 		} else if (choice.equals(MANDELBROT)) {
 			ff = new Mandelbrot();
 		} else if (choice.equals(JULIA)) {
-			ff = new Julia(pow, con);
+			
+			if (comp==null) {
+				ff = new Julia(pow, con);
+			} else {
+				ff = new Julia(pow,comp);
+			}
+			
 		} else if (choice.equals(CST_FRACTAL)) {
 			ff = new CSTFractal();
 		} else if (choice.equals(SAMPLE)) {
@@ -295,14 +321,6 @@ class SierpinskiComboPanel extends JPanel {
 
 		ff.reset();
 		startFractals(ff);
-
-		/*SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				startFractals(ff);
-
-			}
-		});*/
 	}	
 
 
@@ -424,6 +442,10 @@ class SierpinskiComboPanel extends JPanel {
 	
 	protected double getComplexConst(){
 		return this.compConst;
+	}
+	
+	protected String getComplex(){
+		return this.complex;
 	}
 	
 }
