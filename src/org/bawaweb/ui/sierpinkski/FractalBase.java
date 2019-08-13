@@ -544,10 +544,6 @@ public abstract class FractalBase extends JFrame implements Runnable {
 			for(int i = 1; i < power; i++) {
 				powered=powered.times(a);
 			}
-			/*while (iter <= power) {
-				powered = powered.times(a);
-				iter += 1;
-			}*/
 			return powered;
 		}
 		

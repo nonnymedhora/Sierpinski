@@ -41,7 +41,6 @@ public class Mandelbrot extends FractalBase {
 		double size = 2;
 
 		int n = 512;
-//		super.bufferedImage=new BufferedImage(n,n,BufferedImage.TYPE_INT_RGB);
 		//System.out.println("here with depth " + depth);
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
@@ -49,7 +48,15 @@ public class Mandelbrot extends FractalBase {
 				double y0 = yc - size / 2 + size * j / n;
 				ComplexNumber z0 = new ComplexNumber(x0, y0);
 				int gray = maxIter - mand(z0, maxIter);
-				Color color = new Color(gray, gray, gray);
+				Color color;
+				/* Simple */
+				/* color = new Color(gray, gray, gray); */
+				/* Complex */ 
+				if (gray % 2 == 0) {
+					color = new Color(gray, gray, gray);
+				} else {
+					color = new Color(255 - gray, 255 - gray, 255 - gray);
+				}
 				setPixel(i, n - 1 - j, color.getRGB());
 				
 			}
@@ -61,7 +68,7 @@ public class Mandelbrot extends FractalBase {
 		for (int t = 0; t < maxIterations; t++) {
 			if (z.abs() > 2.0)
 				return t;
-			z = z.times(z).plus(z0);
+			z = z.power(2).plus(z0);
 		}
 		return maxIterations;
 	}

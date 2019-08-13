@@ -65,7 +65,15 @@ public class Julia extends FractalBase {
 				double y0 = yc - size / 2 + size * j / n;
 				ComplexNumber z0 = new ComplexNumber(x0, y0);
 				int gray = maxIter - julia(z0, maxIter);
-				Color color = new Color(gray, gray, gray);
+				Color color;
+				/* Simple */
+				/* color = new Color(gray, gray, gray); */
+				/* Complex */ 
+				if (gray % 2 == 0) {
+					color = new Color(gray, gray, gray);
+				} else {
+					color = new Color(255 - gray, 255 - gray, 255 - gray);
+				}
 				setPixel(i, n - 1 - j, color.getRGB());
 			}
 		}
@@ -104,7 +112,7 @@ public class Julia extends FractalBase {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				final FractalBase frame = new Julia(3,0.4);//(2,0.279);	//f(z) = z2 + 0.279
+				final FractalBase frame = new Julia(2,0.279);	//(3,0.4);//(2,0.279);	//f(z) = z2 + 0.279
 				frame.depth = 5;
 				frame.setTitle(frame.getFractalShapeTitle());
 				frame.setSize(frame.WIDTH, frame.HEIGHT);
