@@ -170,7 +170,7 @@ class SierpinskiComboPanel extends JPanel {
 				break;
 
 			case A5: // A5 = "C[23, 27, 18] M[16]";
-				curvChoices = new double[] { 23.0, 27.0, 16.0 };
+				curvChoices = new double[] { 23.0, 27.0, 18.0 };
 				mult = 16.0;
 				break;
 
@@ -191,6 +191,9 @@ class SierpinskiComboPanel extends JPanel {
 		String choice = getComboChoice();
 		int length = getSideComboChoice();
 		int ratio = getRatioChoice();
+		double[] cChoices = getCurvChoice();
+		double mXt = getMultiplier();
+		
 //		System.out.println("choice is " + choice + " and length is " + length + " and ratio is " + ratio);
 		final FractalBase ff;
 		if (choice.equals(FANNY_CIRCLE)) {
@@ -202,7 +205,7 @@ class SierpinskiComboPanel extends JPanel {
 		} else if (choice.equals(SIERPINSKI_SQUARES)) {
 			ff = new SierpinskiSquare();
 		} else if (choice.equals(APOLLONIAN_CIRCLES)) {
-			ff = new ApollonianCircles(curvChoices, mult);
+			ff = new ApollonianCircles(cChoices, mXt);
 		} else if (choice.equals(SAMPLE)) {
 			ff = new FractalBaseSample();
 		} else if (choice.equals(MANDELBROT)) {
@@ -239,7 +242,7 @@ class SierpinskiComboPanel extends JPanel {
 		frame.setVisible(true);
 		frame.setRunning(true);
 
-		this.fbf = new Thread(frame);		
+		this.fbf = new Thread(frame);
 		this.fbf.start();
 	}
 
@@ -249,8 +252,8 @@ class SierpinskiComboPanel extends JPanel {
 		return JFrame.DISPOSE_ON_CLOSE;
 	}
 	
-	private void doPauseCommand(){
-		this.fbf.interrupt();
+	private void doPauseCommand(Thread fb){
+		fb.interrupt();
 	}
 
 	private void setUpListeners() {
@@ -306,7 +309,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.buPause.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				doPauseCommand();				
+				doPauseCommand(fbf);				
 			}
 		});
 		
