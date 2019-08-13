@@ -20,14 +20,38 @@ import javax.swing.SwingUtilities;
  * @author Navroz
  *
  */
-public class KochSnowFlakeFractal extends FractalBase {
+public class KochSnowFlakeFractal__v0 extends JFrame implements Runnable {
 	private static final long serialVersionUID = 123326543L;
+	private static final int HEIGHT = 600;
+	private static final int WIDTH = 600;
 
-	public KochSnowFlakeFractal() {
-		super();
+	public static int OFFSET = 25; // pixel offset from edge
+
+	private static int depth; // recursion depth
+	private static final int MAX_DEPTH = 10;
+
+	public KochSnowFlakeFractal__v0() {
+		setSize(WIDTH, HEIGHT);
+		setVisible(true);
+	}
+	
+
+	@Override
+	public void paint(Graphics g1) {
+		Image img = createKochSnowFractal();
+		Graphics2D g = (Graphics2D) g1;
+		g.drawImage(img, null, null);
+		g.dispose();
 	}
 
-	private Image createKochSnowFractal(Graphics2D g) {
+	private Image createKochSnowFractal() {
+		BufferedImage bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+		Graphics2D g = bufferedImage.createGraphics();
+		// Clear the frame
+		g.setColor(Color.black);
+		g.fillRect(0, 0, getWidth(), getHeight());
+		g.setColor(Color.red);
+
 		Line l1 = new Line(getWidth() - 100, 150, getWidth() - 200, 180.0);
 		Line l2 = new Line(100, 150, getWidth() - 200, 60.0);
 		Line l3 = new Line(getWidth() - 100, 150, getWidth() - 200, 120.0);
@@ -125,12 +149,34 @@ public class KochSnowFlakeFractal extends FractalBase {
 		return newLines;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
+	@Override
+	public void run() {
+		try {
+			while (depth < MAX_DEPTH) {
+				Thread.sleep(3000);
+				depth += 1;
+				Thread.sleep(3000);
+				kochsf(depth);
+				run();
+			}
+		} catch (InterruptedException ex) {
+		}
+	}
+
+	private void kochsf(int d) {
+		depth = d;
+		repaint();
+	}
+
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				final KochSnowFlakeFractal frame = new KochSnowFlakeFractal();
-				frame.setTitle(frame.getFractalShapeTitle());
+				final KochSnowFlakeFractal__v0 frame = new KochSnowFlakeFractal__v0();
+				frame.setTitle("Bawaz _ Koch_Snow_Flake");
 				frame.setSize(WIDTH, HEIGHT);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setResizable(false);
@@ -189,18 +235,6 @@ public class KochSnowFlakeFractal extends FractalBase {
 			}			
 
 		}
-
-
-	@Override
-	public void createFractalShape(Graphics2D g) {
-		createKochSnowFractal(g);
-	}
-
-
-	@Override
-	protected String getFractalShapeTitle() {
-		return "Bawaz _ Koch_Snow_Flake";
-	}
 
 
 }

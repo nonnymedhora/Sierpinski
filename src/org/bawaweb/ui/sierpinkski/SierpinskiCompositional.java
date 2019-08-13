@@ -26,8 +26,8 @@ import javax.swing.SwingUtilities;
  *
  */
 
-class SierpinskiComboPanel extends JPanel implements ActionListener {
-
+class SierpinskiComboPanel extends JPanel {
+	//	for	ApollonianCircles
 	// curvature & multiplier options for @see ApollonianCircles
 	private static final String A6 = "C[2, 2, 3] M[1]";
 	private static final String A5 = "C[23, 27, 18] M[16]";
@@ -36,7 +36,7 @@ class SierpinskiComboPanel extends JPanel implements ActionListener {
 	private static final String A2 = "C[25, 25, 28] M[20]";
 	private static final String A1 = "C[1, 1, 1] M[1]";
 	
-	// class names sub to FractalBase
+	// class names sub to FractalBase	-	todo	-	dynamic-initialization
 	private static final String SIERPINSKI_SQUARES = "SierpinskiSquares";
 	private static final String APOLLONIAN_CIRCLES = "ApollonianCircles";
 	private static final String SIERPINSKI_TRIANGLES = "SierpinskiTriangles";
@@ -50,27 +50,19 @@ class SierpinskiComboPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 156478L;
 	private final String[] comboOptions = new String[]{FANNY_CIRCLE,FANNY_TRIANGLES,SIERPINSKI_TRIANGLES,SIERPINSKI_SQUARES,APOLLONIAN_CIRCLES,CST_FRACTAL,SAMPLE,MANDELBROT,KOCHSNOWFLAKE};
 	private final JComboBox<String> combos = new JComboBox<String>(comboOptions);
+	
+	//	for	FannyCircle & FannyTriangles
 	private final Integer[] sideOptions = new Integer[] { 50, 70, 100, 150, 200, 250, 300, 350 };
 	private final JComboBox<Integer> sideCombos = new JComboBox<Integer>(sideOptions);
 	private final Integer[] ratioOptions = new Integer[] { 2, 3, 4, 5, 6, 7 };
 	private final JComboBox<Integer> ratioCombos = new JComboBox<Integer>(ratioOptions);
-	
-	
-	/*private final Double[] multOptions = new Double[]{1.0,2.0,6.0,16.0,20.0};
-	private final JComboBox<Double> multCombos = new JComboBox<Double>(multOptions);*/
 
+	//	for	Apollo
 	private final String[] curvOptions = new String[] { A1, A2, A3, A4, A5, A6 };
 	private final JComboBox<String> curvCombos = new JComboBox<String>(curvOptions);
 
-	/*private final Double[][] curvOptionsD = new Double[][]{
-												new Double[] { 1.0, 1.0, 1.0 },
-												new Double[] {25., 25.0, 28.0},
-												new Double[] {5.0, 8.0, 8.0},
-												new Double[] {10.0, 15.0, 19.0},
-												new Double[] {23.0, 27.0, 18.0},
-												new Double[] {2.0, 2.0, 3.0}
-											};	
-	private final JComboBox<Double[]> curvCombosD = new JComboBox<Double[]>(curvOptionsD);*/
+	private JPanel fannyOptionsPanel =new JPanel(new FlowLayout());
+	private JPanel apolloOptionsPanel=new JPanel(new FlowLayout());
 	
 	private final JButton buStart = new JButton("Start");
 	
@@ -86,7 +78,7 @@ class SierpinskiComboPanel extends JPanel implements ActionListener {
 	protected double[] curvChoices;
 	protected double mult;
 	
-	public SierpinskiComboPanel(){
+	public SierpinskiComboPanel() {
 		super();
 		this.setLayout(new FlowLayout());
 		
@@ -96,14 +88,19 @@ class SierpinskiComboPanel extends JPanel implements ActionListener {
 		this.add(new JLabel("Choose FractalArt:"));
 		this.add(this.combos);
 
-		this.add(new JLabel("Dimension Size:"));
-		this.add(this.sideCombos);
+		this.fannyOptionsPanel.add(new JLabel("Dimension Size:"));
+		this.fannyOptionsPanel.add(this.sideCombos);
 
-		this.add(new JLabel("Ratio:"));
-		this.add(this.ratioCombos);
+		this.fannyOptionsPanel.add(new JLabel("Ratio:"));
+		this.fannyOptionsPanel.add(this.ratioCombos);
 		
-		this.add(new JLabel("CurvaturesOptions:"));
-		this.add(this.curvCombos);
+		this.fannyOptionsPanel.setVisible(false);
+		this.add(this.fannyOptionsPanel);
+		
+		this.apolloOptionsPanel.add(new JLabel("CurvaturesOptions:"));
+		this.apolloOptionsPanel.add(this.curvCombos);
+		this.apolloOptionsPanel.setVisible(false);
+		this.add(this.apolloOptionsPanel);
 
 		this.add(this.buStart);
 		
@@ -133,7 +130,18 @@ class SierpinskiComboPanel extends JPanel implements ActionListener {
 			}
 
 			private void doSelectCombosCommand(String option) {
-				comboChoice=option;
+				comboChoice = option;
+
+				if (comboChoice.equals(APOLLONIAN_CIRCLES)) {
+					fannyOptionsPanel.setVisible(false);
+					apolloOptionsPanel.setVisible(true);
+				} else if (comboChoice.equals(FANNY_CIRCLE) || comboChoice.equals(FANNY_TRIANGLES)) {
+					fannyOptionsPanel.setVisible(true);
+					apolloOptionsPanel.setVisible(false);
+				} else {
+					fannyOptionsPanel.setVisible(false);
+					apolloOptionsPanel.setVisible(false);
+				}
 			}	    	
 	    });
 		
@@ -143,7 +151,7 @@ class SierpinskiComboPanel extends JPanel implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
 		        Integer sideComboOption = (Integer)cb.getSelectedIndex();
-		        System.out.println("sideComboOption==="+sideComboOption);
+//		        System.out.println("sideComboOption==="+sideComboOption);
 		        int sideVal = cb.getItemAt(sideComboOption);
 				doSelectSideCombosCommand(sideVal);				
 			}
@@ -160,7 +168,7 @@ class SierpinskiComboPanel extends JPanel implements ActionListener {
 				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
 		        @SuppressWarnings("unused")
 				Integer ratioComboOption = (Integer)cb.getSelectedIndex();
-		        System.out.println("ratioComboOption==="+ratioComboOption);
+//		        System.out.println("ratioComboOption==="+ratioComboOption);
 		        int ratioVal = cb.getItemAt(ratioComboOption);
 				doSelectRatioCombosCommand(ratioVal);				
 			}
@@ -176,7 +184,7 @@ class SierpinskiComboPanel extends JPanel implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				JComboBox<String> cb = (JComboBox<String>)e.getSource();
 				String curvComboOption = (String)cb.getSelectedItem();
-		        System.out.println("curvComboOption==="+curvComboOption);
+//		        System.out.println("curvComboOption==="+curvComboOption);
 				doSelectCurvCombosCommand(curvComboOption);				
 			}
 
@@ -242,7 +250,7 @@ class SierpinskiComboPanel extends JPanel implements ActionListener {
 				} else if (choice.equals(SIERPINSKI_SQUARES)) {
 					ff = new SierpinskiSquare();
 				} else if (choice.equals(APOLLONIAN_CIRCLES)) {
-					ff = new ApollonianCircles(curvChoices,mult);
+					ff = new ApollonianCircles(curvChoices, mult);
 				} else if (choice.equals(SAMPLE)) {
 					ff = new FractalBaseSample();
 				} else if (choice.equals(MANDELBROT)) {
@@ -251,32 +259,8 @@ class SierpinskiComboPanel extends JPanel implements ActionListener {
 					ff = new CSTFractal();
 				} else if (choice.equals(SAMPLE)) {
 					ff = new FractalBaseSample();
-				}			
-				
-				else if (choice.equals(KOCHSNOWFLAKE)) {
-					KochSnowFlakeFractal kfframe = new KochSnowFlakeFractal();
-					
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							final JFrame frame = kfframe;
-							frame.setTitle("BawazKochSnowFlake");
-							frame.setSize(FractalBase.WIDTH, FractalBase.HEIGHT);
-							frame.setDefaultCloseOperation(closeIt(frame));
-							frame.setResizable(false);
-							frame.setVisible(true);
-				
-							new Thread(kfframe).start();
-				
-						}
-
-						private int closeIt(JFrame frame) {
-							frame.dispose();
-							return JFrame.DISPOSE_ON_CLOSE;
-						}
-					});
-					return;
-					
+				} else if (choice.equals(KOCHSNOWFLAKE)) {
+					ff = new KochSnowFlakeFractal();
 				} else {
 					ff = null;
 					return;
@@ -327,11 +311,6 @@ class SierpinskiComboPanel extends JPanel implements ActionListener {
 	
 	protected double getMultiplier(){
 		return this.mult;
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		
 	}
 	
 }
