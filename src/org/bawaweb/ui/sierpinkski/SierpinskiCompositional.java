@@ -108,7 +108,7 @@ class SierpinskiComboPanel extends JPanel {
 
 
 		this.add(this.buStart);
-		this.add(this.buPause);
+//		this.add(this.buPause);
 		
 	}
 
@@ -237,8 +237,9 @@ class SierpinskiComboPanel extends JPanel {
 		frame.setDefaultCloseOperation(closeIt(frame));
 		frame.setResizable(false);
 		frame.setVisible(true);
+		frame.setRunning(true);
 
-		this.fbf = new Thread(frame);
+		this.fbf = new Thread(frame);		
 		this.fbf.start();
 	}
 
@@ -372,7 +373,7 @@ public class SierpinskiCompositional extends JFrame {
 		      public void run() {
 		        final SierpinskiCompositional frame = new SierpinskiCompositional();
 		        frame.setTitle("BaWaZ FractalArtz: ");
-		        frame.setSize(400, 400);
+		        frame.setSize(500, 200);
 		        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		        frame.setResizable(false);
 		        frame.setVisible(true);

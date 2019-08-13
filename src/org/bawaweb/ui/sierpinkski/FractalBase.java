@@ -36,6 +36,8 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	BufferedImage bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	
 	final Point center = new Point(WIDTH / 2, HEIGHT / 2);
+	
+	protected boolean running = false;
 
 	/** Constructor: an instance */
 	public FractalBase() {
@@ -170,15 +172,17 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	 */
 	@Override
 	public void run() {
-		try {
-			while (depth < MAX_DEPTH) {
-//				System.out.println("depth is " + depth);
-				depth += 1;
-				Thread.sleep(3000);
-				generate(depth);
-				run();
+		if (running) {
+			try {
+				while (depth < MAX_DEPTH) {
+					// System.out.println("depth is " + depth);
+					depth += 1;
+					Thread.sleep(3000);
+					generate(depth);
+					run();
+				}
+			} catch (InterruptedException ex) {
 			}
-		} catch (InterruptedException ex) {
 		}
 	}
 	
@@ -537,6 +541,20 @@ public abstract class FractalBase extends JFrame implements Runnable {
 
 	public void reset() {
 		depth=0;
+	}
+
+	/**
+	 * @return the running
+	 */
+	public boolean isRunning() {
+		return running;
+	}
+
+	/**
+	 * @param running the running to set
+	 */
+	public void setRunning(boolean running) {
+		this.running = running;
 	}
 
 

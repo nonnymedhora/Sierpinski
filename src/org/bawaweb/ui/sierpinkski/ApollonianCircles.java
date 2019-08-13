@@ -71,7 +71,7 @@ public class ApollonianCircles extends FractalBase {
 
 			fillCircle(g,
 					new Point((int) (windowMid + e.getX(0) * scaleMult), (int) (windowMid - e.getX(1) * scaleMult)),
-					(int) (e.getRadius() * scaleMult), new Color(0f, 0f, 0f, 0f));
+					(int) (e.getRadius() * scaleMult), TRANSPARENT);
 
 			return;
 		}
@@ -150,7 +150,7 @@ public class ApollonianCircles extends FractalBase {
 		// first = seed color
 		// iterations = colors.length - 1
 		final Color[] colors = { 
-				Color.BLACK, Color.ORANGE, Color.BLUE, Color.GRAY, 
+				Color.BLACK, Color.ORANGE, Color.BLUE, Color.DARK_GRAY, 
 				Color.RED, Color.GREEN, Color.MAGENTA, Color.YELLOW,
 				Color.CYAN, Color.PINK, Color.LIGHT_GRAY};
 		
