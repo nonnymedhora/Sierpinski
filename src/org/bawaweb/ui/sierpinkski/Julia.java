@@ -71,6 +71,8 @@ public class Julia extends FractalBase {
 				/* Complex */ 
 				if (gray % 2 == 0) {
 					color = new Color(gray, gray, gray);
+				} else if (gray % 7 == 0) {System.out.println("gray by7 is "+gray);
+					color = new Color(128 + gray/7, 128 + gray/7, 128 + gray/7);
 				} else {
 					color = new Color(255 - gray, 255 - gray, 255 - gray);
 				}
