@@ -27,6 +27,7 @@ import javax.swing.SwingUtilities;
  */
 
 class SierpinskiComboPanel extends JPanel {
+	
 	//	for	ApollonianCircles
 	// curvature & multiplier options for @see ApollonianCircles
 	private static final String A6 = "C[2, 2, 3] M[1]";
@@ -35,8 +36,7 @@ class SierpinskiComboPanel extends JPanel {
 	private static final String A3 = "C[50, 80, 8] M[6]";
 	private static final String A2 = "C[25, 25, 28] M[20]";
 	private static final String A1 = "C[1, 1, 1] M[1]";
-	
-	// class names sub to FractalBase	-	todo	-	dynamic-initialization
+
 	private static final String SIERPINSKI_SQUARES = "SierpinskiSquares";
 	private static final String APOLLONIAN_CIRCLES = "ApollonianCircles";
 	private static final String SIERPINSKI_TRIANGLES = "SierpinskiTriangles";
@@ -45,7 +45,7 @@ class SierpinskiComboPanel extends JPanel {
 	private static final String MANDELBROT = "Mandelbrot";
 	private static final String FANNY_TRIANGLES = "FannyTriangles";
 	private static final String FANNY_CIRCLE = "FannyCircle";
-	private static final String KOCHSNOWFLAKE = "KochSnowFlake";	//not-yet
+	private static final String KOCHSNOWFLAKE = "KochSnowFlake";
 
 	private static final long serialVersionUID = 156478L;
 	private final String[] comboOptions = new String[]{FANNY_CIRCLE,FANNY_TRIANGLES,SIERPINSKI_TRIANGLES,SIERPINSKI_SQUARES,APOLLONIAN_CIRCLES,CST_FRACTAL,SAMPLE,MANDELBROT,KOCHSNOWFLAKE};
@@ -101,7 +101,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.fannyOptionsPanel.setVisible(false);
 		this.add(this.fannyOptionsPanel);
 		
-		this.apolloOptionsPanel.add(new JLabel("CurvaturesOptions:"));
+		this.apolloOptionsPanel.add(new JLabel("CurvatureOptions:"));
 		this.apolloOptionsPanel.add(this.curvCombos);
 		this.apolloOptionsPanel.setVisible(false);
 		this.add(this.apolloOptionsPanel);
@@ -125,7 +125,7 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private void doSelectCombosCommand(String option) {
-		comboChoice = option;
+		this.comboChoice = option;
 
 		if (comboChoice.equals(APOLLONIAN_CIRCLES)) {
 			fannyOptionsPanel.setVisible(false);
@@ -140,49 +140,49 @@ class SierpinskiComboPanel extends JPanel {
 	}
 
 	private void doSelectSideCombosCommand(Integer sideOption) {
-		sideChoice = sideOption;
+		this.sideChoice = sideOption;
 	}
 
 	private void doSelectRatioCombosCommand(Integer ratioOption) {
-		ratioChoice = ratioOption;
+		this.ratioChoice = ratioOption;
 	}
 	
 	private void doSelectCurvCombosCommand(String cOption) {
 		switch (cOption) {
 			case A1: // A1 = "C[1, 1, 1] M[1]";
-				curvChoices = new double[] { 1.0, 1.0, 1.0 };
-				mult = 1.0;
+				this.curvChoices = new double[] { 1.0, 1.0, 1.0 };
+				this.mult = 1.0;
 				break;
 
 			case A2: // A2 = "C[25, 25, 28] M[20]";
-				curvChoices = new double[] { 25.0, 25.0, 28.0 };
-				mult = 20.0;
+				this.curvChoices = new double[] { 25.0, 25.0, 28.0 };
+				this.mult = 20.0;
 				break;
 
 			case A3: // A3 = "C[50, 80, 8] M[6]";
-				curvChoices = new double[] { 50.0, 80.0, 8.0 };
-				mult = 6.0;
+				this.curvChoices = new double[] { 50.0, 80.0, 8.0 };
+				this.mult = 6.0;
 				break;
 
 			case A4: // A4 = "C[10, 15, 19] M[6]";
-				curvChoices = new double[] { 10.0, 15.0, 19.0 };
-				mult = 6.0;
+				this.curvChoices = new double[] { 10.0, 15.0, 19.0 };
+				this.mult = 6.0;
 				break;
 
 			case A5: // A5 = "C[23, 27, 18] M[16]";
-				curvChoices = new double[] { 23.0, 27.0, 18.0 };
-				mult = 16.0;
+				this.curvChoices = new double[] { 23.0, 27.0, 18.0 };
+				this.mult = 16.0;
 				break;
 
 			case A6: // A6 = "C[2, 2, 3] M[1]";
-				curvChoices = new double[] { 2.0, 2.0, 3.0 };
-				mult = 1.0;
+				this.curvChoices = new double[] { 2.0, 2.0, 3.0 };
+				this.mult = 1.0;
 				break;
 
 			default:
 				// use--a1
-				curvChoices = new double[] { 1.0, 1.0, 1.0 };
-				mult = 1.0;
+				this.curvChoices = new double[] { 1.0, 1.0, 1.0 };
+				this.mult = 1.0;
 				break;
 		}
 	}	
@@ -222,14 +222,15 @@ class SierpinskiComboPanel extends JPanel {
 		}
 
 		ff.reset();
+		startFractals(ff);
 
-		SwingUtilities.invokeLater(new Runnable() {
+		/*SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				startFractals(ff);
 
 			}
-		});
+		});*/
 	}	
 
 
@@ -256,8 +257,7 @@ class SierpinskiComboPanel extends JPanel {
 		fb.interrupt();
 	}
 
-	private void setUpListeners() {
-		
+	private void setUpListeners() {		
 		this.combos.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
 			@Override
@@ -311,8 +311,7 @@ class SierpinskiComboPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				doPauseCommand(fbf);				
 			}
-		});
-		
+		});		
 	}
 
 	protected String getComboChoice() {		
