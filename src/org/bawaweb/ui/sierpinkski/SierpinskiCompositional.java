@@ -19,6 +19,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
@@ -85,6 +86,8 @@ class SierpinskiComboPanel extends JPanel {
 	private JPanel apolloOptionsPanel = new JPanel(new FlowLayout());
 	private JPanel juliaOptionsPanel = new JPanel(new FlowLayout());
 	
+	private JTextArea formulaArea = new JTextArea(5,20);
+	
 	private final JButton buStart = new JButton("Start |>");
 	private final JButton buPause = new JButton("Pause ||");
 	
@@ -139,6 +142,8 @@ class SierpinskiComboPanel extends JPanel {
 
 		this.add(this.buStart);
 //		this.add(this.buPause);
+		
+		this.add(this.formulaArea);
 		
 	}
 
@@ -301,13 +306,24 @@ class SierpinskiComboPanel extends JPanel {
 		} else if (choice.equals(MANDELBROT)) {
 			ff = new Mandelbrot();
 		} else if (choice.equals(JULIA)) {
-			
-			if (comp==null) {
+
+			if (comp == null) {
 				ff = new Julia(pow, con);
+
+				this.formulaArea.setText("f(z) = z ^ " + pow + " + " + con);
 			} else {
-				ff = new Julia(pow,comp);
+				ff = new Julia(pow, comp);
+
+				if (comp.equals("C1")) {
+					this.formulaArea.setText("f(z) = z ^ " + pow + " + (-0.74543 + 0.11301*i)");
+				} else if (comp.equals("C2")) {
+					this.formulaArea.setText("f(z) = z ^ " + pow + " + (-0.75 + 0.11*i)");
+				} else if (comp.equals("C3")) {
+					this.formulaArea.setText("f(z) = z ^ " + pow + " + (-0.1 + 0.651*i)");
+
+				}
 			}
-			
+
 		} else if (choice.equals(CST_FRACTAL)) {
 			ff = new CSTFractal();
 		} else if (choice.equals(SAMPLE)) {
