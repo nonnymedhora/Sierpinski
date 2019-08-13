@@ -28,6 +28,15 @@ import javax.swing.SwingUtilities;
 
 class SierpinskiComboPanel extends JPanel {
 	
+	// for Julia
+	private static final String J1 = "P[2] C[0.279]";	//f(z) = z^2 + 0.279
+	private static final String J2 = "P[3] C[0.4]";		//f(z) = z^3 + 0.400
+	private static final String J3 = "P[4] C[0.484]";	//f(z) = z^4 + 0.484
+	private static final String J4 = "P[5] C[0.544]";	//f(z) = z^5 + 0.544
+	private static final String J5 = "P[6] C[0.59]";	//f(z) = z^6 + 0.590
+	private static final String J6 = "P[7] C[0.626]";	//f(z) = z^7 + 0.626	
+	
+	
 	//	for	ApollonianCircles
 	// curvature & multiplier options for @see ApollonianCircles
 	private static final String A6 = "C[2, 2, 3] M[1]";
@@ -43,12 +52,13 @@ class SierpinskiComboPanel extends JPanel {
 	private static final String CST_FRACTAL = "CSTFractal";
 	private static final String SAMPLE = "Sample";
 	private static final String MANDELBROT = "Mandelbrot";
+	private static final String JULIA = "Julia";
 	private static final String FANNY_TRIANGLES = "FannyTriangles";
 	private static final String FANNY_CIRCLE = "FannyCircle";
 	private static final String KOCHSNOWFLAKE = "KochSnowFlake";
 
 	private static final long serialVersionUID = 156478L;
-	private final String[] comboOptions = new String[]{FANNY_CIRCLE,FANNY_TRIANGLES,SIERPINSKI_TRIANGLES,SIERPINSKI_SQUARES,APOLLONIAN_CIRCLES,CST_FRACTAL,SAMPLE,MANDELBROT,KOCHSNOWFLAKE};
+	private final String[] comboOptions = new String[]{FANNY_CIRCLE,FANNY_TRIANGLES,SIERPINSKI_TRIANGLES,SIERPINSKI_SQUARES,APOLLONIAN_CIRCLES,CST_FRACTAL,SAMPLE,MANDELBROT,JULIA,KOCHSNOWFLAKE};
 	private final JComboBox<String> combos = new JComboBox<String>(comboOptions);
 	
 	//	for	FannyCircle & FannyTriangles
@@ -56,13 +66,18 @@ class SierpinskiComboPanel extends JPanel {
 	private final JComboBox<Integer> sideCombos = new JComboBox<Integer>(sideOptions);
 	private final Integer[] ratioOptions = new Integer[] { 2, 3, 4, 5, 6, 7 };
 	private final JComboBox<Integer> ratioCombos = new JComboBox<Integer>(ratioOptions);
+	
+	// for Julia
+	private final String[] juliaOptions = new String[] { J1, J2, J3, J4, J5, J6 };
+	private final JComboBox<String> juliaCombos = new JComboBox<String>(juliaOptions);
 
 	//	for	Apollo
 	private final String[] curvOptions = new String[] { A1, A2, A3, A4, A5, A6 };
 	private final JComboBox<String> curvCombos = new JComboBox<String>(curvOptions);
 
-	private JPanel fannyOptionsPanel =new JPanel(new FlowLayout());
-	private JPanel apolloOptionsPanel=new JPanel(new FlowLayout());
+	private JPanel fannyOptionsPanel = new JPanel(new FlowLayout());
+	private JPanel apolloOptionsPanel = new JPanel(new FlowLayout());
+	private JPanel juliaOptionsPanel = new JPanel(new FlowLayout());
 	
 	private final JButton buStart = new JButton("Start |>");
 	private final JButton buPause = new JButton("Pause ||");
@@ -75,9 +90,13 @@ class SierpinskiComboPanel extends JPanel {
 	
 	protected int ratioChoice;
 	
-	// forApollonianCircles -- curvatures & multiplier options
+	// for ApollonianCircles -- curvatures & multiplier options
 	protected double[] curvChoices;
 	protected double mult;
+	
+	// for Julia -- power & constant
+	protected int power;
+	protected double compConst;
 
 	
 	private Thread fbf;
@@ -105,7 +124,11 @@ class SierpinskiComboPanel extends JPanel {
 		this.apolloOptionsPanel.add(this.curvCombos);
 		this.apolloOptionsPanel.setVisible(false);
 		this.add(this.apolloOptionsPanel);
-
+		
+		this.juliaOptionsPanel.add(new JLabel("Power-Constant"));
+		this.juliaOptionsPanel.add(this.juliaCombos);
+		this.juliaOptionsPanel.setVisible(false);
+		this.add(this.juliaOptionsPanel);
 
 		this.add(this.buStart);
 //		this.add(this.buPause);
@@ -117,11 +140,13 @@ class SierpinskiComboPanel extends JPanel {
 		this.sideCombos.setSelectedIndex(0);
 		this.ratioCombos.setSelectedIndex(0);
 		this.curvCombos.setSelectedIndex(0);
+		this.juliaCombos.setSelectedIndex(0);
 		
 		this.combos.setSelectedItem(this.comboOptions[0]);		
 		this.sideCombos.setSelectedItem(this.sideOptions[0]);		
 		this.ratioCombos.setSelectedItem(this.ratioOptions[0]);		
 		this.curvCombos.setSelectedItem(this.ratioOptions[0]);
+		this.juliaCombos.setSelectedItem(this.juliaOptions[0]);
 	}
 	
 	private void doSelectCombosCommand(String option) {
@@ -129,12 +154,19 @@ class SierpinskiComboPanel extends JPanel {
 
 		if (comboChoice.equals(APOLLONIAN_CIRCLES)) {
 			fannyOptionsPanel.setVisible(false);
+			juliaOptionsPanel.setVisible(false);
 			apolloOptionsPanel.setVisible(true);
 		} else if (comboChoice.equals(FANNY_CIRCLE) || comboChoice.equals(FANNY_TRIANGLES)) {
 			fannyOptionsPanel.setVisible(true);
+			juliaOptionsPanel.setVisible(false);
+			apolloOptionsPanel.setVisible(false);
+		} else if(comboChoice.equals(JULIA)) { 
+			fannyOptionsPanel.setVisible(false);
+			juliaOptionsPanel.setVisible(true);
 			apolloOptionsPanel.setVisible(false);
 		} else {
 			fannyOptionsPanel.setVisible(false);
+			juliaOptionsPanel.setVisible(false);
 			apolloOptionsPanel.setVisible(false);
 		}
 	}
@@ -187,13 +219,51 @@ class SierpinskiComboPanel extends JPanel {
 		}
 	}	
 	
+	private void doSelectJuliaCombosCommand(String cOption) {
+		switch (cOption) {
+			case J1: //  J1 = "P[2] C[0.279]";	//f(z) = z^2 + 0.279
+				this.power = 2;
+				this.compConst = 0.279;
+				break;
+			case J2: //  J2 = "P[3] C[0.4]";		//f(z) = z^3 + 0.400
+				this.power = 3;
+				this.compConst = 0.4;
+				break;	
+			case J3: //  J3 = "P[4] C[0.484]";	//f(z) = z^4 + 0.484
+				this.power = 4;
+				this.compConst = 0.484;
+				break;	
+			case J4: //  J4 = "P[5] C[0.544]";	//f(z) = z^5 + 0.544
+				this.power = 5;
+				this.compConst = 0.544;
+				break;	
+			case J5: //  J5 = "P[6] C[0.59]";	//f(z) = z^6 + 0.590
+				this.power = 6;
+				this.compConst = 0.59;
+				break;	
+			case J6: //  J6 = "P[7] C[0.626]";	//f(z) = z^7 + 0.626
+				this.power = 7;
+				this.compConst = 0.626;
+				break;
+				
+			default:
+				// use--J1
+				this.power = 2;
+				this.compConst = 0.279;
+				break;
+				
+		}
+	}
+	
 	private void doStartCommand() {
-		String choice = getComboChoice();
-		int length = getSideComboChoice();
-		int ratio = getRatioChoice();
-		double[] cChoices = getCurvChoice();
-		double mXt = getMultiplier();
-		
+		String choice = this.getComboChoice();
+		int length = this.getSideComboChoice();
+		int ratio = this.getRatioChoice();
+		double[] cChoices = this.getCurvChoice();
+		double mXt = this.getMultiplier();
+		int pow = this.getPower();
+		double con = this.getComplexConst();
+
 //		System.out.println("choice is " + choice + " and length is " + length + " and ratio is " + ratio);
 		final FractalBase ff;
 		if (choice.equals(FANNY_CIRCLE)) {
@@ -210,6 +280,8 @@ class SierpinskiComboPanel extends JPanel {
 			ff = new FractalBaseSample();
 		} else if (choice.equals(MANDELBROT)) {
 			ff = new Mandelbrot();
+		} else if (choice.equals(JULIA)) {
+			ff = new Julia(pow, con);
 		} else if (choice.equals(CST_FRACTAL)) {
 			ff = new CSTFractal();
 		} else if (choice.equals(SAMPLE)) {
@@ -243,8 +315,10 @@ class SierpinskiComboPanel extends JPanel {
 		frame.setVisible(true);
 		frame.setRunning(true);
 
-		this.fbf = new Thread(frame);
-		this.fbf.start();
+		if (!(this.comboChoice.equals(MANDELBROT) || this.comboChoice.equals(JULIA))) {
+			this.fbf = new Thread(frame);
+			this.fbf.start();
+		}
 	}
 
 	private int closeIt(FractalBase frame) {
@@ -300,6 +374,16 @@ class SierpinskiComboPanel extends JPanel {
 				doSelectCurvCombosCommand(curvComboOption);				
 			}});
 		
+		this.juliaCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<String> cb = (JComboBox<String>)e.getSource();
+				String juliaComboOption = (String)cb.getSelectedItem();
+//		        System.out.println("curvComboOption==="+curvComboOption);
+				doSelectJuliaCombosCommand(juliaComboOption);				
+			}});
+		
 		this.buStart.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -332,6 +416,14 @@ class SierpinskiComboPanel extends JPanel {
 	
 	protected double getMultiplier(){
 		return this.mult;
+	}
+	
+	protected int getPower(){
+		return this.power;
+	}
+	
+	protected double getComplexConst(){
+		return this.compConst;
 	}
 	
 }

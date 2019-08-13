@@ -535,6 +535,21 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	        double scale = real*real + imaginary*imaginary;
 	        return new ComplexNumber(real / scale, -imaginary / scale);
 	    }
+
+		public ComplexNumber power(int power) {
+			assert (power > 0);
+			int iter = 1;
+			final ComplexNumber a = this;
+			ComplexNumber powered = a;
+			for(int i = 1; i < power; i++) {
+				powered=powered.times(a);
+			}
+			/*while (iter <= power) {
+				powered = powered.times(a);
+				iter += 1;
+			}*/
+			return powered;
+		}
 		
 	}
 

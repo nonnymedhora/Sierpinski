@@ -56,14 +56,14 @@ public class Mandelbrot extends FractalBase {
 		}
 	}
 	
-	private int mand(ComplexNumber z0, int maxIter) {
+	private int mand(ComplexNumber z0, int maxIterations) {
 		ComplexNumber z = z0;
-		for (int t = 0; t < maxIter; t++) {
+		for (int t = 0; t < maxIterations; t++) {
 			if (z.abs() > 2.0)
 				return t;
 			z = z.times(z).plus(z0);
 		}
-		return maxIter;
+		return maxIterations;
 	}
 
 	public static void main(String[] args) {
