@@ -473,6 +473,14 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	        double imag = a.imaginary + b.imaginary;
 	        return new ComplexNumber(real, imag);
 	    }
+	    
+	 // return a new Complex object whose value is (this - b)
+	    public ComplexNumber minus(ComplexNumber b) {
+	    	ComplexNumber a = this;             // invoking object
+	        double real = a.real - b.real;
+	        double imag = a.imaginary - b.imaginary;
+	        return new ComplexNumber(real, imag);
+	    }
 
 		/* (non-Javadoc)
 		 * @see java.lang.Object#toString()

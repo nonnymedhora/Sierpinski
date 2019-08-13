@@ -83,16 +83,12 @@ public class Julia extends FractalBase {
 
 	private int julia(ComplexNumber zz, int max) {
 		ComplexNumber z = zz;
-		final ComplexNumber complexConstant = new ComplexNumber(this.complexConst,0);
+		final ComplexNumber complexConstant = new ComplexNumber(this.complexConst, 0);
 		for (int t = 0; t < max; t++) {
-			if (z.abs() > 2.0)
+			if (z.abs() > 2.0) {
 				return t;
-//			z = z.times(z).plus(zz);
-//			z = z.times(z).plus(new ComplexNumber(0.279,0));					//f(z) = z^2 + 0.279
-//			z = z.times(z).times(z).plus(new ComplexNumber(0.4,0));				//f(z) = z^3 + 0.400
-//			z= z.times(z).times(z).times(z).plus(new  ComplexNumber(0.484,0));	//f(z) = z^4 + 0.484
-//			z= z.times(z).times(z).times(z).times(z).plus(new ComplexNumber(0.544,0));	//f(z) = z^5 + 0.544
-			z = z.power(power).plus(complexConstant);
+			}
+			z = z.power(this.power).plus(complexConstant);
 		}
 		return max;
 	}
