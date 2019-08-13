@@ -229,10 +229,10 @@ class SierpinskiComboPanel extends JPanel {
 				frame.setDefaultCloseOperation(closeIt(frame));
 				frame.setResizable(false);
 				frame.setVisible(true);
-	
-				fbf=new Thread(frame);
+
+				fbf = new Thread(frame);
 				fbf.start();
-	
+
 			}
 
 			private int closeIt(FractalBase frame) {
