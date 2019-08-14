@@ -6,7 +6,6 @@ package org.bawaweb.ui.sierpinkski;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
-import java.awt.GraphicsConfiguration;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -14,16 +13,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
-
-import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
 
 /**
  * @author Navroz
@@ -39,7 +36,7 @@ class SierpinskiComboPanel extends JPanel {
 	private static final String J4 = "P[5] C[0.544]";	//f(z) = z^5 + 0.544
 	private static final String J5 = "P[6] C[0.59]";	//f(z) = z^6 + 0.590
 	private static final String J6 = "P[7] C[0.626]";	//f(z) = z^7 + 0.626
-
+	// extra for Julia
 	private static final String J7 = "P[2] C1";//[-0.74543+0.11301*i]";	//f(z) = z^2 + ...
 	private static final String J8 = "P[2] C2";//[-0.75+0.11*i]";	//f(z) = z^2 + ....
 	private static final String J9 = "P[2] C3";//[-0.1+0.651*i]";	//f(z) = z^2 + ...
@@ -54,6 +51,7 @@ class SierpinskiComboPanel extends JPanel {
 	private static final String A2 = "C[25, 25, 28] M[20]";
 	private static final String A1 = "C[1, 1, 1] M[1]";
 
+	// Fractal Art Choices
 	private static final String SIERPINSKI_SQUARES = "SierpinskiSquares";
 	private static final String APOLLONIAN_CIRCLES = "ApollonianCircles";
 	private static final String SIERPINSKI_TRIANGLES = "SierpinskiTriangles";
@@ -66,6 +64,7 @@ class SierpinskiComboPanel extends JPanel {
 	private static final String KOCHSNOWFLAKE = "KochSnowFlake";
 
 	private static final long serialVersionUID = 156478L;
+	
 	private final String[] comboOptions = new String[]{FANNY_CIRCLE,FANNY_TRIANGLES,SIERPINSKI_TRIANGLES,SIERPINSKI_SQUARES,APOLLONIAN_CIRCLES,CST_FRACTAL,SAMPLE,MANDELBROT,JULIA,KOCHSNOWFLAKE};
 	private final JComboBox<String> combos = new JComboBox<String>(comboOptions);
 	
@@ -78,14 +77,23 @@ class SierpinskiComboPanel extends JPanel {
 	// for Julia
 	private final String[] juliaOptions = new String[] { J1, J2, J3, J4, J5, J6, J7, J8, J9 };
 	private final JComboBox<String> juliaCombos = new JComboBox<String>(juliaOptions);
+	
+	// for Mandelbrot
+	private final Integer[] mandOptions = new Integer[]{1,2,3,4,5,6,7,8,9,10};
+	private final JComboBox<Integer> mandCombos = new JComboBox<Integer>(mandOptions);
+	private final Integer[] mandExpOptions = new Integer[]{2,3,4,5,6,7};
+	private final JComboBox<Integer> mandExpCombos = new JComboBox<Integer>(mandExpOptions);
+	private final JCheckBox mandUseDiff = new JCheckBox("UseDifferencesOnly",true);
 
 	//	for	Apollo
 	private final String[] curvOptions = new String[] { A1, A2, A3, A4, A5, A6 };
 	private final JComboBox<String> curvCombos = new JComboBox<String>(curvOptions);
 
+	// Fractal Art Options
 	private JPanel fannyOptionsPanel = new JPanel(new FlowLayout());
 	private JPanel apolloOptionsPanel = new JPanel(new FlowLayout());
 	private JPanel juliaOptionsPanel = new JPanel(new FlowLayout());
+	private JPanel mandOptionsPanel = new JPanel(new FlowLayout());
 	
 	private JTextArea formulaArea = new JTextArea(5,20);
 	
@@ -108,6 +116,11 @@ class SierpinskiComboPanel extends JPanel {
 	protected double compConst;
 	protected String complex;
 	protected String juliaSelection;
+	
+	// for mandelbrot
+	protected int magnification;
+	protected int exponent;
+	protected boolean useDiff;
 
 	
 	private Thread fbf;
@@ -140,6 +153,17 @@ class SierpinskiComboPanel extends JPanel {
 		this.juliaOptionsPanel.add(this.juliaCombos);
 		this.juliaOptionsPanel.setVisible(false);
 		this.add(this.juliaOptionsPanel);
+		
+		this.mandOptionsPanel.add(new JLabel("Magnification"));
+		this.mandOptionsPanel.add(this.mandCombos);
+
+		this.mandOptionsPanel.add(new JLabel("Exponent"));
+		this.mandOptionsPanel.add(this.mandExpCombos);
+		
+		this.mandOptionsPanel.add(this.mandUseDiff);		
+		
+		this.mandOptionsPanel.setVisible(false);
+		this.add(this.mandOptionsPanel);
 
 		this.buStart.setEnabled(false);
 		this.add(this.buStart);
@@ -150,14 +174,15 @@ class SierpinskiComboPanel extends JPanel {
 		
 	}
 	
-	private void doReset(){
-		this.sideChoice=0;
-		this.ratioChoice=0;
-		this.curvChoices=null;
-		this.mult=0.0;
-		this.power=0;
-		this.compConst=0.0;
-		this.complex=null;
+	private void doReset() {
+		this.sideChoice = 0;
+		this.ratioChoice = 0;
+		this.curvChoices = null;
+		this.mult = 0.0;
+		this.power = 0;
+		this.compConst = 0.0;
+		this.complex = null;
+		this.magnification = 0;
 	}
 
 	private void setComboSelections() {
@@ -166,12 +191,14 @@ class SierpinskiComboPanel extends JPanel {
 		this.ratioCombos.setSelectedIndex(0);
 		this.curvCombos.setSelectedIndex(0);
 		this.juliaCombos.setSelectedIndex(0);
+		this.mandCombos.setSelectedIndex(0);
 		
 		this.combos.setSelectedItem(this.comboOptions[0]);		
 		this.sideCombos.setSelectedItem(this.sideOptions[0]);		
 		this.ratioCombos.setSelectedItem(this.ratioOptions[0]);		
 		this.curvCombos.setSelectedItem(this.ratioOptions[0]);
 		this.juliaCombos.setSelectedItem(this.juliaOptions[0]);
+		this.mandCombos.setSelectedItem(this.mandOptions[0]);
 	}
 	
 	private void doSelectCombosCommand(String option) {
@@ -180,6 +207,7 @@ class SierpinskiComboPanel extends JPanel {
 		if (this.comboChoice.equals(APOLLONIAN_CIRCLES)) {
 			this.fannyOptionsPanel.setVisible(false);
 			this.juliaOptionsPanel.setVisible(false);
+			this.mandOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(true);
 			this.formulaArea.setVisible(false);
 
@@ -191,6 +219,7 @@ class SierpinskiComboPanel extends JPanel {
 		} else if (this.comboChoice.equals(FANNY_CIRCLE) || this.comboChoice.equals(FANNY_TRIANGLES)) {
 			this.fannyOptionsPanel.setVisible(true);
 			this.juliaOptionsPanel.setVisible(false);
+			this.mandOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(false);
 			this.formulaArea.setVisible(false);
 			if (this.sideChoice == 0 || this.ratioChoice == 0) {
@@ -198,9 +227,10 @@ class SierpinskiComboPanel extends JPanel {
 			} else {
 				this.buStart.setEnabled(true);
 			}
-		} else if(this.comboChoice.equals(JULIA)) { 
+		} else if (this.comboChoice.equals(JULIA)) {
 			this.fannyOptionsPanel.setVisible(false);
 			this.juliaOptionsPanel.setVisible(true);
+			this.mandOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(false);
 			this.formulaArea.setVisible(true);
 			this.formulaArea.setText("");
@@ -209,10 +239,18 @@ class SierpinskiComboPanel extends JPanel {
 			} else {
 				this.buStart.setEnabled(true);
 			}
+		} else if (this.comboChoice.equals(MANDELBROT)) {
+			this.fannyOptionsPanel.setVisible(false);
+			this.juliaOptionsPanel.setVisible(false);
+			this.mandOptionsPanel.setVisible(true);
+			this.apolloOptionsPanel.setVisible(false);
+			this.formulaArea.setVisible(true);
+			this.formulaArea.setText("");
 		} else {
-			fannyOptionsPanel.setVisible(false);
-			juliaOptionsPanel.setVisible(false);
-			apolloOptionsPanel.setVisible(false);
+			this.fannyOptionsPanel.setVisible(false);
+			this.juliaOptionsPanel.setVisible(false);
+			this.mandOptionsPanel.setVisible(false);
+			this.apolloOptionsPanel.setVisible(false);
 			this.formulaArea.setVisible(false);
 			this.buStart.setEnabled(true);
 		}
@@ -220,12 +258,16 @@ class SierpinskiComboPanel extends JPanel {
 
 	private void doSelectSideCombosCommand(Integer sideOption) {
 		this.sideChoice = sideOption;
-		if(this.ratioChoice!=0){this.buStart.setEnabled(true);}
+		if (this.ratioChoice != 0) {
+			this.buStart.setEnabled(true);
+		}
 	}
 
 	private void doSelectRatioCombosCommand(Integer ratioOption) {
 		this.ratioChoice = ratioOption;
-		if(this.sideChoice!=0){this.buStart.setEnabled(true);}
+		if (this.sideChoice != 0) {
+			this.buStart.setEnabled(true);
+		}
 	}
 	
 	private void doSelectCurvCombosCommand(String cOption) {
@@ -337,40 +379,91 @@ class SierpinskiComboPanel extends JPanel {
 		this.buStart.setEnabled(true);
 	}
 	
+	
+	private void doMandelbrotChoicesCheck() {
+		this.formulaArea.setVisible(true);
+		if (this.magnification != 0 && this.exponent != 0) {
+			this.buStart.setEnabled(true);
+			this.formulaArea.setText("Mandelbrot Set:\n\nf(z) = z ^ " + this.exponent + " + C");
+			if (this.useDiff || this.mandUseDiff.isSelected()) {
+				this.formulaArea
+						.append("\n\nCalculated inverted colors based on differences in pixel values from origin");
+			} else {
+				this.formulaArea.append("\n\nCalculated colors based on pixel values with a 'top-and-left' origin");
+			}
+		} else {
+			this.buStart.setEnabled(false);
+		}
+	}
+	
+	private void doSelectMandelbrotCombosCommand(Integer magOption) {
+		this.magnification = magOption;
+		this.formulaArea.setVisible(true);
+		this.doMandelbrotChoicesCheck();
+	}
+	
+	private void doSelectMandExponentCombosCommand(Integer expOption) {
+		this.exponent = expOption;
+		this.formulaArea.setVisible(true);
+		this.doMandelbrotChoicesCheck();
+	}
+	
+	private void doSetMandUseDiffCommand(boolean useDiffs) {
+		this.useDiff = useDiffs;
+		this.formulaArea.setVisible(true);
+		this.doMandelbrotChoicesCheck();
+	}
+	
 	private void doStartCommand() {
 		this.formulaArea.setText("");
+		//fractal art choice
 		String choice = this.getComboChoice();
+		// for Fanny
 		int length = this.getSideComboChoice();
 		int ratio = this.getRatioChoice();
+		//for Apollo
 		double[] cChoices = this.getCurvChoice();
 		double mXt = this.getMultiplier();
+		//for Julia
 		int pow = this.getPower();
 		double con = this.getComplexConst();
 		String comp = this.getComplex();
+		//for Mandelbrot
+		int mag = this.getMagnification();
+		int exp = this.getExponent();
+		boolean uD = this.getUseDiff();
 
-//		System.out.println("choice is " + choice + " and length is " + length + " and ratio is " + ratio);
 		final FractalBase ff;
+		
 		if (choice.equals(FANNY_CIRCLE)) {
-			doReset();
+			this.doReset();
 			ff = new FannyCircle(length, ratio);
 		} else if (choice.equals(FANNY_TRIANGLES)) {
-			doReset();
+			this.doReset();
 			ff = new FannyTriangles(length, ratio);
 		} else if (choice.equals(SIERPINSKI_TRIANGLES)) {
-			doReset();
+			this.doReset();
 			ff = new SierpinskiTriangle();
 		} else if (choice.equals(SIERPINSKI_SQUARES)) {
-			doReset();
+			this.doReset();
 			ff = new SierpinskiSquare();
 		} else if (choice.equals(APOLLONIAN_CIRCLES)) {
-			doReset();
+			this.doReset();
 			ff = new ApollonianCircles(cChoices, mXt);
 		} else if (choice.equals(SAMPLE)) {
-			doReset();
+			this.doReset();
 			ff = new FractalBaseSample();
 		} else if (choice.equals(MANDELBROT)) {
-			doReset();
-			ff = new Mandelbrot();
+			this.formulaArea.setVisible(true);
+			this.formulaArea.setText("");
+			this.formulaArea.setText("Mandelbrot Set:\n\nf(z) = z ^ " + exp + " + C");
+			if (uD) {
+				this.formulaArea.append("\n\nCalculated based on differences in pixel values from origin");
+			} else {
+				this.formulaArea.append("\n\nCalculated based on pixel values with a top-left origin");
+			}
+			ff = new Mandelbrot(mag, exp, uD);
+			this.doReset();
 		} else if (choice.equals(JULIA)) {
 			this.formulaArea.setVisible(true);
 			this.formulaArea.setText("");
@@ -390,16 +483,16 @@ class SierpinskiComboPanel extends JPanel {
 				}
 				ff = new Julia(pow, comp);
 			}
-			doReset();
+			this.doReset();
 
 		} else if (choice.equals(CST_FRACTAL)) {
-			doReset();
+			this.doReset();
 			ff = new CSTFractal();
 		} else if (choice.equals(SAMPLE)) {
-			doReset();
+			this.doReset();
 			ff = new FractalBaseSample();
 		} else if (choice.equals(KOCHSNOWFLAKE)) {
-			doReset();
+			this.doReset();
 			ff = new KochSnowFlakeFractal();
 		} else {
 			ff = null;
@@ -407,7 +500,7 @@ class SierpinskiComboPanel extends JPanel {
 		}
 
 		ff.reset();
-		startFractals(ff);
+		this.startFractals(ff);
 	}	
 
 
@@ -423,6 +516,7 @@ class SierpinskiComboPanel extends JPanel {
 		frame.setRunning(true);
 
 		if (!(this.comboChoice.equals(MANDELBROT) || this.comboChoice.equals(JULIA))) {
+			this.formulaArea.setVisible(false);
 			this.fbf = new Thread(frame);
 			this.fbf.start();
 		}
@@ -430,7 +524,7 @@ class SierpinskiComboPanel extends JPanel {
 
 	private int closeIt(FractalBase frame) {
 		this.buStart.setEnabled(false);
-		if (!this.comboChoice.equals(JULIA)) {
+		if (!(this.comboChoice.equals(JULIA)||this.comboChoice.equals(MANDELBROT))) {
 			this.formulaArea.setVisible(false);
 		}
 		frame.reset();
@@ -458,7 +552,6 @@ class SierpinskiComboPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
 		        Integer sideComboOption = (Integer)cb.getSelectedIndex();
-//		        System.out.println("sideComboOption==="+sideComboOption);
 		        int sideVal = cb.getItemAt(sideComboOption);
 				doSelectSideCombosCommand(sideVal);				
 			}});
@@ -470,7 +563,6 @@ class SierpinskiComboPanel extends JPanel {
 				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
 		        @SuppressWarnings("unused")
 				Integer ratioComboOption = (Integer)cb.getSelectedIndex();
-//		        System.out.println("ratioComboOption==="+ratioComboOption);
 		        int ratioVal = cb.getItemAt(ratioComboOption);
 				doSelectRatioCombosCommand(ratioVal);				
 			}});
@@ -481,7 +573,6 @@ class SierpinskiComboPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				JComboBox<String> cb = (JComboBox<String>)e.getSource();
 				String curvComboOption = (String)cb.getSelectedItem();
-//		        System.out.println("curvComboOption==="+curvComboOption);
 				doSelectCurvCombosCommand(curvComboOption);				
 			}});
 		
@@ -491,10 +582,38 @@ class SierpinskiComboPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				JComboBox<String> cb = (JComboBox<String>)e.getSource();
 				String juliaComboOption = (String)cb.getSelectedItem();
-//		        System.out.println("curvComboOption==="+curvComboOption);
 				doSelectJuliaCombosCommand(juliaComboOption);				
 			}});
 		
+		this.mandCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<String> cb = (JComboBox<String>)e.getSource();
+				Integer mandComboOption = (Integer)cb.getSelectedItem();
+				doSelectMandelbrotCombosCommand(mandComboOption);				
+			}});
+		
+		this.mandExpCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
+				Integer mandExpComboOption = (Integer)cb.getSelectedItem();
+				doSelectMandExponentCombosCommand(mandExpComboOption);				
+			}});
+		
+		this.mandUseDiff.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetMandUseDiffCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetMandUseDiffCommand(false);
+				}
+			}
+        });
+
 		this.buStart.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -539,6 +658,18 @@ class SierpinskiComboPanel extends JPanel {
 	
 	protected String getComplex(){
 		return this.complex;
+	}
+	
+	protected int getMagnification(){
+		return this.magnification;
+	}
+	
+	protected int getExponent(){
+		return this.exponent;
+	}
+	
+	protected boolean getUseDiff(){
+		return this.useDiff || this.mandUseDiff.isSelected();
 	}
 	
 }

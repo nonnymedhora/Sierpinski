@@ -21,8 +21,47 @@ import javax.swing.SwingUtilities;
  */
 public class Mandelbrot extends FractalBase {
 
+	private int mag;
+	private int exp;
+	private boolean useDiff=false;
+	private int size;		//0-599 4 ltr
+
 	public Mandelbrot() {
 		super();
+		this.mag = 2;
+		this.exp=2;
+	}
+
+	/**
+	 * @param mg	--	magnification
+	 * mg=1 is high, mg=10 = low
+	 */
+	public Mandelbrot(int mg) {
+		super();
+		this.mag = mg;
+		this.exp=2;
+	}
+
+	/**
+	 * @param mg
+	 * @param ep
+	 */
+	public Mandelbrot(int mg, int ep) {
+		super();
+		this.mag = mg;
+		this.exp = ep;
+	}
+
+	/**
+	 * @param mg
+	 * @param ep
+	 * @param dif
+	 */
+	public Mandelbrot(int mg, int ep, boolean dif) {
+		super();
+		this.mag = mg;
+		this.exp = ep;
+		this.useDiff = dif;
 	}
 
 	private static final long serialVersionUID = 13456L;
@@ -32,24 +71,30 @@ public class Mandelbrot extends FractalBase {
 	 */
 	@Override
 	public void createFractalShape(Graphics2D g) {
-		createMandelbrot(g, depth);
+		createMandelbrot(g/*, depth*/,this.useDiff);
 	}
 
-	private void createMandelbrot(Graphics2D g, int d) {		
+	private void createMandelbrot(Graphics2D g/*, int d*/, boolean diff) {		
 		double xc = -0.5;
 		double yc = 0;
-		double size = 2;
+		double size = this.mag;//10;//4;//2;
 
-		int n = 512;
+		int n = 599;//512;	(0-599)
 		//System.out.println("here with depth " + depth);
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
 				double x0 = xc - size / 2 + size * i / n;
 				double y0 = yc - size / 2 + size * j / n;
 				ComplexNumber z0 = new ComplexNumber(x0, y0);
-				int gray = maxIter - mand(z0, maxIter);
+				int gray;
+				// int gray = /*maxIter - */mand(z0, maxIter);
+				if (diff) {
+					gray = mand(z0, maxIter, exp);
+				} else {
+					gray = maxIter - mand(z0, maxIter, exp);
+				}
 				Color color;
-				/* Simple ===	renders in black-white-gray*/
+				/* Simple === renders in black-white-gray */
 				/* color = new Color(gray, gray, gray); */
 				/* Complex === renders in Color */ 
 				if (gray % 2 == 0) {
@@ -71,12 +116,14 @@ public class Mandelbrot extends FractalBase {
 		}
 	}
 	
-	private int mand(ComplexNumber z0, int maxIterations) {
+	private int mand(ComplexNumber z0, int maxIterations, int power) {
 		ComplexNumber z = z0;
 		for (int t = 0; t < maxIterations; t++) {
 			if (z.abs() > 2.0)
 				return t;
-			z = z.power(2).plus(z0);
+			z = z.power(power).plus(z0);
+//			z = z.power(3).plus(z0);
+//			z = z.power(2).plus(z0);
 		}
 		return maxIterations;
 	}
@@ -85,7 +132,7 @@ public class Mandelbrot extends FractalBase {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				final FractalBase frame = new Mandelbrot();
+				final FractalBase frame = new Mandelbrot(2,3,false);
 				frame.depth = 5;
 				frame.setTitle(frame.getFractalShapeTitle());
 				frame.setSize(frame.WIDTH, frame.HEIGHT);
