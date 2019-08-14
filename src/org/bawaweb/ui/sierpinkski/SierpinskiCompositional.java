@@ -95,8 +95,7 @@ class SierpinskiComboPanel extends JPanel {
 	protected String comboChoice;
 
 	// FannyCircle & FannyTriangles	--	side Length & ratio
-	protected int sideChoice;
-	
+	protected int sideChoice;	
 	protected int ratioChoice;
 	
 	// for ApollonianCircles -- curvatures & multiplier options
@@ -140,6 +139,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.juliaOptionsPanel.setVisible(false);
 		this.add(this.juliaOptionsPanel);
 
+		this.buStart.setEnabled(false);
 		this.add(this.buStart);
 //		this.add(this.buPause);
 		
@@ -149,6 +149,12 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private void doReset(){
+		this.sideChoice=0;
+		this.ratioChoice=0;
+		this.curvChoices=null;
+		this.mult=0.0;
+		this.power=0;
+		this.compConst=0.0;
 		this.complex=null;
 	}
 
@@ -174,32 +180,50 @@ class SierpinskiComboPanel extends JPanel {
 			this.juliaOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(true);
 			this.formulaArea.setVisible(false);
-			
+
+			if (this.curvChoices == null || this.mult == 0) {
+				this.buStart.setEnabled(false);
+			} else {
+				this.buStart.setEnabled(true);
+			}
 		} else if (this.comboChoice.equals(FANNY_CIRCLE) || this.comboChoice.equals(FANNY_TRIANGLES)) {
 			this.fannyOptionsPanel.setVisible(true);
 			this.juliaOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(false);
 			this.formulaArea.setVisible(false);
+			if (this.sideChoice == 0 || this.ratioChoice == 0) {
+				this.buStart.setEnabled(false);
+			} else {
+				this.buStart.setEnabled(true);
+			}
 		} else if(this.comboChoice.equals(JULIA)) { 
 			this.fannyOptionsPanel.setVisible(false);
 			this.juliaOptionsPanel.setVisible(true);
 			this.apolloOptionsPanel.setVisible(false);
 			this.formulaArea.setVisible(true);
 			this.formulaArea.setText("");
+			if (this.power == 0 && (this.compConst == 0.0 || this.complex == null)) {
+				this.buStart.setEnabled(false);
+			} else {
+				this.buStart.setEnabled(true);
+			}
 		} else {
 			fannyOptionsPanel.setVisible(false);
 			juliaOptionsPanel.setVisible(false);
 			apolloOptionsPanel.setVisible(false);
 			this.formulaArea.setVisible(false);
+			this.buStart.setEnabled(true);
 		}
 	}
 
 	private void doSelectSideCombosCommand(Integer sideOption) {
 		this.sideChoice = sideOption;
+		if(this.ratioChoice!=0){this.buStart.setEnabled(true);}
 	}
 
 	private void doSelectRatioCombosCommand(Integer ratioOption) {
 		this.ratioChoice = ratioOption;
+		if(this.sideChoice!=0){this.buStart.setEnabled(true);}
 	}
 	
 	private void doSelectCurvCombosCommand(String cOption) {
