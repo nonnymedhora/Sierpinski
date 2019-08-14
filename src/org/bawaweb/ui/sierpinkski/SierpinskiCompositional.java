@@ -143,8 +143,13 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(this.buStart);
 //		this.add(this.buPause);
 		
+		this.formulaArea.setVisible(false);
 		this.add(this.formulaArea);
 		
+	}
+	
+	private void doReset(){
+		this.complex=null;
 	}
 
 	private void setComboSelections() {
@@ -164,22 +169,28 @@ class SierpinskiComboPanel extends JPanel {
 	private void doSelectCombosCommand(String option) {
 		this.comboChoice = option;
 
-		if (comboChoice.equals(APOLLONIAN_CIRCLES)) {
-			fannyOptionsPanel.setVisible(false);
-			juliaOptionsPanel.setVisible(false);
-			apolloOptionsPanel.setVisible(true);
-		} else if (comboChoice.equals(FANNY_CIRCLE) || comboChoice.equals(FANNY_TRIANGLES)) {
-			fannyOptionsPanel.setVisible(true);
-			juliaOptionsPanel.setVisible(false);
-			apolloOptionsPanel.setVisible(false);
-		} else if(comboChoice.equals(JULIA)) { 
-			fannyOptionsPanel.setVisible(false);
-			juliaOptionsPanel.setVisible(true);
-			apolloOptionsPanel.setVisible(false);
+		if (this.comboChoice.equals(APOLLONIAN_CIRCLES)) {
+			this.fannyOptionsPanel.setVisible(false);
+			this.juliaOptionsPanel.setVisible(false);
+			this.apolloOptionsPanel.setVisible(true);
+			this.formulaArea.setVisible(false);
+			
+		} else if (this.comboChoice.equals(FANNY_CIRCLE) || this.comboChoice.equals(FANNY_TRIANGLES)) {
+			this.fannyOptionsPanel.setVisible(true);
+			this.juliaOptionsPanel.setVisible(false);
+			this.apolloOptionsPanel.setVisible(false);
+			this.formulaArea.setVisible(false);
+		} else if(this.comboChoice.equals(JULIA)) { 
+			this.fannyOptionsPanel.setVisible(false);
+			this.juliaOptionsPanel.setVisible(true);
+			this.apolloOptionsPanel.setVisible(false);
+			this.formulaArea.setVisible(true);
+			this.formulaArea.setText("");
 		} else {
 			fannyOptionsPanel.setVisible(false);
 			juliaOptionsPanel.setVisible(false);
 			apolloOptionsPanel.setVisible(false);
+			this.formulaArea.setVisible(false);
 		}
 	}
 
@@ -280,6 +291,7 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private void doStartCommand() {
+		this.formulaArea.setText("");
 		String choice = this.getComboChoice();
 		int length = this.getSideComboChoice();
 		int ratio = this.getRatioChoice();
@@ -292,21 +304,29 @@ class SierpinskiComboPanel extends JPanel {
 //		System.out.println("choice is " + choice + " and length is " + length + " and ratio is " + ratio);
 		final FractalBase ff;
 		if (choice.equals(FANNY_CIRCLE)) {
+			doReset();
 			ff = new FannyCircle(length, ratio);
 		} else if (choice.equals(FANNY_TRIANGLES)) {
+			doReset();
 			ff = new FannyTriangles(length, ratio);
 		} else if (choice.equals(SIERPINSKI_TRIANGLES)) {
+			doReset();
 			ff = new SierpinskiTriangle();
 		} else if (choice.equals(SIERPINSKI_SQUARES)) {
+			doReset();
 			ff = new SierpinskiSquare();
 		} else if (choice.equals(APOLLONIAN_CIRCLES)) {
+			doReset();
 			ff = new ApollonianCircles(cChoices, mXt);
 		} else if (choice.equals(SAMPLE)) {
+			doReset();
 			ff = new FractalBaseSample();
 		} else if (choice.equals(MANDELBROT)) {
+			doReset();
 			ff = new Mandelbrot();
 		} else if (choice.equals(JULIA)) {
 
+			this.formulaArea.setText("");
 			if (comp == null) {
 				ff = new Julia(pow, con);
 
@@ -323,12 +343,16 @@ class SierpinskiComboPanel extends JPanel {
 
 				}
 			}
+			doReset();
 
 		} else if (choice.equals(CST_FRACTAL)) {
+			doReset();
 			ff = new CSTFractal();
 		} else if (choice.equals(SAMPLE)) {
+			doReset();
 			ff = new FractalBaseSample();
 		} else if (choice.equals(KOCHSNOWFLAKE)) {
+			doReset();
 			ff = new KochSnowFlakeFractal();
 		} else {
 			ff = null;
