@@ -8,6 +8,7 @@ import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GraphicsConfiguration;
 import java.awt.HeadlessException;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -106,6 +107,7 @@ class SierpinskiComboPanel extends JPanel {
 	protected int power;
 	protected double compConst;
 	protected String complex;
+	protected String juliaSelection;
 
 	
 	private Thread fbf;
@@ -264,6 +266,7 @@ class SierpinskiComboPanel extends JPanel {
 				this.mult = 1.0;
 				break;
 		}
+		this.buStart.setEnabled(true);
 	}	
 	
 	private void doSelectJuliaCombosCommand(String cOption) {
@@ -271,47 +274,67 @@ class SierpinskiComboPanel extends JPanel {
 			case J1: //  J1 = "P[2] C[0.279]";	//f(z) = z^2 + 0.279
 				this.power = 2;
 				this.compConst = 0.279;
+				this.juliaSelection="J1";
+				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + " + this.compConst);
 				break;
 			case J2: //  J2 = "P[3] C[0.4]";		//f(z) = z^3 + 0.400
 				this.power = 3;
 				this.compConst = 0.4;
+				this.juliaSelection="J2";
+				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + " + this.compConst);
 				break;	
 			case J3: //  J3 = "P[4] C[0.484]";	//f(z) = z^4 + 0.484
 				this.power = 4;
 				this.compConst = 0.484;
+				this.juliaSelection="J3";
+				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + " + this.compConst);
 				break;	
 			case J4: //  J4 = "P[5] C[0.544]";	//f(z) = z^5 + 0.544
 				this.power = 5;
 				this.compConst = 0.544;
+				this.juliaSelection="J4";
+				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + " + this.compConst);
 				break;	
 			case J5: //  J5 = "P[6] C[0.59]";	//f(z) = z^6 + 0.590
 				this.power = 6;
 				this.compConst = 0.59;
+				this.juliaSelection="J5";
+				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + " + this.compConst);
 				break;	
 			case J6: //  J6 = "P[7] C[0.626]";	//f(z) = z^7 + 0.626
 				this.power = 7;
 				this.compConst = 0.626;
+				this.juliaSelection="J6";
+				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + " + this.compConst);
 				break;	
 			case J7: //  J7 = "P[2] C1[-0.74543+0.11301*i]";
 				this.power = 2;
 				this.complex = "C1";
+				this.juliaSelection="J7";
+				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + (-0.74543 + 0.11301 * i)");
 				break;	
 			case J8: //  J8 = "P[2] C2";//[-0.75+0.11*i]";
 				this.power = 2;
 				this.complex = "C2";
+				this.juliaSelection="J8";
+				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + (-0.75 + 0.11 * i)");
 				break;
 			case J9: //  J9 = "P[2] C3";//[-0.1+0.651*i]";
 				this.power = 2;
 				this.complex = "C3";
+				this.juliaSelection="J9";
+				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + (-0.1 + 0.651 * i)");
 				break;
 				
 			default:
 				// use--J1
 				this.power = 2;
 				this.compConst = 0.279;
-				break;
-				
+				break;				
 		}
+		this.formulaArea.setVisible(true);
+//		this.formulaArea.setText("");
+		this.buStart.setEnabled(true);
 	}
 	
 	private void doStartCommand() {
@@ -349,23 +372,23 @@ class SierpinskiComboPanel extends JPanel {
 			doReset();
 			ff = new Mandelbrot();
 		} else if (choice.equals(JULIA)) {
-
+			this.formulaArea.setVisible(true);
 			this.formulaArea.setText("");
-			if (comp == null) {
+			
+			if (!(this.juliaSelection.equals("J7") || this.juliaSelection.equals("J8")
+					|| this.juliaSelection.equals("J9"))) {
+				
+				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + pow + " + " + con);
 				ff = new Julia(pow, con);
-
-				this.formulaArea.setText("f(z) = z ^ " + pow + " + " + con);
 			} else {
-				ff = new Julia(pow, comp);
-
-				if (comp.equals("C1")) {
-					this.formulaArea.setText("f(z) = z ^ " + pow + " + (-0.74543 + 0.11301*i)");
-				} else if (comp.equals("C2")) {
-					this.formulaArea.setText("f(z) = z ^ " + pow + " + (-0.75 + 0.11*i)");
-				} else if (comp.equals("C3")) {
-					this.formulaArea.setText("f(z) = z ^ " + pow + " + (-0.1 + 0.651*i)");
-
+				if(this.juliaSelection.equals("J7")){
+					this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + pow + " + (-0.74543 + 0.11301 * i)");
+				}else if(this.juliaSelection.equals("J8")){
+					this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + pow + " + (-0.75 + 0.11 * i)");
+				}else if(this.juliaSelection.equals("J9")){
+					this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + pow + " + (-0.1 + 0.651 * i)");
 				}
+				ff = new Julia(pow, comp);
 			}
 			doReset();
 
@@ -393,6 +416,8 @@ class SierpinskiComboPanel extends JPanel {
 		frame.setTitle(ff.getFractalShapeTitle());
 		frame.setSize(FractalBase.WIDTH, FractalBase.HEIGHT);
 		frame.setDefaultCloseOperation(closeIt(frame));
+		frame.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth())/2, 
+	            (Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight())/2);
 		frame.setResizable(false);
 		frame.setVisible(true);
 		frame.setRunning(true);
@@ -404,6 +429,10 @@ class SierpinskiComboPanel extends JPanel {
 	}
 
 	private int closeIt(FractalBase frame) {
+		this.buStart.setEnabled(false);
+		if (!this.comboChoice.equals(JULIA)) {
+			this.formulaArea.setVisible(false);
+		}
 		frame.reset();
 		frame.dispose();
 		return JFrame.DISPOSE_ON_CLOSE;
