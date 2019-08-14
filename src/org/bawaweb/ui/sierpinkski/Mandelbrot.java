@@ -49,13 +49,21 @@ public class Mandelbrot extends FractalBase {
 				ComplexNumber z0 = new ComplexNumber(x0, y0);
 				int gray = maxIter - mand(z0, maxIter);
 				Color color;
-				/* Simple */
+				/* Simple ===	renders in black-white-gray*/
 				/* color = new Color(gray, gray, gray); */
-				/* Complex */ 
+				/* Complex === renders in Color */ 
 				if (gray % 2 == 0) {
 					color = new Color(gray, gray, gray);
+				} else if (gray % 7 == 0) {
+					final int start = 128;
+					int num1 = correctColor(start, gray, i, 7);
+					int num2 = correctColor(start, gray, j, 7);
+					color = new Color(num1, num2, start);
 				} else {
-					color = new Color(255 - gray, 255 - gray, 255 - gray);
+					final int start = 255;
+					int num3 = correctColor(start, gray,i,1);
+					int num4 = correctColor(start, gray,j,1);
+					color = new Color(num3, num4, start);
 				}
 				setPixel(i, n - 1 - j, color.getRGB());
 				

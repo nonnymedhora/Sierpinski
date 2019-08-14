@@ -161,23 +161,14 @@ public class Julia extends FractalBase {
 					color = new Color(num1, num2, start);
 //					color = new Color(start + gray / 7 - i, start + gray / 7 - j, start + gray / 7);
 				} else {
-					color = new Color(255 - gray, 255 - gray, 255 - gray);
+					final int start = 255;
+					int num3 = correctColor(start, gray,i,1);
+					int num4 = correctColor(start, gray,j,1);
+					color = new Color(num3, num4, start);
 				}
 				setPixel(i, n - 1 - j, color.getRGB());
 			}
 		}
-	}
-
-	// correction for color range  0--255
-	private int correctColor(int start, int num, int i, int div) {
-		int corrected = start + num / div - i;	//random transformation
-		if (corrected > 255) {
-			corrected = 255;
-		}
-		if (corrected < 0) {
-			corrected = 0;
-		}
-		return corrected;
 	}
 
 	private int julia(ComplexNumber zz, int max) {

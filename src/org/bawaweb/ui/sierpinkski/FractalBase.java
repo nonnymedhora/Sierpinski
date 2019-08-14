@@ -576,5 +576,24 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		this.running = running;
 	}
 
+	/**
+	 * // correction for color range  0--255
+	 * @param start	---	initial value
+	 * @param num	---	value to add
+	 * @param i		---	value to subtract
+	 * @param div	---	divisor of num
+	 * @return		 color range  0--255
+	 */
+	protected int correctColor(int start, int num, int i, int div) {
+		int corrected = start + num / div - i;	//random transformation
+		if (corrected > 255) {
+			corrected = 255;
+		}
+		if (corrected < 0) {
+			corrected = 0;
+		}
+		return corrected;
+	}
+
 
 }
