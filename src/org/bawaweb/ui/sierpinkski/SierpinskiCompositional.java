@@ -366,7 +366,6 @@ class SierpinskiComboPanel extends JPanel {
 				this.juliaSelection="J1";
 				this.addJuliaFormulaInfo();
 				this.addJuliaUseDiffInfo();
-				//this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + " + this.compConst);
 				break;
 			case J2: //  J2 = "P[3] C[0.4]";		//f(z) = z^3 + 0.400
 				this.power = 3;
@@ -374,7 +373,6 @@ class SierpinskiComboPanel extends JPanel {
 				this.juliaSelection="J2";
 				this.addJuliaFormulaInfo();
 				this.addJuliaUseDiffInfo();
-				//this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + " + this.compConst);
 				break;	
 			case J3: //  J3 = "P[4] C[0.484]";	//f(z) = z^4 + 0.484
 				this.power = 4;
@@ -382,7 +380,6 @@ class SierpinskiComboPanel extends JPanel {
 				this.juliaSelection="J3";
 				this.addJuliaFormulaInfo();
 				this.addJuliaUseDiffInfo();
-				//this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + " + this.compConst);
 				break;	
 			case J4: //  J4 = "P[5] C[0.544]";	//f(z) = z^5 + 0.544
 				this.power = 5;
@@ -390,7 +387,6 @@ class SierpinskiComboPanel extends JPanel {
 				this.juliaSelection="J4";
 				this.addJuliaFormulaInfo();
 				this.addJuliaUseDiffInfo();
-				//this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + " + this.compConst);
 				break;	
 			case J5: //  J5 = "P[6] C[0.59]";	//f(z) = z^6 + 0.590
 				this.power = 6;
@@ -398,7 +394,6 @@ class SierpinskiComboPanel extends JPanel {
 				this.juliaSelection="J5";
 				this.addJuliaFormulaInfo();
 				this.addJuliaUseDiffInfo();
-				//this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + " + this.compConst);
 				break;	
 			case J6: //  J6 = "P[7] C[0.626]";	//f(z) = z^7 + 0.626
 				this.power = 7;
@@ -406,7 +401,6 @@ class SierpinskiComboPanel extends JPanel {
 				this.juliaSelection="J6";
 				this.addJuliaFormulaInfo();
 				this.addJuliaUseDiffInfo();
-				//this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + " + this.compConst);
 				break;	
 			case J7: //  J7 = "P[2] C1[-0.74543+0.11301*i]";
 				this.power = 2;
@@ -414,7 +408,6 @@ class SierpinskiComboPanel extends JPanel {
 				this.juliaSelection="J7";
 				this.addJuliaFormulaInfo();
 				this.addJuliaUseDiffInfo();
-				//this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + (-0.74543 + 0.11301 * i)");
 				break;	
 			case J8: //  J8 = "P[2] C2";//[-0.75+0.11*i]";
 				this.power = 2;
@@ -422,7 +415,6 @@ class SierpinskiComboPanel extends JPanel {
 				this.juliaSelection="J8";
 				this.addJuliaFormulaInfo();
 				this.addJuliaUseDiffInfo();
-				//this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + (-0.75 + 0.11 * i)");
 				break;
 			case J9: //  J9 = "P[2] C3";//[-0.1+0.651*i]";
 				this.power = 2;
@@ -430,7 +422,6 @@ class SierpinskiComboPanel extends JPanel {
 				this.juliaSelection="J9";
 				this.addJuliaFormulaInfo();
 				this.addJuliaUseDiffInfo();
-				//this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + (-0.1 + 0.651 * i)");
 				break;
 				
 			default:
@@ -442,8 +433,9 @@ class SierpinskiComboPanel extends JPanel {
 				
 				break;				
 		}
+		
 		this.formulaArea.setVisible(true);
-//		this.formulaArea.setText("");
+
 		this.buStart.setEnabled(true);
 	}
 	
@@ -484,20 +476,20 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private void doStartCommand() {
 		this.formulaArea.setText("");
-		//fractal art choice
+		// fractal art choice
 		String choice = this.getComboChoice();
 		// for Fanny
 		int length = this.getSideComboChoice();
 		int ratio = this.getRatioChoice();
-		//for Apollo
+		// for Apollo
 		double[] cChoices = this.getCurvChoice();
 		double mXt = this.getMultiplier();
-		//for Julia
+		// for Julia
 		int pow = this.getPower();
 		double con = this.getComplexConst();
 		String comp = this.getComplex();
 		boolean jUseD = this.getJUseDiff();
-		//for Mandelbrot
+		// for Mandelbrot
 		int mag = this.getMagnification();
 		int exp = this.getExponent();
 		boolean mUseD = this.getMUseDiff();
@@ -540,17 +532,8 @@ class SierpinskiComboPanel extends JPanel {
 			this.addJuliaUseDiffInfo();
 			if (!(this.juliaSelection.equals("J7") || this.juliaSelection.equals("J8")
 					|| this.juliaSelection.equals("J9"))) {
-				
-//				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + pow + " + " + con);
 				ff = new Julia(pow, con, jUseD);
 			} else {
-				/*if(this.juliaSelection.equals("J7")){
-					this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + pow + " + (-0.74543 + 0.11301 * i)");
-				}else if(this.juliaSelection.equals("J8")){
-					this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + pow + " + (-0.75 + 0.11 * i)");
-				}else if(this.juliaSelection.equals("J9")){
-					this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + pow + " + (-0.1 + 0.651 * i)");
-				}*/
 				ff = new Julia(pow, comp,jUseD);
 			}
 			this.doReset();
