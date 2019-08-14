@@ -71,10 +71,10 @@ public class Mandelbrot extends FractalBase {
 	 */
 	@Override
 	public void createFractalShape(Graphics2D g) {
-		createMandelbrot(g/*, depth*/,this.useDiff);
+		createMandelbrot(g, this.useDiff);
 	}
 
-	private void createMandelbrot(Graphics2D g/*, int d*/, boolean diff) {		
+	private void createMandelbrot(Graphics2D g, boolean diff) {		
 		double xc = -0.5;
 		double yc = 0;
 		double size = this.mag;//10;//4;//2;

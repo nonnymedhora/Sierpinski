@@ -324,6 +324,29 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		g.draw(myPath);
 	}
 
+
+	// setup for Color palette
+	enum Colors {
+		RED (Color.RED), BLUE (Color.BLUE), GREEN (Color.GREEN),
+		ORANGE (Color.ORANGE), YELLOW (Color.YELLOW), PINK (Color.PINK),
+		BLACK (Color.WHITE), WHITE (Color.WHITE),		
+		MAGENTA (Color.MAGENTA),CYAN (Color.CYAN),
+		LIGHT_GRAY (Color.LIGHT_GRAY), DARK_GRAY (Color.DARK_GRAY)
+		;
+		
+		
+		private final Color collor;
+
+		private Colors(Color c){
+			this.collor = c;
+		}
+		
+		public Color getColor(){
+			return this.collor;
+		}
+	}
+
+
 	
 	class Line {
 		private double x, y, length, angle;
@@ -594,6 +617,5 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		}
 		return corrected;
 	}
-
-
+	
 }

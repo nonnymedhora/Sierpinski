@@ -34,9 +34,10 @@ public class Julia extends FractalBase {
 	private static final long serialVersionUID = 1987L;
 	
 	private int power;
-	private double complexConst;
 	
-	private ComplexNumber complex;
+	private double complexConst;		//	either this	
+	private ComplexNumber complex; 		// or this
+	private boolean useDiff = false;
 	
 	public final ComplexNumber C1 = new ComplexNumber(-0.74543,0.11301);	//c=-0.74543+0.11301*i
 	public final ComplexNumber C2 = new ComplexNumber(-0.75,0.11);			//c= -0.75+0.11*i
@@ -51,7 +52,7 @@ public class Julia extends FractalBase {
 	 * @param con
 	 */
 	public Julia(int mul, double con) {
-		super();
+		this();
 		this.power = mul;
 		this.complexConst = con;
 	}
@@ -60,16 +61,44 @@ public class Julia extends FractalBase {
 
 	/**
 	 * @param mul
+	 * @param con
+	 * @param uDiff
+	 */
+	public Julia(int mul, double con, boolean uDiff) {
+		this(mul,con);
+		this.useDiff = uDiff;
+	}
+
+	/**
+	 * @param mul
 	 * @param comp
 	 */
 	public Julia(int mul, ComplexNumber comp) {
-		super();
+		this();
 		this.power = mul;
 		this.complex = comp;
 	}
+	
+	
+
+	/**
+	 * @param mul
+	 * @param comp
+	 * @param uDiff
+	 */
+	public Julia(int mul, ComplexNumber comp, boolean uDiff) {
+		this(mul,comp);
+		this.useDiff = uDiff;
+	}
+	
+
+	public Julia(int mul, String comp, boolean uDiff) {
+		this(mul,comp);
+		this.useDiff = uDiff;
+	}
 
 	public Julia(int mul, String comp) {
-		super();
+		this();
 		this.power = mul;
 		switch (comp) {
 		case "C1":
@@ -128,15 +157,29 @@ public class Julia extends FractalBase {
 		this.complex = complex;
 	}
 
+	/**
+	 * @return the useDiff
+	 */
+	public boolean isUseDiff() {
+		return useDiff;
+	}
+
+	/**
+	 * @param useDiff the useDiff to set
+	 */
+	public void setUseDiff(boolean useDiff) {
+		this.useDiff = useDiff;
+	}
+
 	/* (non-Javadoc)
 	 * @see org.bawaweb.ui.sierpinkski.FractalBase#createFractalShape(java.awt.Graphics2D)
 	 */
 	@Override
 	public void createFractalShape(Graphics2D g) {
-		createJulia(g,depth);
+		createJulia(g, this.useDiff);
 	}
 
-	private void createJulia(Graphics2D g, int d) {
+	private void createJulia(Graphics2D g, boolean diff) {
 		double xc = 0;
 		double yc = 0;
 		double size = 2;
@@ -147,7 +190,12 @@ public class Julia extends FractalBase {
 				double x0 = xc - size / 2 + size * i / n;
 				double y0 = yc - size / 2 + size * j / n;
 				ComplexNumber z0 = new ComplexNumber(x0, y0);
-				int gray = maxIter - julia(z0, maxIter);
+				int gray;
+				if (diff) {
+					gray = julia(z0, maxIter);
+				} else {
+					gray = maxIter - julia(z0, maxIter);
+				}
 				Color color;
 				/* Simple */
 				/* color = new Color(gray, gray, gray); */
@@ -159,7 +207,6 @@ public class Julia extends FractalBase {
 					int num1 = correctColor(start, gray, i, 7);
 					int num2 = correctColor(start, gray, j, 7);
 					color = new Color(num1, num2, start);
-//					color = new Color(start + gray / 7 - i, start + gray / 7 - j, start + gray / 7);
 				} else {
 					final int start = 255;
 					int num3 = correctColor(start, gray,i,1);

@@ -77,7 +77,8 @@ class SierpinskiComboPanel extends JPanel {
 	// for Julia
 	private final String[] juliaOptions = new String[] { J1, J2, J3, J4, J5, J6, J7, J8, J9 };
 	private final JComboBox<String> juliaCombos = new JComboBox<String>(juliaOptions);
-	
+	private final JCheckBox juliaUseDiff = new JCheckBox("UseDifferencesOnly",true);
+
 	// for Mandelbrot
 	private final Integer[] mandOptions = new Integer[]{1,2,3,4,5,6,7,8,9,10};
 	private final JComboBox<Integer> mandCombos = new JComboBox<Integer>(mandOptions);
@@ -116,11 +117,12 @@ class SierpinskiComboPanel extends JPanel {
 	protected double compConst;
 	protected String complex;
 	protected String juliaSelection;
+	protected boolean jUseDiff;
 	
 	// for mandelbrot
 	protected int magnification;
 	protected int exponent;
-	protected boolean useDiff;
+	protected boolean mUseDiff;
 
 	
 	private Thread fbf;
@@ -150,16 +152,15 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(this.apolloOptionsPanel);
 		
 		this.juliaOptionsPanel.add(new JLabel("Power-Constant"));
-		this.juliaOptionsPanel.add(this.juliaCombos);
+		this.juliaOptionsPanel.add(this.juliaCombos);		
+		this.juliaOptionsPanel.add(this.juliaUseDiff);
 		this.juliaOptionsPanel.setVisible(false);
 		this.add(this.juliaOptionsPanel);
 		
 		this.mandOptionsPanel.add(new JLabel("Magnification"));
 		this.mandOptionsPanel.add(this.mandCombos);
-
 		this.mandOptionsPanel.add(new JLabel("Exponent"));
-		this.mandOptionsPanel.add(this.mandExpCombos);
-		
+		this.mandOptionsPanel.add(this.mandExpCombos);		
 		this.mandOptionsPanel.add(this.mandUseDiff);		
 		
 		this.mandOptionsPanel.setVisible(false);
@@ -311,67 +312,134 @@ class SierpinskiComboPanel extends JPanel {
 		this.buStart.setEnabled(true);
 	}	
 	
+	private void doJuliaChoicesCheck() {
+		this.formulaArea.setVisible(true);
+		if (this.power != 0 && (this.compConst != 0.0 || this.complex!=null)) {
+			this.buStart.setEnabled(true);
+			
+			addJuliaFormulaInfo();
+			
+			addJuliaUseDiffInfo();
+		} else {
+			this.buStart.setEnabled(false);
+		}
+	}
+
+	private void addJuliaFormulaInfo() {
+		if (!(this.juliaSelection.equals("J7") || this.juliaSelection.equals("J8")
+				|| this.juliaSelection.equals("J9"))) {
+			
+			this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + " + this.compConst);
+			
+		} else {
+			if(this.juliaSelection.equals("J7")){
+				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + (-0.74543 + 0.11301 * i)");
+			}else if(this.juliaSelection.equals("J8")){
+				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + (-0.75 + 0.11 * i)");
+			}else if(this.juliaSelection.equals("J9")){
+				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + (-0.1 + 0.651 * i)");
+			}
+			
+		}
+	}
+
+	private void addJuliaUseDiffInfo() {
+		if (this.jUseDiff || this.juliaUseDiff.isSelected()) {
+			this.formulaArea
+					.append("\n\nCalculated inverted colors based on differences in pixel values from origin");
+		} else {
+			this.formulaArea.append("\n\nCalculated colors based on pixel values with a 'top-and-left' origin");
+		}
+	}
+
+	private void doSetJuliaUseDiffCommand(boolean useDiffs) {
+		this.jUseDiff = useDiffs;
+		this.formulaArea.setVisible(true);
+		this.doJuliaChoicesCheck();
+	}
+	
 	private void doSelectJuliaCombosCommand(String cOption) {
 		switch (cOption) {
 			case J1: //  J1 = "P[2] C[0.279]";	//f(z) = z^2 + 0.279
 				this.power = 2;
 				this.compConst = 0.279;
 				this.juliaSelection="J1";
-				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + " + this.compConst);
+				this.addJuliaFormulaInfo();
+				this.addJuliaUseDiffInfo();
+				//this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + " + this.compConst);
 				break;
 			case J2: //  J2 = "P[3] C[0.4]";		//f(z) = z^3 + 0.400
 				this.power = 3;
 				this.compConst = 0.4;
 				this.juliaSelection="J2";
-				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + " + this.compConst);
+				this.addJuliaFormulaInfo();
+				this.addJuliaUseDiffInfo();
+				//this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + " + this.compConst);
 				break;	
 			case J3: //  J3 = "P[4] C[0.484]";	//f(z) = z^4 + 0.484
 				this.power = 4;
 				this.compConst = 0.484;
 				this.juliaSelection="J3";
-				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + " + this.compConst);
+				this.addJuliaFormulaInfo();
+				this.addJuliaUseDiffInfo();
+				//this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + " + this.compConst);
 				break;	
 			case J4: //  J4 = "P[5] C[0.544]";	//f(z) = z^5 + 0.544
 				this.power = 5;
 				this.compConst = 0.544;
 				this.juliaSelection="J4";
-				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + " + this.compConst);
+				this.addJuliaFormulaInfo();
+				this.addJuliaUseDiffInfo();
+				//this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + " + this.compConst);
 				break;	
 			case J5: //  J5 = "P[6] C[0.59]";	//f(z) = z^6 + 0.590
 				this.power = 6;
 				this.compConst = 0.59;
 				this.juliaSelection="J5";
-				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + " + this.compConst);
+				this.addJuliaFormulaInfo();
+				this.addJuliaUseDiffInfo();
+				//this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + " + this.compConst);
 				break;	
 			case J6: //  J6 = "P[7] C[0.626]";	//f(z) = z^7 + 0.626
 				this.power = 7;
 				this.compConst = 0.626;
 				this.juliaSelection="J6";
-				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + " + this.compConst);
+				this.addJuliaFormulaInfo();
+				this.addJuliaUseDiffInfo();
+				//this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + " + this.compConst);
 				break;	
 			case J7: //  J7 = "P[2] C1[-0.74543+0.11301*i]";
 				this.power = 2;
 				this.complex = "C1";
 				this.juliaSelection="J7";
-				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + (-0.74543 + 0.11301 * i)");
+				this.addJuliaFormulaInfo();
+				this.addJuliaUseDiffInfo();
+				//this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + (-0.74543 + 0.11301 * i)");
 				break;	
 			case J8: //  J8 = "P[2] C2";//[-0.75+0.11*i]";
 				this.power = 2;
 				this.complex = "C2";
 				this.juliaSelection="J8";
-				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + (-0.75 + 0.11 * i)");
+				this.addJuliaFormulaInfo();
+				this.addJuliaUseDiffInfo();
+				//this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + (-0.75 + 0.11 * i)");
 				break;
 			case J9: //  J9 = "P[2] C3";//[-0.1+0.651*i]";
 				this.power = 2;
 				this.complex = "C3";
 				this.juliaSelection="J9";
-				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + (-0.1 + 0.651 * i)");
+				this.addJuliaFormulaInfo();
+				this.addJuliaUseDiffInfo();
+				//this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + (-0.1 + 0.651 * i)");
 				break;
 				
 			default:
 				// use--J1
 				this.power = 2;
 				this.compConst = 0.279;
+				this.addJuliaFormulaInfo();
+				this.addJuliaUseDiffInfo();
+				
 				break;				
 		}
 		this.formulaArea.setVisible(true);
@@ -385,7 +453,7 @@ class SierpinskiComboPanel extends JPanel {
 		if (this.magnification != 0 && this.exponent != 0) {
 			this.buStart.setEnabled(true);
 			this.formulaArea.setText("Mandelbrot Set:\n\nf(z) = z ^ " + this.exponent + " + C");
-			if (this.useDiff || this.mandUseDiff.isSelected()) {
+			if (this.mUseDiff || this.mandUseDiff.isSelected()) {
 				this.formulaArea
 						.append("\n\nCalculated inverted colors based on differences in pixel values from origin");
 			} else {
@@ -409,7 +477,7 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private void doSetMandUseDiffCommand(boolean useDiffs) {
-		this.useDiff = useDiffs;
+		this.mUseDiff = useDiffs;
 		this.formulaArea.setVisible(true);
 		this.doMandelbrotChoicesCheck();
 	}
@@ -428,10 +496,11 @@ class SierpinskiComboPanel extends JPanel {
 		int pow = this.getPower();
 		double con = this.getComplexConst();
 		String comp = this.getComplex();
+		boolean jUseD = this.getJUseDiff();
 		//for Mandelbrot
 		int mag = this.getMagnification();
 		int exp = this.getExponent();
-		boolean uD = this.getUseDiff();
+		boolean mUseD = this.getMUseDiff();
 
 		final FractalBase ff;
 		
@@ -457,31 +526,32 @@ class SierpinskiComboPanel extends JPanel {
 			this.formulaArea.setVisible(true);
 			this.formulaArea.setText("");
 			this.formulaArea.setText("Mandelbrot Set:\n\nf(z) = z ^ " + exp + " + C");
-			if (uD) {
+			if (mUseD) {
 				this.formulaArea.append("\n\nCalculated based on differences in pixel values from origin");
 			} else {
 				this.formulaArea.append("\n\nCalculated based on pixel values with a top-left origin");
 			}
-			ff = new Mandelbrot(mag, exp, uD);
+			ff = new Mandelbrot(mag, exp, mUseD);
 			this.doReset();
 		} else if (choice.equals(JULIA)) {
 			this.formulaArea.setVisible(true);
 			this.formulaArea.setText("");
-			
+			this.addJuliaFormulaInfo();
+			this.addJuliaUseDiffInfo();
 			if (!(this.juliaSelection.equals("J7") || this.juliaSelection.equals("J8")
 					|| this.juliaSelection.equals("J9"))) {
 				
-				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + pow + " + " + con);
-				ff = new Julia(pow, con);
+//				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + pow + " + " + con);
+				ff = new Julia(pow, con, jUseD);
 			} else {
-				if(this.juliaSelection.equals("J7")){
+				/*if(this.juliaSelection.equals("J7")){
 					this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + pow + " + (-0.74543 + 0.11301 * i)");
 				}else if(this.juliaSelection.equals("J8")){
 					this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + pow + " + (-0.75 + 0.11 * i)");
 				}else if(this.juliaSelection.equals("J9")){
 					this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + pow + " + (-0.1 + 0.651 * i)");
-				}
-				ff = new Julia(pow, comp);
+				}*/
+				ff = new Julia(pow, comp,jUseD);
 			}
 			this.doReset();
 
@@ -584,6 +654,18 @@ class SierpinskiComboPanel extends JPanel {
 				String juliaComboOption = (String)cb.getSelectedItem();
 				doSelectJuliaCombosCommand(juliaComboOption);				
 			}});
+
+		
+		this.juliaUseDiff.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetJuliaUseDiffCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetJuliaUseDiffCommand(false);
+				}
+			}
+        });
 		
 		this.mandCombos.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
@@ -667,9 +749,12 @@ class SierpinskiComboPanel extends JPanel {
 	protected int getExponent(){
 		return this.exponent;
 	}
-	
-	protected boolean getUseDiff(){
-		return this.useDiff || this.mandUseDiff.isSelected();
+
+	protected boolean getMUseDiff(){
+		return this.mUseDiff || this.mandUseDiff.isSelected();
+	}
+	protected boolean getJUseDiff(){
+		return this.jUseDiff || this.juliaUseDiff.isSelected();
 	}
 	
 }

@@ -150,8 +150,8 @@ public class ApollonianCircles extends FractalBase {
 		// first = seed color
 		// iterations = colors.length - 1
 		final Color[] colors = { 
-				Color.BLACK, Color.ORANGE, Color.BLUE, Color.DARK_GRAY, 
-				Color.RED, Color.GREEN, Color.MAGENTA, Color.YELLOW,
+				Color.BLACK, Color.RED, Color.BLUE, Color.YELLOW, 
+				Color.ORANGE, Color.GREEN, Color.MAGENTA, Color.DARK_GRAY,
 				Color.CYAN, Color.PINK, Color.LIGHT_GRAY};
 		
 		////////////////////////////////////////////////////
