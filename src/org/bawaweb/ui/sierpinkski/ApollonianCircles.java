@@ -32,6 +32,8 @@ public class ApollonianCircles extends FractalBase {
 	
 	public ApollonianCircles(double[] curves, double mult) {
 		super();
+//		System.out.println(" ApollonianCircles(double[] curves, double mult)");
+//		System.out.println("C1["+curves[0]+"] C2["+curves[1]+"] C3["+curves[2]+"] mult["+mult+"]");
 		this.setCurvatures(curves);
 		this.setMultiplier(mult);
 	}

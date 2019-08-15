@@ -12,6 +12,8 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
+
 
 /**
  * @author Navroz
@@ -25,6 +27,9 @@ public class Mandelbrot extends FractalBase {
 	private int exp;
 	private boolean useDiff=false;
 	private int size;		//0-599 4 ltr
+	
+
+	private ComplexNumber compConst = new ComplexNumber(-0.75, 0.11);
 
 	public Mandelbrot() {
 		super();
@@ -47,8 +52,7 @@ public class Mandelbrot extends FractalBase {
 	 * @param ep
 	 */
 	public Mandelbrot(int mg, int ep) {
-		super();
-		this.mag = mg;
+		this(mg);
 		this.exp = ep;
 	}
 
@@ -58,10 +62,25 @@ public class Mandelbrot extends FractalBase {
 	 * @param dif
 	 */
 	public Mandelbrot(int mg, int ep, boolean dif) {
-		super();
-		this.mag = mg;
-		this.exp = ep;
+		this(mg, ep);
 		this.useDiff = dif;
+	}
+
+	/**
+	 * @param mag
+	 * @param exp
+	 * @param useDiff
+	 * @param complexConst
+	 */
+	public Mandelbrot(int mg, int ep, boolean useD, ComplexNumber complexConst) {
+		this(mg,ep,useD);
+		this.compConst = complexConst;
+	}
+	
+	public Mandelbrot(int mg, int ep, boolean useD, double real, double img) {
+		this(mg,ep,useD);
+//		System.out.println(" Mandelbrot(int mg("+mg+"), int ep("+ep+"), boolean useD, double real("+real+"), double img("+img+"))");
+		this.compConst = new ComplexNumber(real,img);
 	}
 
 	private static final long serialVersionUID = 13456L;
@@ -81,47 +100,32 @@ public class Mandelbrot extends FractalBase {
 
 		int n = 599;//512;	(0-599)
 		//System.out.println("here with depth " + depth);
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n; j++) {
-				double x0 = xc - size / 2 + size * i / n;
-				double y0 = yc - size / 2 + size * j / n;
+		for (int row = 0; row < n; row++) {
+			for (int col = 0; col < n; col++) {
+				double x0 = xc - size / 2 + size * row / n;
+				double y0 = yc - size / 2 + size * col / n;
 				ComplexNumber z0 = new ComplexNumber(x0, y0);
-				int gray;
+				int colorRGB;
 				// int gray = /*maxIter - */mand(z0, maxIter);
 				if (diff) {
-					gray = mand(z0, maxIter, exp);
+					colorRGB = mand(z0, maxIter, exp,this.compConst);
 				} else {
-					gray = maxIter - mand(z0, maxIter, exp);
+					colorRGB = maxIter - mand(z0, maxIter, exp,this.compConst);
 				}
-				Color color;
-				/* Simple === renders in black-white-gray */
-				/* color = new Color(gray, gray, gray); */
-				/* Complex === renders in Color */ 
-				if (gray % 2 == 0) {
-					color = new Color(gray, gray, gray);
-				} else if (gray % 7 == 0) {
-					final int start = 128;
-					int num1 = correctColor(start, gray, i, 7);
-					int num2 = correctColor(start, gray, j, 7);
-					color = new Color(num1, num2, start);
-				} else {
-					final int start = 255;
-					int num3 = correctColor(start, gray,i,1);
-					int num4 = correctColor(start, gray,j,1);
-					color = new Color(num3, num4, start);
-				}
-				setPixel(i, n - 1 - j, color.getRGB());
+				Color color = this.getPixelDisplayColor(row,col,colorRGB);
+				setPixel(row, n - 1 - col, color.getRGB());
 				
 			}
 		}
 	}
+
 	
-	private int mand(ComplexNumber z0, int maxIterations, int power) {
+	private int mand(ComplexNumber z0, int maxIterations, int power, ComplexNumber constant) {
 		ComplexNumber z = z0;
 		for (int t = 0; t < maxIterations; t++) {
 			if (z.abs() > 2.0)
 				return t;
-			z = z.power(power).plus(z0);
+			z = z.power(power).plus(constant);
 //			z = z.power(3).plus(z0);
 //			z = z.power(2).plus(z0);
 		}

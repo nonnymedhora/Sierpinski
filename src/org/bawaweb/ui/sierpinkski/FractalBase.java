@@ -231,6 +231,59 @@ public abstract class FractalBase extends JFrame implements Runnable {
 			bufferedImage.setRGB(col, HEIGHT - row - 1, rgbColor);
 	}
 	
+	protected Color getPixelDisplayColor(int row, int col, int colorRGB) {
+		Color color;
+		/* Simple */
+		/* color = new Color(gray, gray, gray); */
+		/* Complex */ 
+		if (colorRGB % 2 == 0) {
+			color = new Color(colorRGB, colorRGB, colorRGB);
+		} else if (colorRGB % 3 == 0) {
+			/* color = Colors.GREEN.getColor(); */
+			final int start = 32;
+			int num1 = correctColor(start, colorRGB, row, 3);
+			int num2 = correctColor(start, colorRGB, col, 3);
+			color = new Color(num1, num2, start);
+		} else if (colorRGB % 5 == 0) {
+			final int start = 64;
+			int num1 = correctColor(start, colorRGB, row, 5);
+			int num2 = correctColor(start, colorRGB, col, 5);
+			color = new Color(num1, num2, start);
+		}
+		else if (colorRGB % 7 == 0) {
+			/* color=Colors.RED.getColor(); */
+			final int start = 128;
+			int num1 = correctColor(start, colorRGB, row, 7);
+			int num2 = correctColor(start, colorRGB, col, 7);
+			color = new Color(num1, num2, start);
+		} else {
+			/* color=Colors.BLUE.getColor(); */
+
+			final int start = 255;
+			int num1 = correctColor(start, colorRGB, row, 1);
+			int num2 = correctColor(start, colorRGB, col, 1);
+			color = new Color(num1, num2, start);
+		}
+		return color;
+	}
+	
+
+
+	/**
+	 * // correction for color range  0--255
+	 * @param start	---	initial value
+	 * @param num	---	value to add
+	 * @param sub		---	value to subtract
+	 * @param div	---	divisor of num
+	 * @return		 color range  0--255
+	 */
+	protected int correctColor(int start, int num, int sub, int div) {
+		int corrected = start + num / div - sub;	//random transformation
+		corrected = corrected > 255 ? 255 : corrected;
+		corrected = corrected < 0 ? 0 : corrected;
+		return corrected;
+	}
+	
 	private void validateRowIndex(int row) {
         if (row < 0 || row >= HEIGHT)
             throw new IllegalArgumentException("row index must be between 0 and " + (HEIGHT - 1) + ": " + row);
@@ -597,25 +650,6 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	 */
 	public void setRunning(boolean running) {
 		this.running = running;
-	}
-
-	/**
-	 * // correction for color range  0--255
-	 * @param start	---	initial value
-	 * @param num	---	value to add
-	 * @param i		---	value to subtract
-	 * @param div	---	divisor of num
-	 * @return		 color range  0--255
-	 */
-	protected int correctColor(int start, int num, int i, int div) {
-		int corrected = start + num / div - i;	//random transformation
-		if (corrected > 255) {
-			corrected = 255;
-		}
-		if (corrected < 0) {
-			corrected = 0;
-		}
-		return corrected;
 	}
 	
 }

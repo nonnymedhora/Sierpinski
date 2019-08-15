@@ -97,6 +97,12 @@ public class Julia extends FractalBase {
 		this.useDiff = uDiff;
 	}
 
+	public Julia(int diyJuliaP, boolean diyJuliaUseD, double diyJuliaRealVal, double diyJuliaImgVal) {
+		this.power=diyJuliaP;
+		this.useDiff=diyJuliaUseD;
+		this.complex=new ComplexNumber(diyJuliaRealVal,diyJuliaImgVal);
+	}
+
 	public Julia(int mul, String comp) {
 		this();
 		this.power = mul;
@@ -185,35 +191,20 @@ public class Julia extends FractalBase {
 		double size = 2;
 
 		int n = 512;
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n; j++) {
-				double x0 = xc - size / 2 + size * i / n;
-				double y0 = yc - size / 2 + size * j / n;
+		for (int row = 0; row < n; row++) {
+			for (int col = 0; col < n; col++) {
+				double x0 = xc - size / 2 + size * row / n;
+				double y0 = yc - size / 2 + size * col / n;
 				ComplexNumber z0 = new ComplexNumber(x0, y0);
-				int gray;
+				int colorRGB;
 				if (diff) {
-					gray = julia(z0, maxIter);
+					colorRGB = julia(z0, maxIter);
 				} else {
-					gray = maxIter - julia(z0, maxIter);
+					colorRGB = maxIter - julia(z0, maxIter);
 				}
 				Color color;
-				/* Simple */
-				/* color = new Color(gray, gray, gray); */
-				/* Complex */ 
-				if (gray % 2 == 0) {
-					color = new Color(gray, gray, gray);
-				} else if (gray % 7 == 0) {
-					final int start = 128;
-					int num1 = correctColor(start, gray, i, 7);
-					int num2 = correctColor(start, gray, j, 7);
-					color = new Color(num1, num2, start);
-				} else {
-					final int start = 255;
-					int num3 = correctColor(start, gray,i,1);
-					int num4 = correctColor(start, gray,j,1);
-					color = new Color(num3, num4, start);
-				}
-				setPixel(i, n - 1 - j, color.getRGB());
+				color = getPixelDisplayColor(row, col, colorRGB);
+				setPixel(row, n - 1 - col, color.getRGB());
 			}
 		}
 	}

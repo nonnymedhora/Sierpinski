@@ -13,14 +13,19 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+
+import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
 
 /**
  * @author Navroz
@@ -47,7 +52,7 @@ class SierpinskiComboPanel extends JPanel {
 	private static final String A6 = "C[2, 2, 3] M[1]";
 	private static final String A5 = "C[23, 27, 18] M[16]";
 	private static final String A4 = "C[10, 15, 19] M[6]";
-	private static final String A3 = "C[50, 80, 8] M[6]";
+	private static final String A3 = "C[5, 8, 8] M[6]";
 	private static final String A2 = "C[25, 25, 28] M[20]";
 	private static final String A1 = "C[1, 1, 1] M[1]";
 
@@ -62,10 +67,11 @@ class SierpinskiComboPanel extends JPanel {
 	private static final String FANNY_TRIANGLES = "FannyTriangles";
 	private static final String FANNY_CIRCLE = "FannyCircle";
 	private static final String KOCHSNOWFLAKE = "KochSnowFlake";
+	private static final String DIY	="Do_It_Yourself";
 
 	private static final long serialVersionUID = 156478L;
 	
-	private final String[] comboOptions = new String[]{FANNY_CIRCLE,FANNY_TRIANGLES,SIERPINSKI_TRIANGLES,SIERPINSKI_SQUARES,APOLLONIAN_CIRCLES,CST_FRACTAL,SAMPLE,MANDELBROT,JULIA,KOCHSNOWFLAKE};
+	private final String[] comboOptions = new String[]{DIY,FANNY_CIRCLE,FANNY_TRIANGLES,SIERPINSKI_TRIANGLES,SIERPINSKI_SQUARES,APOLLONIAN_CIRCLES,CST_FRACTAL,SAMPLE,MANDELBROT,JULIA,KOCHSNOWFLAKE};
 	private final JComboBox<String> combos = new JComboBox<String>(comboOptions);
 	
 	//	for	FannyCircle & FannyTriangles
@@ -91,12 +97,18 @@ class SierpinskiComboPanel extends JPanel {
 	private final JComboBox<String> curvCombos = new JComboBox<String>(curvOptions);
 
 	// Fractal Art Options
-	private JPanel fannyOptionsPanel = new JPanel(new FlowLayout());
-	private JPanel apolloOptionsPanel = new JPanel(new FlowLayout());
-	private JPanel juliaOptionsPanel = new JPanel(new FlowLayout());
-	private JPanel mandOptionsPanel = new JPanel(new FlowLayout());
+	private JPanel fannyOptionsPanel = new JPanel(new FlowLayout(),true);
+	private JPanel apolloOptionsPanel = new JPanel(new FlowLayout(),true);
+	private JPanel juliaOptionsPanel = new JPanel(new FlowLayout(),true);
+	private JPanel mandOptionsPanel = new JPanel(new FlowLayout(),true);
+	private JPanel diyOptionsPanel	= new JPanel(new FlowLayout(),true);
+	
+	private JPanel diyMandPanel = new JPanel(new FlowLayout(),true);
+	private JPanel diyJuliaPanel = new JPanel(new FlowLayout(),true);
+	private JPanel diyApolloPanel = new JPanel(new FlowLayout(),true);
 	
 	private JTextArea formulaArea = new JTextArea(5,20);
+	//private JTextPane formulaPane;
 	
 	private final JButton buStart = new JButton("Start |>");
 	private final JButton buPause = new JButton("Pause ||");
@@ -123,7 +135,73 @@ class SierpinskiComboPanel extends JPanel {
 	protected int magnification;
 	protected int exponent;
 	protected boolean mUseDiff;
+	
+	
+	// for DIY
+	//radioButton
+	protected JRadioButton diyMandRb = new JRadioButton(MANDELBROT,true);
+	protected JRadioButton diyJuliaRb = new JRadioButton(JULIA);
+	protected JRadioButton diyApolloRb = new JRadioButton(APOLLONIAN_CIRCLES);
+	
+	protected ButtonGroup diyBg = new ButtonGroup();
+	
+	// diy fractal art option choice
+	private String diyMand = "DIY_"+MANDELBROT;
+	private String diyJulia = "DIY_"+JULIA;
+	private String diyApollo = "DIY_"+APOLLONIAN_CIRCLES;
 
+	private String diyFractChoice;
+	
+	//diy Mandelbrot options
+	protected int diyMandMagnification;
+	protected int diyMandExponent;
+	protected double diyMandConstReal;
+	protected double diyMandConstImg;
+	protected boolean diyMandUseDiff;
+	
+	private final Integer[] diyMandMagOptions = new Integer[]{1,2,3,4,5,6,7,8,9,10};
+	private final JComboBox<Integer> diyMandMagCombos = new JComboBox<Integer>(diyMandMagOptions);
+	private final Integer[] diyMandExpOptions = new Integer[]{2,3,4,5,6,7};
+	private final JComboBox<Integer> diyMandExpCombos = new JComboBox<Integer>(diyMandExpOptions);
+	private final JCheckBox diyMandUseDiffCb = new JCheckBox("UseDifferencesOnly",true);
+	private JTextField diyMandRealTf = new JTextField(5);
+	private JTextField diyMandImgTf = new JTextField(5);
+
+	
+	//diy Julia options
+	protected int diyJuliaPower;
+	protected double diyJuliaConstReal;
+	protected double diyJuliaConstImg;
+	protected boolean diyJuliaUseDiff;
+	
+	private final Integer[] diyJuliaPowerOptions = new Integer[]{2,3,4,5,6,7};
+	private final JComboBox<Integer> diyJuliaPowerCombos = new JComboBox<Integer>(diyJuliaPowerOptions);
+	private final JCheckBox diyJuliaUseDiffCb = new JCheckBox("UseDifferencesOnly",true);
+	private JTextField diyJuliaRealTf = new JTextField(5);
+	private JTextField diyJuliaImgTf = new JTextField(5);
+	
+	//diy Apollo Options
+	protected int diyApolloC1;
+	protected int diyApolloC2;
+	protected int diyApolloC3;
+	protected int diyApolloMult;
+	
+
+	private final Integer[] diyApolloC1Options = new Integer[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30};
+	private final JComboBox<Integer> diyApolloC1Combos = new JComboBox<Integer>(diyApolloC1Options);
+	private final Integer[] diyApolloC2Options = new Integer[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30};
+	private final JComboBox<Integer> diyApolloC2Combos = new JComboBox<Integer>(diyApolloC1Options);	
+	private final Integer[] diyApolloC3Options = new Integer[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30};
+	private final JComboBox<Integer> diyApolloC3Combos = new JComboBox<Integer>(diyApolloC1Options);
+	
+	private final Integer[] diyApolloMultOptions = new Integer[]{2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
+	private final JComboBox<Integer> diyApolloMultCombos = new JComboBox<Integer>(diyApolloMultOptions);
+	
+	
+	
+	
+	
+	
 	
 	private Thread fbf;
 	
@@ -157,14 +235,72 @@ class SierpinskiComboPanel extends JPanel {
 		this.juliaOptionsPanel.setVisible(false);
 		this.add(this.juliaOptionsPanel);
 		
-		this.mandOptionsPanel.add(new JLabel("Magnification"));
+		this.mandOptionsPanel.add(new JLabel("Magnification(M):"));
 		this.mandOptionsPanel.add(this.mandCombos);
-		this.mandOptionsPanel.add(new JLabel("Exponent"));
+		this.mandOptionsPanel.add(new JLabel("Exponent(M):"));
 		this.mandOptionsPanel.add(this.mandExpCombos);		
 		this.mandOptionsPanel.add(this.mandUseDiff);		
 		
 		this.mandOptionsPanel.setVisible(false);
 		this.add(this.mandOptionsPanel);
+		
+		this.diyOptionsPanel.add(new JLabel("Choose Fractal Art:"));
+		this.diyMandRb.setActionCommand("DIY_"+MANDELBROT);
+		this.diyJuliaRb.setActionCommand("DIY_"+JULIA);
+		this.diyApolloRb.setActionCommand("DIY_"+APOLLONIAN_CIRCLES);
+		
+		this.diyBg.add(this.diyMandRb);
+		this.diyBg.add(this.diyJuliaRb);
+		this.diyBg.add(this.diyApolloRb);
+		
+		this.diyMandRb.setSelected(true);
+		this.diyMandRb.setName("DIY_"+MANDELBROT);
+		this.diyJuliaRb.setName("DIY_"+JULIA);
+		this.diyApolloRb.setName("DIY_"+APOLLONIAN_CIRCLES);
+		
+		this.diyOptionsPanel.add(this.diyMandRb);
+		this.diyOptionsPanel.add(this.diyJuliaRb);
+		this.diyOptionsPanel.add(this.diyApolloRb);
+		
+		this.diyMandPanel.add(new JLabel("Magnification:"));
+		this.diyMandPanel.add(this.diyMandMagCombos);
+		this.diyMandPanel.add(new JLabel("Exponent:"));
+		this.diyMandPanel.add(this.diyMandExpCombos);
+		this.diyMandPanel.add(new JLabel("ComplexConstant - Real (R) "));
+		this.diyMandPanel.add(this.diyMandRealTf);
+		this.diyMandPanel.add(new JLabel("Imaginary (*i)"));
+		this.diyMandPanel.add(this.diyMandImgTf);
+		this.diyMandPanel.add(this.diyMandUseDiffCb);
+		this.diyMandPanel.setVisible(false);
+		
+		this.diyJuliaPanel.add(new JLabel("Power:"));
+		this.diyJuliaPanel.add(this.diyJuliaPowerCombos);
+		this.diyJuliaPanel.add(new JLabel("ComplexConstant - Real (R) "));
+		this.diyJuliaPanel.add(this.diyJuliaRealTf);
+		this.diyJuliaPanel.add(new JLabel("Imaginary (*i)"));
+		this.diyJuliaPanel.add(this.diyJuliaImgTf);
+		this.diyJuliaPanel.add(this.diyJuliaUseDiffCb);
+		this.diyJuliaPanel.setVisible(false);
+		
+		this.diyApolloPanel.add(new JLabel("C1"));
+		this.diyApolloPanel.add(this.diyApolloC1Combos);
+		this.diyApolloPanel.add(new JLabel("C2"));
+		this.diyApolloPanel.add(this.diyApolloC2Combos);
+		this.diyApolloPanel.add(new JLabel("C3"));
+		this.diyApolloPanel.add(this.diyApolloC3Combos);
+		this.diyApolloPanel.add(new JLabel("Multiplier"));
+		this.diyApolloPanel.add(this.diyApolloMultCombos);
+		this.diyApolloPanel.setVisible(false);
+		
+		
+		this.diyOptionsPanel.add(this.diyMandPanel);
+		this.diyOptionsPanel.add(this.diyJuliaPanel);
+		this.diyOptionsPanel.add(this.diyApolloPanel);
+		this.diyOptionsPanel.setVisible(false);
+		
+		this.add(diyOptionsPanel);
+		
+		
 
 		this.buStart.setEnabled(false);
 		this.add(this.buStart);
@@ -184,6 +320,22 @@ class SierpinskiComboPanel extends JPanel {
 		this.compConst = 0.0;
 		this.complex = null;
 		this.magnification = 0;
+		
+		//diy
+		this.diyMandMagnification = 0;
+		this.diyMandExponent = 0;
+		this.diyMandConstReal = 0.0;
+		this.diyMandConstImg = 0.0;
+
+		this.diyJuliaPower = 0;
+		this.diyJuliaConstReal = 0.0;
+		this.diyJuliaConstImg = 0.0;
+
+		this.diyApolloC1 = 0;
+		this.diyApolloC2 = 0;
+		this.diyApolloC3 = 0;
+		this.diyApolloMult = 0;
+		
 	}
 
 	private void setComboSelections() {
@@ -194,15 +346,35 @@ class SierpinskiComboPanel extends JPanel {
 		this.juliaCombos.setSelectedIndex(0);
 		this.mandCombos.setSelectedIndex(0);
 		
+		this.diyMandMagCombos.setSelectedIndex(0);
+		this.diyMandExpCombos.setSelectedIndex(0);
+		
+		this.diyJuliaPowerCombos.setSelectedIndex(0);
+		
+		this.diyApolloC1Combos.setSelectedIndex(0);
+		this.diyApolloC2Combos.setSelectedIndex(0);
+		this.diyApolloC3Combos.setSelectedIndex(0);
+		
 		this.combos.setSelectedItem(this.comboOptions[0]);		
 		this.sideCombos.setSelectedItem(this.sideOptions[0]);		
 		this.ratioCombos.setSelectedItem(this.ratioOptions[0]);		
 		this.curvCombos.setSelectedItem(this.ratioOptions[0]);
 		this.juliaCombos.setSelectedItem(this.juliaOptions[0]);
 		this.mandCombos.setSelectedItem(this.mandOptions[0]);
+		
+		this.diyMandMagCombos.setSelectedItem(this.diyMandMagOptions[0]);
+		this.diyMandExpCombos.setSelectedItem(this.diyMandExpOptions);
+		
+		this.diyJuliaPowerCombos.setSelectedItem(this.diyJuliaPowerOptions[0]);
+
+		this.diyApolloC1Combos.setSelectedItem(this.diyApolloC1Options[0]);
+		this.diyApolloC2Combos.setSelectedItem(this.diyApolloC2Options[0]);
+		this.diyApolloC3Combos.setSelectedItem(this.diyApolloC3Options[0]);
+		this.diyApolloMultCombos.setSelectedItem(this.diyApolloMultOptions[0]);
 	}
 	
 	private void doSelectCombosCommand(String option) {
+//		System.out.println("in doSelectCombosCommand == option is "+option);
 		this.comboChoice = option;
 
 		if (this.comboChoice.equals(APOLLONIAN_CIRCLES)) {
@@ -210,6 +382,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.juliaOptionsPanel.setVisible(false);
 			this.mandOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(true);
+			this.diyOptionsPanel.setVisible(false);
 			this.formulaArea.setVisible(false);
 
 			if (this.curvChoices == null || this.mult == 0) {
@@ -222,6 +395,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.juliaOptionsPanel.setVisible(false);
 			this.mandOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(false);
+			this.diyOptionsPanel.setVisible(false);
 			this.formulaArea.setVisible(false);
 			if (this.sideChoice == 0 || this.ratioChoice == 0) {
 				this.buStart.setEnabled(false);
@@ -233,6 +407,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.juliaOptionsPanel.setVisible(true);
 			this.mandOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(false);
+			this.diyOptionsPanel.setVisible(false);
 			this.formulaArea.setVisible(true);
 			this.formulaArea.setText("");
 			if (this.power == 0 && (this.compConst == 0.0 || this.complex == null)) {
@@ -245,6 +420,24 @@ class SierpinskiComboPanel extends JPanel {
 			this.juliaOptionsPanel.setVisible(false);
 			this.mandOptionsPanel.setVisible(true);
 			this.apolloOptionsPanel.setVisible(false);
+			this.diyOptionsPanel.setVisible(false);
+			this.formulaArea.setVisible(true);
+			this.formulaArea.setText("");
+		}  else if (this.comboChoice.equals(DIY)) {
+			this.fannyOptionsPanel.setVisible(false);
+			this.juliaOptionsPanel.setVisible(false);
+			this.mandOptionsPanel.setVisible(false);
+			this.apolloOptionsPanel.setVisible(false);
+			
+			this.diyOptionsPanel.setVisible(true);
+			this.diyMandPanel.setVisible(true);
+			/*if(this.diyMandRb.isSelected()){
+				this.diyMandPanel.setVisible(true);
+			}else if(this.diyJuliaRb.isSelected()){
+				this.diyJuliaPanel.setVisible(true);
+			}else if(this.diyApolloRb.isSelected()){
+				this.diyApolloPanel.setVisible(true);
+			}*/
 			this.formulaArea.setVisible(true);
 			this.formulaArea.setText("");
 		} else {
@@ -252,6 +445,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.juliaOptionsPanel.setVisible(false);
 			this.mandOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(false);
+			this.diyOptionsPanel.setVisible(false);
 			this.formulaArea.setVisible(false);
 			this.buStart.setEnabled(true);
 		}
@@ -283,8 +477,8 @@ class SierpinskiComboPanel extends JPanel {
 				this.mult = 20.0;
 				break;
 
-			case A3: // A3 = "C[50, 80, 8] M[6]";
-				this.curvChoices = new double[] { 50.0, 80.0, 8.0 };
+			case A3: // A3 = "C[5, 8, 8] M[6]";
+				this.curvChoices = new double[] { 5.0, 8.0, 8.0 };
 				this.mult = 6.0;
 				break;
 
@@ -456,6 +650,54 @@ class SierpinskiComboPanel extends JPanel {
 		}
 	}
 	
+	private void doDiyMandelbrotChoicesCheck() {
+		this.formulaArea.setVisible(true);
+		if (this.diyMandMagnification != 0 && this.diyMandExponent != 0 &&
+				(this.diyMandRealTf.getText().length()>0)&&(this.diyMandImgTf.getText().length()>0)) {
+//			System.out.println("this.diyMandRealTf.getText()=="+this.diyMandRealTf.getText()+"Dvval is "+Double.parseDouble(this.diyMandRealTf.getText()));
+//			System.out.println("this.diyMandImgTf.getText()=="+this.diyMandImgTf.getText()+"Dvval is "+Double.parseDouble(this.diyMandImgTf.getText()));
+			this.buStart.setEnabled(true);
+			this.formulaArea.setText("Mandelbrot Set:\n\nf(z) = z ^ " + this.diyMandExponent + " + C");
+			this.formulaArea.setText("\n  C = "+Double.parseDouble(this.diyMandRealTf.getText())+" + ("+Double.parseDouble(this.diyMandImgTf.getText())+")");
+			if (this.mUseDiff || this.mandUseDiff.isSelected()) {
+				this.formulaArea
+						.append("\n\nCalculated inverted colors based on differences in pixel values from origin");
+			} else {
+				this.formulaArea.append("\n\nCalculated colors based on pixel values with a 'top-and-left' origin");
+			}
+		} else {
+			this.buStart.setEnabled(false);
+		}
+	}
+	
+	private void doDiyJuliaChoicesCheck() {
+		this.formulaArea.setVisible(true);
+		if(this.diyJuliaPower!=0&&(this.diyJuliaRealTf.getText().length()>0)&&(this.diyJuliaImgTf.getText().length()>0)){
+			this.buStart.setEnabled(true);
+			this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ "+this.diyJuliaPower+" + C");
+			
+			this.formulaArea.setText("\n  C = "+Double.parseDouble(this.diyJuliaRealTf.getText())+" + ("+Double.parseDouble(this.diyJuliaImgTf.getText())+")");
+			if (this.diyJuliaUseDiff || this.diyJuliaUseDiffCb.isSelected()) {
+				this.formulaArea
+						.append("\n\nCalculated inverted colors based on differences in pixel values from origin");
+			} else {
+				this.formulaArea.append("\n\nCalculated colors based on pixel values with a 'top-and-left' origin");
+			}
+		}else{
+			this.buStart.setEnabled(false);
+		}
+	}
+	
+	private void doDiyApolloChoicesCheck() {
+		if (this.diyApolloC1 != 0 && this.diyApolloC2 != 0 && this.diyApolloC3 != 0 && this.diyApolloMult != 0) {
+			this.buStart.setEnabled(true);
+		} else {
+			this.buStart.setEnabled(false);
+		}
+	}
+	
+	
+	
 	private void doSelectMandelbrotCombosCommand(Integer magOption) {
 		this.magnification = magOption;
 		this.formulaArea.setVisible(true);
@@ -473,6 +715,74 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setVisible(true);
 		this.doMandelbrotChoicesCheck();
 	}
+	///////////////////
+	private void doSelectDiyMandMagnificationCombosCommand(Integer magOption) {
+		this.diyMandMagnification = magOption;
+		this.formulaArea.setVisible(true);
+		this.doDiyMandelbrotChoicesCheck();
+	}
+	
+	private void doSelectDiyMandExponentCombosCommand(Integer expOption) {
+		this.diyMandExponent = expOption;
+		this.formulaArea.setVisible(true);
+		this.doDiyMandelbrotChoicesCheck();
+	}
+	
+	private void doSetDiyMandUseDiffCommand(boolean useDiffs) {
+		this.diyMandUseDiff = useDiffs;
+		this.formulaArea.setVisible(true);
+		this.doDiyMandelbrotChoicesCheck();
+	}
+	//-julia
+	private void doSelectDiyJuliaPowerCombosCommand(Integer powerOption) {
+		this.diyJuliaPower = powerOption;
+		this.formulaArea.setVisible(true);
+		this.doDiyJuliaChoicesCheck();
+	}
+	
+	private void doSetDiyJuliaUseDiffCommand(boolean useDiffs) {
+		this.diyJuliaUseDiff = useDiffs;
+		this.formulaArea.setVisible(true);
+		this.doDiyJuliaChoicesCheck();
+	}
+	//-apollo
+	private void doSelectDiyApolloC1CombosCommand(Integer c1Option) {
+		this.diyApolloC1 = c1Option;
+		this.doDiyApolloChoicesCheck();
+	}
+	private void doSelectDiyApolloC2CombosCommand(Integer c2Option) {
+		this.diyApolloC2 = c2Option;
+		this.doDiyApolloChoicesCheck();
+	}
+	private void doSelectDiyApolloC3CombosCommand(Integer c3Option) {
+		this.diyApolloC3 = c3Option;
+		this.doDiyApolloChoicesCheck();
+	}
+	private void doSelectDiyApolloMultCombosCommand(Integer multOption) {
+		this.diyApolloMult = multOption;
+		this.doDiyApolloChoicesCheck();
+	}
+	///////////////////
+	
+	private void doSetDiyFractalChoice(String diyChoice) {
+		this.setDiyFractChoice(diyChoice);
+//System.out.println("Here---doSetDiyFractalChoice -- "+diyChoice);
+		if (diyChoice.equals("DIY_" + MANDELBROT) && this.diyMandRb.isSelected()) {
+			this.diyMandPanel.setVisible(true);
+			this.diyJuliaPanel.setVisible(false);
+			this.diyApolloPanel.setVisible(false);
+		} else if (diyChoice.equals("DIY_" + JULIA) && this.diyJuliaRb.isSelected()) {
+			this.diyMandPanel.setVisible(false);
+			this.diyJuliaPanel.setVisible(true);
+			this.diyApolloPanel.setVisible(false);
+		} else if (diyChoice.equals("DIY_" + APOLLONIAN_CIRCLES) && this.diyApolloRb.isSelected()) {
+			this.diyMandPanel.setVisible(false);
+			this.diyJuliaPanel.setVisible(false);
+			this.diyApolloPanel.setVisible(true);
+		}
+	}
+	
+	
 	
 	private void doStartCommand() {
 		this.formulaArea.setText("");
@@ -547,7 +857,38 @@ class SierpinskiComboPanel extends JPanel {
 		} else if (choice.equals(KOCHSNOWFLAKE)) {
 			this.doReset();
 			ff = new KochSnowFlakeFractal();
-		} else {
+		} else if (choice.equals(DIY)) {
+//			this.doReset();
+			if (this.diyMandRb.isSelected()) {
+				// for diy mandelbrot
+				int diyMag = this.getDiyMandMagnification();
+				int diyMandExp = this.getDiyMandExponent();
+				boolean diyMandUseD = this.getDiyMandUseDiff();
+
+				double diyMRealVal = Double.parseDouble(this.diyMandRealTf.getText());
+				double diyMImgVal = Double.parseDouble(this.diyMandImgTf.getText());
+				ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD, diyMRealVal, diyMImgVal);
+			} else if(this.diyJuliaRb.isSelected()){
+				//
+				int diyJuliaP = this.getDiyJuliaPower();
+				boolean diyJuliaUseD = this.getDiyJuliaUseDiff();
+
+				double diyJuliaRealVal = Double.parseDouble(this.diyJuliaRealTf.getText());
+				double diyJuliaImgVal = Double.parseDouble(this.diyJuliaImgTf.getText());
+				
+				ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaRealVal, diyJuliaImgVal);
+			} else if (this.diyApolloRb.isSelected()) {
+				double c1 = this.diyApolloC1;
+				double c2 = this.diyApolloC2;
+				double c3 = this.diyApolloC3;
+				double mult = this.diyApolloMult;
+				
+				ff = new ApollonianCircles(new double[] {c1,c2,c3}, mult);
+			} else {
+				ff=null;
+			}
+			this.doReset();
+		}  else {
 			ff = null;
 			return;
 		}
@@ -568,7 +909,9 @@ class SierpinskiComboPanel extends JPanel {
 		frame.setVisible(true);
 		frame.setRunning(true);
 
-		if (!(this.comboChoice.equals(MANDELBROT) || this.comboChoice.equals(JULIA))) {
+		if ( !(this.comboChoice.equals(MANDELBROT) || this.comboChoice.equals(JULIA) || 
+				( this.comboChoice.equals(DIY) && !this.diyApolloRb.isSelected()) )) {
+			
 			this.formulaArea.setVisible(false);
 			this.fbf = new Thread(frame);
 			this.fbf.start();
@@ -654,7 +997,7 @@ class SierpinskiComboPanel extends JPanel {
 			@SuppressWarnings("unchecked")
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JComboBox<String> cb = (JComboBox<String>)e.getSource();
+				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
 				Integer mandComboOption = (Integer)cb.getSelectedItem();
 				doSelectMandelbrotCombosCommand(mandComboOption);				
 			}});
@@ -678,6 +1021,100 @@ class SierpinskiComboPanel extends JPanel {
 				}
 			}
         });
+		
+		
+		this.diyMandRb.addActionListener(diyFractChoiceRbListener());
+		this.diyJuliaRb.addActionListener(diyFractChoiceRbListener());
+		this.diyApolloRb.addActionListener(diyFractChoiceRbListener());
+		
+		
+		//
+		this.diyMandMagCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
+				Integer diyMandComboOption = (Integer)cb.getSelectedItem();
+				doSelectDiyMandMagnificationCombosCommand(diyMandComboOption);				
+			}});
+		
+		this.diyMandExpCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
+				Integer diyMandExpComboOption = (Integer)cb.getSelectedItem();
+				doSelectDiyMandExponentCombosCommand(diyMandExpComboOption);				
+			}});
+		
+		this.diyMandUseDiffCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetDiyMandUseDiffCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetDiyMandUseDiffCommand(false);
+				}
+			}
+        });
+		
+		//--julia-diy
+		this.diyJuliaPowerCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
+				Integer diyJuliaPowerComboOption = (Integer)cb.getSelectedItem();
+				doSelectDiyJuliaPowerCombosCommand(diyJuliaPowerComboOption);				
+			}});
+		
+
+		
+		this.diyJuliaUseDiffCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetDiyJuliaUseDiffCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetDiyJuliaUseDiffCommand(false);
+				}
+			}
+        });
+		//apollo-diy
+		this.diyApolloC1Combos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
+				Integer diyApolloC1ComboOption = (Integer)cb.getSelectedItem();
+				doSelectDiyApolloC1CombosCommand(diyApolloC1ComboOption);				
+			}});
+		this.diyApolloC2Combos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
+				Integer diyApolloC2ComboOption = (Integer)cb.getSelectedItem();
+				doSelectDiyApolloC2CombosCommand(diyApolloC2ComboOption);				
+			}});
+		this.diyApolloC3Combos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
+				Integer diyApolloC3ComboOption = (Integer)cb.getSelectedItem();
+				doSelectDiyApolloC3CombosCommand(diyApolloC3ComboOption);				
+			}});
+		this.diyApolloMultCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
+				Integer diyApolloMultComboOption = (Integer)cb.getSelectedItem();
+				doSelectDiyApolloMultCombosCommand(diyApolloMultComboOption);				
+			}});
+		//
+		
 
 		this.buStart.addActionListener(new ActionListener() {
 			@Override
@@ -691,6 +1128,17 @@ class SierpinskiComboPanel extends JPanel {
 				doPauseCommand(fbf);				
 			}
 		});		
+	}
+
+	private ActionListener diyFractChoiceRbListener() {
+		return new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				 JRadioButton button = (JRadioButton) e.getSource();
+//				 System.out.println("buttonName"+button.getName());
+				 doSetDiyFractalChoice(button.getName());			
+			}};
 	}
 
 	protected String getComboChoice() {		
@@ -739,6 +1187,87 @@ class SierpinskiComboPanel extends JPanel {
 	protected boolean getJUseDiff(){
 		return this.jUseDiff || this.juliaUseDiff.isSelected();
 	}
+
+	public String getDiyFractChoice() {
+		return this.diyFractChoice;
+	}
+
+	public void setDiyFractChoice(String diyFractChoice) {
+		this.diyFractChoice = diyFractChoice;
+	}
+
+	public int getDiyMandMagnification() {
+		return diyMandMagnification;
+	}
+
+	public void setDiyMandMagnification(int diyMagnification) {
+		this.diyMandMagnification = diyMagnification;
+	}
+
+	public int getDiyMandExponent() {
+		return diyMandExponent;
+	}
+
+	public void setDiyMandExponent(int diyExponent) {
+		this.diyMandExponent = diyExponent;
+	}
+
+	public double getDiyMandConstReal() {
+		return diyMandConstReal;
+	}
+
+	public void setDiyMandConstReal(double diyMandConstReal) {
+		this.diyMandConstReal = diyMandConstReal;
+	}
+
+	public double getDiyMandConstImg() {
+		return diyMandConstImg;
+	}
+
+	public void setDiyMandConstImg(double diyMandConstImg) {
+		this.diyMandConstImg = diyMandConstImg;
+	}
+
+	public boolean getDiyMandUseDiff() {
+		return this.diyMandUseDiff || this.diyMandUseDiffCb.isSelected();
+	}
+
+	public void setDiyMandMUseDiff(boolean diyMUseDiff) {
+		this.diyMandUseDiff = diyMUseDiff;
+		this.diyMandUseDiffCb.setSelected(diyMUseDiff);
+	}
+
+	public int getDiyJuliaPower() {
+		return diyJuliaPower;
+	}
+
+	public void setDiyJuliaPower(int diyJuliaPower) {
+		this.diyJuliaPower = diyJuliaPower;
+	}
+
+	public double getDiyJuliaConstReal() {
+		return diyJuliaConstReal;
+	}
+
+	public void setDiyJuliaConstReal(double diyJuliaConstReal) {
+		this.diyJuliaConstReal = diyJuliaConstReal;
+	}
+
+	public double getDiyJuliaConstImg() {
+		return diyJuliaConstImg;
+	}
+
+	public void setDiyJuliaConstImg(double diyJuliaConstImg) {
+		this.diyJuliaConstImg = diyJuliaConstImg;
+	}
+
+	public boolean getDiyJuliaUseDiff() {
+		return this.diyJuliaUseDiff || this.diyJuliaUseDiffCb.isSelected();
+	}
+
+	public void setDiyJuliaUseDiff(boolean diyJuliaUseDiff) {
+		this.diyJuliaUseDiff = diyJuliaUseDiff;
+	}
 	
 }
 
@@ -781,9 +1310,9 @@ public class SierpinskiCompositional extends JFrame {
 		      public void run() {
 		        final SierpinskiCompositional frame = new SierpinskiCompositional();
 		        frame.setTitle("BaWaZ FractalArtz: ");
-		        frame.setSize(500, 200);
+		        frame.setSize(900, 800);
 		        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		        frame.setResizable(false);
+		        frame.setResizable(true);
 		        frame.setVisible(true);
 		      }
 		});
