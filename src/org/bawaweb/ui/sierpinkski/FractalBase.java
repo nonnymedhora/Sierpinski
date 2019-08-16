@@ -376,6 +376,23 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		g.setPaint(color);
 		g.draw(myPath);
 	}
+	
+	public static final Color[] ColorPalette = new Color[] {
+			Colors.BLACK.getColor(),
+			Colors.RED.getColor(),
+			Colors.BLUE.getColor(),
+			Colors.GREEN.getColor(),
+			Colors.ORANGE.getColor(),
+			Colors.LIGHT_GRAY.getColor(),
+			Colors.YELLOW.getColor(),
+			Colors.PINK.getColor(),
+			Colors.MAGENTA.getColor(),
+			Colors.CYAN.getColor(),
+			Colors.DARK_GRAY.getColor(),
+			Colors.WHITE.getColor()
+			
+			
+	};
 
 
 	// setup for Color palette
