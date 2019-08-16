@@ -833,7 +833,7 @@ class SierpinskiComboPanel extends JPanel {
 			} else {
 				this.formulaArea.append("\n\nCalculated based on pixel values with a top-left origin");
 			}
-			ff = new Mandelbrot(mag, exp, mUseD);
+			ff = new Mandelbrot(mag, exp, mUseD, true);
 			this.doReset();
 		} else if (choice.equals(JULIA)) {
 			this.formulaArea.setVisible(true);
