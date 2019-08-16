@@ -112,19 +112,19 @@ public class Mandelbrot extends FractalBase {
 				double x0 = xc - size / 2 + size * row / n;
 				double y0 = yc - size / 2 + size * col / n;
 				ComplexNumber z0 = new ComplexNumber(x0, y0);
-				if (isComplexNumConst) {
+				if (isComplexNumConst || this.compConst == null) {
 					this.compConst = z0;
 				}
 				int colorRGB;
 				// int gray = /*maxIter - */mand(z0, maxIter);
 				if (diff) {
-					colorRGB = mand(z0, maxIter, exp,this.compConst);
+					colorRGB = mand(z0, maxIter, exp, this.compConst);
 				} else {
-					colorRGB = maxIter - mand(z0, maxIter, exp,this.compConst);
+					colorRGB = maxIter - mand(z0, maxIter, exp, this.compConst);
 				}
-				Color color = this.getPixelDisplayColor(row,col,colorRGB);
+				Color color = this.getPixelDisplayColor(row, col, colorRGB);
 				setPixel(row, n - 1 - col, color.getRGB());
-				
+
 			}
 		}
 	}
