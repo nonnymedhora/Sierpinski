@@ -3,16 +3,11 @@
  */
 package org.bawaweb.ui.sierpinkski;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-
-import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
 
 
 /**
@@ -26,7 +21,7 @@ public class Mandelbrot extends FractalBase {
 	private int mag;
 	private int exp;
 	private boolean useDiff=false;
-	private int size;		//0-599 4 ltr
+//	private int size;		//0-599 4 ltr
 	
 	private boolean isComplexNumConst;
 	private ComplexNumber compConst;// = new ComplexNumber(-0.75, 0.11);
@@ -145,7 +140,7 @@ public class Mandelbrot extends FractalBase {
 			@Override
 			public void run() {
 				final FractalBase frame = new Mandelbrot(2,96);//,2);//,true);//(2,3,false);
-				frame.depth = 5;
+//				frame.depth = 5;
 				frame.setTitle(frame.getFractalShapeTitle());
 				frame.setSize(FractalBase.WIDTH, FractalBase.HEIGHT);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
