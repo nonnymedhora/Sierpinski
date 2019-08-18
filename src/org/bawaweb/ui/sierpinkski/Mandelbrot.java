@@ -144,7 +144,7 @@ public class Mandelbrot extends FractalBase {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				final FractalBase frame = new Mandelbrot(2,2);//,true);//(2,3,false);
+				final FractalBase frame = new Mandelbrot(2,96);//,2);//,true);//(2,3,false);
 				frame.depth = 5;
 				frame.setTitle(frame.getFractalShapeTitle());
 				frame.setSize(FractalBase.WIDTH, FractalBase.HEIGHT);
