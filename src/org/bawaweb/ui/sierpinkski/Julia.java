@@ -208,7 +208,7 @@ public class Julia extends FractalBase {
 					colorRGB = max - julia(z0, max);
 				}
 				Color color;
-				color = getPixelDisplayColor(row, col, colorRGB);
+				color = getPixelDisplayColor(row, col, colorRGB, diff);
 				setPixel(row, n - 1 - col, color.getRGB());
 			}
 		}
