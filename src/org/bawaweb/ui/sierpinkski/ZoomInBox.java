@@ -87,24 +87,40 @@ public class ZoomInBox {
 	      popup.add(this);
 	      popup.pack();
 	      MouseAdapter ma = new MouseAdapter() {
-	        @Override
-	        public void mouseMoved(MouseEvent e) {
-	          Point p = e.getPoint();
-	          Point pos = e.getLocationOnScreen();
-	          updateBuffer(p);
-	          popup.setLocation(pos.x + 16, pos.y + 16);
-	          repaint();
-	        }
-
-	        @Override
-	        public void mouseEntered(MouseEvent e) {
-	          popup.setVisible(true);
-	        }
-
-	        @Override
-	        public void mouseExited(MouseEvent e) {
-	          popup.setVisible(false);
-	        }
+	    	  @Override
+		        public void mouseDragged(MouseEvent e) {
+		          Point p = e.getPoint();
+		          Point pos = e.getLocationOnScreen();
+		          updateBuffer(p);
+		          popup.setLocation(pos.x + 16, pos.y + 16);
+		          repaint();
+		        }
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					Point p = e.getPoint();
+					Point pos = e.getLocationOnScreen();
+					updateBuffer(p);
+					popup.setLocation(pos.x + 16, pos.y + 16);
+					repaint();
+				}
+		        @Override
+		        public void mouseMoved(MouseEvent e) {
+		          Point p = e.getPoint();
+		          Point pos = e.getLocationOnScreen();
+		          updateBuffer(p);
+		          popup.setLocation(pos.x + 16, pos.y + 16);
+		          repaint();
+		        }
+	
+		        @Override
+		        public void mouseEntered(MouseEvent e) {
+		          popup.setVisible(true);
+		        }
+	
+		        @Override
+		        public void mouseExited(MouseEvent e) {
+		          popup.setVisible(false);
+		        }
 
 	      };
 

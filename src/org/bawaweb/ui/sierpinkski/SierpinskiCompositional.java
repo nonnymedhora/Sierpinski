@@ -819,51 +819,21 @@ class SierpinskiComboPanel extends JPanel {
 		if (choice.equals(FANNY_CIRCLE)) {
 			this.doReset();
 			ff = new FannyCircle(length, ratio);
-			/*if (!this.doMagnify) {
-				ff = new FannyCircle(length, ratio);
-			}else{
-				new ZoomInBox(new FannyCircle(length,ratio));
-			}*/
 		} else if (choice.equals(FANNY_TRIANGLES)) {
 			this.doReset();
 			ff = new FannyTriangles(length, ratio);
-			/*if (!this.doMagnify) {
-				ff = new FannyTriangles(length, ratio);
-			}else{
-				new ZoomInBox(new FannyTriangles(length, ratio));
-			}*/
 		} else if (choice.equals(SIERPINSKI_TRIANGLES)) {
 			this.doReset();
 			ff = new SierpinskiTriangle();
-			/*if (!this.doMagnify) {
-				ff = new SierpinskiTriangle();
-			}else{
-				new ZoomInBox(new SierpinskiTriangle());
-			}*/
 		} else if (choice.equals(SIERPINSKI_SQUARES)) {
 			this.doReset();
 			ff = new SierpinskiSquare();
-			/*if (!this.doMagnify) {
-				ff = new SierpinskiSquare();
-			}else{
-				new ZoomInBox(new SierpinskiSquare());
-			}*/
 		} else if (choice.equals(APOLLONIAN_CIRCLES)) {
 			this.doReset();
 			ff = new ApollonianCircles(cChoices, mXt);
-			/*if (!this.doMagnify) {
-				ff = new ApollonianCircles(cChoices, mXt);
-			}else{
-				new ZoomInBox(new ApollonianCircles(cChoices, mXt));
-			}*/
 		} else if (choice.equals(SAMPLE)) {
 			this.doReset();
 			ff = new FractalBaseSample();
-			/*if (!this.doMagnify) {
-				ff = new FractalBaseSample();
-			}else{
-				new ZoomInBox(new FractalBaseSample());
-			}*/
 		} else if (choice.equals(MANDELBROT)) {
 			this.formulaArea.setVisible(true);
 			this.formulaArea.setText("");
@@ -874,11 +844,6 @@ class SierpinskiComboPanel extends JPanel {
 				this.formulaArea.append("\n\nCalculated based on pixel values with a top-left origin");
 			}
 			ff = new Mandelbrot(mag, exp, mUseD, true);
-			/*if (!this.doMagnify) {
-				ff = new Mandelbrot(mag, exp, mUseD, true);
-			}else{
-				new ZoomInBox(new Mandelbrot(mag, exp, mUseD, true));
-			}*/
 			this.doReset();
 		} else if (choice.equals(JULIA)) {
 			this.formulaArea.setVisible(true);
@@ -888,45 +853,20 @@ class SierpinskiComboPanel extends JPanel {
 			if (!(this.juliaSelection.equals("J7") || this.juliaSelection.equals("J8")
 					|| this.juliaSelection.equals("J9"))) {
 				ff = new Julia(pow, con, jUseD);
-				/*if (!this.doMagnify) {
-					ff = new Julia(pow, con, jUseD);
-				}else{
-					new ZoomInBox(new Julia(pow, con, jUseD));
-				}*/
 			} else {
 				ff = new Julia(pow, comp, jUseD);
-				/*if (!this.doMagnify) {
-					ff = new Julia(pow, comp, jUseD);
-				}else{
-					new ZoomInBox(new Julia(pow, comp, jUseD));
-				}*/
 			}
 			this.doReset();
 
 		} else if (choice.equals(CST_FRACTAL)) {
 			this.doReset();
 			ff = new CSTFractal();
-			/*if (!this.doMagnify) {
-				ff = new CSTFractal();
-			}else{
-				new ZoomInBox(new CSTFractal());
-			}*/
 		} else if (choice.equals(SAMPLE)) {
 			this.doReset();
 			ff = new FractalBaseSample();
-			/*if (!this.doMagnify) {
-				ff = new FractalBaseSample();
-			}else{
-				new ZoomInBox(new FractalBaseSample());
-			}*/
 		} else if (choice.equals(KOCHSNOWFLAKE)) {
 			this.doReset();
 			ff = new KochSnowFlakeFractal();
-			/*if (!this.doMagnify) {
-				ff = new KochSnowFlakeFractal();
-			}else{
-				new ZoomInBox(new KochSnowFlakeFractal());
-			}*/
 		} else if (choice.equals(DIY)) {
 //			this.doReset();
 			if (this.diyMandRb.isSelected()) {
@@ -938,11 +878,6 @@ class SierpinskiComboPanel extends JPanel {
 				double diyMRealVal = Double.parseDouble(this.diyMandRealTf.getText());
 				double diyMImgVal = Double.parseDouble(this.diyMandImgTf.getText());
 				ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD, diyMRealVal, diyMImgVal);
-				/*if (!this.doMagnify) {
-					ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD, diyMRealVal, diyMImgVal);
-				}else{
-					new ZoomInBox(new Mandelbrot(diyMag, diyMandExp, diyMandUseD, diyMRealVal, diyMImgVal));
-				}*/
 			} else if(this.diyJuliaRb.isSelected()){
 				//
 				int diyJuliaP = this.getDiyJuliaPower();
@@ -951,22 +886,12 @@ class SierpinskiComboPanel extends JPanel {
 				double diyJuliaRealVal = Double.parseDouble(this.diyJuliaRealTf.getText());
 				double diyJuliaImgVal = Double.parseDouble(this.diyJuliaImgTf.getText());
 				ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaRealVal, diyJuliaImgVal);
-				/*if (!this.doMagnify) {
-					ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaRealVal, diyJuliaImgVal);
-				}else{
-					new ZoomInBox(new Julia(diyJuliaP, diyJuliaUseD, diyJuliaRealVal, diyJuliaImgVal));
-				}*/
 			} else if (this.diyApolloRb.isSelected()) {
 				double c1 = this.diyApolloC1;
 				double c2 = this.diyApolloC2;
 				double c3 = this.diyApolloC3;
 				double mult = this.diyApolloMult;
 				ff = new ApollonianCircles(new double[] {c1,c2,c3}, mult);
-				/*if (!this.doMagnify) {
-					ff = new ApollonianCircles(new double[] {c1,c2,c3}, mult);
-				}else{
-					new ZoomInBox(new ApollonianCircles(new double[] {c1,c2,c3}, mult));
-				}*/
 			} else {
 				ff=null;
 			}
@@ -979,25 +904,6 @@ class SierpinskiComboPanel extends JPanel {
 		ff.reset();
 		this.startFractals(ff);
 	}	
-	
-	
-	/*private void createFractalArt(String fractalArt, boolean magnify) {
-		if (fractalArt == null) {
-			return;
-		}
-		switch (fractalArt) {
-			case FANNY_CIRCLE:
-				if(!magnify)
-					new FannyCircle
-			case SIERPINSKI_SQUARES:
-				if (!magnify)
-					new SierpinskiSquare();
-				else
-					new ZoomInBox(new SierpinskiSquare());
-
-		}
-	}*/
-
 
 	private void startFractals(final FractalBase ff) {
 		final FractalBase frame = ff;
@@ -1016,7 +922,8 @@ class SierpinskiComboPanel extends JPanel {
 
 		if ( !(this.comboChoice.equals(MANDELBROT) || this.comboChoice.equals(JULIA) || 
 				( this.comboChoice.equals(DIY) && !this.diyApolloRb.isSelected()) )) {
-			
+			//	Threaded -- so as the FractalBase depth increases
+			// the iteration's image is rendered recursively till depth = 0
 			this.formulaArea.setVisible(false);
 			this.fbf = new Thread(frame);
 			this.fbf.start();
