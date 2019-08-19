@@ -30,9 +30,9 @@ import javax.swing.UnsupportedLookAndFeelException;
  * @author Navroz
  *
  */
-public class ZoomBoxWindow {
+public class ZoomInBox {
 
-	public ZoomBoxWindow(FractalBase fb) {System.out.println("IsFB null = "+(fb==null));
+	public ZoomInBox(FractalBase fb) {System.out.println("IsFB null = "+(fb==null));
 		if (fb != null) {
 			EventQueue.invokeLater(new Runnable() {
 				@Override
@@ -45,7 +45,7 @@ public class ZoomBoxWindow {
 					}
 
 					// TestPane pane = new TestPane();
-					ZoomPane zoomPane = new ZoomPane(fb);
+					ZoomInPane zoomPane = new ZoomInPane(fb);
 
 					/*
 					 * JFrame frame = new JFrame("Testing");
@@ -64,21 +64,23 @@ public class ZoomBoxWindow {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		 new ZoomBoxWindow(new Mandelbrot(2,2,true));
+		 new ZoomInBox(new  Julia(2,"C2"));//Mandelbrot(2,2,true));
 	}
 	
-	static class ZoomPane extends JPanel {
+	static class ZoomInPane extends JPanel {
+		
+		private static final long serialVersionUID = 1L;
 
-	    protected static final int ZOOM_AREA = 140;
+		protected static final int ZOOM_AREA = 40;
 
 	    private JFrame parent;
 	    private JWindow popup;
 
 	    private BufferedImage buffer;
 
-	    private float zoomLevel = 4f;
+	    private float zoomLevel = 2f;
 
-	    public ZoomPane(FractalBase fb) {
+	    public ZoomInPane(FractalBase fb) {
 	      this.parent = fb;
 	      popup = new JWindow();
 	      popup.setLayout(new BorderLayout());
@@ -162,11 +164,11 @@ public class ZoomBoxWindow {
 
 	  }
 	
-	class TestPane extends JPanel {
+	class TestingPane extends JPanel {
+		private static final long serialVersionUID = 1L;
+		private BufferedImage img;
 
-	    private BufferedImage img;
-
-	    public TestPane() {
+	    public TestingPane() {
 	      try {
 	        img = ImageIO.read(new File("H:/temp/jr1.jpg"));
 	      } catch (IOException ex) {
