@@ -233,50 +233,87 @@ public abstract class FractalBase extends JFrame implements Runnable {
 			bufferedImage.setRGB(col, HEIGHT - row - 1, rgbColor);
 	}
 	
-	protected Color getPixelDisplayColor(int row, int col, int colorRGB) {
+	protected Color getPixelDisplayColor(int row, int col, int colorRGB, boolean useD) {
 		Color color;
 		/* Simple */
 		/* color = new Color(gray, gray, gray); */
 		/* Complex */ 
 		if (colorRGB % 2 == 0) {
-			int correctRGB = corectColorRGB(colorRGB);
-			color = new Color(correctRGB, correctRGB, correctRGB);
+			final int start = 16;
+			final int end = 255-16;
+			int num1 = correctColor(start, colorRGB, row, 2);
+			int num2 = correctColor(start, colorRGB, col, 2);
+			
+			
+			if (useD) {
+				color = new Color(num1, num2, start);//color = ColorPalette[0];
+			} else {
+				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 1];
+			}
+			
+			/*int correctRGB = corectColorRGB(colorRGB);
+			color = new Color(correctRGB, correctRGB, correctRGB);*/
 		} else if (colorRGB % 3 == 0) {
-			/* color = Colors.GREEN.getColor(); */
-			final int start = 32;
-			int num1 = correctColor(start, colorRGB, row, 3);
-			int num2 = correctColor(start, colorRGB, col, 3);
-			color = new Color(num1, num2, start);
+			
+				/* color = Colors.GREEN.getColor(); */
+				final int start = 32;
+				final int end = 255-32;
+				int num1 = correctColor(start, colorRGB, row, 3);
+				int num2 = correctColor(start, colorRGB, col, 3);
+				
+			if (useD) {
+				color = new Color(num1, num2, start);//color = ColorPalette[1];
+			} else {
+				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 2];
+			}
 		} else if (colorRGB % 5 == 0) {
 			final int start = 64;
+			final int end = 255-64;
 			int num1 = correctColor(start, colorRGB, row, 5);
 			int num2 = correctColor(start, colorRGB, col, 5);
 			color = new Color(num1, num2, start);
+			if (useD) {
+				color = new Color(num1, num2, start);//color = ColorPalette[2];
+			} else {
+				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 3];
+			}
 		}
 		else if (colorRGB % 7 == 0) {
 			/* color=Colors.RED.getColor(); */
 			final int start = 128;
+			final int end = 255-128;
 			int num1 = correctColor(start, colorRGB, row, 7);
 			int num2 = correctColor(start, colorRGB, col, 7);
 			color = new Color(num1, num2, start);
+			if (useD) {
+				color = new Color(num1, num2, start);//color = ColorPalette[3];
+			} else {
+				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 4];
+			}
 		} else {
 			/* color=Colors.BLUE.getColor(); */
 
 			final int start = 255;
+			final int end = 0;
 			int num1 = correctColor(start, colorRGB, row, 1);
 			int num2 = correctColor(start, colorRGB, col, 1);
 			color = new Color(num1, num2, start);
+			if (useD) {
+				color = new Color(num1, num2, start);//color = ColorPalette[4];
+			} else {
+				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 5];
+			}
 		}
 		return color;
 	}
 	
 	
-	protected int corectColorRGB(int colorRGB) {
-		int corrected = colorRGB > 255 ? 255 : colorRGB;
-		corrected = corrected < 0 ? 0 : corrected;
-		return corrected;
-	}
-
+//	protected int corectColorRGB(int colorRGB) {
+//		int corrected = colorRGB > 255 ? 255 : colorRGB;
+//		corrected = corrected < 0 ? 0 : corrected;
+//		return corrected;
+//	}
+//
 
 	/**
 	 * // correction for color range  0--255
@@ -403,6 +440,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	}
 
 	public static final Color[] ColorPalette = new Color[] {
+			
 			Colors.BLACK.getColor(),
 			Colors.RED.getColor(),
 			Colors.BLUE.getColor(),
