@@ -116,7 +116,7 @@ class JuliaPanel extends JPanel {
 class DIYPanel extends JPanel {
 	private static final long serialVersionUID = 144L;
 	
-	private SierpinskiComboPanel s;
+	private SierpinskiComboPanel_vInternalFrameTesting s;
 	
 	// for DIY
 		//radioButton
@@ -185,7 +185,7 @@ class DIYPanel extends JPanel {
 
 
 
-class SierpinskiComboPanel extends JPanel {
+class SierpinskiComboPanel_vInternalFrameTesting extends JPanel {
 	////////////////////////////////////////////
 	// for Julia
 	private static final String J1 = "P[2] C[0.279]";	//f(z) = z^2 + 0.279
@@ -362,7 +362,7 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private Thread fbf;
 	
-	public SierpinskiComboPanel() {
+	public SierpinskiComboPanel_vInternalFrameTesting() {
 		super();
 		this.setLayout(new FlowLayout());
 		

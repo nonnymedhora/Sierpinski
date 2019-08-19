@@ -22,8 +22,8 @@ import javax.swing.JFrame;
 public abstract class FractalBase extends JFrame implements Runnable {
 	
 	private static final long serialVersionUID = 123456543L;
-	protected static final int HEIGHT = 600;
-	protected static final int WIDTH = 600;
+	protected static final int HEIGHT = 800;
+	protected static final int WIDTH = 800;
 
     boolean isOriginUpperLeft = true;  	// location of origin
 	static int OFFSET = 25; 			// pixel offset from edge
@@ -31,7 +31,9 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	static int depth; 					// recursion depth
 	static final int MAX_DEPTH = 10;
 	
-	final static int maxIter = 255;		//	maximum iterations to check for Mandelbrot
+	//used in Mandelbrot & Julia
+	/*final */static int maxIter = 255;		//	maximum iterations to check for Mandelbrot
+	static int areaSize = 599;//512;	(0-599)
 	
 	BufferedImage bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	
@@ -237,7 +239,8 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		/* color = new Color(gray, gray, gray); */
 		/* Complex */ 
 		if (colorRGB % 2 == 0) {
-			color = new Color(colorRGB, colorRGB, colorRGB);
+			int correctRGB = corectColorRGB(colorRGB);
+			color = new Color(correctRGB, correctRGB, correctRGB);
 		} else if (colorRGB % 3 == 0) {
 			/* color = Colors.GREEN.getColor(); */
 			final int start = 32;
@@ -267,6 +270,12 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		return color;
 	}
 	
+	
+	protected int corectColorRGB(int colorRGB) {
+		int corrected = colorRGB > 255 ? 255 : colorRGB;
+		corrected = corrected < 0 ? 0 : corrected;
+		return corrected;
+	}
 
 
 	/**
@@ -377,6 +386,22 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		g.draw(myPath);
 	}
 	
+	public static int getMaxIter() {
+		return maxIter;
+	}
+
+	public static void setMaxIter(int max) {
+		FractalBase.maxIter = max;
+	}
+
+	public static int getAreaSize() {
+		return areaSize;
+	}
+
+	public static void setAreaSize(int ss) {
+		FractalBase.areaSize = ss;
+	}
+
 	public static final Color[] ColorPalette = new Color[] {
 			Colors.BLACK.getColor(),
 			Colors.RED.getColor(),

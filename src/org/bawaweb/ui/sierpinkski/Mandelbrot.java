@@ -99,8 +99,10 @@ public class Mandelbrot extends FractalBase {
 		double xc = -0.5;
 		double yc = 0;
 		double size = this.mag;//10;//4;//2;
+		
+		int max = getMaxIter();
 
-		int n = 599;//512;	(0-599)
+		int n = getAreaSize();//599;//512;	(0-599)
 		//System.out.println("here with depth " + depth);
 		for (int row = 0; row < n; row++) {
 			for (int col = 0; col < n; col++) {
@@ -113,9 +115,9 @@ public class Mandelbrot extends FractalBase {
 				int colorRGB;
 				// int gray = /*maxIter - */mand(z0, maxIter);
 				if (diff) {
-					colorRGB = mand(z0, maxIter, exp, this.compConst);
+					colorRGB = mand(z0, max, exp, this.compConst);
 				} else {
-					colorRGB = maxIter - mand(z0, maxIter, exp, this.compConst);
+					colorRGB = max - mand(z0, max, exp, this.compConst);
 				}
 				Color color = this.getPixelDisplayColor(row, col, colorRGB);
 				setPixel(row, n - 1 - col, color.getRGB());

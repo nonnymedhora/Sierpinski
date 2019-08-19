@@ -190,7 +190,12 @@ public class Julia extends FractalBase {
 		double yc = 0;
 		double size = 2;
 
-		int n = 512;
+		int n = getAreaSize();//512;
+		
+		int max = getMaxIter();
+		
+		
+		
 		for (int row = 0; row < n; row++) {
 			for (int col = 0; col < n; col++) {
 				double x0 = xc - size / 2 + size * row / n;
@@ -198,9 +203,9 @@ public class Julia extends FractalBase {
 				ComplexNumber z0 = new ComplexNumber(x0, y0);
 				int colorRGB;
 				if (diff) {
-					colorRGB = julia(z0, maxIter);
+					colorRGB = julia(z0, max);
 				} else {
-					colorRGB = maxIter - julia(z0, maxIter);
+					colorRGB = max - julia(z0, max);
 				}
 				Color color;
 				color = getPixelDisplayColor(row, col, colorRGB);
