@@ -103,9 +103,9 @@ public class Mandelbrot extends FractalBase {
 	}
 
 	private void createMandelbrot(Graphics2D g, boolean diff) {		
-		double xc = -0.5;
-		double yc = 0;
-		double size = this.mag;//10;//4;//2;
+		double xc = getxC();//-0.5;
+		double yc = getyC();//0;
+		double size = getScaleSize();//this.mag;	//10;//4;//2;
 		double bd = this.getBound();
 		int max = getMaxIter();
 

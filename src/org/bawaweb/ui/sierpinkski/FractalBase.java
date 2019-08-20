@@ -10,6 +10,10 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.geom.Path2D;
 import java.awt.image.BufferedImage;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.util.Objects;
 
 import javax.swing.JFrame;
@@ -40,6 +44,10 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	BufferedImage bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	
 	final Point center = new Point(WIDTH / 2, HEIGHT / 2);
+	
+	static double xC;
+	static double yC;
+	static double scaleSize;
 	
 	protected boolean running = false;
 
@@ -228,6 +236,42 @@ public abstract class FractalBase extends JFrame implements Runnable {
 			g.setColor(Color.red);
 			g.drawString("Depth:= " + depth, OFFSET*2, HEIGHT - OFFSET*9+10);
 		/*}*/
+	}
+	
+	protected void doPrint(Graphics2D g/* , BufferedImage image */) {
+		PrinterJob printJob = PrinterJob.getPrinterJob();
+		BufferedImage image = this.bufferedImage;
+		printJob.setPrintable(new Printable() {
+			public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
+				if (pageIndex != 0) {
+					return NO_SUCH_PAGE;
+				}
+				graphics.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
+				return PAGE_EXISTS;
+			}
+		});
+		try {
+			printJob.print();
+		} catch (PrinterException e1) {
+			e1.printStackTrace();
+		}
+		
+		
+		/*/////////////////////////
+		PrintRequestAttributeSet pras = new HashPrintRequestAttributeSet();
+	    pras.add(new Copies(1));
+	    PrintService pss[] = PrintServiceLookup.lookupPrintServices(DocFlavor.INPUT_STREAM.GIF, pras);
+	    if (pss.length == 0)
+	      throw new RuntimeException("No printer services available.");
+	    PrintService ps = pss[0];
+	    System.out.println("Printing to " + ps);
+	    DocPrintJob job = ps.createPrintJob();
+	    FileInputStream fin = new FileInputStream("YOurImageFileName.PNG");
+	    Doc doc = new SimpleDoc(fin, DocFlavor.INPUT_STREAM.GIF, null);
+	    job.print(doc, pras);
+	    fin.close();
+		//////////////////////////*/
+		
 	}
 
 	protected Color getBGColor() {
@@ -463,6 +507,30 @@ public abstract class FractalBase extends JFrame implements Runnable {
 
 	public static void setAreaSize(int ss) {
 		FractalBase.areaSize = ss;
+	}
+
+	public static double getxC() {
+		return xC;
+	}
+
+	public static void setxC(double x) {
+		FractalBase.xC = x;
+	}
+
+	public static double getyC() {
+		return yC;
+	}
+
+	public static void setyC(double y) {
+		FractalBase.yC = y;
+	}
+
+	public static double getScaleSize() {
+		return scaleSize;
+	}
+
+	public static void setScaleSize(double scaleSize) {
+		FractalBase.scaleSize = scaleSize;
 	}
 
 	public static final Color[] ColorPalette = new Color[] {

@@ -99,6 +99,15 @@ class SierpinskiComboPanel extends JPanel {
 	private final Double[] juliaBoundOptions = new Double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
 	private final JComboBox<Double> juliaBoundCombos = new JComboBox<Double>(juliaBoundOptions);
 	
+	private final Double[] juliaXCOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
+	private final JComboBox<Double> juliaXCCombos = new JComboBox<Double>(juliaXCOptions);
+	private final Double[] juliaYCOptions = new Double[] { -2.0, -1.5, -1.0, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
+	private final JComboBox<Double> juliaYCCombos = new JComboBox<Double>(juliaYCOptions);
+	private final Double[] juliaScaleSizeOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private final JComboBox<Double> juliaScaleSizeCombos = new JComboBox<Double>(juliaScaleSizeOptions);
+	
+	
+	
 
 	// for Mandelbrot
 	private final Integer[] mandOptions = new Integer[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
@@ -113,6 +122,15 @@ class SierpinskiComboPanel extends JPanel {
 	private final Double[] mandBoundOptions = new Double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
 	private final JComboBox<Double> mandBoundCombos = new JComboBox<Double>(mandBoundOptions);
 
+
+	private final Double[] mandXCOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
+	private final JComboBox<Double> mandXCCombos = new JComboBox<Double>(mandXCOptions);
+	private final Double[] mandYCOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
+	private final JComboBox<Double> mandYCCombos = new JComboBox<Double>(mandYCOptions);
+
+	private final Double[] mandScaleSizeOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private final JComboBox<Double> mandScaleSizeCombos = new JComboBox<Double>(mandScaleSizeOptions);
+	
 	//	for	Apollo
 	private final String[] curvOptions = new String[] { A1, A2, A3, A4, A5, A6 };
 	private final JComboBox<String> curvCombos = new JComboBox<String>(curvOptions);
@@ -155,6 +173,12 @@ class SierpinskiComboPanel extends JPanel {
 	protected int juliaSize;
 	protected double juliaBound;
 	
+	protected double juliaXC;
+	protected double juliaYC;
+	protected double juliaScaleSize;
+	
+	
+	
 	// for mandelbrot
 	protected int magnification;
 	protected int exponent;
@@ -162,6 +186,11 @@ class SierpinskiComboPanel extends JPanel {
 	protected int mandMaxIter;
 	protected int mandSize;
 	protected double mandBound;
+
+	
+	protected double mandXC;
+	protected double mandYC;
+	protected double mandScaleSize;
 	
 	
 	// for DIY
@@ -230,7 +259,7 @@ class SierpinskiComboPanel extends JPanel {
 //	private FractalBase ff;
 	//
 	private JProgressBar progressBar =new  JProgressBar(SwingConstants.HORIZONTAL) ;
-	
+	private JButton buPrint = new JButton("Print");
 	
 	private Thread fbf;
 	
@@ -268,6 +297,14 @@ class SierpinskiComboPanel extends JPanel {
 		this.juliaOptionsPanel.add(new JLabel("Boundary:"));
 		this.juliaOptionsPanel.add(this.juliaBoundCombos);
 		
+
+		this.juliaOptionsPanel.add(new JLabel("Center: X "));
+		this.juliaOptionsPanel.add(this.juliaXCCombos);
+		this.juliaOptionsPanel.add(new JLabel(" Y "));
+		this.juliaOptionsPanel.add(this.juliaYCCombos);
+		this.juliaOptionsPanel.add(new JLabel("ScaleSize:"));
+		this.juliaOptionsPanel.add(this.juliaScaleSizeCombos);
+		
 		this.juliaOptionsPanel.setVisible(false);		
 		this.add(this.juliaOptionsPanel);
 		
@@ -282,6 +319,12 @@ class SierpinskiComboPanel extends JPanel {
 		this.mandOptionsPanel.add(this.mandSizeCombos);
 		this.mandOptionsPanel.add(new JLabel("Boundary:"));
 		this.mandOptionsPanel.add(this.mandBoundCombos);
+		this.mandOptionsPanel.add(new JLabel("Center: X "));
+		this.mandOptionsPanel.add(this.mandXCCombos);
+		this.mandOptionsPanel.add(new JLabel(" Y "));
+		this.mandOptionsPanel.add(this.mandYCCombos);
+		this.mandOptionsPanel.add(new JLabel("ScaleSize:"));
+		this.mandOptionsPanel.add(this.mandScaleSizeCombos);
 		
 		this.mandOptionsPanel.setVisible(false);
 		this.add(this.mandOptionsPanel);
@@ -347,6 +390,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.buStart.setEnabled(false);
 		this.add(this.buStart);
 //		this.add(this.buPause);
+		this.add(this.buPrint);
 		
 		this.formulaArea.setVisible(false);
 		this.add(this.formulaArea);
@@ -379,6 +423,14 @@ class SierpinskiComboPanel extends JPanel {
 		this.mandBound=0.0;
 		this.juliaBound=0.0;
 		
+		this.juliaXC=0.0;
+		this.juliaYC=0.0;
+		this.juliaScaleSize=2.0;
+
+		this.mandXC=0.0;
+		this.mandYC=0.0;
+		this.mandScaleSize=2.0;
+		
 		//diy
 		this.diyMandMagnification = 0;
 		this.diyMandExponent = 0;
@@ -408,6 +460,15 @@ class SierpinskiComboPanel extends JPanel {
 		this.juliaBoundCombos.setSelectedIndex(2);
 		this.mandBoundCombos.setSelectedIndex(2);
 		
+		this.juliaXCCombos.setSelectedIndex(4);
+		this.mandXCCombos.setSelectedIndex(4);
+		this.juliaYCCombos.setSelectedIndex(4);
+		this.mandYCCombos.setSelectedIndex(4);
+		this.juliaScaleSizeCombos.setSelectedIndex(8);
+		this.mandScaleSizeCombos.setSelectedIndex(8);
+		
+		
+		
 		this.diyMandMagCombos.setSelectedIndex(0);
 		this.diyMandExpCombos.setSelectedIndex(0);
 		
@@ -429,6 +490,13 @@ class SierpinskiComboPanel extends JPanel {
 		this.juliaSizeCombos.setSelectedItem(this.juliaSizeOptions[6]);
 		this.mandBoundCombos.setSelectedItem(this.mandBoundOptions[2]);
 		this.juliaBoundCombos.setSelectedItem(this.juliaBoundOptions[2]);
+		
+		this.juliaXCCombos.setSelectedItem(this.juliaXCOptions[4]);
+		this.mandXCCombos.setSelectedItem(this.mandXCOptions[4]);
+		this.juliaYCCombos.setSelectedItem(this.juliaYCOptions[4]);
+		this.mandYCCombos.setSelectedItem(this.mandYCOptions[4]);
+		this.juliaScaleSizeCombos.setSelectedItem(this.juliaScaleSizeOptions[8]);
+		this.mandScaleSizeCombos.setSelectedItem(this.mandScaleSizeOptions[8]);
 		
 		
 		this.diyMandMagCombos.setSelectedItem(this.diyMandMagOptions[0]);
@@ -635,6 +703,16 @@ class SierpinskiComboPanel extends JPanel {
 		this.juliaBound = bound;
 	}
 	
+	private void doSelectJuliaXCCombosCommand(Double x) {
+		this.juliaXC = x;
+	}
+	private void doSelectJuliaYCCombosCommand(Double y) {
+		this.juliaYC = y;
+	}
+	private void doSelectJuliaScaleSizeCombosCommand(Double size) {
+		this.juliaScaleSize = size;
+	}
+	
 	private void doSelectJuliaCombosCommand(String cOption) {
 		switch (cOption) {
 			case J1: //  J1 = "P[2] C[0.279]";	//f(z) = z^2 + 0.279
@@ -725,6 +803,9 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	
+
+
+	
 	private void doMandelbrotChoicesCheck() {
 		this.formulaArea.setVisible(true);
 		if (this.magnification != 0 && this.exponent != 0) {
@@ -811,6 +892,18 @@ class SierpinskiComboPanel extends JPanel {
 	private void doSelectMandBoundCombosCommand(Double bound) {
 		this.mandBound = bound;
 	}
+	
+	private void doSelectMandXCCombosCommand(Double x) {
+		this.mandXC = x;
+	}
+	private void doSelectMandYCCombosCommand(Double y) {
+		this.mandYC = y;
+	}
+	private void doSelectMandScaleSizeCombosCommand(Double size) {
+		this.mandScaleSize = size;
+	}
+	
+	
 	///////////////////
 	private void doSelectDiyMandMagnificationCombosCommand(Integer magOption) {
 		this.diyMandMagnification = magOption;
@@ -898,6 +991,10 @@ class SierpinskiComboPanel extends JPanel {
 		int juliaMax = this.juliaMaxIter;
 		int juliaLoopLt = this.juliaSize;
 		double jBound = this.juliaBound;// this.getJuliaBound();
+		
+		double jXc = this.juliaXC;
+		double jYc = this.juliaYC;
+		double jScale = this.juliaScaleSize;
 
 		// for Mandelbrot
 		int mag = this.getMagnification();
@@ -906,6 +1003,9 @@ class SierpinskiComboPanel extends JPanel {
 		int mandMax = this.mandMaxIter;
 		int mandLoopLt = this.mandSize;
 		double mBound=this.mandBound;
+		double mXc = this.mandXC;
+		double mYc = this.mandYC;
+		double mScale = this.mandScaleSize;
 
 		/*final*/ FractalBase ff = null;;
 		
@@ -937,6 +1037,9 @@ class SierpinskiComboPanel extends JPanel {
 				this.formulaArea.append("\n\nCalculated based on pixel values with a top-left origin");
 			}
 			ff = new Mandelbrot(mag, exp, mUseD, mBound, true);
+			FractalBase.setxC(mXc);
+			FractalBase.setxC(mYc);
+			FractalBase.setScaleSize(mScale);
 			FractalBase.setMaxIter(mandMax);
 			FractalBase.setAreaSize(mandLoopLt);
 			this.doReset();
@@ -948,9 +1051,14 @@ class SierpinskiComboPanel extends JPanel {
 			if (!(this.juliaSelection.equals("J7") || this.juliaSelection.equals("J8")
 					|| this.juliaSelection.equals("J9"))) {
 				ff = new Julia(pow, con, jBound, jUseD);
+				
+				
 			} else {
 				ff = new Julia(pow, comp, jBound, jUseD);
 			}
+			FractalBase.setxC(jXc);
+			FractalBase.setxC(jYc);
+			FractalBase.setScaleSize(jScale);
 			FractalBase.setMaxIter(juliaMax);
 			FractalBase.setAreaSize(juliaLoopLt);
 			this.doReset();
@@ -1042,6 +1150,10 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private void doPauseCommand(Thread fb){
 		fb.interrupt();
+	}
+	
+	private void doPrintCommand(){
+		
 	}
 
 	private void setUpListeners() {		
@@ -1136,6 +1248,40 @@ class SierpinskiComboPanel extends JPanel {
 				doSelectJuliaBoundCombosCommand(juliaBoundComboOption);				
 			}});
 		
+		this.juliaXCCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double juliaXCComboOption = (Double)cb.getSelectedItem();
+				doSelectJuliaXCCombosCommand(juliaXCComboOption);				
+			}});
+		
+		
+		this.juliaYCCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double juliaYCComboOption = (Double)cb.getSelectedItem();
+				doSelectJuliaYCCombosCommand(juliaYCComboOption);				
+			}});
+		
+		
+		this.juliaScaleSizeCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double juliaScaleSizeComboOption = (Double)cb.getSelectedItem();
+				doSelectJuliaScaleSizeCombosCommand(juliaScaleSizeComboOption);				
+			}});
+		
+		
+		
+		//////////////////////////////////////////////////
+		//		MANDELBROT
+		
 		this.mandCombos.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
 			@Override
@@ -1195,6 +1341,37 @@ class SierpinskiComboPanel extends JPanel {
 				doSelectMandBoundCombosCommand(mandBoundComboOption);				
 			}});
 		
+
+		this.mandXCCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double mandXCComboOption = (Double)cb.getSelectedItem();
+				doSelectMandXCCombosCommand(mandXCComboOption);				
+			}});
+		
+		
+		this.mandYCCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double mandYCComboOption = (Double)cb.getSelectedItem();
+				doSelectMandYCCombosCommand(mandYCComboOption);				
+			}});
+		
+		
+		this.mandScaleSizeCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double mandScaleSizeComboOption = (Double)cb.getSelectedItem();
+				doSelectMandScaleSizeCombosCommand(mandScaleSizeComboOption);				
+			}});
+		///////////////////	endsmandelbrot	//////////////////////
+		//////////////////////////////////////////////////////////
 		this.diyMandRb.addActionListener(diyFractChoiceRbListener());
 		this.diyJuliaRb.addActionListener(diyFractChoiceRbListener());
 		this.diyApolloRb.addActionListener(diyFractChoiceRbListener());
@@ -1310,7 +1487,14 @@ class SierpinskiComboPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				doPauseCommand(fbf);				
 			}
-		});		
+		});	
+		
+		this.buPrint.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doPrintCommand();				
+			}
+		});	
 	}
 	
 	private void doMagnify(boolean mag) {
@@ -1532,6 +1716,46 @@ class SierpinskiComboPanel extends JPanel {
 
 	public void setMandBound(double mandBound) {
 		this.mandBound = mandBound;
+	}
+
+	public double getJuliaXC() {
+		return juliaXC;
+	}
+
+	public void setJuliaXC(double juliaXC) {
+		this.juliaXC = juliaXC;
+	}
+
+	public double getJuliaYC() {
+		return juliaYC;
+	}
+
+	public void setJuliaYC(double juliaYC) {
+		this.juliaYC = juliaYC;
+	}
+
+	public double getMandXC() {
+		return mandXC;
+	}
+
+	public void setMandXC(double mandXC) {
+		this.mandXC = mandXC;
+	}
+
+	public double getMandYC() {
+		return mandYC;
+	}
+
+	public void setMandYC(double mandYC) {
+		this.mandYC = mandYC;
+	}
+
+	public double getMandScaleSize() {
+		return mandScaleSize;
+	}
+
+	public void setMandScaleSize(double mandScaleSize) {
+		this.mandScaleSize = mandScaleSize;
 	}
 	
 }
