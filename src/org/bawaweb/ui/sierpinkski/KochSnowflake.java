@@ -73,13 +73,13 @@ public class KochSnowflake extends JFrame implements Runnable {
 		Point p3 = new Point(getWidth() - OFFSET, getHeight() - OFFSET);
 		
 		//TOREMOVELTR
-		System.out.println("P1("+p1.x+","+p1.y+")");
+		/*System.out.println("P1("+p1.x+","+p1.y+")");
 		System.out.println("P2("+p2.x+","+p2.y+")");
 		System.out.println("P3("+p3.x+","+p3.y+")");
 		
 		System.out.println("Angle p1-p2  "+angle(p1,p2));		
 		System.out.println("Angle p2-p3  "+angle(p2,p3));		
-		System.out.println("Angle p1-p3  "+angle(p1,p3));
+		System.out.println("Angle p1-p3  "+angle(p1,p3));*/
 		
 		drawKochSnowflakes(g, depth, p1, p2, p3);
 		return bufferedImage;

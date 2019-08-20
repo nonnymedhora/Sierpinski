@@ -43,7 +43,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	
 	/*static*/ BufferedImage bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	
-	final Point center = new Point(WIDTH / 2, HEIGHT / 2);
+	final Point center = new Point(getAreaSize()/2,getAreaSize()/2);//(WIDTH / 2, HEIGHT / 2);
 	
 	static double xC = 0.0;
 	static double yC = 0.0;

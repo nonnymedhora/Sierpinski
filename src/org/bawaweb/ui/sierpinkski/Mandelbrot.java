@@ -20,7 +20,7 @@ public class Mandelbrot extends FractalBase {
 
 	private int mag;
 	private int exp;
-	private boolean useDiff=false;
+	private boolean useDiff = false;
 //	private int size;		//0-599 4 ltr
 	
 	private boolean isComplexNumConst;
@@ -42,6 +42,8 @@ public class Mandelbrot extends FractalBase {
 		super();
 		this.mag = mg;
 		this.exp = 2;
+		this.isComplexNumConst=true;
+		this.compConst=null;
 	}
 
 	/**
@@ -103,9 +105,12 @@ public class Mandelbrot extends FractalBase {
 	}
 
 	private void createMandelbrot(Graphics2D g, boolean diff) {		
-		double xc = getxC();//-0.5;
-		double yc = getyC();//0;
-		double size = getScaleSize();//this.mag;	//10;//4;//2;
+//		System.out.println("getXC--- "+getxC());		
+//		System.out.println("getYC--- "+getyC());
+		
+		double xc = getxC();//-0.5;//getxC();//-0.5;
+		double yc = getyC();//0;//getyC();//0;
+		double size = this.mag;//getScaleSize();//this.mag;	//10;//4;//2;
 		double bd = this.getBound();
 		int max = getMaxIter();
 
@@ -148,7 +153,7 @@ public class Mandelbrot extends FractalBase {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				final FractalBase frame = new Mandelbrot(2,96);//,2);//,true);//(2,3,false);
+				final FractalBase frame = new Mandelbrot(2,2);//96);//,2);//,true);//(2,3,false);
 //				frame.depth = 5;
 				frame.setTitle(frame.getFractalShapeTitle());
 				frame.setSize(FractalBase.WIDTH, FractalBase.HEIGHT);

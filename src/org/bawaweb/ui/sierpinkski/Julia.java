@@ -219,7 +219,7 @@ public class Julia extends FractalBase {
 	private void createJulia(Graphics2D g, boolean diff) {
 		double xc = getxC();//0;
 		double yc = getyC();//0;
-		double size = getScaleSize();//this.mag;//2;
+		double size = this.power;//getScaleSize();//this.mag;//2;
 
 		int n = getAreaSize();//512;
 		

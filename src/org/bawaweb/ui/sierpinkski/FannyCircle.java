@@ -29,6 +29,7 @@ public class FannyCircle extends FractalBase {
 	}
 	
 	public FannyCircle(int len, int cut){
+		this();
 		this.setCutDim(cut);
 		this.setLength(len);
 	}

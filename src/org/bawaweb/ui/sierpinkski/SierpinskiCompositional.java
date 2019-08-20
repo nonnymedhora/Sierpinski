@@ -99,7 +99,7 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private final Double[] juliaXCOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
 	private final JComboBox<Double> juliaXCCombos = new JComboBox<Double>(juliaXCOptions);
-	private final Double[] juliaYCOptions = new Double[] { -2.0, -1.5, -1.0, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
+	private final Double[] juliaYCOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
 	private final JComboBox<Double> juliaYCCombos = new JComboBox<Double>(juliaYCOptions);
 	private final Double[] juliaScaleSizeOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
 	private final JComboBox<Double> juliaScaleSizeCombos = new JComboBox<Double>(juliaScaleSizeOptions);
@@ -216,7 +216,7 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private final Integer[] diyMandMagOptions = new Integer[]{1,2,3,4,5,6,7,8,9,10};
 	private final JComboBox<Integer> diyMandMagCombos = new JComboBox<Integer>(diyMandMagOptions);
-	private final Integer[] diyMandExpOptions = new Integer[]{2,3,4,5,6,7};
+	private final Integer[] diyMandExpOptions = new Integer[] { -3, -2, -1, 2, 3, 4, 5, 6, 7 };
 	private final JComboBox<Integer> diyMandExpCombos = new JComboBox<Integer>(diyMandExpOptions);
 	private final JCheckBox diyMandUseDiffCb = new JCheckBox("UseDifferencesOnly",true);
 	private JTextField diyMandRealTf = new JTextField(5);
@@ -231,7 +231,7 @@ class SierpinskiComboPanel extends JPanel {
 	protected boolean diyJuliaUseDiff;
 	protected boolean diyJuliaKeepConst;
 	
-	private final Integer[] diyJuliaPowerOptions = new Integer[]{2,3,4,5,6,7};
+	private final Integer[] diyJuliaPowerOptions = new Integer[]{-3, -2, -1, 2, 3, 4, 5, 6, 7};
 	private final JComboBox<Integer> diyJuliaPowerCombos = new JComboBox<Integer>(diyJuliaPowerOptions);
 	private final JCheckBox diyJuliaUseDiffCb = new JCheckBox("UseDifferencesOnly",true);
 	private JTextField diyJuliaRealTf = new JTextField(5);
@@ -434,7 +434,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.juliaYC=0.0;
 		this.juliaScaleSize=2.0;
 
-		this.mandXC=0.0;
+		this.mandXC=-0.5;
 		this.mandYC=0.0;
 		this.mandScaleSize=2.0;
 		
@@ -468,7 +468,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.mandBoundCombos.setSelectedIndex(2);
 		
 		this.juliaXCCombos.setSelectedIndex(4);
-		this.mandXCCombos.setSelectedIndex(4);
+		this.mandXCCombos.setSelectedIndex(3);
 		this.juliaYCCombos.setSelectedIndex(4);
 		this.mandYCCombos.setSelectedIndex(4);
 		this.juliaScaleSizeCombos.setSelectedIndex(8);
@@ -499,7 +499,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.juliaBoundCombos.setSelectedItem(this.juliaBoundOptions[2]);
 		
 		this.juliaXCCombos.setSelectedItem(this.juliaXCOptions[4]);
-		this.mandXCCombos.setSelectedItem(this.mandXCOptions[4]);
+		this.mandXCCombos.setSelectedItem(this.mandXCOptions[3]);
 		this.juliaYCCombos.setSelectedItem(this.juliaYCOptions[4]);
 		this.mandYCCombos.setSelectedItem(this.mandYCOptions[4]);
 		this.juliaScaleSizeCombos.setSelectedItem(this.juliaScaleSizeOptions[8]);

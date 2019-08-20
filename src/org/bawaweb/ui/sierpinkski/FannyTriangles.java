@@ -21,6 +21,7 @@ public class FannyTriangles extends FractalBase {
 	private int length = 150;// * depth + 1;
 	private int cutDim = 2;
 	public FannyTriangles(int len, int ratio){
+		this();
 		this.setLength(len);
 		this.setCutDim(ratio);
 	}
