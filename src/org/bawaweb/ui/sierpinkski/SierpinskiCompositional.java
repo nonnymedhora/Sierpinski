@@ -212,6 +212,7 @@ class SierpinskiComboPanel extends JPanel {
 	protected double diyMandConstReal;
 	protected double diyMandConstImg;
 	protected boolean diyMandUseDiff;
+	protected boolean diyMandKeepConst;
 	
 	private final Integer[] diyMandMagOptions = new Integer[]{1,2,3,4,5,6,7,8,9,10};
 	private final JComboBox<Integer> diyMandMagCombos = new JComboBox<Integer>(diyMandMagOptions);
@@ -220,6 +221,7 @@ class SierpinskiComboPanel extends JPanel {
 	private final JCheckBox diyMandUseDiffCb = new JCheckBox("UseDifferencesOnly",true);
 	private JTextField diyMandRealTf = new JTextField(5);
 	private JTextField diyMandImgTf = new JTextField(5);
+	private final JCheckBox diyMandKeepConstantCb = new JCheckBox("DynamicConstant",false);
 
 	
 	//diy Julia options
@@ -227,12 +229,14 @@ class SierpinskiComboPanel extends JPanel {
 	protected double diyJuliaConstReal;
 	protected double diyJuliaConstImg;
 	protected boolean diyJuliaUseDiff;
+	protected boolean diyJuliaKeepConst;
 	
 	private final Integer[] diyJuliaPowerOptions = new Integer[]{2,3,4,5,6,7};
 	private final JComboBox<Integer> diyJuliaPowerCombos = new JComboBox<Integer>(diyJuliaPowerOptions);
 	private final JCheckBox diyJuliaUseDiffCb = new JCheckBox("UseDifferencesOnly",true);
 	private JTextField diyJuliaRealTf = new JTextField(5);
 	private JTextField diyJuliaImgTf = new JTextField(5);
+	private final JCheckBox diyJuliaKeepConstantCb = new JCheckBox("DynamicConstant",false);
 	
 	//diy Apollo Options
 	protected int diyApolloC1;
@@ -297,6 +301,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.juliaOptionsPanel.add(new JLabel("Boundary:"));
 		this.juliaOptionsPanel.add(this.juliaBoundCombos);
 		
+		
 
 		this.juliaOptionsPanel.add(new JLabel("Center: X "));
 		this.juliaOptionsPanel.add(this.juliaXCCombos);
@@ -356,6 +361,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyMandPanel.add(new JLabel("Imaginary (*i)"));
 		this.diyMandPanel.add(this.diyMandImgTf);
 		this.diyMandPanel.add(this.diyMandUseDiffCb);
+		this.diyMandPanel.add(this.diyMandKeepConstantCb);
 		this.diyMandPanel.setVisible(false);
 		
 		this.diyJuliaPanel.add(new JLabel("Power:"));
@@ -365,6 +371,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaPanel.add(new JLabel("Imaginary (*i)"));
 		this.diyJuliaPanel.add(this.diyJuliaImgTf);
 		this.diyJuliaPanel.add(this.diyJuliaUseDiffCb);
+		this.diyJuliaPanel.add(this.diyJuliaKeepConstantCb);
 		this.diyJuliaPanel.setVisible(false);
 		
 		this.diyApolloPanel.add(new JLabel("C1"));
@@ -824,19 +831,38 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private void doDiyMandelbrotChoicesCheck() {
 		this.formulaArea.setVisible(true);
-		if (this.diyMandMagnification != 0 && this.diyMandExponent != 0 &&
-				(this.diyMandRealTf.getText().length()>0)&&(this.diyMandImgTf.getText().length()>0)) {
-//			System.out.println("this.diyMandRealTf.getText()=="+this.diyMandRealTf.getText()+"Dvval is "+Double.parseDouble(this.diyMandRealTf.getText()));
-//			System.out.println("this.diyMandImgTf.getText()=="+this.diyMandImgTf.getText()+"Dvval is "+Double.parseDouble(this.diyMandImgTf.getText()));
+		if (this.diyMandMagnification != 0 && this.diyMandExponent != 0
+				&& (((this.diyMandRealTf.getText().length() > 0) && (this.diyMandImgTf.getText().length() > 0))
+						&& !this.diyMandKeepConst)
+				|| this.diyMandKeepConst) {
+			// System.out.println("this.diyMandRealTf.getText()=="+this.diyMandRealTf.getText()+"Dvval
+			// is "+Double.parseDouble(this.diyMandRealTf.getText()));
+			// System.out.println("this.diyMandImgTf.getText()=="+this.diyMandImgTf.getText()+"Dvval
+			// is "+Double.parseDouble(this.diyMandImgTf.getText()));
 			this.buStart.setEnabled(true);
-			this.formulaArea.setText("Mandelbrot Set:\n\nf(z) = z ^ " + this.diyMandExponent + " + C");
-			this.formulaArea.setText("\n  C = "+Double.parseDouble(this.diyMandRealTf.getText())+" + ("+Double.parseDouble(this.diyMandImgTf.getText())+")");
-			if (this.mUseDiff || this.mandUseDiff.isSelected()) {
-				this.formulaArea
-						.append("\n\nCalculated inverted colors based on differences in pixel values from origin");
-			} else {
-				this.formulaArea.append("\n\nCalculated colors based on pixel values with a 'top-and-left' origin");
+			String formula = "Mandelbrot Set:\n\nf(z) = z ^ " + this.diyMandExponent + " + C";
+			if (!this.diyMandKeepConst) {
+				formula += "\n  C = " + Double.parseDouble(this.diyMandRealTf.getText()) + " + ("
+						+ Double.parseDouble(this.diyMandImgTf.getText()) + ")";
 			}
+			if (this.mUseDiff || this.mandUseDiff.isSelected()) {
+				formula += "\n\nCalculated inverted colors based on differences in pixel values from origin";
+			} else {
+				formula += "\n\nCalculated colors based on pixel values with a 'top-and-left' origin";
+			}
+			this.formulaArea.setText(formula);
+			/*
+			 * this.formulaArea.setText("Mandelbrot Set:\n\nf(z) = z ^ " +
+			 * this.diyMandExponent + " + C");
+			 * this.formulaArea.setText("\n  C = "+Double.parseDouble(this.
+			 * diyMandRealTf.getText())+" + ("+Double.parseDouble(this.
+			 * diyMandImgTf.getText())+")"); if (this.mUseDiff ||
+			 * this.mandUseDiff.isSelected()) { this.formulaArea
+			 * .append("\n\nCalculated inverted colors based on differences in pixel values from origin"
+			 * ); } else { this.formulaArea.
+			 * append("\n\nCalculated colors based on pixel values with a 'top-and-left' origin"
+			 * ); }
+			 */
 		} else {
 			this.buStart.setEnabled(false);
 		}
@@ -844,17 +870,28 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private void doDiyJuliaChoicesCheck() {
 		this.formulaArea.setVisible(true);
-		if(this.diyJuliaPower!=0&&(this.diyJuliaRealTf.getText().length()>0)&&(this.diyJuliaImgTf.getText().length()>0)){
+		if (this.diyJuliaPower != 0 && (!this.diyJuliaKeepConst&&(this.diyJuliaRealTf.getText().length() > 0)
+				&& (this.diyJuliaImgTf.getText().length() > 0)&&!this.diyJuliaKeepConst)||this.diyJuliaKeepConst) {
 			this.buStart.setEnabled(true);
-			this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ "+this.diyJuliaPower+" + C");
+			String formula="Julia Set:\n\nf(z) = z ^ "+this.diyJuliaPower+" + C";
+			if(!this.diyJuliaKeepConst){formula+="\n  C = "+Double.parseDouble(this.diyJuliaRealTf.getText())+" + ("+Double.parseDouble(this.diyJuliaImgTf.getText())+")";}
+			if (this.diyJuliaUseDiff || this.diyJuliaUseDiffCb.isSelected()) {
+				formula+="\n\nCalculated inverted colors based on differences in pixel values from origin";
+			} else {
+				formula+="\n\nCalculated colors based on pixel values with a 'top-and-left' origin";
+			}
+			this.formulaArea.setText(formula);
+			
+			/*this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ "+this.diyJuliaPower+" + C");
 			
 			this.formulaArea.setText("\n  C = "+Double.parseDouble(this.diyJuliaRealTf.getText())+" + ("+Double.parseDouble(this.diyJuliaImgTf.getText())+")");
+			
 			if (this.diyJuliaUseDiff || this.diyJuliaUseDiffCb.isSelected()) {
 				this.formulaArea
 						.append("\n\nCalculated inverted colors based on differences in pixel values from origin");
 			} else {
 				this.formulaArea.append("\n\nCalculated colors based on pixel values with a 'top-and-left' origin");
-			}
+			}*/
 		}else{
 			this.buStart.setEnabled(false);
 		}
@@ -922,6 +959,12 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setVisible(true);
 		this.doDiyMandelbrotChoicesCheck();
 	}
+
+	private void doSetDiyMandKeepConstantCommand(boolean useConst) {
+		this.diyMandKeepConst = useConst;
+		this.formulaArea.setVisible(true);
+		this.doDiyJuliaChoicesCheck();
+	}
 	//-julia
 	private void doSelectDiyJuliaPowerCombosCommand(Integer powerOption) {
 		this.diyJuliaPower = powerOption;
@@ -931,6 +974,12 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private void doSetDiyJuliaUseDiffCommand(boolean useDiffs) {
 		this.diyJuliaUseDiff = useDiffs;
+		this.formulaArea.setVisible(true);
+		this.doDiyJuliaChoicesCheck();
+	}
+	
+	private void doSetDiyJuliaKeepConstantCommand(boolean useConst) {
+		this.diyJuliaKeepConst = useConst;
 		this.formulaArea.setVisible(true);
 		this.doDiyJuliaChoicesCheck();
 	}
@@ -1079,18 +1128,29 @@ class SierpinskiComboPanel extends JPanel {
 				int diyMag = this.getDiyMandMagnification();
 				int diyMandExp = this.getDiyMandExponent();
 				boolean diyMandUseD = this.getDiyMandUseDiff();
+				boolean diyMKConst = this.diyMandKeepConst;
+				
+				if (diyMKConst) {
+					ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD, diyMKConst);
+				} else {
 
-				double diyMRealVal = Double.parseDouble(this.diyMandRealTf.getText());
-				double diyMImgVal = Double.parseDouble(this.diyMandImgTf.getText());
-				ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD, diyMRealVal, diyMImgVal);
+					double diyMRealVal = Double.parseDouble(this.diyMandRealTf.getText());
+					double diyMImgVal = Double.parseDouble(this.diyMandImgTf.getText());
+					ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD, diyMRealVal, diyMImgVal);
+				}
 			} else if(this.diyJuliaRb.isSelected()){
 				//
 				int diyJuliaP = this.getDiyJuliaPower();
 				boolean diyJuliaUseD = this.getDiyJuliaUseDiff();
 
-				double diyJuliaRealVal = Double.parseDouble(this.diyJuliaRealTf.getText());
-				double diyJuliaImgVal = Double.parseDouble(this.diyJuliaImgTf.getText());
-				ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaRealVal, diyJuliaImgVal);
+				boolean diyJKConst = this.diyJuliaKeepConst;
+				if (diyJKConst) {
+					ff = new Julia(diyJuliaP, diyJuliaUseD, diyJKConst);
+				} else {
+
+					double diyJuliaRealVal = Double.parseDouble(this.diyJuliaRealTf.getText());
+					double diyJuliaImgVal = Double.parseDouble(this.diyJuliaImgTf.getText());
+					ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaRealVal, diyJuliaImgVal);}
 			} else if (this.diyApolloRb.isSelected()) {
 				double c1 = this.diyApolloC1;
 				double c2 = this.diyApolloC2;
@@ -1442,6 +1502,17 @@ class SierpinskiComboPanel extends JPanel {
 			}
         });
 		
+		this.diyMandKeepConstantCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetDiyMandKeepConstantCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetDiyMandKeepConstantCommand(false);
+				}
+			}
+        });
+		
 		//--julia-diy
 		this.diyJuliaPowerCombos.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
@@ -1461,6 +1532,17 @@ class SierpinskiComboPanel extends JPanel {
 					doSetDiyJuliaUseDiffCommand(true);
 				} else if(event.getStateChange()==ItemEvent.DESELECTED){
 					doSetDiyJuliaUseDiffCommand(false);
+				}
+			}
+        });
+		
+		this.diyJuliaKeepConstantCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetDiyJuliaKeepConstantCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetDiyJuliaKeepConstantCommand(false);
 				}
 			}
         });

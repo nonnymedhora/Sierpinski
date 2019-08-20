@@ -45,9 +45,9 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	
 	final Point center = new Point(WIDTH / 2, HEIGHT / 2);
 	
-	static double xC;
-	static double yC;
-	static double scaleSize;
+	static double xC = 0.0;
+	static double yC = 0.0;
+	static double scaleSize = 1.0;
 	
 	protected boolean running = false;
 

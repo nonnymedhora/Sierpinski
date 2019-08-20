@@ -38,6 +38,7 @@ public class Julia extends FractalBase {
 	private double complexConst;		//	either this	
 	private ComplexNumber complex; 		// or this
 	private boolean useDiff = false;
+	private boolean isComplexNumConst=false;
 	
 	public final ComplexNumber C1 = new ComplexNumber(-0.74543,0.11301);	//c=-0.74543+0.11301*i
 	public final ComplexNumber C2 = new ComplexNumber(-0.75,0.11);			//c= -0.75+0.11*i
@@ -104,10 +105,10 @@ public class Julia extends FractalBase {
 		this.setBound(bd);
 	}
 
-	public Julia(int diyJuliaP, boolean diyJuliaUseD, double diyJuliaRealVal, double diyJuliaImgVal) {
-		this.power=diyJuliaP;
-		this.useDiff=diyJuliaUseD;
-		this.complex=new ComplexNumber(diyJuliaRealVal,diyJuliaImgVal);
+	public Julia(int m, boolean uDiff, double realVal, double imagVal) {
+		this.power=m;
+		this.useDiff=uDiff;
+		this.complex=new ComplexNumber(realVal,imagVal);
 	}
 
 	public Julia(int mul, String comp) {
@@ -131,6 +132,16 @@ public class Julia extends FractalBase {
 	public Julia(int m, double con, double bd, boolean uDiff) {
 		this(m,con,uDiff);
 		this.setBound(bd);
+	}
+
+	public Julia(int m, boolean uDiff, boolean keepConst) {
+		this();
+		this.power = m;
+		this.useDiff = uDiff;
+		this.isComplexNumConst=keepConst;
+		if(keepConst){
+			this.complex=null;
+		}
 	}
 
 	/**
@@ -221,6 +232,9 @@ public class Julia extends FractalBase {
 				double x0 = xc - size / 2 + size * row / n;
 				double y0 = yc - size / 2 + size * col / n;
 				ComplexNumber z0 = new ComplexNumber(x0, y0);
+				if (isComplexNumConst || this.complex == null) {
+					this.complex = z0;
+				}
 				int colorRGB;
 				if (diff) {
 					colorRGB = julia(z0, max, bd);
