@@ -25,6 +25,8 @@ public class Mandelbrot extends FractalBase {
 	
 	private boolean isComplexNumConst;
 	private ComplexNumber compConst;// = new ComplexNumber(-0.75, 0.11);
+	
+	private double bound=2.0;
 
 	public Mandelbrot() {
 		super();
@@ -85,6 +87,11 @@ public class Mandelbrot extends FractalBase {
 		this.isComplexNumConst = complexNumIsConst;
 	}
 
+	public Mandelbrot(int mg, int ep, boolean useD, double bd, boolean complexNumIsConst) {
+		this(mg,ep,useD,complexNumIsConst);
+		this.setBound(bd);
+	}
+
 	private static final long serialVersionUID = 13456L;
 
 	/* (non-Javadoc)
@@ -99,7 +106,7 @@ public class Mandelbrot extends FractalBase {
 		double xc = -0.5;
 		double yc = 0;
 		double size = this.mag;//10;//4;//2;
-		
+		double bd = this.getBound();
 		int max = getMaxIter();
 
 		int n = getAreaSize();//599;//512;	(0-599)
@@ -115,9 +122,9 @@ public class Mandelbrot extends FractalBase {
 				int colorRGB;
 				// int gray = /*maxIter - */mand(z0, maxIter);
 				if (diff) {
-					colorRGB = mand(z0, max, exp, this.compConst);
+					colorRGB = mand(z0, max, exp, this.compConst, bd);
 				} else {
-					colorRGB = max - mand(z0, max, exp, this.compConst);
+					colorRGB = max - mand(z0, max, exp, this.compConst,bd);
 				}
 				Color color = this.getPixelDisplayColor(row, col, colorRGB, diff);
 				setPixel(row, n - 1 - col, color.getRGB());
@@ -127,10 +134,10 @@ public class Mandelbrot extends FractalBase {
 	}
 
 	
-	private int mand(ComplexNumber z0, int maxIterations, int power, ComplexNumber constant) {
+	private int mand(ComplexNumber z0, int maxIterations, int power, ComplexNumber constant, double bd) {
 		ComplexNumber z = z0;
 		for (int t = 0; t < maxIterations; t++) {
-			if (z.abs() > 2.0)
+			if (z.abs() > bd)
 				return t;
 			z = z.power(power).plus(constant);
 		}
@@ -156,6 +163,14 @@ public class Mandelbrot extends FractalBase {
 	@Override
 	protected String getFractalShapeTitle() {
 		return "Bawaz _ Mandelbrot";
+	}
+
+	public double getBound() {
+		return this.bound;
+	}
+
+	public void setBound(double bod) {
+		this.bound = bod;
 	}
 
 }

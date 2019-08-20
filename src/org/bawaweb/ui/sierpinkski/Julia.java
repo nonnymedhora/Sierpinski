@@ -42,6 +42,9 @@ public class Julia extends FractalBase {
 	public final ComplexNumber C1 = new ComplexNumber(-0.74543,0.11301);	//c=-0.74543+0.11301*i
 	public final ComplexNumber C2 = new ComplexNumber(-0.75,0.11);			//c= -0.75+0.11*i
 	public final ComplexNumber C3 = new ComplexNumber(-0.1,0.651);			//c=-0.1+0.651*i
+	
+	
+	private double bound=2.0;
 
 	public Julia() {
 		super();
@@ -96,6 +99,10 @@ public class Julia extends FractalBase {
 		this(mul,comp);
 		this.useDiff = uDiff;
 	}
+	public Julia(int mul, String comp, double bd, boolean uDiff) {
+		this(mul,comp,uDiff);
+		this.setBound(bd);
+	}
 
 	public Julia(int diyJuliaP, boolean diyJuliaUseD, double diyJuliaRealVal, double diyJuliaImgVal) {
 		this.power=diyJuliaP;
@@ -119,6 +126,11 @@ public class Julia extends FractalBase {
 		default:
 			this.complex = C1;
 		}
+	}
+
+	public Julia(int m, double con, double bd, boolean uDiff) {
+		this(m,con,uDiff);
+		this.setBound(bd);
 	}
 
 	/**
@@ -177,6 +189,14 @@ public class Julia extends FractalBase {
 		this.useDiff = useDiff;
 	}
 
+	public double getBound() {
+		return this.bound;
+	}
+
+	public void setBound(double bod) {
+		this.bound = bod;
+	}
+
 	/* (non-Javadoc)
 	 * @see org.bawaweb.ui.sierpinkski.FractalBase#createFractalShape(java.awt.Graphics2D)
 	 */
@@ -193,7 +213,7 @@ public class Julia extends FractalBase {
 		int n = getAreaSize();//512;
 		
 		int max = getMaxIter();
-		
+		double bd = this.getBound();
 		
 		
 		for (int row = 0; row < n; row++) {
@@ -203,9 +223,9 @@ public class Julia extends FractalBase {
 				ComplexNumber z0 = new ComplexNumber(x0, y0);
 				int colorRGB;
 				if (diff) {
-					colorRGB = julia(z0, max);
+					colorRGB = julia(z0, max, bd);
 				} else {
-					colorRGB = max - julia(z0, max);
+					colorRGB = max - julia(z0, max, bd);
 				}
 				Color color;
 				color = getPixelDisplayColor(row, col, colorRGB, diff);
@@ -214,7 +234,7 @@ public class Julia extends FractalBase {
 		}
 	}
 
-	private int julia(ComplexNumber zz, int max) {
+	private int julia(ComplexNumber zz, int max, double bd) {
 		// f(z)=z^n+c
 		ComplexNumber z = zz;
 
@@ -226,7 +246,7 @@ public class Julia extends FractalBase {
 		}
 
 		for (int t = 0; t < max; t++) {
-			if (z.abs() > 2.0) {
+			if (z.abs() > bd) {
 				return t;
 			}
 			z = z.power(this.power).plus(complexConstant);
@@ -270,7 +290,7 @@ public class Julia extends FractalBase {
 				final Julia frame = new Julia(2,"C2");//2,0.279);
 				/*frame.setPower(2);
 				frame.setComplex(frame.c1);*/
-				frame.depth = 5;
+//				frame.depth = 5;
 				frame.setTitle(frame.getFractalShapeTitle());
 				frame.setSize(frame.WIDTH, frame.HEIGHT);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

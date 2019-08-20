@@ -28,9 +28,11 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 /**
@@ -94,6 +96,9 @@ class SierpinskiComboPanel extends JPanel {
 	private final JComboBox<Integer> juliaMaxIterCombos = new JComboBox<Integer>(juliaMaxIterOptions);
 	private final Integer[] juliaSizeOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 500, 512, 599, 800 };
 	private final JComboBox<Integer> juliaSizeCombos = new JComboBox<Integer>(juliaSizeOptions);
+	private final Double[] juliaBoundOptions = new Double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private final JComboBox<Double> juliaBoundCombos = new JComboBox<Double>(juliaBoundOptions);
+	
 
 	// for Mandelbrot
 	private final Integer[] mandOptions = new Integer[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
@@ -105,6 +110,8 @@ class SierpinskiComboPanel extends JPanel {
 	private final JComboBox<Integer> mandMaxIterCombos = new JComboBox<Integer>(mandMaxIterOptions);
 	private final Integer[] mandSizeOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 500, 512, 599, 800 };
 	private final JComboBox<Integer> mandSizeCombos = new JComboBox<Integer>(mandSizeOptions);
+	private final Double[] mandBoundOptions = new Double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private final JComboBox<Double> mandBoundCombos = new JComboBox<Double>(mandBoundOptions);
 
 	//	for	Apollo
 	private final String[] curvOptions = new String[] { A1, A2, A3, A4, A5, A6 };
@@ -146,6 +153,7 @@ class SierpinskiComboPanel extends JPanel {
 	protected boolean jUseDiff;
 	protected int juliaMaxIter;
 	protected int juliaSize;
+	protected double juliaBound;
 	
 	// for mandelbrot
 	protected int magnification;
@@ -153,6 +161,7 @@ class SierpinskiComboPanel extends JPanel {
 	protected boolean mUseDiff;
 	protected int mandMaxIter;
 	protected int mandSize;
+	protected double mandBound;
 	
 	
 	// for DIY
@@ -219,8 +228,8 @@ class SierpinskiComboPanel extends JPanel {
 	private boolean doMagnify = false;
 	
 //	private FractalBase ff;
-	
-	
+	//
+	private JProgressBar progressBar =new  JProgressBar(SwingConstants.HORIZONTAL) ;
 	
 	
 	private Thread fbf;
@@ -256,6 +265,8 @@ class SierpinskiComboPanel extends JPanel {
 		this.juliaOptionsPanel.add(this.juliaMaxIterCombos);	
 		this.juliaOptionsPanel.add(new  JLabel("Area Size:"));
 		this.juliaOptionsPanel.add(this.juliaSizeCombos);
+		this.juliaOptionsPanel.add(new JLabel("Boundary:"));
+		this.juliaOptionsPanel.add(this.juliaBoundCombos);
 		
 		this.juliaOptionsPanel.setVisible(false);		
 		this.add(this.juliaOptionsPanel);
@@ -269,6 +280,8 @@ class SierpinskiComboPanel extends JPanel {
 		this.mandOptionsPanel.add(this.mandMaxIterCombos);		
 		this.mandOptionsPanel.add(new  JLabel("Area Size:"));
 		this.mandOptionsPanel.add(this.mandSizeCombos);
+		this.mandOptionsPanel.add(new JLabel("Boundary:"));
+		this.mandOptionsPanel.add(this.mandBoundCombos);
 		
 		this.mandOptionsPanel.setVisible(false);
 		this.add(this.mandOptionsPanel);
@@ -337,6 +350,14 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.formulaArea.setVisible(false);
 		this.add(this.formulaArea);
+//		
+//		this.progressBar.setStringPainted(true);
+//		this.progressBar.setBounds(40,80,160,30); 
+//		this.progressBar.setValue(0);
+//
+//        this.progressBar.setIndeterminate(true);
+//        this.progressBar.setVisible(false);
+//		this.add(this.progressBar);
 		
 //		this.add(this.ff);
 		
@@ -355,6 +376,8 @@ class SierpinskiComboPanel extends JPanel {
 		this.juliaMaxIter = 255;
 		this.mandSize = 599;
 		this.juliaSize = 599;
+		this.mandBound=0.0;
+		this.juliaBound=0.0;
 		
 		//diy
 		this.diyMandMagnification = 0;
@@ -382,6 +405,8 @@ class SierpinskiComboPanel extends JPanel {
 		this.mandCombos.setSelectedIndex(0);
 		this.juliaMaxIterCombos.setSelectedIndex(5);
 		this.mandMaxIterCombos.setSelectedIndex(5);
+		this.juliaBoundCombos.setSelectedIndex(2);
+		this.mandBoundCombos.setSelectedIndex(2);
 		
 		this.diyMandMagCombos.setSelectedIndex(0);
 		this.diyMandExpCombos.setSelectedIndex(0);
@@ -402,6 +427,8 @@ class SierpinskiComboPanel extends JPanel {
 		this.juliaMaxIterCombos.setSelectedItem(this.juliaMaxIterOptions[5]);
 		this.mandSizeCombos.setSelectedItem(this.mandSizeOptions[6]);
 		this.juliaSizeCombos.setSelectedItem(this.juliaSizeOptions[6]);
+		this.mandBoundCombos.setSelectedItem(this.mandBoundOptions[2]);
+		this.juliaBoundCombos.setSelectedItem(this.juliaBoundOptions[2]);
 		
 		
 		this.diyMandMagCombos.setSelectedItem(this.diyMandMagOptions[0]);
@@ -603,6 +630,11 @@ class SierpinskiComboPanel extends JPanel {
 		this.juliaSize = limit;
 	}
 	
+
+	private void doSelectJuliaBoundCombosCommand(Double bound) {
+		this.juliaBound = bound;
+	}
+	
 	private void doSelectJuliaCombosCommand(String cOption) {
 		switch (cOption) {
 			case J1: //  J1 = "P[2] C[0.279]";	//f(z) = z^2 + 0.279
@@ -774,6 +806,11 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setVisible(true);
 		this.doMandelbrotChoicesCheck();
 	}
+	
+
+	private void doSelectMandBoundCombosCommand(Double bound) {
+		this.mandBound = bound;
+	}
 	///////////////////
 	private void doSelectDiyMandMagnificationCombosCommand(Integer magOption) {
 		this.diyMandMagnification = magOption;
@@ -860,13 +897,15 @@ class SierpinskiComboPanel extends JPanel {
 		boolean jUseD = this.getJUseDiff();
 		int juliaMax = this.juliaMaxIter;
 		int juliaLoopLt = this.juliaSize;
-		
+		double jBound = this.juliaBound;// this.getJuliaBound();
+
 		// for Mandelbrot
 		int mag = this.getMagnification();
 		int exp = this.getExponent();
 		boolean mUseD = this.getMUseDiff();
 		int mandMax = this.mandMaxIter;
 		int mandLoopLt = this.mandSize;
+		double mBound=this.mandBound;
 
 		/*final*/ FractalBase ff = null;;
 		
@@ -897,7 +936,7 @@ class SierpinskiComboPanel extends JPanel {
 			} else {
 				this.formulaArea.append("\n\nCalculated based on pixel values with a top-left origin");
 			}
-			ff = new Mandelbrot(mag, exp, mUseD, true);
+			ff = new Mandelbrot(mag, exp, mUseD, mBound, true);
 			FractalBase.setMaxIter(mandMax);
 			FractalBase.setAreaSize(mandLoopLt);
 			this.doReset();
@@ -908,9 +947,9 @@ class SierpinskiComboPanel extends JPanel {
 			this.addJuliaUseDiffInfo();
 			if (!(this.juliaSelection.equals("J7") || this.juliaSelection.equals("J8")
 					|| this.juliaSelection.equals("J9"))) {
-				ff = new Julia(pow, con, jUseD);
+				ff = new Julia(pow, con, jBound, jUseD);
 			} else {
-				ff = new Julia(pow, comp, jUseD);
+				ff = new Julia(pow, comp, jBound, jUseD);
 			}
 			FractalBase.setMaxIter(juliaMax);
 			FractalBase.setAreaSize(juliaLoopLt);
@@ -964,6 +1003,7 @@ class SierpinskiComboPanel extends JPanel {
 	}	
 
 	private void startFractals(final FractalBase ff) {
+//		this.startProgress();
 		final FractalBase frame = ff;
 		frame.setTitle(ff.getFractalShapeTitle());
 		frame.setSize(FractalBase.getAreaSize(),FractalBase.getAreaSize());//(FractalBase.WIDTH, FractalBase.HEIGHT);
@@ -986,6 +1026,8 @@ class SierpinskiComboPanel extends JPanel {
 			this.fbf = new Thread(frame);
 			this.fbf.start();
 		}
+		
+		this.endProgress();
 	}
 
 	private int closeIt(FractalBase frame) {
@@ -1083,6 +1125,17 @@ class SierpinskiComboPanel extends JPanel {
 				doSelectJuliaLoopLimitCombosCommand(juliaLoopLimitComboOption);				
 			}});
 		
+
+		
+		this.juliaBoundCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double juliaBoundComboOption = (Double)cb.getSelectedItem();
+				doSelectJuliaBoundCombosCommand(juliaBoundComboOption);				
+			}});
+		
 		this.mandCombos.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
 			@Override
@@ -1130,6 +1183,16 @@ class SierpinskiComboPanel extends JPanel {
 				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
 				Integer mandLoopLimitComboOption = (Integer)cb.getSelectedItem();
 				doSelectMandLoopLimitCombosCommand(mandLoopLimitComboOption);				
+			}});
+		
+
+		this.mandBoundCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double mandBoundComboOption = (Double)cb.getSelectedItem();
+				doSelectMandBoundCombosCommand(mandBoundComboOption);				
 			}});
 		
 		this.diyMandRb.addActionListener(diyFractChoiceRbListener());
@@ -1290,6 +1353,43 @@ class SierpinskiComboPanel extends JPanel {
 			}};
 	}
 
+	// function to increase progress
+	public void startProgress() {
+
+		this.progressBar.setStringPainted(true);
+//		this.progressBar.setBounds(40,80,160,30); 
+		this.progressBar.setValue(0);
+
+        this.progressBar.setIndeterminate(true);
+		this.add(this.progressBar);
+		
+		this.progressBar.setVisible(true);
+		int i = 0;
+		try {
+			while (i <= 10000) {
+				// set text accoring to the level to which the bar is filled
+				if (i > 30 && i < 700)
+					this.progressBar.setString("Working");
+				else if (i > 700)
+					this.progressBar.setString("Almost finished loading");
+				else
+					this.progressBar.setString("Loading started");
+
+				// fill the menu bar
+				this.progressBar.setValue(i + 100);
+
+				// delay the thread
+				Thread.sleep(3000);
+				i += 20;
+			}
+		} catch (Exception e) {
+		}
+	}
+	
+	public void endProgress() {
+		
+	}
+
 	protected String getComboChoice() {		
 		return this.comboChoice;
 	}
@@ -1416,6 +1516,22 @@ class SierpinskiComboPanel extends JPanel {
 
 	public void setDiyJuliaUseDiff(boolean diyJuliaUseDiff) {
 		this.diyJuliaUseDiff = diyJuliaUseDiff;
+	}
+
+	public double getJuliaBound() {
+		return juliaBound;
+	}
+
+	public void setJuliaBound(double juliaBound) {
+		this.juliaBound = juliaBound;
+	}
+
+	public double getMandBound() {
+		return mandBound;
+	}
+
+	public void setMandBound(double mandBound) {
+		this.mandBound = mandBound;
 	}
 	
 }

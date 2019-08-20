@@ -31,6 +31,8 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	static int depth; 					// recursion depth
 	static final int MAX_DEPTH = 10;
 	
+	static final int COLORMAXRGB=255;
+	
 	//used in Mandelbrot & Julia
 	/*final */static int maxIter = 255;		//	maximum iterations to check for Mandelbrot
 	static int areaSize = 599;//512;	(0-599)
@@ -201,7 +203,9 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		super.paint(g1);
 		Image img = createFractalImage();
 		Graphics2D g2 = (Graphics2D) g1;
+		
 		g2.drawImage(img, null, null);
+		
 		g2.dispose();
 	}
 
@@ -213,7 +217,17 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		g.setColor(Color.red);
 
 		createFractalShape(g);
+		
+		addDepthInfo(g);
 		return bufferedImage;
+	}
+
+	private void addDepthInfo(Graphics2D g) {
+		/*if (running) {*/
+//			 System.out.println("HERE inunning depth=="+depth);
+			g.setColor(Color.red);
+			g.drawString("Depth:= " + depth, OFFSET*2, HEIGHT - OFFSET*9+10);
+		/*}*/
 	}
 
 	protected Color getBGColor() {
@@ -239,8 +253,8 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		/* color = new Color(gray, gray, gray); */
 		/* Complex */ 
 		if (colorRGB % 2 == 0) {
-			final int start = 16;
-			final int end = 255-16;
+			final int start = 8;
+			final int end = COLORMAXRGB-8;
 			int num1 = correctColor(start, colorRGB, row, 2);
 			int num2 = correctColor(start, colorRGB, col, 2);
 			
@@ -256,8 +270,8 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		} else if (colorRGB % 3 == 0) {
 			
 				/* color = Colors.GREEN.getColor(); */
-				final int start = 32;
-				final int end = 255-32;
+				final int start = 16;
+				final int end = COLORMAXRGB-16;
 				int num1 = correctColor(start, colorRGB, row, 3);
 				int num2 = correctColor(start, colorRGB, col, 3);
 				
@@ -267,11 +281,11 @@ public abstract class FractalBase extends JFrame implements Runnable {
 				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 2];
 			}
 		} else if (colorRGB % 5 == 0) {
-			final int start = 64;
-			final int end = 255-64;
+			final int start = 32;
+			final int end = COLORMAXRGB-32;
 			int num1 = correctColor(start, colorRGB, row, 5);
 			int num2 = correctColor(start, colorRGB, col, 5);
-			color = new Color(num1, num2, start);
+
 			if (useD) {
 				color = new Color(num1, num2, start);//color = ColorPalette[2];
 			} else {
@@ -281,23 +295,35 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		else if (colorRGB % 7 == 0) {
 			/* color=Colors.RED.getColor(); */
 			final int start = 128;
-			final int end = 255-128;
+			final int end = COLORMAXRGB-128;
 			int num1 = correctColor(start, colorRGB, row, 7);
 			int num2 = correctColor(start, colorRGB, col, 7);
-			color = new Color(num1, num2, start);
+
 			if (useD) {
 				color = new Color(num1, num2, start);//color = ColorPalette[3];
 			} else {
 				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 4];
 			}
-		} else {
-			/* color=Colors.BLUE.getColor(); */
+		} /*
+		else if (colorRGB % 11 == 0) {
+
+			final int start = 128;
+			final int end = COLORMAXRGB-128;
+			int num1 = correctColor(start, colorRGB, row, 7);
+			int num2 = correctColor(start, colorRGB, col, 7);
+
+			if (useD) {
+				color = new Color(num1, num2, start);//color = ColorPalette[3];
+			} else {
+				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 4];
+			}
+		} */else {
 
 			final int start = 255;
-			final int end = 0;
+			final int end = COLORMAXRGB-255;
 			int num1 = correctColor(start, colorRGB, row, 1);
 			int num2 = correctColor(start, colorRGB, col, 1);
-			color = new Color(num1, num2, start);
+
 			if (useD) {
 				color = new Color(num1, num2, start);//color = ColorPalette[4];
 			} else {
