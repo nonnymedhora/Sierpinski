@@ -41,7 +41,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	/*final */static int maxIter = 255;		//	maximum iterations to check for Mandelbrot
 	static int areaSize = 599;//512;	(0-599)
 	
-	BufferedImage bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+	/*static*/ BufferedImage bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	
 	final Point center = new Point(WIDTH / 2, HEIGHT / 2);
 	
@@ -211,14 +211,17 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		super.paint(g1);
 		Image img = createFractalImage();
 		Graphics2D g2 = (Graphics2D) g1;
-		
 		g2.drawImage(img, null, null);
-		
+		this.setImage(img);
+		/*if (g2.drawImage(img, null, null)) {
+			this.setImage(img);
+		}*/
+
 		g2.dispose();
 	}
 
 	private Image createFractalImage(){
-		Graphics2D g = bufferedImage.createGraphics();
+		Graphics2D g = this.getBufferedImage().createGraphics();
 		// Clear the frame
 		g.setColor(getBGColor());
 		g.fillRect(0, 0, getWidth(), getHeight());
@@ -229,7 +232,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		if (running) {
 			addDepthInfo(g);
 		}
-		return bufferedImage;
+		return this.getBufferedImage();
 	}
 
 	private void addDepthInfo(Graphics2D g) {
@@ -242,7 +245,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	
 	protected void doPrint(Graphics2D g/* , BufferedImage image */) {
 		PrinterJob printJob = PrinterJob.getPrinterJob();
-		BufferedImage image = this.bufferedImage;
+		BufferedImage image = this.getBufferedImage();
 		printJob.setPrintable(new Printable() {
 			public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
 				if (pageIndex != 0) {
@@ -533,6 +536,14 @@ public abstract class FractalBase extends JFrame implements Runnable {
 
 	public static void setScaleSize(double scaleSize) {
 		FractalBase.scaleSize = scaleSize;
+	}
+
+	public BufferedImage getBufferedImage() {
+		return this.bufferedImage;
+	}
+
+	public void setImage(Image img) {
+		this.bufferedImage = (BufferedImage) img;
 	}
 
 	public static final Color[] ColorPalette = new Color[] {

@@ -3,23 +3,23 @@
  */
 package org.bawaweb.ui.sierpinkski;
 
-import java.awt.AWTException;
+
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.HeadlessException;
 import java.awt.Image;
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -28,11 +28,9 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 /**
@@ -255,6 +253,8 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private final JCheckBox magnifyCb = new JCheckBox("Magnify",false);
 	private boolean doMagnify = false;
+	
+	private BufferedImage fractalImage;
 	
 //	private FractalBase ff;
 	//
@@ -1120,6 +1120,8 @@ class SierpinskiComboPanel extends JPanel {
 	            (Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight())/2);
 		frame.setResizable(false);
 		frame.setVisible(true);
+
+		this.setFractalImage(frame.getBufferedImage());
 //		frame.setRunning(true);
 		/*
 		if(this.doMagnify){
@@ -1138,11 +1140,15 @@ class SierpinskiComboPanel extends JPanel {
 			this.formulaArea.setVisible(false);
 			this.fbf = new Thread(frame);
 			this.fbf.start();
+			
+			this.setFractalImage(frame.getBufferedImage());
+			
 			return;
 		}
 		
 
 		if(this.doMagnify){
+			this.setFractalImage(frame.getBufferedImage());
 			new ZoomInBox(frame);
 		}
 		return;
@@ -1165,7 +1171,24 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private void doPrintCommand(){
-		
+		PrinterJob printJob = PrinterJob.getPrinterJob();
+		BufferedImage image = this.getFractalImage();
+		printJob.setPrintable(new Printable() {
+			public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
+				if (pageIndex != 0) {
+					return NO_SUCH_PAGE;
+				}
+				graphics.drawImage(image, 0, 0, FractalBase.WIDTH, FractalBase.HEIGHT, null);
+				
+//				graphics.drawImage(image, 0-FractalBase.OFFSET, 0-FractalBase.OFFSET, image.getWidth()+FractalBase.OFFSET, image.getHeight()+FractalBase.OFFSET, null);
+				return PAGE_EXISTS;
+			}
+		});
+		try {
+			printJob.print();
+		} catch (PrinterException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	private void setUpListeners() {		
@@ -1770,6 +1793,18 @@ class SierpinskiComboPanel extends JPanel {
 
 	public void setMandScaleSize(double mandScaleSize) {
 		this.mandScaleSize = mandScaleSize;
+	}
+
+	public BufferedImage getFractalImage() {
+		return this.fractalImage;
+	}
+
+	public void setFractalImage(BufferedImage fImage) {
+		this.fractalImage = fImage;
+	}
+
+	public void setFractalImage(Image fImage) {
+		this.fractalImage = (BufferedImage) fImage;
 	}
 	
 }
