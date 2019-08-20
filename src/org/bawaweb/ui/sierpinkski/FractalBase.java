@@ -795,14 +795,26 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	    }
 
 		public ComplexNumber power(int power) {
-			assert (power > 0);
-			int iter = 1;
-			final ComplexNumber a = this;
-			ComplexNumber powered = a;
-			for(int i = 1; i < power; i++) {
-				powered=powered.times(a);
+			if (power > 0) {
+				int iter = 1;
+				final ComplexNumber a = this;
+				ComplexNumber powered = a;
+				for (int i = 1; i < power; i++) {
+					powered = powered.times(a);
+				}
+				return powered;
+			} else if (power < 0) {
+				int iter = 1;
+				final ComplexNumber a = this;
+				ComplexNumber powered = a.reciprocal();
+				int powAbs = Math.abs(power);
+				for (int i = 1; i < powAbs; i++) {
+					powered = powered.times(powered);
+				}
+				return powered;
+
 			}
-			return powered;
+			return new ComplexNumber(1.0,0.0);	//	^0==1
 		}
 		
 	}

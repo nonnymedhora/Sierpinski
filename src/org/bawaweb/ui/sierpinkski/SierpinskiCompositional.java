@@ -112,7 +112,7 @@ class SierpinskiComboPanel extends JPanel {
 	// for Mandelbrot
 	private final Integer[] mandOptions = new Integer[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	private final JComboBox<Integer> mandCombos = new JComboBox<Integer>(mandOptions);
-	private final Integer[] mandExpOptions = new Integer[] { 2, 3, 4, 5, 6, 7 };
+	private final Integer[] mandExpOptions = new Integer[] { -3, -2, -1, 2, 3, 4, 5, 6, 7 };
 	private final JComboBox<Integer> mandExpCombos = new JComboBox<Integer>(mandExpOptions);
 	private final JCheckBox mandUseDiff = new JCheckBox("UseDifferencesOnly", true);
 	private final Integer[] mandMaxIterOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 500, 1000 };
@@ -258,7 +258,7 @@ class SierpinskiComboPanel extends JPanel {
 	
 //	private FractalBase ff;
 	//
-	private JProgressBar progressBar =new  JProgressBar(SwingConstants.HORIZONTAL) ;
+	/*private JProgressBar progressBar =new  JProgressBar(SwingConstants.HORIZONTAL) ;*/
 	private JButton buPrint = new JButton("Print");
 	
 	private Thread fbf;
@@ -1135,7 +1135,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.fbf.start();
 		}
 		
-		this.endProgress();
+//		this.endProgress();
 	}
 
 	private int closeIt(FractalBase frame) {
@@ -1536,7 +1536,8 @@ class SierpinskiComboPanel extends JPanel {
 				 doSetDiyFractalChoice(button.getName());			
 			}};
 	}
-
+	
+	/*	//////////////////////starts-progressbar/////////////////////
 	// function to increase progress
 	public void startProgress() {
 
@@ -1573,6 +1574,7 @@ class SierpinskiComboPanel extends JPanel {
 	public void endProgress() {
 		
 	}
+	////////////////////////ends-progressbar//////////////////////*/
 
 	protected String getComboChoice() {		
 		return this.comboChoice;
