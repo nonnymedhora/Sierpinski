@@ -226,7 +226,9 @@ public abstract class FractalBase extends JFrame implements Runnable {
 
 		createFractalShape(g);
 		
-		addDepthInfo(g);
+		if (running) {
+			addDepthInfo(g);
+		}
 		return bufferedImage;
 	}
 
@@ -828,14 +830,14 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	 * @return the running
 	 */
 	public boolean isRunning() {
-		return running;
+		return this.running;
 	}
 
 	/**
 	 * @param running the running to set
 	 */
-	public void setRunning(boolean running) {
-		this.running = running;
+	public void setRunning(boolean run) {
+		this.running = run;
 	}
 	
 }

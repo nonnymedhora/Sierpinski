@@ -1120,20 +1120,32 @@ class SierpinskiComboPanel extends JPanel {
 	            (Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight())/2);
 		frame.setResizable(false);
 		frame.setVisible(true);
-		frame.setRunning(true);
-		
+//		frame.setRunning(true);
+		/*
 		if(this.doMagnify){
 			new ZoomInBox(frame);
-		}
+		}*/
 
-		if ( !(this.comboChoice.equals(MANDELBROT) || this.comboChoice.equals(JULIA) || 
+		if ( !((this.comboChoice.equals(MANDELBROT) || this.comboChoice.equals(JULIA)) || 
 				( this.comboChoice.equals(DIY) && !this.diyApolloRb.isSelected()) )) {
 			//	Threaded -- so as the FractalBase depth increases
 			// the iteration's image is rendered recursively till depth = 0
+			frame.setRunning(true);
+
+			if(this.doMagnify){
+				new ZoomInBox(frame);
+			}
 			this.formulaArea.setVisible(false);
 			this.fbf = new Thread(frame);
 			this.fbf.start();
+			return;
 		}
+		
+
+		if(this.doMagnify){
+			new ZoomInBox(frame);
+		}
+		return;
 		
 //		this.endProgress();
 	}
