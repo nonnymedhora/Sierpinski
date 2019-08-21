@@ -216,7 +216,11 @@ class SierpinskiComboPanel extends JPanel {
 	protected int diyMandMaxIter;
 	protected double diyMandBound;
 	
+
 	
+	protected double diyMandXC;
+	protected double diyMandYC;
+	protected double diyMandScaleSize;
 	
 	private final Integer[] diyMandMagOptions = new Integer[]{1,2,3,4,5,6,7,8,9,10};
 	private final JComboBox<Integer> diyMandMagCombos = new JComboBox<Integer>(diyMandMagOptions);
@@ -232,6 +236,15 @@ class SierpinskiComboPanel extends JPanel {
 	private final JComboBox<Double> diyMandBoundCombos = new JComboBox<Double>(diyMandBoundOptions);
 
 	
+	private final Double[] diyMandXCOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
+	private final JComboBox<Double> diyMandXCCombos = new JComboBox<Double>(diyMandXCOptions);
+	private final Double[] diyMandYCOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
+	private final JComboBox<Double> diyMandYCCombos = new JComboBox<Double>(diyMandYCOptions);
+
+	private final Double[] diyMandScaleSizeOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private final JComboBox<Double> diyMandScaleSizeCombos = new JComboBox<Double>(diyMandScaleSizeOptions);
+	
+	
 	//diy Julia options
 	protected int diyJuliaPower;
 	protected double diyJuliaConstReal;
@@ -240,6 +253,12 @@ class SierpinskiComboPanel extends JPanel {
 	protected boolean diyJuliaKeepConst;
 	protected int diyJuliaMaxIter;
 	protected double diyJuliaBound;
+	
+
+	
+	protected double diyJuliaXC;
+	protected double diyJuliaYC;
+	protected double diyJuliaScaleSize;
 	
 	private final Integer[] diyJuliaPowerOptions = new Integer[]{-3, -2, -1, 2, 3, 4, 5, 6, 7};
 	private final JComboBox<Integer> diyJuliaPowerCombos = new JComboBox<Integer>(diyJuliaPowerOptions);
@@ -253,6 +272,14 @@ class SierpinskiComboPanel extends JPanel {
 	private final Double[] diyJuliaBoundOptions = new Double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
 	private final JComboBox<Double> diyJuliaBoundCombos = new JComboBox<Double>(diyJuliaBoundOptions);
 
+	private final Double[] diyJuliaXCOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
+	private final JComboBox<Double> diyJuliaXCCombos = new JComboBox<Double>(diyJuliaXCOptions);
+	private final Double[] diyJuliaYCOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
+	private final JComboBox<Double> diyJuliaYCCombos = new JComboBox<Double>(diyJuliaYCOptions);
+
+	private final Double[] diyJuliaScaleSizeOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private final JComboBox<Double> diyJuliaScaleSizeCombos = new JComboBox<Double>(diyJuliaScaleSizeOptions);
+	
 	//diy Apollo Options
 	protected int diyApolloC1;
 	protected int diyApolloC2;
@@ -382,6 +409,13 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyMandPanel.add(new JLabel("Boundary: "));
 		this.diyMandPanel.add(this.diyMandBoundCombos);
 		
+		this.diyMandPanel.add(new JLabel("Center: X "));
+		this.diyMandPanel.add(this.diyMandXCCombos);
+		this.diyMandPanel.add(new JLabel(" Y "));
+		this.diyMandPanel.add(this.diyMandYCCombos);
+		this.diyMandPanel.add(new JLabel("ScaleSize:"));
+		this.diyMandPanel.add(this.diyMandScaleSizeCombos);
+		
 		this.diyMandPanel.setVisible(false);
 		
 		this.diyJuliaPanel.add(new JLabel("Power:"));
@@ -396,6 +430,13 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaPanel.add(this.diyJuliaMaxIterCombos);
 		this.diyJuliaPanel.add(new JLabel("Boundary: "));
 		this.diyJuliaPanel.add(this.diyJuliaBoundCombos);
+		
+		this.diyJuliaPanel.add(new JLabel("Center: X "));
+		this.diyJuliaPanel.add(this.diyJuliaXCCombos);
+		this.diyJuliaPanel.add(new JLabel(" Y "));
+		this.diyJuliaPanel.add(this.diyJuliaYCCombos);
+		this.diyJuliaPanel.add(new JLabel("ScaleSize:"));
+		this.diyJuliaPanel.add(this.diyJuliaScaleSizeCombos);
 		
 		this.diyJuliaPanel.setVisible(false);
 		
@@ -458,16 +499,24 @@ class SierpinskiComboPanel extends JPanel {
 		this.juliaXC=0.0;
 		this.juliaYC=0.0;
 		this.juliaScaleSize=2.0;
+		
+
 
 		this.mandXC=-0.5;
 		this.mandYC=0.0;
 		this.mandScaleSize=2.0;
+		
+		
 		
 		//diy
 		this.diyMandMagnification = 0;
 		this.diyMandExponent = 0;
 		this.diyMandConstReal = 0.0;
 		this.diyMandConstImg = 0.0;
+
+		this.diyMandXC=-0.5;
+		this.diyMandYC=0.0;
+		this.diyMandScaleSize=2.0;
 		
 		this.diyMandMaxIter = 255;
 		this.diyJuliaMaxIter = 255;
@@ -477,6 +526,11 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaPower = 0;
 		this.diyJuliaConstReal = 0.0;
 		this.diyJuliaConstImg = 0.0;
+		
+
+		this.diyJuliaXC=0.0;
+		this.diyJuliaYC=0.0;
+		this.diyJuliaScaleSize=2.0;
 
 		this.diyApolloC1 = 0;
 		this.diyApolloC2 = 0;
@@ -503,6 +557,14 @@ class SierpinskiComboPanel extends JPanel {
 		this.mandYCCombos.setSelectedIndex(4);
 		this.juliaScaleSizeCombos.setSelectedIndex(8);
 		this.mandScaleSizeCombos.setSelectedIndex(8);
+		
+
+		this.diyJuliaXCCombos.setSelectedIndex(4);
+		this.diyMandXCCombos.setSelectedIndex(3);
+		this.diyJuliaYCCombos.setSelectedIndex(4);
+		this.diyMandYCCombos.setSelectedIndex(4);
+		this.diyJuliaScaleSizeCombos.setSelectedIndex(8);
+		this.diyMandScaleSizeCombos.setSelectedIndex(8);
 		
 		
 		
@@ -534,6 +596,13 @@ class SierpinskiComboPanel extends JPanel {
 		this.mandYCCombos.setSelectedItem(this.mandYCOptions[4]);
 		this.juliaScaleSizeCombos.setSelectedItem(this.juliaScaleSizeOptions[8]);
 		this.mandScaleSizeCombos.setSelectedItem(this.mandScaleSizeOptions[8]);
+		
+		this.diyJuliaXCCombos.setSelectedItem(this.diyJuliaXCOptions[4]);
+		this.diyMandXCCombos.setSelectedItem(this.diyMandXCOptions[3]);
+		this.diyJuliaYCCombos.setSelectedItem(this.diyJuliaYCOptions[4]);
+		this.diyMandYCCombos.setSelectedItem(this.diyMandYCOptions[4]);
+		this.diyJuliaScaleSizeCombos.setSelectedItem(this.diyJuliaScaleSizeOptions[8]);
+		this.diyMandScaleSizeCombos.setSelectedItem(this.diyMandScaleSizeOptions[8]);
 		
 		
 		this.diyMandMagCombos.setSelectedItem(this.diyMandMagOptions[0]);
@@ -1013,6 +1082,19 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setVisible(true);
 		this.doDiyJuliaChoicesCheck();
 	}
+
+	private void doSelectDiyMandXCCombosCommand(Double x) {
+		this.diyMandXC = x;
+	}
+
+	private void doSelectDiyMandYCCombosCommand(Double y) {
+		this.diyMandYC = y;
+	}
+
+	private void doSelectDiyMandScaleSizeCombosCommand(Double size) {
+		this.diyMandScaleSize = size;
+	}
+	
 	//-julia
 	private void doSelectDiyJuliaPowerCombosCommand(Integer powerOption) {
 		this.diyJuliaPower = powerOption;
@@ -1043,6 +1125,18 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaKeepConst = useConst;
 		this.formulaArea.setVisible(true);
 		this.doDiyJuliaChoicesCheck();
+	}
+
+	private void doSelectDiyJuliaXCCombosCommand(Double x) {
+		this.diyJuliaXC = x;
+	}
+
+	private void doSelectDiyJuliaYCCombosCommand(Double y) {
+		this.diyJuliaYC = y;
+	}
+
+	private void doSelectDiyJuliaScaleSizeCombosCommand(Double size) {
+		this.diyJuliaScaleSize = size;
 	}
 	//-apollo
 	private void doSelectDiyApolloC1CombosCommand(Integer c1Option) {
@@ -1192,6 +1286,9 @@ class SierpinskiComboPanel extends JPanel {
 				boolean diyMKConst = this.diyMandKeepConst;
 				int diyMaxIt = this.diyMandMaxIter;
 				double diyMandB = this.diyMandBound;
+				double diyMXc = this.diyMandXC;
+				double diyMYc = this.diyMandYC;
+				double diyMScale = this.diyMandScaleSize;
 				
 				if (diyMKConst) {
 					ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD,diyMandB, diyMKConst);
@@ -1202,6 +1299,9 @@ class SierpinskiComboPanel extends JPanel {
 					ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD,diyMandB, diyMRealVal, diyMImgVal);
 				}
 				FractalBase.setMaxIter(diyMaxIt);
+				FractalBase.setxC(diyMXc);
+				FractalBase.setxC(diyMYc);
+				FractalBase.setScaleSize(diyMScale);
 				
 			} else if(this.diyJuliaRb.isSelected()){
 				//
@@ -1209,6 +1309,9 @@ class SierpinskiComboPanel extends JPanel {
 				boolean diyJuliaUseD = this.getDiyJuliaUseDiff();
 				int diyJuliaMaxIt = this.diyJuliaMaxIter;
 				double diyJuliaBd = this.diyJuliaBound;
+				double diyJXc = this.diyJuliaXC;
+				double diyJYc = this.diyJuliaYC;
+				double diyJScale = this.diyJuliaScaleSize;
 
 				boolean diyJKConst = this.diyJuliaKeepConst;
 				if (diyJKConst) {
@@ -1217,7 +1320,12 @@ class SierpinskiComboPanel extends JPanel {
 
 					double diyJuliaRealVal = Double.parseDouble(this.diyJuliaRealTf.getText());
 					double diyJuliaImgVal = Double.parseDouble(this.diyJuliaImgTf.getText());
-					ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJuliaRealVal, diyJuliaImgVal);}
+					ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJuliaRealVal, diyJuliaImgVal);
+				}
+				FractalBase.setMaxIter(diyJuliaMaxIt);
+				FractalBase.setxC(diyJXc);
+				FractalBase.setxC(diyJYc);
+				FractalBase.setScaleSize(diyJScale);
 			} else if (this.diyApolloRb.isSelected()) {
 				double c1 = this.diyApolloC1;
 				double c2 = this.diyApolloC2;
@@ -1600,7 +1708,36 @@ class SierpinskiComboPanel extends JPanel {
 				Double diyMandBoundComboOption = (Double)cb.getSelectedItem();
 				doSelectDiyMandBoundCombosCommand(diyMandBoundComboOption);				
 			}});
+
+		this.diyMandXCCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double diyMandXCComboOption = (Double)cb.getSelectedItem();
+				doSelectDiyMandXCCombosCommand(diyMandXCComboOption);				
+			}});
 		
+		
+		this.diyMandYCCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double diyMandYCComboOption = (Double)cb.getSelectedItem();
+				doSelectDiyMandYCCombosCommand(diyMandYCComboOption);				
+			}});
+		
+		
+		this.diyMandScaleSizeCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double diyMandScaleSizeComboOption = (Double)cb.getSelectedItem();
+				doSelectDiyMandScaleSizeCombosCommand(diyMandScaleSizeComboOption);				
+			}});
+
 		//--julia-diy
 		this.diyJuliaPowerCombos.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
@@ -1652,6 +1789,37 @@ class SierpinskiComboPanel extends JPanel {
 				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
 				Double diyJuliaBoundComboOption = (Double)cb.getSelectedItem();
 				doSelectDiyJuliaBoundCombosCommand(diyJuliaBoundComboOption);				
+			}});
+		
+
+		
+		this.diyJuliaXCCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double diyJuliaXCComboOption = (Double)cb.getSelectedItem();
+				doSelectDiyJuliaXCCombosCommand(diyJuliaXCComboOption);				
+			}});
+		
+		
+		this.diyJuliaYCCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double diyJuliaYCComboOption = (Double)cb.getSelectedItem();
+				doSelectDiyJuliaYCCombosCommand(diyJuliaYCComboOption);				
+			}});
+		
+		
+		this.diyJuliaScaleSizeCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double diyJuliaScaleSizeComboOption = (Double)cb.getSelectedItem();
+				doSelectDiyJuliaScaleSizeCombosCommand(diyJuliaScaleSizeComboOption);				
 			}});
 		
 		//apollo-diy
