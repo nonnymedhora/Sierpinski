@@ -246,7 +246,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 				if (pageIndex != 0) {
 					return NO_SUCH_PAGE;
 				}
-				graphics.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
+				graphics.drawImage(image, 0/*-50*/, 0/*-50*/, image.getWidth()/*+200*/, image.getHeight()/*+200*/, null);
 				return PAGE_EXISTS;
 			}
 		});
@@ -291,87 +291,137 @@ public abstract class FractalBase extends JFrame implements Runnable {
 			bufferedImage.setRGB(col, HEIGHT - row - 1, rgbColor);
 	}
 	
-	protected Color getPixelDisplayColor(int row, int col, int colorRGB, boolean useD) {
-		Color color;
-		/* Simple */
-		/* color = new Color(gray, gray, gray); */
-		/* Complex */ 
-		if (colorRGB % 2 == 0) {
-			final int start = 8;
-			final int end = COLORMAXRGB-8;
-			int num1 = correctColor(start, colorRGB, row, 2);
-			int num2 = correctColor(start, colorRGB, col, 2);
-			
-			if (useD) {
-				color = new Color(num1, num2, start);//color = ColorPalette[0];
-			} else {
-				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 1];
-			}
-
-		} else if (colorRGB % 3 == 0) {
-			
-				/* color = Colors.GREEN.getColor(); */
-				final int start = 16;
-				final int end = COLORMAXRGB-16;
-				int num1 = correctColor(start, colorRGB, row, 3);
-				int num2 = correctColor(start, colorRGB, col, 3);
+	protected Color getPixelDisplayColor(final int row, final  int col, final int colorRGB, final boolean useD) {
+		final int[] divs = new int[] { 2, 3, 5, 7, 11, 13 };				//	1st 6 primes
+		final int[] colStart = new int[] { 4, 8, 16, 32, 64, 128, 200 };	//	pow 2s till end-200
+		Color color = null;
+		
+		for(int iter = 0; iter < divs.length; iter++) {
+			if (colorRGB % divs[iter] == 0) {
+				final int start = colStart[iter];
+				final int end = COLORMAXRGB - start;
 				
-			if (useD) {
-				color = new Color(num1, num2, start);//color = ColorPalette[1];
-			} else {
-				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 2];
+				int num1 = correctColor(start, colorRGB, row, divs[iter]);
+				int num2 = correctColor(start, colorRGB, col, divs[iter]);
+				
+				if (useD) {
+					color = new Color(num1, num2, start);//ColorPalette[iter];//
+				} else {
+					color = new Color(num1, num2, end);//ColorPalette[ColorPalette.length - iter - 1];//
+				}
+				return color;
 			}
-		} else if (colorRGB % 5 == 0) {
-			final int start = 32;
-			final int end = COLORMAXRGB-32;
-			int num1 = correctColor(start, colorRGB, row, 5);
-			int num2 = correctColor(start, colorRGB, col, 5);
-
-			if (useD) {
-				color = new Color(num1, num2, start);//color = ColorPalette[2];
-			} else {
-				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 3];
-			}
+			
 		}
-		else if (colorRGB % 7 == 0) {
-			/* color=Colors.RED.getColor(); */
-			final int start = 128;
-			final int end = COLORMAXRGB-128;
-			int num1 = correctColor(start, colorRGB, row, 7);
-			int num2 = correctColor(start, colorRGB, col, 7);
+		
+		final int start = 200; // 255 is max.	0<=colorRGB<=255
+		final int end = COLORMAXRGB - start;
+		int num1 = correctColor(start, colorRGB, row, 1);
+		int num2 = correctColor(start, colorRGB, col, 1);
 
-			if (useD) {
-				color = new Color(num1, num2, start);//color = ColorPalette[3];
-			} else {
-				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 4];
-			}
-		} /*
-		else if (colorRGB % 11 == 0) {
-
-			final int start = 128;
-			final int end = COLORMAXRGB-128;
-			int num1 = correctColor(start, colorRGB, row, 7);
-			int num2 = correctColor(start, colorRGB, col, 7);
-
-			if (useD) {
-				color = new Color(num1, num2, start);//color = ColorPalette[3];
-			} else {
-				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 4];
-			}
-		} */else {
-
-			final int start = 255;
-			final int end = COLORMAXRGB-255;
-			int num1 = correctColor(start, colorRGB, row, 1);
-			int num2 = correctColor(start, colorRGB, col, 1);
-
-			if (useD) {
-				color = new Color(num1, num2, start);//color = ColorPalette[4];
-			} else {
-				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 5];
-			}
+		if (useD) {
+			color = new Color(num1, num2, start);//color = ColorPalette[4];
+		} else {
+			color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 5];
 		}
+		
 		return color;
+		
+//		
+//		
+//		
+//		/* Simple */
+//		/* color = new Color(gray, gray, gray); */
+//		/* Complex */ 
+//		if (colorRGB % 2 == 0) {
+//			final int start = 4;
+//			final int end = COLORMAXRGB - start;
+//			int num1 = correctColor(start, colorRGB, row, 2);
+//			int num2 = correctColor(start, colorRGB, col, 2);
+//			
+//			if (useD) {
+//				color = new Color(num1, num2, start);//color = ColorPalette[0];
+//			} else {
+//				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 1];
+//			}
+//
+//		} else if (colorRGB % 3 == 0) {
+//			
+//			/* color = Colors.GREEN.getColor(); */
+//			final int start = 8;
+//			final int end = COLORMAXRGB - 8;
+//				int num1 = correctColor(start, colorRGB, row, 3);
+//				int num2 = correctColor(start, colorRGB, col, 3);
+//				
+//			if (useD) {
+//				color = new Color(num1, num2, start);//color = ColorPalette[1];
+//			} else {
+//				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 2];
+//			}
+//		} else if (colorRGB % 5 == 0) {
+//			final int start = 16;
+//			final int end = COLORMAXRGB - start;
+//			int num1 = correctColor(start, colorRGB, row, 5);
+//			int num2 = correctColor(start, colorRGB, col, 5);
+//
+//			if (useD) {
+//				color = new Color(num1, num2, start);//color = ColorPalette[2];
+//			} else {
+//				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 3];
+//			}
+//		}
+//		else if (colorRGB % 7 == 0) {
+//			/* color=Colors.RED.getColor(); */
+//			final int start = 32;
+//			final int end = COLORMAXRGB - start;
+//			int num1 = correctColor(start, colorRGB, row, 7);
+//			int num2 = correctColor(start, colorRGB, col, 7);
+//
+//			if (useD) {
+//				color = new Color(num1, num2, start);//color = ColorPalette[3];
+//			} else {
+//				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 4];
+//			}
+//		} 
+//		else if (colorRGB % 11 == 0) {
+//
+//			final int start = 64;
+//			final int end = COLORMAXRGB - start;
+//			int num1 = correctColor(start, colorRGB, row, 11);
+//			int num2 = correctColor(start, colorRGB, col, 11);
+//
+//			if (useD) {
+//				color = new Color(num1, num2, start);//color = ColorPalette[3];
+//			} else {
+//				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 4];
+//			}
+//		}  
+//		else if (colorRGB % 13 == 0) {
+//
+//			final int start = 128;
+//			final int end = COLORMAXRGB - start;
+//			int num1 = correctColor(start, colorRGB, row, 13);
+//			int num2 = correctColor(start, colorRGB, col, 13);
+//
+//			if (useD) {
+//				color = new Color(num1, num2, start);//color = ColorPalette[3];
+//			} else {
+//				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 4];
+//			}
+//		} else {
+//
+//			final int start = 200; // 255
+//			final int end = COLORMAXRGB - start;
+//			int num1 = correctColor(start, colorRGB, row, 1);
+//			int num2 = correctColor(start, colorRGB, col, 1);
+//
+//			if (useD) {
+//				color = new Color(num1, num2, start);//color = ColorPalette[4];
+//			} else {
+//				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 5];
+//			}
+//		}
+//		return color;
 	}
 	
 	
@@ -391,7 +441,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	 * @return		 color range  0--255
 	 */
 	protected int correctColor(int start, int num, int sub, int div) {
-		int corrected = start + num / div - sub;	//random transformation
+		int corrected = start + (num / div) - sub;	//random transformation
 		corrected = corrected > 255 ? 255 : corrected;
 		corrected = corrected < 0 ? 0 : corrected;
 		return corrected;
@@ -558,8 +608,8 @@ public abstract class FractalBase extends JFrame implements Runnable {
 			Colors.ORANGE.getColor(),		//PINK
 			Colors.CYAN.getColor(),			//MAGENTA
 			Colors.PINK.getColor(),			//CYAN
-			Colors.LIGHT_GRAY.getColor()/*,	//DARK_GRAY
-			Colors.WHITE.getColor()*/
+			Colors.LIGHT_GRAY.getColor(),	//DARK_GRAY
+			Colors.WHITE.getColor()
 			
 			
 	};
