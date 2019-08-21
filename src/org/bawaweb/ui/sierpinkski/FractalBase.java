@@ -41,10 +41,10 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	/*final */static int maxIter = 255;		//	maximum iterations to check for Mandelbrot
 	static int areaSize = 599;//512;	(0-599)
 	
-	/*static*/ BufferedImage bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-	
-	final Point center = new Point(getAreaSize()/2,getAreaSize()/2);//(WIDTH / 2, HEIGHT / 2);
-	
+	BufferedImage bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+
+	final Point center = new Point(getAreaSize() / 2, getAreaSize() / 2);
+
 	static double xC = 0.0;
 	static double yC = 0.0;
 	static double scaleSize = 1.0;
@@ -213,9 +213,6 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		Graphics2D g2 = (Graphics2D) g1;
 		g2.drawImage(img, null, null);
 		this.setImage(img);
-		/*if (g2.drawImage(img, null, null)) {
-			this.setImage(img);
-		}*/
 
 		g2.dispose();
 	}
@@ -236,14 +233,12 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	}
 
 	private void addDepthInfo(Graphics2D g) {
-		/*if (running) {*/
-//			 System.out.println("HERE inunning depth=="+depth);
-			g.setColor(Color.red);
-			g.drawString("Depth:= " + depth, OFFSET*2, HEIGHT - OFFSET*9+10);
-		/*}*/
+		g.setColor(Color.red);
+		g.drawString("Depth:= " + depth, OFFSET * 2, HEIGHT - OFFSET * 9 + 10);
 	}
 	
-	protected void doPrint(Graphics2D g/* , BufferedImage image */) {
+	protected void doPrint(Graphics2D g) {
+		// invokes local printer
 		PrinterJob printJob = PrinterJob.getPrinterJob();
 		BufferedImage image = this.getBufferedImage();
 		printJob.setPrintable(new Printable() {
@@ -307,15 +302,12 @@ public abstract class FractalBase extends JFrame implements Runnable {
 			int num1 = correctColor(start, colorRGB, row, 2);
 			int num2 = correctColor(start, colorRGB, col, 2);
 			
-			
 			if (useD) {
 				color = new Color(num1, num2, start);//color = ColorPalette[0];
 			} else {
 				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 1];
 			}
-			
-			/*int correctRGB = corectColorRGB(colorRGB);
-			color = new Color(correctRGB, correctRGB, correctRGB);*/
+
 		} else if (colorRGB % 3 == 0) {
 			
 				/* color = Colors.GREEN.getColor(); */
@@ -546,20 +538,28 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		this.bufferedImage = (BufferedImage) img;
 	}
 
+	/*//from-apollo
+	  final Color[] colors = { 
+				Color.BLACK, Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, 
+				Color.MAGENTA, Color.DARK_GRAY,Color.ORANGE, 
+				Color.CYAN, Color.PINK, Color.LIGHT_GRAY};*/
+	 
+	// first = seed color
+	// iterations = colors.length - 1
 	public static final Color[] ColorPalette = new Color[] {
 			
 			Colors.BLACK.getColor(),
 			Colors.RED.getColor(),
 			Colors.BLUE.getColor(),
 			Colors.GREEN.getColor(),
-			Colors.ORANGE.getColor(),
-			Colors.LIGHT_GRAY.getColor(),
-			Colors.YELLOW.getColor(),
-			Colors.PINK.getColor(),
-			Colors.MAGENTA.getColor(),
-			Colors.CYAN.getColor(),
-			Colors.DARK_GRAY.getColor(),
-			Colors.WHITE.getColor()
+			Colors.YELLOW.getColor(),		//ORANGE
+			Colors.MAGENTA.getColor(),		//LIGHT_GRAY
+			Colors.DARK_GRAY.getColor(),	//YELLOW
+			Colors.ORANGE.getColor(),		//PINK
+			Colors.CYAN.getColor(),			//MAGENTA
+			Colors.PINK.getColor(),			//CYAN
+			Colors.LIGHT_GRAY.getColor()/*,	//DARK_GRAY
+			Colors.WHITE.getColor()*/
 			
 			
 	};
@@ -569,7 +569,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	enum Colors {
 		RED (Color.RED), BLUE (Color.BLUE), GREEN (Color.GREEN),
 		ORANGE (Color.ORANGE), YELLOW (Color.YELLOW), PINK (Color.PINK),
-		BLACK (Color.WHITE), WHITE (Color.WHITE),		
+		BLACK (Color.BLACK), WHITE (Color.WHITE),		
 		MAGENTA (Color.MAGENTA),CYAN (Color.CYAN),
 		LIGHT_GRAY (Color.LIGHT_GRAY), DARK_GRAY (Color.DARK_GRAY)
 		;

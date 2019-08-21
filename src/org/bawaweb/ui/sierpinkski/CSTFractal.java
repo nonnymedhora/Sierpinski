@@ -48,8 +48,8 @@ public class CSTFractal extends FractalBase {
 	}
 
 	private void drawCSTFractal(Graphics2D g, int d, Point p1, Point p2, Point p3) {
-		g.setColor(Color.red);
-		System.out.println("depth=== "+depth+" d== "+d+" p1("+p1.x+","+p1.y+"), p2("+p2.x+","+p2.y+"), p3("+p3.x+","+p3.y+")");
+		g.setColor(Color.blue);
+//		System.out.println("depth=== "+depth+" d== "+d+" p1("+p1.x+","+p1.y+"), p2("+p2.x+","+p2.y+"), p3("+p3.x+","+p3.y+")");
 		if (d == 0) {
 			drawLine(g, p1, p2);
 			drawLine(g, p1, p3);

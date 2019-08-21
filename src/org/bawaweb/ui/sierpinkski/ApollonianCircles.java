@@ -73,7 +73,7 @@ public class ApollonianCircles extends FractalBase {
 
 			fillCircle(g,
 					new Point((int) (windowMid + e.getX(0) * scaleMult), (int) (windowMid - e.getX(1) * scaleMult)),
-					(int) (e.getRadius() * scaleMult), TRANSPARENT);
+					(int) (e.getRadius() * scaleMult), /*colors[e.getIteration()]*/TRANSPARENT);
 
 			return;
 		}
@@ -96,7 +96,7 @@ public class ApollonianCircles extends FractalBase {
 
 			fillCircle(g,
 					new Point((int) (windowMid + e.getX(0) * scaleMult), (int) (windowMid - e.getX(1) * scaleMult)),
-					(int) (e.getRadius() * scaleMult), TRANSPARENT);
+					(int) (e.getRadius() * scaleMult), /*colors[e.getIteration()]*/TRANSPARENT);
 	
 		}
 
@@ -131,10 +131,10 @@ public class ApollonianCircles extends FractalBase {
 		////////////////////////////////////////////////////
 		// Step 1: Choose seed circle sizes
 		////////////////////////////////////////////////////
-		
-		final double[] c=this.getCurvatures(); // initial curvatures
-		final double m=this.getMultiplier(); // visual multiplier
-		
+
+		final double[] c = this.getCurvatures(); // initial curvatures
+		final double m = this.getMultiplier(); // visual multiplier
+
 		// some initial configuration options
 		// leave only one uncommented
 		/*c = new double[] { 1.0, 1.0, 1.0 };
@@ -149,17 +149,17 @@ public class ApollonianCircles extends FractalBase {
 		// Step 2: Set max iterations via colors
 		////////////////////////////////////////////////////
 		
-		// first = seed color
+		/*// first = seed color
 		// iterations = colors.length - 1
 		final Color[] colors = { 
-				Color.BLACK, Color.RED, Color.BLUE, Color.YELLOW, 
-				Color.ORANGE, Color.GREEN, Color.MAGENTA, Color.DARK_GRAY,
-				Color.CYAN, Color.PINK, Color.LIGHT_GRAY};
+				Color.BLACK, Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, 
+				Color.MAGENTA, Color.DARK_GRAY,Color.ORANGE, 
+				Color.CYAN, Color.PINK, Color.LIGHT_GRAY};*/
 		
 		////////////////////////////////////////////////////
 		////////////////////////////////////////////////////
 
-		createApollonianCircles(g, colors, c, m, depth);
+		createApollonianCircles(g,/*colors*/ ColorPalette, c, m, depth);
 
 	}
 
