@@ -112,8 +112,8 @@ class SierpinskiComboPanel extends JPanel {
 	private final JComboBox<Integer> mandCombos = new JComboBox<Integer>(mandOptions);
 	private final Integer[] mandExpOptions = new Integer[] { -3, -2, -1, 2, 3, 4, 5, 6, 7 };
 	private final JComboBox<Integer> mandExpCombos = new JComboBox<Integer>(mandExpOptions);
-	private final JCheckBox mandUseDiff = new JCheckBox("UseDifferencesOnly", true);
-	private final Integer[] mandMaxIterOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 500, 1000 };
+	private final JCheckBox mandUseDiffCb = new JCheckBox("UseDifferencesOnly", true);
+	private final Integer[] mandMaxIterOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 300, 350, 400, 500, 1000 };
 	private final JComboBox<Integer> mandMaxIterCombos = new JComboBox<Integer>(mandMaxIterOptions);
 	private final Integer[] mandSizeOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 500, 512, 599, 800 };
 	private final JComboBox<Integer> mandSizeCombos = new JComboBox<Integer>(mandSizeOptions);
@@ -207,12 +207,16 @@ class SierpinskiComboPanel extends JPanel {
 	private String diyFractChoice;
 	
 	//diy Mandelbrot options
-	protected int diyMandMagnification;
-	protected int diyMandExponent;
+	protected int diyMandMagnification;		//v	mandOptions
+	protected int diyMandExponent;			//v	mandExpOptions
 	protected double diyMandConstReal;
 	protected double diyMandConstImg;
-	protected boolean diyMandUseDiff;
+	protected boolean diyMandUseDiff;		//v	mandUseDiffCb
 	protected boolean diyMandKeepConst;
+	protected int diyMandMaxIter;
+	protected double diyMandBound;
+	
+	
 	
 	private final Integer[] diyMandMagOptions = new Integer[]{1,2,3,4,5,6,7,8,9,10};
 	private final JComboBox<Integer> diyMandMagCombos = new JComboBox<Integer>(diyMandMagOptions);
@@ -222,6 +226,10 @@ class SierpinskiComboPanel extends JPanel {
 	private JTextField diyMandRealTf = new JTextField(5);
 	private JTextField diyMandImgTf = new JTextField(5);
 	private final JCheckBox diyMandKeepConstantCb = new JCheckBox("DynamicConstant",false);
+	private final Integer[] diyMandMaxIterOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 300, 350, 400, 500, 1000 };
+	private final JComboBox<Integer> diyMandMaxIterCombos = new JComboBox<Integer>(diyMandMaxIterOptions);
+	private final Double[] diyMandBoundOptions = new Double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private final JComboBox<Double> diyMandBoundCombos = new JComboBox<Double>(diyMandBoundOptions);
 
 	
 	//diy Julia options
@@ -230,6 +238,8 @@ class SierpinskiComboPanel extends JPanel {
 	protected double diyJuliaConstImg;
 	protected boolean diyJuliaUseDiff;
 	protected boolean diyJuliaKeepConst;
+	protected int diyJuliaMaxIter;
+	protected double diyJuliaBound;
 	
 	private final Integer[] diyJuliaPowerOptions = new Integer[]{-3, -2, -1, 2, 3, 4, 5, 6, 7};
 	private final JComboBox<Integer> diyJuliaPowerCombos = new JComboBox<Integer>(diyJuliaPowerOptions);
@@ -238,6 +248,11 @@ class SierpinskiComboPanel extends JPanel {
 	private JTextField diyJuliaImgTf = new JTextField(5);
 	private final JCheckBox diyJuliaKeepConstantCb = new JCheckBox("DynamicConstant",false);
 	
+	private final Integer[] diyJuliaMaxIterOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 300, 350, 400, 500, 1000 };
+	private final JComboBox<Integer> diyJuliaMaxIterCombos = new JComboBox<Integer>(diyJuliaMaxIterOptions);
+	private final Double[] diyJuliaBoundOptions = new Double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private final JComboBox<Double> diyJuliaBoundCombos = new JComboBox<Double>(diyJuliaBoundOptions);
+
 	//diy Apollo Options
 	protected int diyApolloC1;
 	protected int diyApolloC2;
@@ -317,7 +332,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.mandOptionsPanel.add(this.mandCombos);
 		this.mandOptionsPanel.add(new JLabel("Exponent(M):"));
 		this.mandOptionsPanel.add(this.mandExpCombos);		
-		this.mandOptionsPanel.add(this.mandUseDiff);
+		this.mandOptionsPanel.add(this.mandUseDiffCb);
 		this.mandOptionsPanel.add(new JLabel("Max Iterations:"));
 		this.mandOptionsPanel.add(this.mandMaxIterCombos);		
 		this.mandOptionsPanel.add(new  JLabel("Area Size:"));
@@ -362,6 +377,11 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyMandPanel.add(this.diyMandImgTf);
 		this.diyMandPanel.add(this.diyMandUseDiffCb);
 		this.diyMandPanel.add(this.diyMandKeepConstantCb);
+		this.diyMandPanel.add(new JLabel("Max Iterations: "));
+		this.diyMandPanel.add(this.diyMandMaxIterCombos);
+		this.diyMandPanel.add(new JLabel("Boundary: "));
+		this.diyMandPanel.add(this.diyMandBoundCombos);
+		
 		this.diyMandPanel.setVisible(false);
 		
 		this.diyJuliaPanel.add(new JLabel("Power:"));
@@ -372,6 +392,11 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaPanel.add(this.diyJuliaImgTf);
 		this.diyJuliaPanel.add(this.diyJuliaUseDiffCb);
 		this.diyJuliaPanel.add(this.diyJuliaKeepConstantCb);
+		this.diyJuliaPanel.add(new JLabel("Max Iterations: "));
+		this.diyJuliaPanel.add(this.diyJuliaMaxIterCombos);
+		this.diyJuliaPanel.add(new JLabel("Boundary: "));
+		this.diyJuliaPanel.add(this.diyJuliaBoundCombos);
+		
 		this.diyJuliaPanel.setVisible(false);
 		
 		this.diyApolloPanel.add(new JLabel("C1"));
@@ -443,6 +468,11 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyMandExponent = 0;
 		this.diyMandConstReal = 0.0;
 		this.diyMandConstImg = 0.0;
+		
+		this.diyMandMaxIter = 255;
+		this.diyJuliaMaxIter = 255;
+		this.diyMandBound=0.0;
+		this.diyJuliaBound=0.0;
 
 		this.diyJuliaPower = 0;
 		this.diyJuliaConstReal = 0.0;
@@ -507,9 +537,14 @@ class SierpinskiComboPanel extends JPanel {
 		
 		
 		this.diyMandMagCombos.setSelectedItem(this.diyMandMagOptions[0]);
-		this.diyMandExpCombos.setSelectedItem(this.diyMandExpOptions);
-		
+//		this.diyMandExpCombos.setSelectedItem(this.diyMandExpOptions[0]);
 		this.diyJuliaPowerCombos.setSelectedItem(this.diyJuliaPowerOptions[0]);
+		this.diyMandMaxIterCombos.setSelectedItem(this.diyMandMaxIterOptions[5]);
+		this.diyJuliaMaxIterCombos.setSelectedItem(this.diyJuliaMaxIterOptions[5]);
+		
+		this.diyMandBoundCombos.setSelectedItem(this.diyMandBoundOptions[2]);
+		this.diyJuliaBoundCombos.setSelectedItem(this.diyJuliaBoundOptions[2]);
+		
 
 		this.diyApolloC1Combos.setSelectedItem(this.diyApolloC1Options[0]);
 		this.diyApolloC2Combos.setSelectedItem(this.diyApolloC2Options[0]);
@@ -818,7 +853,7 @@ class SierpinskiComboPanel extends JPanel {
 		if (this.magnification != 0 && this.exponent != 0) {
 			this.buStart.setEnabled(true);
 			this.formulaArea.setText("Mandelbrot Set:\n\nf(z) = z ^ " + this.exponent + " + C");
-			if (this.mUseDiff || this.mandUseDiff.isSelected()) {
+			if (this.mUseDiff || this.mandUseDiffCb.isSelected()) {
 				this.formulaArea
 						.append("\n\nCalculated inverted colors based on differences in pixel values from origin");
 			} else {
@@ -845,7 +880,7 @@ class SierpinskiComboPanel extends JPanel {
 				formula += "\n  C = " + Double.parseDouble(this.diyMandRealTf.getText()) + " + ("
 						+ Double.parseDouble(this.diyMandImgTf.getText()) + ")";
 			}
-			if (this.mUseDiff || this.mandUseDiff.isSelected()) {
+			if (this.mUseDiff || this.mandUseDiffCb.isSelected()) {
 				formula += "\n\nCalculated inverted colors based on differences in pixel values from origin";
 			} else {
 				formula += "\n\nCalculated colors based on pixel values with a 'top-and-left' origin";
@@ -965,9 +1000,35 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setVisible(true);
 		this.doDiyJuliaChoicesCheck();
 	}
+	
+	private void doSelectDiyMandMaxIterCombosCommand(Integer max) {
+		this.diyMandMaxIter = max;
+		this.formulaArea.setVisible(true);
+		this.doDiyJuliaChoicesCheck();
+	}
+
+	
+	private void doSelectDiyMandBoundCombosCommand(Double bd) {
+		this.diyMandBound = bd;
+		this.formulaArea.setVisible(true);
+		this.doDiyJuliaChoicesCheck();
+	}
 	//-julia
 	private void doSelectDiyJuliaPowerCombosCommand(Integer powerOption) {
 		this.diyJuliaPower = powerOption;
+		this.formulaArea.setVisible(true);
+		this.doDiyJuliaChoicesCheck();
+	}
+	
+	private void doSelectDiyJuliaMaxIterCombosCommand(Integer max) {
+		this.diyJuliaMaxIter = max;
+		this.formulaArea.setVisible(true);
+		this.doDiyJuliaChoicesCheck();
+	}
+
+	
+	private void doSelectDiyJuliaBoundCombosCommand(Double bd) {
+		this.diyJuliaBound = bd;
 		this.formulaArea.setVisible(true);
 		this.doDiyJuliaChoicesCheck();
 	}
@@ -1129,28 +1190,34 @@ class SierpinskiComboPanel extends JPanel {
 				int diyMandExp = this.getDiyMandExponent();
 				boolean diyMandUseD = this.getDiyMandUseDiff();
 				boolean diyMKConst = this.diyMandKeepConst;
+				int diyMaxIt = this.diyMandMaxIter;
+				double diyMandB = this.diyMandBound;
 				
 				if (diyMKConst) {
-					ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD, diyMKConst);
+					ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD,diyMandB, diyMKConst);
 				} else {
 
 					double diyMRealVal = Double.parseDouble(this.diyMandRealTf.getText());
 					double diyMImgVal = Double.parseDouble(this.diyMandImgTf.getText());
-					ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD, diyMRealVal, diyMImgVal);
+					ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD,diyMandB, diyMRealVal, diyMImgVal);
 				}
+				FractalBase.setMaxIter(diyMaxIt);
+				
 			} else if(this.diyJuliaRb.isSelected()){
 				//
 				int diyJuliaP = this.getDiyJuliaPower();
 				boolean diyJuliaUseD = this.getDiyJuliaUseDiff();
+				int diyJuliaMaxIt = this.diyJuliaMaxIter;
+				double diyJuliaBd = this.diyJuliaBound;
 
 				boolean diyJKConst = this.diyJuliaKeepConst;
 				if (diyJKConst) {
-					ff = new Julia(diyJuliaP, diyJuliaUseD, diyJKConst);
+					ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJKConst);
 				} else {
 
 					double diyJuliaRealVal = Double.parseDouble(this.diyJuliaRealTf.getText());
 					double diyJuliaImgVal = Double.parseDouble(this.diyJuliaImgTf.getText());
-					ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaRealVal, diyJuliaImgVal);}
+					ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJuliaRealVal, diyJuliaImgVal);}
 			} else if (this.diyApolloRb.isSelected()) {
 				double c1 = this.diyApolloC1;
 				double c2 = this.diyApolloC2;
@@ -1395,7 +1462,7 @@ class SierpinskiComboPanel extends JPanel {
 				doSelectMandExponentCombosCommand(mandExpComboOption);				
 			}});
 		
-		this.mandUseDiff.addItemListener(new ItemListener() {
+		this.mandUseDiffCb.addItemListener(new ItemListener() {
             @Override
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
@@ -1513,6 +1580,27 @@ class SierpinskiComboPanel extends JPanel {
 			}
         });
 		
+
+		
+		this.diyMandMaxIterCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
+				Integer diyMandMaxIterComboOption = (Integer)cb.getSelectedItem();
+				doSelectDiyMandMaxIterCombosCommand(diyMandMaxIterComboOption);				
+			}});
+		
+
+		this.diyMandBoundCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double diyMandBoundComboOption = (Double)cb.getSelectedItem();
+				doSelectDiyMandBoundCombosCommand(diyMandBoundComboOption);				
+			}});
+		
 		//--julia-diy
 		this.diyJuliaPowerCombos.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
@@ -1546,6 +1634,26 @@ class SierpinskiComboPanel extends JPanel {
 				}
 			}
         });
+		
+		this.diyJuliaMaxIterCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
+				Integer diyJuliaMaxIterComboOption = (Integer)cb.getSelectedItem();
+				doSelectDiyJuliaMaxIterCombosCommand(diyJuliaMaxIterComboOption);				
+			}});
+		
+
+		this.diyJuliaBoundCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double diyJuliaBoundComboOption = (Double)cb.getSelectedItem();
+				doSelectDiyJuliaBoundCombosCommand(diyJuliaBoundComboOption);				
+			}});
+		
 		//apollo-diy
 		this.diyApolloC1Combos.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
@@ -1734,7 +1842,7 @@ class SierpinskiComboPanel extends JPanel {
 	}
 
 	protected boolean getMUseDiff(){
-		return this.mUseDiff || this.mandUseDiff.isSelected();
+		return this.mUseDiff || this.mandUseDiffCb.isSelected();
 	}
 	protected boolean getJUseDiff(){
 		return this.jUseDiff || this.juliaUseDiff.isSelected();

@@ -83,6 +83,12 @@ public class Mandelbrot extends FractalBase {
 		this.compConst = new ComplexNumber(real, img);
 		this.isComplexNumConst = false;
 	}
+	
+	public Mandelbrot(int mg, int ep, boolean useD, double bd, double real, double img) {
+		this(mg,ep,useD,real,img);
+//		System.out.println(" Mandelbrot(int mg("+mg+"), int ep("+ep+"), boolean useD, double real("+real+"), double img("+img+"))");
+		this.setBound(bd);
+	}
 
 	public Mandelbrot(int mg, int ep, boolean useD, boolean complexNumIsConst) {
 		this(mg, ep, useD);
@@ -93,6 +99,10 @@ public class Mandelbrot extends FractalBase {
 		this(mg,ep,useD,complexNumIsConst);
 		this.setBound(bd);
 	}
+/*
+	public Mandelbrot(int mg, int ep, double bd, boolean diyMandUseD, boolean diyMKConst) {
+		// TODO Auto-generated constructor stub
+	}*/
 
 	private static final long serialVersionUID = 13456L;
 

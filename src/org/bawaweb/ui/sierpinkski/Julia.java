@@ -144,6 +144,16 @@ public class Julia extends FractalBase {
 		}
 	}
 
+	public Julia(int m, boolean uDiff, double bd, boolean keepConst) {
+		this(m,uDiff,keepConst);
+		this.setBound(bd);
+	}
+
+	public Julia(int m, boolean uDiff, double bd, double realVal, double imgVal) {
+		this(m,uDiff,realVal,imgVal);
+		this.setBound(bd);
+	}
+
 	/**
 	 * @return the power
 	 */
