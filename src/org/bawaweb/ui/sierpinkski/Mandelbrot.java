@@ -132,7 +132,7 @@ public class Mandelbrot extends FractalBase {
 					colorRGB = max - mand(z0, max, exp, this.compConst,bd);
 				}
 				Color color = this.getPixelDisplayColor(row, col, colorRGB, diff);
-				if(color==null){System.out.println("COlor-in-mand-is "+color);}
+
 				setPixel(row, n - 1 - col, color.getRGB());
 
 			}

@@ -241,12 +241,13 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		// invokes local printer
 		PrinterJob printJob = PrinterJob.getPrinterJob();
 		BufferedImage image = this.getBufferedImage();
+		final FractalBase ff = this;
 		printJob.setPrintable(new Printable() {
 			public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
 				if (pageIndex != 0) {
 					return NO_SUCH_PAGE;
 				}
-				graphics.drawImage(image, 0/*-50*/, 0/*-50*/, image.getWidth()/*+200*/, image.getHeight()/*+200*/, null);
+				graphics.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), ff/*null*/);
 				return PAGE_EXISTS;
 			}
 		});
@@ -326,102 +327,6 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		}
 		
 		return color;
-		
-//		
-//		
-//		
-//		/* Simple */
-//		/* color = new Color(gray, gray, gray); */
-//		/* Complex */ 
-//		if (colorRGB % 2 == 0) {
-//			final int start = 4;
-//			final int end = COLORMAXRGB - start;
-//			int num1 = correctColor(start, colorRGB, row, 2);
-//			int num2 = correctColor(start, colorRGB, col, 2);
-//			
-//			if (useD) {
-//				color = new Color(num1, num2, start);//color = ColorPalette[0];
-//			} else {
-//				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 1];
-//			}
-//
-//		} else if (colorRGB % 3 == 0) {
-//			
-//			/* color = Colors.GREEN.getColor(); */
-//			final int start = 8;
-//			final int end = COLORMAXRGB - 8;
-//				int num1 = correctColor(start, colorRGB, row, 3);
-//				int num2 = correctColor(start, colorRGB, col, 3);
-//				
-//			if (useD) {
-//				color = new Color(num1, num2, start);//color = ColorPalette[1];
-//			} else {
-//				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 2];
-//			}
-//		} else if (colorRGB % 5 == 0) {
-//			final int start = 16;
-//			final int end = COLORMAXRGB - start;
-//			int num1 = correctColor(start, colorRGB, row, 5);
-//			int num2 = correctColor(start, colorRGB, col, 5);
-//
-//			if (useD) {
-//				color = new Color(num1, num2, start);//color = ColorPalette[2];
-//			} else {
-//				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 3];
-//			}
-//		}
-//		else if (colorRGB % 7 == 0) {
-//			/* color=Colors.RED.getColor(); */
-//			final int start = 32;
-//			final int end = COLORMAXRGB - start;
-//			int num1 = correctColor(start, colorRGB, row, 7);
-//			int num2 = correctColor(start, colorRGB, col, 7);
-//
-//			if (useD) {
-//				color = new Color(num1, num2, start);//color = ColorPalette[3];
-//			} else {
-//				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 4];
-//			}
-//		} 
-//		else if (colorRGB % 11 == 0) {
-//
-//			final int start = 64;
-//			final int end = COLORMAXRGB - start;
-//			int num1 = correctColor(start, colorRGB, row, 11);
-//			int num2 = correctColor(start, colorRGB, col, 11);
-//
-//			if (useD) {
-//				color = new Color(num1, num2, start);//color = ColorPalette[3];
-//			} else {
-//				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 4];
-//			}
-//		}  
-//		else if (colorRGB % 13 == 0) {
-//
-//			final int start = 128;
-//			final int end = COLORMAXRGB - start;
-//			int num1 = correctColor(start, colorRGB, row, 13);
-//			int num2 = correctColor(start, colorRGB, col, 13);
-//
-//			if (useD) {
-//				color = new Color(num1, num2, start);//color = ColorPalette[3];
-//			} else {
-//				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 4];
-//			}
-//		} else {
-//
-//			final int start = 200; // 255
-//			final int end = COLORMAXRGB - start;
-//			int num1 = correctColor(start, colorRGB, row, 1);
-//			int num2 = correctColor(start, colorRGB, col, 1);
-//
-//			if (useD) {
-//				color = new Color(num1, num2, start);//color = ColorPalette[4];
-//			} else {
-//				color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 5];
-//			}
-//		}
-//		return color;
 	}
 	
 	
