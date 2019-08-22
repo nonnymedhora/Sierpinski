@@ -20,7 +20,10 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -306,7 +309,7 @@ class SierpinskiComboPanel extends JPanel {
 	//
 	/*private JProgressBar progressBar =new  JProgressBar(SwingConstants.HORIZONTAL) ;*/
 	private JButton buPrint = new JButton("Print");
-	
+	private JButton buSave = new JButton("Save");	
 	private Thread fbf;
 	
 	public SierpinskiComboPanel() {
@@ -464,6 +467,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(this.buStart);
 //		this.add(this.buPause);
 		this.add(this.buPrint);
+		this.add(this.buSave);
 		
 		this.formulaArea.setVisible(false);
 		this.add(this.formulaArea);
@@ -1161,6 +1165,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.setDiyFractChoice(diyChoice);
 //System.out.println("Here---doSetDiyFractalChoice -- "+diyChoice);
 		if (diyChoice.equals("DIY_" + MANDELBROT) && this.diyMandRb.isSelected()) {
+			this.comboChoice="DIY_" + MANDELBROT;
 			this.diyMandPanel.setVisible(true);
 			this.diyJuliaPanel.setVisible(false);
 			this.diyApolloPanel.setVisible(false);
@@ -1405,6 +1410,89 @@ class SierpinskiComboPanel extends JPanel {
 		fb.interrupt();
 	}
 	
+	private void doSaveImageCommand(){
+		BufferedImage image = this.getFractalImage();
+		String extraInfo = this.getExtraInfo();
+		String imageFilePath="images\\"+this.getComboChoice()+"["+extraInfo+"]"+" ____"+System.currentTimeMillis()+".png";
+		File outputfile = new File(imageFilePath);
+	    try {
+			ImageIO.write(image, "png", outputfile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private String getExtraInfo() {
+		String choice = this.getComboChoice();
+		String extra = "";
+//		System.out.println("Choice--to--saveimage--" + choice);
+		switch (choice) {
+			case MANDELBROT:
+				extra += "Z(" + this.magnification + ")";
+				extra += "E(" + this.exponent + ")";
+				extra += "B(" + this.mandBound + ")";
+				extra += "MxIt(" + this.mandMaxIter + ")";
+				extra += "Cx(" + this.mandXC + ")";
+				extra += "Cy(" + this.mandYC + ")";
+				extra += "Sz(" + this.mandScaleSize + ")";
+				break;
+			case JULIA:
+				extra += "P("+this.power+")";
+				if(this.compConst!=0.0)
+					extra+="C("+this.compConst+")";
+				else
+					extra+="C("+this.complex+")";
+				extra += "B(" + this.mandBound + ")";
+				extra += "MxIt(" + this.juliaMaxIter + ")";
+				extra += "Cx(" + this.juliaXC + ")";
+				extra += "Cy(" + this.juliaYC + ")";
+				extra += "Sz(" + this.juliaScaleSize + ")";
+			case "DIY_"+MANDELBROT:
+				extra += "Z(" + this.diyMandMagnification + ")";
+				extra += "E(" + this.diyMandExponent + ")";
+				extra += "B(" + this.diyMandBound + ")";
+				extra += "MxIt(" + this.diyMandMaxIter + ")";
+				extra += "Cx(" + this.diyMandXC + ")";
+				extra += "Cy(" + this.diyMandYC + ")";
+				extra += "Sz(" + this.diyMandScaleSize + ")";
+				if (diyMandKeepConst) {
+					extra += "CONST";
+				}else{
+					extra += "Real(" + this.diyMandConstReal + ")";
+					extra += "Img(" + this.diyMandConstImg + ")";
+				}
+				break;
+			case "DIY_"+JULIA:
+				extra += "P("+this.diyJuliaPower+")";
+				
+				extra += "B(" + this.diyJuliaBound + ")";
+				extra += "MxIt(" + this.diyJuliaMaxIter + ")";
+				extra += "Cx(" + this.diyJuliaXC + ")";
+				extra += "Cy(" + this.diyJuliaYC + ")";
+				extra += "Sz(" + this.diyJuliaScaleSize + ")";
+				if (diyJuliaKeepConst) {
+					extra += "CONST";
+				}else{
+					extra += "Real(" + this.diyJuliaConstReal + ")";
+					extra += "Img(" + this.diyJuliaConstImg + ")";
+				}
+			default:
+				extra="";
+		}
+		
+		
+		/*if( choice.equalsIgnoreCase(MANDELBROT) ){
+			extra+="Z("+this.magnification+")";
+			extra+="E("+this.exponent+")";
+			extra+="B("+this.mandBound+")";
+			extra+="MxIt("+this.mandMaxIter+")";
+			extra+="Cx("+this.mandXC+")";
+			extra+="Cy("+this.mandYC+")";
+			extra+="Sz("+this.mandScaleSize+")";
+		} else if(choice.equalsIgnoreCase(JULIA)){}*/
+		return extra;
+	}
+
 	private void doPrintCommand(){
 		PrinterJob printJob = PrinterJob.getPrinterJob();
 		BufferedImage image = this.getFractalImage();
@@ -1887,7 +1975,14 @@ class SierpinskiComboPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				doPrintCommand();				
 			}
-		});	
+		});			
+
+		this.buSave.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doSaveImageCommand();				
+			}
+		});
 	}
 	
 	private void doMagnify(boolean mag) {
