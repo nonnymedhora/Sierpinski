@@ -18,6 +18,8 @@ import java.util.Objects;
 
 import javax.swing.JFrame;
 
+import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
+
 
 /**
  * @author Navroz
@@ -299,31 +301,52 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		
 		for(int iter = 0; iter < divs.length; iter++) {
 			if (colorRGB % divs[iter] == 0) {
-				final int start = colStart[iter];
-				final int end = COLORMAXRGB - start;
-				
-				int num1 = correctColor(start, colorRGB, row, divs[iter]);
-				int num2 = correctColor(start, colorRGB, col, divs[iter]);
-				
-				if (useD) {
-					color = new Color(num1, num2, start);//ColorPalette[iter];//
-				} else {
-					color = new Color(num1, num2, end);//ColorPalette[ColorPalette.length - iter - 1];//
+				if (this.useColorPalette/* && !this.useComputeColor*/) {
+					if (useD) {
+						color = ColorPalette[iter];
+					} else {
+						color = ColorPalette[ColorPalette.length - iter - 1];
+					}
+				} else {//if (!this.useColorPalette && this.useComputeColor) {
+
+					final int start = colStart[iter];
+					final int end = COLORMAXRGB - start;
+
+					int num1 = correctColor(start, colorRGB, row, divs[iter]);
+					int num2 = correctColor(start, colorRGB, col, divs[iter]);
+
+					if (useD) {
+						color = new Color(num1, num2, start);
+					} else {
+						color = new Color(num1, num2, end);
+					}
 				}
+
 				return color;
 			}
 			
 		}
 		
-		final int start = 200; // 255 is max.	0<=colorRGB<=255
-		final int end = COLORMAXRGB - start;
-		int num1 = correctColor(start, colorRGB, row, 1);
-		int num2 = correctColor(start, colorRGB, col, 1);
-
-		if (useD) {
-			color = new Color(num1, num2, start);//color = ColorPalette[4];
-		} else {
-			color = new Color(num1, num2, end);//color = ColorPalette[ColorPalette.length - 5];
+		if(this.useColorPalette/* && !this.useComputeColor*/){
+			if (useD) {
+				color = ColorPalette[4];
+			} else {
+				color = ColorPalette[ColorPalette.length - 5];
+			}
+			return color;
+		}
+		
+		if (!this.useColorPalette/* && this.useComputeColor*/) {
+			final int start = 200; // 255 is max.	0<=colorRGB<=255
+			final int end = COLORMAXRGB - start;
+			int num1 = correctColor(start, colorRGB, row, 1);
+			int num2 = correctColor(start, colorRGB, col, 1);
+			if (useD) {
+				color = new Color(num1, num2, start);
+			} else {
+				color = new Color(num1, num2, end);
+			}
+			return color;
 		}
 		
 		return color;
@@ -492,13 +515,43 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	public void setImage(Image img) {
 		this.bufferedImage = (BufferedImage) img;
 	}
+	
+	public void reset() {
+		depth=0;
+	}
+
+	/**
+	 * @return the running
+	 */
+	public boolean isRunning() {
+		return this.running;
+	}
+
+	/**
+	 * @param running the running to set
+	 */
+	public void setRunning(boolean run) {
+		this.running = run;
+	}
+	
+	protected boolean useColorPalette=false;
+	protected boolean useComputeColor=!this.isUseColorPalette();
+	 
+	public boolean isUseColorPalette() {
+		return useColorPalette;
+	}
+
+	public void setUseColorPalette(boolean useColorPalette) {
+		this.useColorPalette = useColorPalette;
+	}
 
 	/*//from-apollo
 	  final Color[] colors = { 
 				Color.BLACK, Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, 
 				Color.MAGENTA, Color.DARK_GRAY,Color.ORANGE, 
 				Color.CYAN, Color.PINK, Color.LIGHT_GRAY};*/
-	 
+	
+
 	// first = seed color
 	// iterations = colors.length - 1
 	public static final Color[] ColorPalette = new Color[] {
@@ -705,10 +758,22 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		 */
 		@Override
 		public String toString() {
-			if (imaginary == 0) return real + "";
-	        if (real == 0) return imaginary + "i";
-	        if (imaginary <  0) return real + " - " + (-imaginary) + "i";
-	        return real + " + " + imaginary + "i";
+			if (imaginary == 0)
+				return real + "";
+			if (real == 0)
+				return imaginary + "i";
+			if (real < 0) {
+				if (imaginary < 0)
+					return "- " + real + " - " + (-imaginary) + "i";
+				else
+					return "- " + real + " + " + imaginary + "i";
+			} else if (real > 0) {
+				if (imaginary < 0)
+					return real + " - " + (-imaginary) + "i";
+				else
+					return real + " + " + imaginary + "i";
+			}
+			return real + " + " + imaginary + "i";
 //			return "ComplexNumber [real=" + real + ", imaginary=" + imaginary + "]";
 		}
 		
@@ -786,24 +851,58 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		}
 		
 	}
+	
+	interface Formula {
 
+		
+		// applies the formula
+		public void apply(Formula f);
+		
+		// generates a formula
+		// from evaluating the expression
+		public Formula evaluate(String expression);
+		
+		// applies the formula and generates
+		//va result
+		public Object getResult(Formula f);
 
-	public void reset() {
-		depth=0;
 	}
+	
+	class FractalFormula implements Formula {
+		
+//		public final ComplexNumber one = new ComplexNumber(1.0, 0.0);
+//		public final ComplexNumber two = new ComplexNumber(2.0, 0.0);
+//		public final ComplexNumber three = new ComplexNumber(3.0, 0.0);
+//		public final ComplexNumber four = new ComplexNumber(4.0, 0.0);
+//		public final ComplexNumber five = new ComplexNumber(5.0, 0.0);
+//		public final ComplexNumber six = new ComplexNumber(6.0, 0.0);
+//		public final ComplexNumber seven = new ComplexNumber(7.0, 0.0);
+//		public final ComplexNumber eight = new ComplexNumber(8.0, 0.0);
+//		public final ComplexNumber nine = new ComplexNumber(9.0, 0.0);
 
-	/**
-	 * @return the running
-	 */
-	public boolean isRunning() {
-		return this.running;
-	}
+		/*	Field lines for an iteration of the form 
+			((1-z^3)/6)/(z-z^2/2)^2)+c}
+			
+			z = (((one.minus(z.power(3))).divides(six)).divides(((z.minus(z.power(2))).divides(two)).power(2))).plus(complexConstant);
+		*/
+		public FractalFormula() {
+		}
 
-	/**
-	 * @param running the running to set
-	 */
-	public void setRunning(boolean run) {
-		this.running = run;
+
+		@Override
+		public void apply(Formula f) {
+			
+		}
+
+		@Override
+		public Formula evaluate(String expression) {
+			return null;
+		}
+
+		@Override
+		public Object getResult(Formula f) {
+			return null;
+		}
 	}
 	
 }

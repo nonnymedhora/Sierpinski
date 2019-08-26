@@ -107,7 +107,10 @@ class SierpinskiComboPanel extends JPanel {
 	private final Double[] juliaScaleSizeOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
 	private final JComboBox<Double> juliaScaleSizeCombos = new JComboBox<Double>(juliaScaleSizeOptions);
 	
+	protected JRadioButton juliaColrPRb = new JRadioButton("Use Color Palette",false);
+	protected JRadioButton juliaColrCRb = new JRadioButton("Compute Color",true);
 	
+	protected ButtonGroup juliaColrBg = new ButtonGroup();
 	
 
 	// for Mandelbrot
@@ -131,6 +134,12 @@ class SierpinskiComboPanel extends JPanel {
 
 	private final Double[] mandScaleSizeOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
 	private final JComboBox<Double> mandScaleSizeCombos = new JComboBox<Double>(mandScaleSizeOptions);
+	
+
+	protected JRadioButton mandColrPRb = new JRadioButton("Use Color Palette",false);
+	protected JRadioButton mandColrCRb = new JRadioButton("Compute Color",true);
+	
+	protected ButtonGroup mandColrBg = new ButtonGroup();
 	
 	//	for	Apollo
 	private final String[] curvOptions = new String[] { A1, A2, A3, A4, A5, A6 };
@@ -311,6 +320,7 @@ class SierpinskiComboPanel extends JPanel {
 	private JButton buPrint = new JButton("Print");
 	private JButton buSave = new JButton("Save");	
 	private Thread fbf;
+	private boolean useColorPalette;
 	
 	public SierpinskiComboPanel() {
 		super();
@@ -355,6 +365,19 @@ class SierpinskiComboPanel extends JPanel {
 		this.juliaOptionsPanel.add(new JLabel("ScaleSize:"));
 		this.juliaOptionsPanel.add(this.juliaScaleSizeCombos);
 		
+		this.juliaColrBg.add(this.juliaColrPRb);
+		this.juliaColrBg.add(this.juliaColrCRb);
+		
+		this.juliaColrPRb.setActionCommand("ColorPalette");
+		this.juliaColrCRb.setActionCommand("ComputeColor");
+
+		this.juliaColrPRb.setName("ColorPalette");
+		this.juliaColrCRb.setName("ComputeColor");
+		
+		this.juliaOptionsPanel.add(this.juliaColrPRb);
+		this.juliaOptionsPanel.add(this.juliaColrCRb);
+		
+		
 		this.juliaOptionsPanel.setVisible(false);		
 		this.add(this.juliaOptionsPanel);
 		
@@ -375,6 +398,21 @@ class SierpinskiComboPanel extends JPanel {
 		this.mandOptionsPanel.add(this.mandYCCombos);
 		this.mandOptionsPanel.add(new JLabel("ScaleSize:"));
 		this.mandOptionsPanel.add(this.mandScaleSizeCombos);
+		
+
+		
+		this.mandOptionsPanel.add(this.mandColrPRb);
+		this.mandOptionsPanel.add(this.mandColrCRb);
+		
+
+		this.mandColrPRb.setActionCommand("ColorPalette");
+		this.mandColrCRb.setActionCommand("ComputeColor");
+		
+		this.mandOptionsPanel.add(this.mandColrPRb);
+		this.mandOptionsPanel.add(this.mandColrCRb);
+
+		this.mandColrPRb.setActionCommand("ColorPalette");
+		this.mandColrCRb.setActionCommand("ComputeColor");
 		
 		this.mandOptionsPanel.setVisible(false);
 		this.add(this.mandOptionsPanel);
@@ -1215,6 +1253,8 @@ class SierpinskiComboPanel extends JPanel {
 		double mXc = this.mandXC;
 		double mYc = this.mandYC;
 		double mScale = this.mandScaleSize;
+		
+		boolean useCP = this.juliaColrPRb.isSelected()||this.mandColrCRb.isSelected();//			this.useColorPalette;
 
 		/*final*/ FractalBase ff = null;;
 		
@@ -1246,6 +1286,7 @@ class SierpinskiComboPanel extends JPanel {
 				this.formulaArea.append("\n\nCalculated based on pixel values with a top-left origin");
 			}
 			ff = new Mandelbrot(mag, exp, mUseD, mBound, true);
+			ff.setUseColorPalette(useCP);
 			FractalBase.setxC(mXc);
 			FractalBase.setxC(mYc);
 			FractalBase.setScaleSize(mScale);
@@ -1261,10 +1302,12 @@ class SierpinskiComboPanel extends JPanel {
 					|| this.juliaSelection.equals("J9"))) {
 				ff = new Julia(pow, con, jBound, jUseD);
 				
-				
 			} else {
 				ff = new Julia(pow, comp, jBound, jUseD);
 			}
+
+			ff.setUseColorPalette(useCP);
+			
 			FractalBase.setxC(jXc);
 			FractalBase.setxC(jYc);
 			FractalBase.setScaleSize(jScale);
@@ -1428,6 +1471,7 @@ class SierpinskiComboPanel extends JPanel {
 //		System.out.println("Choice--to--saveimage--" + choice);
 		switch (choice) {
 			case MANDELBROT:
+				extra = "";
 				extra += "Z(" + this.magnification + ")";
 				extra += "E(" + this.exponent + ")";
 				extra += "B(" + this.mandBound + ")";
@@ -1437,6 +1481,7 @@ class SierpinskiComboPanel extends JPanel {
 				extra += "Sz(" + this.mandScaleSize + ")";
 				break;
 			case JULIA:
+				extra = "";
 				extra += "P("+this.power+")";
 				if(this.compConst!=0.0)
 					extra+="C("+this.compConst+")";
@@ -1448,6 +1493,7 @@ class SierpinskiComboPanel extends JPanel {
 				extra += "Cy(" + this.juliaYC + ")";
 				extra += "Sz(" + this.juliaScaleSize + ")";
 			case "DIY_"+MANDELBROT:
+				extra = "";
 				extra += "Z(" + this.diyMandMagnification + ")";
 				extra += "E(" + this.diyMandExponent + ")";
 				extra += "B(" + this.diyMandBound + ")";
@@ -1463,6 +1509,7 @@ class SierpinskiComboPanel extends JPanel {
 				}
 				break;
 			case "DIY_"+JULIA:
+				extra = "";
 				extra += "P("+this.diyJuliaPower+")";
 				
 				extra += "B(" + this.diyJuliaBound + ")";
@@ -1635,7 +1682,9 @@ class SierpinskiComboPanel extends JPanel {
 				doSelectJuliaScaleSizeCombosCommand(juliaScaleSizeComboOption);				
 			}});
 		
-		
+
+		this.juliaColrPRb.addActionListener(colorChoiceRbListener());
+		this.juliaColrCRb.addActionListener(colorChoiceRbListener());
 		
 		//////////////////////////////////////////////////
 		//		MANDELBROT
@@ -1728,6 +1777,9 @@ class SierpinskiComboPanel extends JPanel {
 				Double mandScaleSizeComboOption = (Double)cb.getSelectedItem();
 				doSelectMandScaleSizeCombosCommand(mandScaleSizeComboOption);				
 			}});
+		
+		this.mandColrPRb.addActionListener(colorChoiceRbListener());
+		this.mandColrCRb.addActionListener(colorChoiceRbListener());
 		///////////////////	endsmandelbrot	//////////////////////
 		//////////////////////////////////////////////////////////
 		this.diyMandRb.addActionListener(diyFractChoiceRbListener());
@@ -1985,6 +2037,37 @@ class SierpinskiComboPanel extends JPanel {
 		});
 	}
 	
+	
+	private ActionListener colorChoiceRbListener() {
+		return new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				 JRadioButton button = (JRadioButton) e.getSource();
+				 //System.out.println("buttonName-----------"+button.getName());
+				 doFractalColorChoice(/*button.getName()*/);			
+			}};
+	}
+	
+	
+	
+	protected void doFractalColorChoice(/*String colrChoice*/) {
+			
+	//System.out.println("Here---doSetDiyFractalChoice -- "+diyChoice);
+			if (/*colrChoice.equals("ComputeColor") && */(this.juliaColrCRb.isSelected()||this.mandColrCRb.isSelected())) {
+				this.setUseColorPalette(true);
+			} else if (/*colrChoice.equals("ComputeColor") && */(this.juliaColrCRb.isSelected()||this.mandColrCRb.isSelected())) {
+				this.setUseColorPalette(false);
+			} 
+		
+		
+	}
+
+	private void setUseColorPalette(boolean b) {
+		this.useColorPalette = b;
+
+	}
+
 	private void doMagnify(boolean mag) {
 		this.doMagnify=mag;
 		/*if(mag){
