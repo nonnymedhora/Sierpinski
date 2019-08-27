@@ -227,7 +227,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
 
 		// Drawing the rotated image at the required drawing locations
-		g2.drawImage(op.filter( img, null ), drawLocX, drawLocY, null);
+		g2.drawImage( op.filter(img, null), drawLocX, drawLocY, null );
 
 		this.setImage(img);
 
@@ -246,6 +246,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		if (running) {
 			addDepthInfo(g);
 		}
+		
 		return this.getBufferedImage();
 	}
 
@@ -316,13 +317,13 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		
 		for(int iter = 0; iter < divs.length; iter++) {
 			if (colorRGB % divs[iter] == 0) {
-				if (this.useColorPalette/* && !this.useComputeColor*/) {
+				if (this.useColorPalette) {
 					if (useD) {
 						color = ColorPalette[iter];
 					} else {
 						color = ColorPalette[ColorPalette.length - iter - 1];
 					}
-				} else {//if (!this.useColorPalette && this.useComputeColor) {
+				} else {
 
 					final int start = colStart[iter];
 					final int end = COLORMAXRGB - start;
@@ -342,7 +343,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 			
 		}
 		
-		if(this.useColorPalette/* && !this.useComputeColor*/){
+		if(this.useColorPalette){
 			if (useD) {
 				color = ColorPalette[4];
 			} else {
@@ -351,7 +352,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 			return color;
 		}
 		
-		if (!this.useColorPalette/* && this.useComputeColor*/) {
+		if (!this.useColorPalette) {
 			final int start = 200; // 255 is max.	0<=colorRGB<=255
 			final int end = COLORMAXRGB - start;
 			int num1 = correctColor(start, colorRGB, row, 1);
