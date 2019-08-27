@@ -334,6 +334,12 @@ class SierpinskiComboPanel extends JPanel {
 		super();
 		this.add(new JLabel("Choose FractalArt:"));
 		this.add(this.combos);
+		
+		for (int i = 0; i < 1000; i+=15) {
+			this.rotOptions.add((double) i);
+		}
+		this.rotateCombo=new JComboBox<Double>(this.rotOptions);
+		
 
 		//	fanny
 		this.fannyOptionsPanel.add(new JLabel("Dimension Size:"));
@@ -525,11 +531,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setVisible(false);
 		this.add(this.formulaArea);
 		
-		for (int i = 0; i < 1000; i+=15) {
-			this.rotOptions.add((double) i);
-		}
-		this.rotateCombo=new JComboBox<Double>(this.rotOptions);
-		this.add(this.rotateCombo);
+		
 		
 		this.setLayout(new FlowLayout());
 		

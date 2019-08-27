@@ -213,34 +213,28 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	@Override
 	public void paint(Graphics g1) {
 		super.paint(g1);
-		Image img = createFractalImage();
+		BufferedImage img = createFractalImage();
 		Graphics2D g2 = (Graphics2D) g1;
-		
-		int drawLocX=(int)getxC();
-		int drawLocY=(int)getyC();
+
+		int drawLocX = (int) getxC();
+		int drawLocY = (int) getyC();
 		double rotationReq = Math.toRadians(this.rotation);
-		
-		double locX=getWidth()/2;
-		double locY=getHeight()/2;
-		
+
+		double locX = getWidth() / 2;
+		double locY = getHeight() / 2;
+
 		AffineTransform tx = AffineTransform.getRotateInstance(rotationReq, locX, locY);
 		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
 
 		// Drawing the rotated image at the required drawing locations
-		g2.drawImage(op.filter((BufferedImage) img, null), drawLocX, drawLocY, null);
-		
-		
-		
-		/*if (!(this.rotation==0.0)) {
-			AffineTransform at = AffineTransform.getTranslateInstance(0.0, 0.0);
-			g2.drawImage(img, at, null);
-		}*/
+		g2.drawImage(op.filter( img, null), drawLocX, drawLocY, null);
+
 		this.setImage(img);
 
 		g2.dispose();
 	}
 
-	private Image createFractalImage(){
+	private BufferedImage createFractalImage(){
 		Graphics2D g = this.getBufferedImage().createGraphics();
 		// Clear the frame
 		g.setColor(getBGColor());
