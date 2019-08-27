@@ -22,6 +22,7 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.IOException;
+import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
@@ -320,7 +321,14 @@ class SierpinskiComboPanel extends JPanel {
 	private JButton buPrint = new JButton("Print");
 	private JButton buSave = new JButton("Save");	
 	private Thread fbf;
-	private boolean useColorPalette;
+	private boolean useColorPalette = false;
+	
+	private double rotation = 0.0;
+
+	protected JComboBox<Double> rotateCombo = new JComboBox<Double>();
+	private Vector<Double> rotOptions=new Vector<Double>();// = new Double[]{};
+	
+	
 	
 	public SierpinskiComboPanel() {
 		super();
@@ -375,6 +383,9 @@ class SierpinskiComboPanel extends JPanel {
 		this.juliaOptionsPanel.add(this.juliaColrPRb);
 		this.juliaOptionsPanel.add(this.juliaColrCRb);
 		
+		this.juliaOptionsPanel.add(new JLabel("Rotate:"));
+		this.juliaOptionsPanel.add(this.rotateCombo);
+		
 		
 		this.juliaOptionsPanel.setVisible(false);		
 		this.add(this.juliaOptionsPanel);
@@ -410,6 +421,11 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.mandOptionsPanel.add(this.mandColrPRb);
 		this.mandOptionsPanel.add(this.mandColrCRb);
+		
+
+		
+		this.mandOptionsPanel.add(new JLabel("Rotate:"));
+		this.mandOptionsPanel.add(this.rotateCombo);
 		
 		this.mandOptionsPanel.setVisible(false);
 		this.add(this.mandOptionsPanel);
@@ -509,7 +525,12 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setVisible(false);
 		this.add(this.formulaArea);
 		
-
+		for (int i = 0; i < 1000; i+=15) {
+			this.rotOptions.add((double) i);
+		}
+		this.rotateCombo=new JComboBox<Double>(this.rotOptions);
+		this.add(this.rotateCombo);
+		
 		this.setLayout(new FlowLayout());
 		
 		this.setComboSelections();			
@@ -606,6 +627,8 @@ class SierpinskiComboPanel extends JPanel {
 		this.juliaScaleSizeCombos.setSelectedIndex(8);
 		this.mandScaleSizeCombos.setSelectedIndex(8);
 		
+		this.rotateCombo.setSelectedIndex(0);
+		
 
 		this.diyJuliaXCCombos.setSelectedIndex(4);
 		this.diyMandXCCombos.setSelectedIndex(3);
@@ -644,6 +667,8 @@ class SierpinskiComboPanel extends JPanel {
 		this.mandYCCombos.setSelectedItem(this.mandYCOptions[4]);
 		this.juliaScaleSizeCombos.setSelectedItem(this.juliaScaleSizeOptions[8]);
 		this.mandScaleSizeCombos.setSelectedItem(this.mandScaleSizeOptions[8]);
+		
+		this.rotateCombo.setSelectedItem(this.rotOptions.get(0));
 		
 		this.diyJuliaXCCombos.setSelectedItem(this.diyJuliaXCOptions[4]);
 		this.diyMandXCCombos.setSelectedItem(this.diyMandXCOptions[3]);
@@ -1224,7 +1249,9 @@ class SierpinskiComboPanel extends JPanel {
 		}
 	}
 	
-	
+	private void doSetRotationCombosCommand(Double rot){
+		this.setRotation(rot);
+	}
 	
 	private void doStartCommand() {
 		this.formulaArea.setText("");
@@ -1261,6 +1288,9 @@ class SierpinskiComboPanel extends JPanel {
 		double mScale = this.mandScaleSize;
 		
 		boolean useCP = this.juliaColrPRb.isSelected()||this.mandColrPRb.isSelected();//			this.useColorPalette;
+		
+		double rot = this.getRotation();
+		
 //System.out.println("In doStart -- useCP is -- "+useCP);
 //System.out.println("this.juliaColrPRb.isSelected()---"+this.juliaColrPRb.isSelected());
 //System.out.println("this.mandColrPRb.isSelected()---"+this.mandColrPRb.isSelected());
@@ -1296,7 +1326,7 @@ class SierpinskiComboPanel extends JPanel {
 			}
 			ff = new Mandelbrot(mag, exp, mUseD, mBound, true);
 			ff.setUseColorPalette(useCP);
-			
+			ff.setRotation(rot);
 			FractalBase.setxC(mXc);
 			FractalBase.setxC(mYc);
 			FractalBase.setScaleSize(mScale);
@@ -1317,7 +1347,7 @@ class SierpinskiComboPanel extends JPanel {
 			}
 
 			ff.setUseColorPalette(useCP);
-			
+			ff.setRotation(rot);
 			FractalBase.setxC(jXc);
 			FractalBase.setxC(jYc);
 			FractalBase.setScaleSize(jScale);
@@ -2018,6 +2048,15 @@ class SierpinskiComboPanel extends JPanel {
 				}
 			}
         });
+		
+		this.rotateCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double rotationComboOption = (Double)cb.getSelectedItem();
+				doSetRotationCombosCommand(rotationComboOption);				
+			}});
 
 		this.buStart.addActionListener(new ActionListener() {
 			@Override
@@ -2076,6 +2115,16 @@ class SierpinskiComboPanel extends JPanel {
 	private void setUseColorPalette(boolean b) {
 		this.useColorPalette = b;
 
+	}
+	
+	
+
+	public double getRotation() {
+		return this.rotation;
+	}
+
+	public void setRotation(double rot) {
+		this.rotation = rot;
 	}
 
 	private void doMagnify(boolean mag) {

@@ -8,7 +8,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
@@ -213,7 +215,26 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		super.paint(g1);
 		Image img = createFractalImage();
 		Graphics2D g2 = (Graphics2D) g1;
-		g2.drawImage(img, null, null);
+		
+		int drawLocX=(int)getxC();
+		int drawLocY=(int)getyC();
+		double rotationReq = Math.toRadians(this.rotation);
+		
+		double locX=getWidth()/2;
+		double locY=getHeight()/2;
+		
+		AffineTransform tx = AffineTransform.getRotateInstance(rotationReq, locX, locY);
+		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+
+		// Drawing the rotated image at the required drawing locations
+		g2.drawImage(op.filter((BufferedImage) img, null), drawLocX, drawLocY, null);
+		
+		
+		
+		/*if (!(this.rotation==0.0)) {
+			AffineTransform at = AffineTransform.getTranslateInstance(0.0, 0.0);
+			g2.drawImage(img, at, null);
+		}*/
 		this.setImage(img);
 
 		g2.dispose();
@@ -593,9 +614,17 @@ public abstract class FractalBase extends JFrame implements Runnable {
 			return this.collor;
 		}
 	}
-
-
 	
+	protected double rotation = 0.0;
+	
+	public double getRotation() {
+		return this.rotation;
+	}
+
+	public void setRotation(double rot) {
+		this.rotation = rot;
+	}
+
 	class Line {
 		private double x, y, length, angle;
 		
