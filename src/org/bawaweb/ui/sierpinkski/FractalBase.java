@@ -533,16 +533,16 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	public void setRunning(boolean run) {
 		this.running = run;
 	}
-	
-	protected boolean useColorPalette=false;
-	protected boolean useComputeColor=!this.isUseColorPalette();
-	 
+
+	protected boolean useColorPalette = false;
+	protected boolean useComputeColor = !this.isUseColorPalette();
+
 	public boolean isUseColorPalette() {
-		return useColorPalette;
+		return this.useColorPalette;
 	}
 
-	public void setUseColorPalette(boolean useColorPalette) {
-		this.useColorPalette = useColorPalette;
+	public void setUseColorPalette(boolean useCPalette) {
+		this.useColorPalette = useCPalette;
 	}
 
 	/*//from-apollo

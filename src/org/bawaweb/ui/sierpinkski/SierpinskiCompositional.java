@@ -324,14 +324,10 @@ class SierpinskiComboPanel extends JPanel {
 	
 	public SierpinskiComboPanel() {
 		super();
-		this.setLayout(new FlowLayout());
-		
-		this.setComboSelections();			
-		this.setUpListeners();
-
 		this.add(new JLabel("Choose FractalArt:"));
 		this.add(this.combos);
 
+		//	fanny
 		this.fannyOptionsPanel.add(new JLabel("Dimension Size:"));
 		this.fannyOptionsPanel.add(this.sideCombos);
 
@@ -341,11 +337,13 @@ class SierpinskiComboPanel extends JPanel {
 		this.fannyOptionsPanel.setVisible(false);
 		this.add(this.fannyOptionsPanel);
 		
+		//apollo
 		this.apolloOptionsPanel.add(new JLabel("CurvatureOptions:"));
 		this.apolloOptionsPanel.add(this.curvCombos);
 		this.apolloOptionsPanel.setVisible(false);
 		this.add(this.apolloOptionsPanel);
 		
+		//julia
 		this.juliaOptionsPanel.add(new JLabel("Power-Constant:"));
 		this.juliaOptionsPanel.add(this.juliaCombos);		
 		this.juliaOptionsPanel.add(this.juliaUseDiff);
@@ -381,6 +379,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.juliaOptionsPanel.setVisible(false);		
 		this.add(this.juliaOptionsPanel);
 		
+		//mandelbrot
 		this.mandOptionsPanel.add(new JLabel("Magnification(M):"));
 		this.mandOptionsPanel.add(this.mandCombos);
 		this.mandOptionsPanel.add(new JLabel("Exponent(M):"));
@@ -400,23 +399,23 @@ class SierpinskiComboPanel extends JPanel {
 		this.mandOptionsPanel.add(this.mandScaleSizeCombos);
 		
 
+		this.mandColrBg.add(this.mandColrPRb);
+		this.mandColrBg.add(this.mandColrCRb);
+		
+		this.mandColrPRb.setActionCommand("ColorPalette");
+		this.mandColrCRb.setActionCommand("ComputeColor");
+
+		this.mandColrPRb.setName("ColorPalette");
+		this.mandColrCRb.setName("ComputeColor");
 		
 		this.mandOptionsPanel.add(this.mandColrPRb);
 		this.mandOptionsPanel.add(this.mandColrCRb);
-		
-
-		this.mandColrPRb.setActionCommand("ColorPalette");
-		this.mandColrCRb.setActionCommand("ComputeColor");
-		
-		this.mandOptionsPanel.add(this.mandColrPRb);
-		this.mandOptionsPanel.add(this.mandColrCRb);
-
-		this.mandColrPRb.setActionCommand("ColorPalette");
-		this.mandColrCRb.setActionCommand("ComputeColor");
 		
 		this.mandOptionsPanel.setVisible(false);
 		this.add(this.mandOptionsPanel);
 		
+		
+		//	diy	panel
 		this.diyOptionsPanel.add(new JLabel("Choose Fractal Art:"));
 		this.diyMandRb.setActionCommand("DIY_"+MANDELBROT);
 		this.diyJuliaRb.setActionCommand("DIY_"+JULIA);
@@ -509,6 +508,13 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.formulaArea.setVisible(false);
 		this.add(this.formulaArea);
+		
+
+		this.setLayout(new FlowLayout());
+		
+		this.setComboSelections();			
+		this.setUpListeners();
+
 //		
 //		this.progressBar.setStringPainted(true);
 //		this.progressBar.setBounds(40,80,160,30); 
@@ -1254,7 +1260,10 @@ class SierpinskiComboPanel extends JPanel {
 		double mYc = this.mandYC;
 		double mScale = this.mandScaleSize;
 		
-		boolean useCP = this.juliaColrPRb.isSelected()||this.mandColrCRb.isSelected();//			this.useColorPalette;
+		boolean useCP = this.juliaColrPRb.isSelected()||this.mandColrPRb.isSelected();//			this.useColorPalette;
+//System.out.println("In doStart -- useCP is -- "+useCP);
+//System.out.println("this.juliaColrPRb.isSelected()---"+this.juliaColrPRb.isSelected());
+//System.out.println("this.mandColrPRb.isSelected()---"+this.mandColrPRb.isSelected());
 
 		/*final*/ FractalBase ff = null;;
 		
@@ -1287,6 +1296,7 @@ class SierpinskiComboPanel extends JPanel {
 			}
 			ff = new Mandelbrot(mag, exp, mUseD, mBound, true);
 			ff.setUseColorPalette(useCP);
+			
 			FractalBase.setxC(mXc);
 			FractalBase.setxC(mYc);
 			FractalBase.setScaleSize(mScale);
