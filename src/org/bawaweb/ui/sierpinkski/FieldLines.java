@@ -57,21 +57,31 @@ public class FieldLines extends FractalBase {
 	*/
 
 	private void createFieldLines(Graphics2D g, int d, boolean diff) {		
-		double xc = getxC();//System.out.println("xc is == "+xc);
-		double yc = getyC();//System.out.println("yc is == "+yc);
-		int n = getAreaSize();//System.out.println("n is == "+n);
-		int max = getMaxIter();//System.out.println("max is == "+max);
+		double xc = getxC();
+//System.out.println("xc is == "+xc);
+		double yc = getyC();
+//System.out.println("yc is == "+yc);
+		int n = getAreaSize();
+//System.out.println("n is == "+n);
+		int max = getMaxIter();
+//System.out.println("max is == "+max);
 		int size=2;
+//System.out.println("size is == "+size);
+//System.out.println("isComplexNumConst "+ isComplexNumConst);
+//System.out.println("this.complex==null "+ (this.complex==null));
+//System.out.println("isComplexNumConst || this.complex == null  - "+(isComplexNumConst || this.complex == null));
+		
 		for (int row = 0; row < n; row++) {
 			for (int col = 0; col < n; col++) {
-				double x0 = xc;// - size / 2 + size * row / size;
-				double y0 = yc;// - size / 2 + size * col / size;
+				double x0 = xc - size / 2 + size * row / size;
+				double y0 = yc - size / 2 + size * col / size;
 				ComplexNumber z0 = new ComplexNumber(x0, y0);
 				
 				
 				if (isComplexNumConst || this.complex == null) {
 					this.complex = z0;
 				}
+//System.out.println("row is "+row+" and col is "+col+" and this.complex is => "+this.complex.toString());
 				int colorRGB=0;
 				if (diff) {
 					colorRGB = fieldLines(z0, max, bound);// ? 0 : 255;
@@ -86,7 +96,7 @@ public class FieldLines extends FractalBase {
 	}
 	
 	/*private boolean fieldLines(ComplexNumber z, int max, double bd) {
-		// f(z)=z^n+c
+		// f(z)=((1-z^3)/6)/(z-z^2/2)^2)+c}
 				ComplexNumber z0 = z;
 
 				final ComplexNumber complexConstant;
@@ -108,9 +118,10 @@ public class FieldLines extends FractalBase {
 	}*/
 
 	private int fieldLines(ComplexNumber z, int max, double bd) {
-		// f(z)=z^n+c
+		// f(z)=((1-z^3)/6)/(z-z^2/2)^2)+c}
 				ComplexNumber z0 = z;
 
+				@SuppressWarnings("unused")
 				final ComplexNumber complexConstant;
 				if (this.complex == null) {
 					complexConstant = new ComplexNumber(this.complexConst, 0);
@@ -122,8 +133,12 @@ public class FieldLines extends FractalBase {
 					if (z0.abs() > bd) {
 						return t;
 					}
-					z0 = (((one.minus(z0.power(3))).divides(six)).divides(((z0.minus(z0.power(2))).divides(two)).power(2))).plus(complex);
+					ComplexNumber zNumer = (one.minus(z0.power(3).divides(six)));
+					ComplexNumber zDenom = ((z0.minus(z0.power(2).divides(two)))).power(2);
+//					z0 = (((one.minus(z0.power(3))).divides(six)).divides(((z0.minus(z0.power(2))).divides(two)).power(2))).plus(complex);
 					
+					z0 = zNumer.divides(zDenom).plus(complexConstant);
+
 				}
 				
 				return max;
@@ -186,6 +201,7 @@ public class FieldLines extends FractalBase {
 			public void run() {
 
 				final FieldLines frame = new FieldLines();
+				frame.setComplexNumConst(true);
 				FractalBase.depth = 5;
 				frame.setTitle(frame.getFractalShapeTitle());
 				frame.setSize(FractalBase.WIDTH, FractalBase.HEIGHT);

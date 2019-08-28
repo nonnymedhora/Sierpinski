@@ -44,6 +44,7 @@ import javax.swing.SwingUtilities;
 
 class SierpinskiComboPanel extends JPanel {
 	
+	private static final Integer[] EXPONENTS = new Integer[] { -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 9, 10 };
 	// for Julia
 	private static final String J1 = "P[2] C[0.279]";	//f(z) = z^2 + 0.279
 	private static final String J2 = "P[3] C[0.4]";		//f(z) = z^3 + 0.400
@@ -85,9 +86,9 @@ class SierpinskiComboPanel extends JPanel {
 	private final JComboBox<String> combos = new JComboBox<String>(comboOptions);
 	
 	//	for	FannyCircle & FannyTriangles
-	private final Integer[] sideOptions = new Integer[] { 50, 70, 100, 150, 200, 250, 300, 350 };
+	private final Integer[] sideOptions = new Integer[] { 50, 60, 70, 80, 90, 100, 120, 150, 170, 200, 250, 300, 350 };
 	private final JComboBox<Integer> sideCombos = new JComboBox<Integer>(sideOptions);
-	private final Integer[] ratioOptions = new Integer[] { 2, 3, 4, 5, 6, 7 };
+	private final Integer[] ratioOptions = new Integer[] { 1, 2, 3, 4, 5, 6, 7 };
 	private final JComboBox<Integer> ratioCombos = new JComboBox<Integer>(ratioOptions);
 	
 	// for Julia
@@ -115,9 +116,9 @@ class SierpinskiComboPanel extends JPanel {
 	
 
 	// for Mandelbrot
-	private final Integer[] mandOptions = new Integer[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	private final Integer[] mandOptions = new Integer[] { -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	private final JComboBox<Integer> mandCombos = new JComboBox<Integer>(mandOptions);
-	private final Integer[] mandExpOptions = new Integer[] { -3, -2, -1, 2, 3, 4, 5, 6, 7 };
+	private final Integer[] mandExpOptions = EXPONENTS;
 	private final JComboBox<Integer> mandExpCombos = new JComboBox<Integer>(mandExpOptions);
 	private final JCheckBox mandUseDiffCb = new JCheckBox("UseDifferencesOnly", true);
 	private final Integer[] mandMaxIterOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 300, 350, 400, 500, 1000 };
@@ -232,9 +233,9 @@ class SierpinskiComboPanel extends JPanel {
 	protected double diyMandYC;
 	protected double diyMandScaleSize;
 	
-	private final Integer[] diyMandMagOptions = new Integer[]{1,2,3,4,5,6,7,8,9,10};
+	private final Integer[] diyMandMagOptions = new Integer[] { -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	private final JComboBox<Integer> diyMandMagCombos = new JComboBox<Integer>(diyMandMagOptions);
-	private final Integer[] diyMandExpOptions = new Integer[] { -3, -2, -1, 2, 3, 4, 5, 6, 7 };
+	private final Integer[] diyMandExpOptions = new Integer[] { -3, -2, -1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	private final JComboBox<Integer> diyMandExpCombos = new JComboBox<Integer>(diyMandExpOptions);
 	private final JCheckBox diyMandUseDiffCb = new JCheckBox("UseDifferencesOnly",true);
 	private JTextField diyMandRealTf = new JTextField(5);
@@ -268,7 +269,7 @@ class SierpinskiComboPanel extends JPanel {
 	protected double diyJuliaYC;
 	protected double diyJuliaScaleSize;
 	
-	private final Integer[] diyJuliaPowerOptions = new Integer[]{-3, -2, -1, 2, 3, 4, 5, 6, 7};
+	private final Integer[] diyJuliaPowerOptions = new Integer[] { -3, -2, -1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	private final JComboBox<Integer> diyJuliaPowerCombos = new JComboBox<Integer>(diyJuliaPowerOptions);
 	private final JCheckBox diyJuliaUseDiffCb = new JCheckBox("UseDifferencesOnly",true);
 	private JTextField diyJuliaRealTf = new JTextField(5);
@@ -306,12 +307,25 @@ class SierpinskiComboPanel extends JPanel {
 	private final JComboBox<Integer> diyApolloMultCombos = new JComboBox<Integer>(diyApolloMultOptions);
 	
 
+	
+	
+	//controlPanel
+	private JPanel controlPanel = new JPanel();
+	private final JComboBox<Integer> expCombos = new JComboBox<Integer>(EXPONENTS);
+	private final JCheckBox useDiff = new JCheckBox("UseDifferencesOnly", true);
+	
+	@SuppressWarnings("unused")
+	private boolean useColorPalette = false;
+	
+	private double rotation = 0.0;
+
+	protected JComboBox<Double> rotateCombo = new JComboBox<Double>();
+	private Vector<Double> rotOptions = new Vector<Double>();
+	
 	protected JRadioButton colrPRb = new JRadioButton("Use Color Palette",false);
 	protected JRadioButton colrCRb = new JRadioButton("Compute Color",true);
 	
 	protected ButtonGroup colrBg = new ButtonGroup();
-
-
 	
 	private final JCheckBox magnifyCb = new JCheckBox("Magnify",false);
 	private boolean doMagnify = false;
@@ -322,14 +336,6 @@ class SierpinskiComboPanel extends JPanel {
 	private JButton buSave = new JButton("Save");
 	
 	private Thread fbf;
-	
-	@SuppressWarnings("unused")
-	private boolean useColorPalette = false;
-	
-	private double rotation = 0.0;
-
-	protected JComboBox<Double> rotateCombo = new JComboBox<Double>();
-	private Vector<Double> rotOptions = new Vector<Double>();
 	
 	
 	
@@ -345,22 +351,199 @@ class SierpinskiComboPanel extends JPanel {
 		
 
 		//	fanny
-		this.fannyOptionsPanel.add(new JLabel("Dimension Size:"));
-		this.fannyOptionsPanel.add(this.sideCombos);
-
-		this.fannyOptionsPanel.add(new JLabel("Ratio:"));
-		this.fannyOptionsPanel.add(this.ratioCombos);
-		
-		this.fannyOptionsPanel.setVisible(false);
-		this.add(this.fannyOptionsPanel);
+		createFannyPanel();
 		
 		//apollo
-		this.apolloOptionsPanel.add(new JLabel("CurvatureOptions:"));
-		this.apolloOptionsPanel.add(this.curvCombos);
-		this.apolloOptionsPanel.setVisible(false);
-		this.add(this.apolloOptionsPanel);
+		createApolloPanel();
 		
 		//julia
+		createJuliaPanel();
+		
+		//mandelbrot
+		createMandelbrotPanel();
+		
+		
+		//	diy	panel
+		createDIYPanel();
+
+		this.buStart.setEnabled(false);
+		this.add(this.buStart);
+//		this.add(this.buPause);
+		this.add(this.buPrint);
+		this.add(this.buSave);
+		
+		this.formulaArea.setVisible(false);
+		this.add(this.formulaArea);
+		
+		
+		
+		this.setLayout(new FlowLayout());
+		
+		this.setComboSelections();			
+		this.setUpListeners();
+
+		
+	}
+
+	private void createDIYPanel() {
+		this.diyOptionsPanel.add(new JLabel("Choose Fractal Art:"));
+		this.diyMandRb.setActionCommand("DIY_"+MANDELBROT);
+		this.diyJuliaRb.setActionCommand("DIY_"+JULIA);
+		this.diyApolloRb.setActionCommand("DIY_"+APOLLONIAN_CIRCLES);
+		
+		this.diyBg.add(this.diyMandRb);
+		this.diyBg.add(this.diyJuliaRb);
+		this.diyBg.add(this.diyApolloRb);
+		
+		this.diyMandRb.setSelected(true);
+		this.diyMandRb.setName("DIY_"+MANDELBROT);
+		this.diyJuliaRb.setName("DIY_"+JULIA);
+		this.diyApolloRb.setName("DIY_"+APOLLONIAN_CIRCLES);
+		
+		this.diyOptionsPanel.add(this.diyMandRb);
+		this.diyOptionsPanel.add(this.diyJuliaRb);
+		this.diyOptionsPanel.add(this.diyApolloRb);
+		
+		
+		createDiyMandelbrotPanel();
+		
+		createDiyJuliaPanel();
+		
+		createDiyApolloPanel();
+		
+		
+		this.diyOptionsPanel.add(this.diyMandPanel);
+		this.diyOptionsPanel.add(this.diyJuliaPanel);
+		this.diyOptionsPanel.add(this.diyApolloPanel);
+		this.diyOptionsPanel.setVisible(false);
+
+		this.colrBg.add(this.colrPRb);
+		this.colrBg.add(this.colrCRb);
+		
+		this.colrPRb.setActionCommand("ColorPalette");
+		this.colrCRb.setActionCommand("ComputeColor");
+
+		this.colrPRb.setName("ColorPalette");
+		this.colrCRb.setName("ComputeColor");
+		this.diyOptionsPanel.add(this.colrPRb);
+		this.diyOptionsPanel.add(this.colrCRb);
+		
+		this.diyOptionsPanel.add(new JLabel("Rotate:"));
+		this.diyOptionsPanel.add(this.rotateCombo);
+		
+		this.add(diyOptionsPanel);
+	}
+
+	private void createDiyApolloPanel() {
+		this.diyApolloPanel.add(new JLabel("C1"));
+		this.diyApolloPanel.add(this.diyApolloC1Combos);
+		this.diyApolloPanel.add(new JLabel("C2"));
+		this.diyApolloPanel.add(this.diyApolloC2Combos);
+		this.diyApolloPanel.add(new JLabel("C3"));
+		this.diyApolloPanel.add(this.diyApolloC3Combos);
+		this.diyApolloPanel.add(new JLabel("Multiplier"));
+		this.diyApolloPanel.add(this.diyApolloMultCombos);
+		this.diyApolloPanel.setVisible(false);
+	}
+
+	private void createDiyJuliaPanel() {
+		this.diyJuliaPanel.add(new JLabel("Power:"));
+		this.diyJuliaPanel.add(this.diyJuliaPowerCombos);
+		this.diyJuliaPanel.add(new JLabel("ComplexConstant - Real (R) "));
+		this.diyJuliaPanel.add(this.diyJuliaRealTf);
+		this.diyJuliaPanel.add(new JLabel("Imaginary (*i)"));
+		this.diyJuliaPanel.add(this.diyJuliaImgTf);
+		this.diyJuliaPanel.add(this.diyJuliaUseDiffCb);
+		this.diyJuliaPanel.add(this.diyJuliaKeepConstantCb);
+		this.diyJuliaPanel.add(new JLabel("Max Iterations: "));
+		this.diyJuliaPanel.add(this.diyJuliaMaxIterCombos);
+		this.diyJuliaPanel.add(new JLabel("Boundary: "));
+		this.diyJuliaPanel.add(this.diyJuliaBoundCombos);
+		
+		this.diyJuliaPanel.add(new JLabel("Center: X "));
+		this.diyJuliaPanel.add(this.diyJuliaXCCombos);
+		this.diyJuliaPanel.add(new JLabel(" Y "));
+		this.diyJuliaPanel.add(this.diyJuliaYCCombos);
+		this.diyJuliaPanel.add(new JLabel("ScaleSize:"));
+		this.diyJuliaPanel.add(this.diyJuliaScaleSizeCombos);
+		
+		this.diyJuliaPanel.add(new JLabel("Rotate:"));
+		this.diyJuliaPanel.add(this.rotateCombo);
+		
+		this.diyJuliaPanel.setVisible(false);
+	}
+
+	private void createDiyMandelbrotPanel() {
+		this.diyMandPanel.add(new JLabel("Magnification:"));
+		this.diyMandPanel.add(this.diyMandMagCombos);
+		this.diyMandPanel.add(new JLabel("Exponent:"));
+		this.diyMandPanel.add(this.diyMandExpCombos);
+		this.diyMandPanel.add(new JLabel("ComplexConstant - Real (R) "));
+		this.diyMandPanel.add(this.diyMandRealTf);
+		this.diyMandPanel.add(new JLabel("Imaginary (*i)"));
+		this.diyMandPanel.add(this.diyMandImgTf);
+		this.diyMandPanel.add(this.diyMandUseDiffCb);
+		this.diyMandPanel.add(this.diyMandKeepConstantCb);
+		this.diyMandPanel.add(new JLabel("Max Iterations: "));
+		this.diyMandPanel.add(this.diyMandMaxIterCombos);
+		this.diyMandPanel.add(new JLabel("Boundary: "));
+		this.diyMandPanel.add(this.diyMandBoundCombos);
+		
+		this.diyMandPanel.add(new JLabel("Center: X "));
+		this.diyMandPanel.add(this.diyMandXCCombos);
+		this.diyMandPanel.add(new JLabel(" Y "));
+		this.diyMandPanel.add(this.diyMandYCCombos);
+		this.diyMandPanel.add(new JLabel("ScaleSize:"));
+		this.diyMandPanel.add(this.diyMandScaleSizeCombos);
+		
+		this.diyMandPanel.add(new JLabel("Rotate:"));
+		this.diyMandPanel.add(this.rotateCombo);
+		
+		this.diyMandPanel.setVisible(false);
+	}
+
+	private void createMandelbrotPanel() {
+		this.mandOptionsPanel.add(new JLabel("Magnification(M):"));
+		this.mandOptionsPanel.add(this.mandCombos);
+		this.mandOptionsPanel.add(new JLabel("Exponent(X):"));
+		this.mandOptionsPanel.add(this.mandExpCombos);		
+		this.mandOptionsPanel.add(this.mandUseDiffCb);
+		this.mandOptionsPanel.add(new JLabel("Max Iterations:"));
+		this.mandOptionsPanel.add(this.mandMaxIterCombos);		
+		this.mandOptionsPanel.add(new  JLabel("Area Size:"));
+		this.mandOptionsPanel.add(this.mandSizeCombos);
+		this.mandOptionsPanel.add(new JLabel("Boundary:"));
+		this.mandOptionsPanel.add(this.mandBoundCombos);
+		this.mandOptionsPanel.add(new JLabel("Center: X "));
+		this.mandOptionsPanel.add(this.mandXCCombos);
+		this.mandOptionsPanel.add(new JLabel(" Y "));
+		this.mandOptionsPanel.add(this.mandYCCombos);
+		this.mandOptionsPanel.add(new JLabel("ScaleSize:"));
+		this.mandOptionsPanel.add(this.mandScaleSizeCombos);
+		
+
+		this.mandColrBg.add(this.mandColrPRb);
+		this.mandColrBg.add(this.mandColrCRb);
+		
+		this.mandColrPRb.setActionCommand("ColorPalette");
+		this.mandColrCRb.setActionCommand("ComputeColor");
+
+		this.mandColrPRb.setName("ColorPalette");
+		this.mandColrCRb.setName("ComputeColor");
+		
+		this.mandOptionsPanel.add(this.mandColrPRb);
+		this.mandOptionsPanel.add(this.mandColrCRb);
+		
+
+		
+		this.mandOptionsPanel.add(new JLabel("Rotate:"));
+		this.mandOptionsPanel.add(this.rotateCombo);
+		
+		this.mandOptionsPanel.setVisible(false);
+		this.add(this.mandOptionsPanel);
+	}
+
+	private void createJuliaPanel() {
 		this.juliaOptionsPanel.add(new JLabel("Power-Constant:"));
 		this.juliaOptionsPanel.add(this.juliaCombos);		
 		this.juliaOptionsPanel.add(this.juliaUseDiff);
@@ -398,169 +581,30 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.juliaOptionsPanel.setVisible(false);		
 		this.add(this.juliaOptionsPanel);
-		
-		//mandelbrot
-		this.mandOptionsPanel.add(new JLabel("Magnification(M):"));
-		this.mandOptionsPanel.add(this.mandCombos);
-		this.mandOptionsPanel.add(new JLabel("Exponent(M):"));
-		this.mandOptionsPanel.add(this.mandExpCombos);		
-		this.mandOptionsPanel.add(this.mandUseDiffCb);
-		this.mandOptionsPanel.add(new JLabel("Max Iterations:"));
-		this.mandOptionsPanel.add(this.mandMaxIterCombos);		
-		this.mandOptionsPanel.add(new  JLabel("Area Size:"));
-		this.mandOptionsPanel.add(this.mandSizeCombos);
-		this.mandOptionsPanel.add(new JLabel("Boundary:"));
-		this.mandOptionsPanel.add(this.mandBoundCombos);
-		this.mandOptionsPanel.add(new JLabel("Center: X "));
-		this.mandOptionsPanel.add(this.mandXCCombos);
-		this.mandOptionsPanel.add(new JLabel(" Y "));
-		this.mandOptionsPanel.add(this.mandYCCombos);
-		this.mandOptionsPanel.add(new JLabel("ScaleSize:"));
-		this.mandOptionsPanel.add(this.mandScaleSizeCombos);
-		
+	}
 
-		this.mandColrBg.add(this.mandColrPRb);
-		this.mandColrBg.add(this.mandColrCRb);
-		
-		this.mandColrPRb.setActionCommand("ColorPalette");
-		this.mandColrCRb.setActionCommand("ComputeColor");
+	private void createApolloPanel() {
+		this.apolloOptionsPanel.add(new JLabel("CurvatureOptions:"));
+		this.apolloOptionsPanel.add(this.curvCombos);
+		this.apolloOptionsPanel.setVisible(false);
+		this.add(this.apolloOptionsPanel);
+	}
 
-		this.mandColrPRb.setName("ColorPalette");
-		this.mandColrCRb.setName("ComputeColor");
-		
-		this.mandOptionsPanel.add(this.mandColrPRb);
-		this.mandOptionsPanel.add(this.mandColrCRb);
-		
+	private void createFannyPanel() {
+		this.fannyOptionsPanel.add(new JLabel("Dimension Size:"));
+		this.fannyOptionsPanel.add(this.sideCombos);
 
+		this.fannyOptionsPanel.add(new JLabel("Ratio:"));
+		this.fannyOptionsPanel.add(this.ratioCombos);
 		
-		this.mandOptionsPanel.add(new JLabel("Rotate:"));
-		this.mandOptionsPanel.add(this.rotateCombo);
-		
-		this.mandOptionsPanel.setVisible(false);
-		this.add(this.mandOptionsPanel);
-		
-		
-		//	diy	panel
-		this.diyOptionsPanel.add(new JLabel("Choose Fractal Art:"));
-		this.diyMandRb.setActionCommand("DIY_"+MANDELBROT);
-		this.diyJuliaRb.setActionCommand("DIY_"+JULIA);
-		this.diyApolloRb.setActionCommand("DIY_"+APOLLONIAN_CIRCLES);
-		
-		this.diyBg.add(this.diyMandRb);
-		this.diyBg.add(this.diyJuliaRb);
-		this.diyBg.add(this.diyApolloRb);
-		
-		this.diyMandRb.setSelected(true);
-		this.diyMandRb.setName("DIY_"+MANDELBROT);
-		this.diyJuliaRb.setName("DIY_"+JULIA);
-		this.diyApolloRb.setName("DIY_"+APOLLONIAN_CIRCLES);
-		
-		this.diyOptionsPanel.add(this.diyMandRb);
-		this.diyOptionsPanel.add(this.diyJuliaRb);
-		this.diyOptionsPanel.add(this.diyApolloRb);
-		
-		
-		this.diyMandPanel.add(new JLabel("Magnification:"));
-		this.diyMandPanel.add(this.diyMandMagCombos);
-		this.diyMandPanel.add(new JLabel("Exponent:"));
-		this.diyMandPanel.add(this.diyMandExpCombos);
-		this.diyMandPanel.add(new JLabel("ComplexConstant - Real (R) "));
-		this.diyMandPanel.add(this.diyMandRealTf);
-		this.diyMandPanel.add(new JLabel("Imaginary (*i)"));
-		this.diyMandPanel.add(this.diyMandImgTf);
-		this.diyMandPanel.add(this.diyMandUseDiffCb);
-		this.diyMandPanel.add(this.diyMandKeepConstantCb);
-		this.diyMandPanel.add(new JLabel("Max Iterations: "));
-		this.diyMandPanel.add(this.diyMandMaxIterCombos);
-		this.diyMandPanel.add(new JLabel("Boundary: "));
-		this.diyMandPanel.add(this.diyMandBoundCombos);
-		
-		this.diyMandPanel.add(new JLabel("Center: X "));
-		this.diyMandPanel.add(this.diyMandXCCombos);
-		this.diyMandPanel.add(new JLabel(" Y "));
-		this.diyMandPanel.add(this.diyMandYCCombos);
-		this.diyMandPanel.add(new JLabel("ScaleSize:"));
-		this.diyMandPanel.add(this.diyMandScaleSizeCombos);
-		
-		this.diyMandPanel.add(new JLabel("Rotate:"));
-		this.diyMandPanel.add(this.rotateCombo);
-		
-		this.diyMandPanel.setVisible(false);
-		
-		this.diyJuliaPanel.add(new JLabel("Power:"));
-		this.diyJuliaPanel.add(this.diyJuliaPowerCombos);
-		this.diyJuliaPanel.add(new JLabel("ComplexConstant - Real (R) "));
-		this.diyJuliaPanel.add(this.diyJuliaRealTf);
-		this.diyJuliaPanel.add(new JLabel("Imaginary (*i)"));
-		this.diyJuliaPanel.add(this.diyJuliaImgTf);
-		this.diyJuliaPanel.add(this.diyJuliaUseDiffCb);
-		this.diyJuliaPanel.add(this.diyJuliaKeepConstantCb);
-		this.diyJuliaPanel.add(new JLabel("Max Iterations: "));
-		this.diyJuliaPanel.add(this.diyJuliaMaxIterCombos);
-		this.diyJuliaPanel.add(new JLabel("Boundary: "));
-		this.diyJuliaPanel.add(this.diyJuliaBoundCombos);
-		
-		this.diyJuliaPanel.add(new JLabel("Center: X "));
-		this.diyJuliaPanel.add(this.diyJuliaXCCombos);
-		this.diyJuliaPanel.add(new JLabel(" Y "));
-		this.diyJuliaPanel.add(this.diyJuliaYCCombos);
-		this.diyJuliaPanel.add(new JLabel("ScaleSize:"));
-		this.diyJuliaPanel.add(this.diyJuliaScaleSizeCombos);
-		
-		this.diyJuliaPanel.add(new JLabel("Rotate:"));
-		this.diyJuliaPanel.add(this.rotateCombo);
-		
-		this.diyJuliaPanel.setVisible(false);
-		
-		this.diyApolloPanel.add(new JLabel("C1"));
-		this.diyApolloPanel.add(this.diyApolloC1Combos);
-		this.diyApolloPanel.add(new JLabel("C2"));
-		this.diyApolloPanel.add(this.diyApolloC2Combos);
-		this.diyApolloPanel.add(new JLabel("C3"));
-		this.diyApolloPanel.add(this.diyApolloC3Combos);
-		this.diyApolloPanel.add(new JLabel("Multiplier"));
-		this.diyApolloPanel.add(this.diyApolloMultCombos);
-		this.diyApolloPanel.setVisible(false);
-		
-		
-		this.diyOptionsPanel.add(this.diyMandPanel);
-		this.diyOptionsPanel.add(this.diyJuliaPanel);
-		this.diyOptionsPanel.add(this.diyApolloPanel);
-		this.diyOptionsPanel.setVisible(false);
-
-		this.colrBg.add(this.colrPRb);
-		this.colrBg.add(this.colrCRb);
-		
-		this.colrPRb.setActionCommand("ColorPalette");
-		this.colrCRb.setActionCommand("ComputeColor");
-
-		this.colrPRb.setName("ColorPalette");
-		this.colrCRb.setName("ComputeColor");
-		this.diyOptionsPanel.add(this.colrPRb);
-		this.diyOptionsPanel.add(this.colrCRb);
-		
-		this.diyOptionsPanel.add(new JLabel("Rotate:"));
-		this.diyOptionsPanel.add(this.rotateCombo);
-		
-		this.add(diyOptionsPanel);
-
-		this.buStart.setEnabled(false);
-		this.add(this.buStart);
-//		this.add(this.buPause);
-		this.add(this.buPrint);
-		this.add(this.buSave);
-		
-		this.formulaArea.setVisible(false);
-		this.add(this.formulaArea);
-		
-		
-		
-		this.setLayout(new FlowLayout());
-		
-		this.setComboSelections();			
-		this.setUpListeners();
-
-		
+		this.fannyOptionsPanel.setVisible(false);
+		this.add(this.fannyOptionsPanel);
+	}
+	
+	private void createControlPanel() {
+		this.mandOptionsPanel.add(new JLabel("Exponent(X):"));
+		this.mandOptionsPanel.add(this.expCombos);
+		this.controlPanel.add(this.useDiff);
 	}
 	
 	private void doReset() {
@@ -2423,7 +2467,8 @@ public class SierpinskiCompositional extends JFrame {
 		cp.add(this.topPanel);
 		
 		this.pack();
-	    repaint();
+		this.revalidate();
+	    this.repaint();
 	   	    
 		this.setVisible(true);
 	    

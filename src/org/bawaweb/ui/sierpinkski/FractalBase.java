@@ -57,6 +57,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 
 	/** Constructor: an instance */
 	public FractalBase() {
+		super();
 		setSize(WIDTH, HEIGHT);
 		setVisible(true);
 	}
@@ -204,7 +205,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	
 	private void generate(int d) {
 		depth = d;
-		repaint();
+		this.repaint();
 	}
 
 	/* (non-Javadoc)
@@ -213,11 +214,14 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	@Override
 	public void paint(Graphics g1) {
 		super.paint(g1);
-		BufferedImage img = createFractalImage();
+		BufferedImage img = this.createFractalImage();
 		Graphics2D g2 = (Graphics2D) g1;
-
+		
+		// reqd drawing location
 		int drawLocX = (int) getxC();
 		int drawLocY = (int) getyC();
+		
+		// rotation info
 		double rotationReq = Math.toRadians(this.rotation);
 
 		double locX = getWidth() / 2;
@@ -782,9 +786,9 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		 */
 		@Override
 		public String toString() {
-			if (imaginary == 0)
+			if (imaginary == 0 && real != 0.0)
 				return real + "";
-			if (real == 0)
+			if (real == 0 && imaginary != 0.0)
 				return imaginary + "i";
 			if (real < 0) {
 				if (imaginary < 0)
