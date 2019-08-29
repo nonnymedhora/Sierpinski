@@ -56,6 +56,9 @@ public class CSTFractal extends FractalBase {
 			drawLine(g, p2, p3);
 			
 			drawCircle(g, midpoint(p2, midpoint(p1,p3)), 5);
+			
+			drawSquare(g,midpoint(p1,midpoint(p2,p3)),5);
+			
 			return;
 		}
 

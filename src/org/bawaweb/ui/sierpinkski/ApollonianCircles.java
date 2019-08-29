@@ -28,6 +28,7 @@ public class ApollonianCircles extends FractalBase {
 
 	public ApollonianCircles() {
 		super();
+		this.setSize(WIDTH,HEIGHT);
 	}
 	
 	public ApollonianCircles(double[] curves, double mult) {
