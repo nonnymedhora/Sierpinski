@@ -8,6 +8,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -150,12 +151,12 @@ class SierpinskiComboPanel extends JPanel {
 	// Fractal Art Options
 	private JPanel fannyOptionsPanel = new JPanel(new FlowLayout(),true);
 	private JPanel apolloOptionsPanel = new JPanel(new FlowLayout(),true);
-	private JPanel juliaOptionsPanel = new JPanel(new FlowLayout(),true);
-	private JPanel mandOptionsPanel = new JPanel(new FlowLayout(),true);
-	private JPanel diyOptionsPanel	= new JPanel(new FlowLayout(),true);
+	private JPanel juliaOptionsPanel = new JPanel(new GridLayout(4,8),true);
+	private JPanel mandOptionsPanel = new JPanel(new GridLayout(4,8),true);
+	private JPanel diyOptionsPanel	= new JPanel(new GridLayout(7,8),true);
 	
-	private JPanel diyMandPanel = new JPanel(new FlowLayout(),true);
-	private JPanel diyJuliaPanel = new JPanel(new FlowLayout(),true);
+	private JPanel diyMandPanel = new JPanel(new GridLayout(4,8),true);
+	private JPanel diyJuliaPanel = new JPanel(new GridLayout(4,8),true);
 	private JPanel diyApolloPanel = new JPanel(new FlowLayout(),true);
 	
 	private JTextArea formulaArea = new JTextArea(5,20);
@@ -318,9 +319,10 @@ class SierpinskiComboPanel extends JPanel {
 	private boolean useColorPalette = false;
 	
 	private double rotation = 0.0;
-
-	protected JComboBox<Double> rotateCombo = new JComboBox<Double>();
+	
+	private JLabel rotLabel = new JLabel("Rotation:");
 	private Vector<Double> rotOptions = new Vector<Double>();
+	protected JComboBox<Double> rotateCombo = new JComboBox<Double>(rotOptions);
 	
 	protected JRadioButton colrPRb = new JRadioButton("Use Color Palette",false);
 	protected JRadioButton colrCRb = new JRadioButton("Compute Color",true);
@@ -344,11 +346,6 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(new JLabel("Choose FractalArt:"));
 		this.add(this.combos);
 		
-		for (int i = 0; i < 1000; i+=15) {
-			this.rotOptions.add((double) i);
-		}
-		this.rotateCombo=new JComboBox<Double>(this.rotOptions);
-		
 
 		//	fanny
 		createFannyPanel();
@@ -366,6 +363,17 @@ class SierpinskiComboPanel extends JPanel {
 		//	diy	panel
 		createDIYPanel();
 
+		for (int i = 0; i < 1000; i+=15) {
+			this.rotOptions.add((double) i);
+		}
+		
+		this.add(this.rotLabel);
+		this.rotLabel.setVisible(false);
+		
+		this.rotateCombo=new JComboBox<Double>(this.rotOptions);
+		this.rotateCombo.setVisible(false);
+		this.add(this.rotateCombo);
+
 		this.buStart.setEnabled(false);
 		this.add(this.buStart);
 //		this.add(this.buPause);
@@ -374,7 +382,6 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.formulaArea.setVisible(false);
 		this.add(this.formulaArea);
-		
 		
 		
 		this.setLayout(new FlowLayout());
@@ -386,6 +393,8 @@ class SierpinskiComboPanel extends JPanel {
 	}
 
 	private void createDIYPanel() {
+		this.rotLabel.setVisible(true);
+		this.rotateCombo.setVisible(true);
 		this.diyOptionsPanel.add(new JLabel("Choose Fractal Art:"));
 		this.diyMandRb.setActionCommand("DIY_"+MANDELBROT);
 		this.diyJuliaRb.setActionCommand("DIY_"+JULIA);
@@ -428,8 +437,8 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyOptionsPanel.add(this.colrPRb);
 		this.diyOptionsPanel.add(this.colrCRb);
 		
-		this.diyOptionsPanel.add(new JLabel("Rotate:"));
-		this.diyOptionsPanel.add(this.rotateCombo);
+		/*this.diyOptionsPanel.add(new JLabel("Rotate:"));
+		this.diyOptionsPanel.add(this.rotateCombo);*/
 		
 		this.add(diyOptionsPanel);
 	}
@@ -467,13 +476,14 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaPanel.add(new JLabel("ScaleSize:"));
 		this.diyJuliaPanel.add(this.diyJuliaScaleSizeCombos);
 		
-		this.diyJuliaPanel.add(new JLabel("Rotate:"));
-		this.diyJuliaPanel.add(this.rotateCombo);
+		/*this.diyJuliaPanel.add(new JLabel("Rotate:"));
+		this.diyJuliaPanel.add(this.rotateCombo);*/
 		
 		this.diyJuliaPanel.setVisible(false);
 	}
 
 	private void createDiyMandelbrotPanel() {
+		this.rotateCombo.setVisible(true);
 		this.diyMandPanel.add(new JLabel("Magnification:"));
 		this.diyMandPanel.add(this.diyMandMagCombos);
 		this.diyMandPanel.add(new JLabel("Exponent:"));
@@ -496,13 +506,14 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyMandPanel.add(new JLabel("ScaleSize:"));
 		this.diyMandPanel.add(this.diyMandScaleSizeCombos);
 		
-		this.diyMandPanel.add(new JLabel("Rotate:"));
-		this.diyMandPanel.add(this.rotateCombo);
+		/*this.diyMandPanel.add(new JLabel("Rotate:"));
+		this.diyMandPanel.add(this.rotateCombo);*/
 		
 		this.diyMandPanel.setVisible(false);
 	}
 
 	private void createMandelbrotPanel() {
+		this.rotateCombo.setVisible(true);
 		this.mandOptionsPanel.add(new JLabel("Magnification(M):"));
 		this.mandOptionsPanel.add(this.mandCombos);
 		this.mandOptionsPanel.add(new JLabel("Exponent(X):"));
@@ -536,14 +547,16 @@ class SierpinskiComboPanel extends JPanel {
 		
 
 		
-		this.mandOptionsPanel.add(new JLabel("Rotate:"));
-		this.mandOptionsPanel.add(this.rotateCombo);
+		/*this.mandOptionsPanel.add(new JLabel("Rotate:"));
+		this.mandOptionsPanel.add(this.rotateCombo);*/
 		
 		this.mandOptionsPanel.setVisible(false);
 		this.add(this.mandOptionsPanel);
 	}
 
 	private void createJuliaPanel() {
+		this.rotLabel.setVisible(true);
+		this.rotateCombo.setVisible(true);
 		this.juliaOptionsPanel.add(new JLabel("Power-Constant:"));
 		this.juliaOptionsPanel.add(this.juliaCombos);		
 		this.juliaOptionsPanel.add(this.juliaUseDiff);
@@ -574,9 +587,9 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.juliaOptionsPanel.add(this.juliaColrPRb);
 		this.juliaOptionsPanel.add(this.juliaColrCRb);
+		/*this.juliaOptionsPanel.add(new JLabel("Rotate:"));
 		
-		this.juliaOptionsPanel.add(new JLabel("Rotate:"));
-		this.juliaOptionsPanel.add(this.rotateCombo);
+		this.juliaOptionsPanel.add(this.rotateCombo);*/
 		
 		
 		this.juliaOptionsPanel.setVisible(false);		
@@ -584,6 +597,8 @@ class SierpinskiComboPanel extends JPanel {
 	}
 
 	private void createApolloPanel() {
+		this.rotLabel.setVisible(false);
+		this.rotateCombo.setVisible(false);
 		this.apolloOptionsPanel.add(new JLabel("CurvatureOptions:"));
 		this.apolloOptionsPanel.add(this.curvCombos);
 		this.apolloOptionsPanel.setVisible(false);
@@ -591,6 +606,8 @@ class SierpinskiComboPanel extends JPanel {
 	}
 
 	private void createFannyPanel() {
+		this.rotLabel.setVisible(false);
+		this.rotateCombo.setVisible(false);
 		this.fannyOptionsPanel.add(new JLabel("Dimension Size:"));
 		this.fannyOptionsPanel.add(this.sideCombos);
 
@@ -601,12 +618,12 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(this.fannyOptionsPanel);
 	}
 	
-	private void createControlPanel() {
+	/*private void createControlPanel() {
 		this.mandOptionsPanel.add(new JLabel("Exponent(X):"));
 		this.mandOptionsPanel.add(this.expCombos);
 		this.controlPanel.add(this.useDiff);
 	}
-	
+*/	
 	private void doReset() {
 		this.sideChoice = 0;
 		this.ratioChoice = 0;
@@ -757,6 +774,8 @@ class SierpinskiComboPanel extends JPanel {
 		this.comboChoice = option;
 
 		if (this.comboChoice.equals(APOLLONIAN_CIRCLES)) {
+			this.rotLabel.setVisible(false);
+			this.rotateCombo.setVisible(false);
 			this.fannyOptionsPanel.setVisible(false);
 			this.juliaOptionsPanel.setVisible(false);
 			this.mandOptionsPanel.setVisible(false);
@@ -770,6 +789,8 @@ class SierpinskiComboPanel extends JPanel {
 				this.buStart.setEnabled(true);
 			}
 		} else if (this.comboChoice.equals(FANNY_CIRCLE) || this.comboChoice.equals(FANNY_TRIANGLES)) {
+			this.rotLabel.setVisible(false);
+			this.rotateCombo.setVisible(false);
 			this.fannyOptionsPanel.setVisible(true);
 			this.juliaOptionsPanel.setVisible(false);
 			this.mandOptionsPanel.setVisible(false);
@@ -782,6 +803,8 @@ class SierpinskiComboPanel extends JPanel {
 				this.buStart.setEnabled(true);
 			}
 		} else if (this.comboChoice.equals(JULIA)) {
+			this.rotLabel.setVisible(true);
+			this.rotateCombo.setVisible(true);
 			this.fannyOptionsPanel.setVisible(false);
 			this.juliaOptionsPanel.setVisible(true);
 			this.mandOptionsPanel.setVisible(false);
@@ -795,6 +818,8 @@ class SierpinskiComboPanel extends JPanel {
 				this.buStart.setEnabled(true);
 			}
 		} else if (this.comboChoice.equals(MANDELBROT)) {
+			this.rotLabel.setVisible(true);
+			this.rotateCombo.setVisible(true);
 			this.fannyOptionsPanel.setVisible(false);
 			this.juliaOptionsPanel.setVisible(false);
 			this.mandOptionsPanel.setVisible(true);
@@ -803,6 +828,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.formulaArea.setVisible(true);
 			this.formulaArea.setText("");
 		}  else if (this.comboChoice.equals(DIY)) {
+			this.rotateCombo.setVisible(true);
 			this.fannyOptionsPanel.setVisible(false);
 			this.juliaOptionsPanel.setVisible(false);
 			this.mandOptionsPanel.setVisible(false);
@@ -820,6 +846,8 @@ class SierpinskiComboPanel extends JPanel {
 			this.formulaArea.setVisible(true);
 			this.formulaArea.setText("");
 		} else {
+			this.rotLabel.setVisible(false);
+			this.rotateCombo.setVisible(false);
 			this.fannyOptionsPanel.setVisible(false);
 			this.juliaOptionsPanel.setVisible(false);
 			this.mandOptionsPanel.setVisible(false);
