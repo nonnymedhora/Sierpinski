@@ -153,11 +153,11 @@ class SierpinskiComboPanel extends JPanel {
 	private JPanel apolloOptionsPanel = new JPanel(new FlowLayout(),true);
 	private JPanel juliaOptionsPanel = new JPanel(new GridLayout(4,8),true);
 	private JPanel mandOptionsPanel = new JPanel(new GridLayout(4,8),true);
-	private JPanel diyOptionsPanel	= new JPanel(new GridLayout(7,8),true);
+	private JPanel diyOptionsPanel	= new JPanel(new FlowLayout(),true);//GridLayout(4,7),true);
 	
 	private JPanel diyMandPanel = new JPanel(new GridLayout(4,8),true);
 	private JPanel diyJuliaPanel = new JPanel(new GridLayout(4,8),true);
-	private JPanel diyApolloPanel = new JPanel(new FlowLayout(),true);
+	private JPanel diyApolloPanel = new JPanel(new GridLayout(4,8),true);
 	
 	private JTextArea formulaArea = new JTextArea(5,20);
 	//private JTextPane formulaPane;
@@ -343,8 +343,17 @@ class SierpinskiComboPanel extends JPanel {
 	
 	public SierpinskiComboPanel() {
 		super();
-		this.add(new JLabel("Choose FractalArt:"));
+		this.add(new JLabel("Choose: "));//FractalArt:"));
 		this.add(this.combos);
+		
+		this.colrBg.add(this.colrPRb);
+		this.colrBg.add(this.colrCRb);
+		
+		this.colrPRb.setActionCommand("ColorPalette");
+		this.colrCRb.setActionCommand("ComputeColor");
+
+		this.colrPRb.setName("ColorPalette");
+		this.colrCRb.setName("ComputeColor");
 		
 
 		//	fanny
@@ -395,7 +404,7 @@ class SierpinskiComboPanel extends JPanel {
 	private void createDIYPanel() {
 		this.rotLabel.setVisible(true);
 		this.rotateCombo.setVisible(true);
-		this.diyOptionsPanel.add(new JLabel("Choose Fractal Art:"));
+//		this.diyOptionsPanel.add(new JLabel("Choose Fractal Art:"));
 		this.diyMandRb.setActionCommand("DIY_"+MANDELBROT);
 		this.diyJuliaRb.setActionCommand("DIY_"+JULIA);
 		this.diyApolloRb.setActionCommand("DIY_"+APOLLONIAN_CIRCLES);
@@ -426,7 +435,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyOptionsPanel.add(this.diyApolloPanel);
 		this.diyOptionsPanel.setVisible(false);
 
-		this.colrBg.add(this.colrPRb);
+		/*this.colrBg.add(this.colrPRb);
 		this.colrBg.add(this.colrCRb);
 		
 		this.colrPRb.setActionCommand("ColorPalette");
@@ -435,7 +444,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.colrPRb.setName("ColorPalette");
 		this.colrCRb.setName("ComputeColor");
 		this.diyOptionsPanel.add(this.colrPRb);
-		this.diyOptionsPanel.add(this.colrCRb);
+		this.diyOptionsPanel.add(this.colrCRb);*/
 		
 		/*this.diyOptionsPanel.add(new JLabel("Rotate:"));
 		this.diyOptionsPanel.add(this.rotateCombo);*/
@@ -476,8 +485,11 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaPanel.add(new JLabel("ScaleSize:"));
 		this.diyJuliaPanel.add(this.diyJuliaScaleSizeCombos);
 		
-		/*this.diyJuliaPanel.add(new JLabel("Rotate:"));
-		this.diyJuliaPanel.add(this.rotateCombo);*/
+		this.diyJuliaPanel.add(this.colrPRb);
+		this.diyJuliaPanel.add(this.colrCRb);
+		
+		this.diyJuliaPanel.add(new JLabel("Rotate:"));
+		this.diyJuliaPanel.add(this.rotateCombo);
 		
 		this.diyJuliaPanel.setVisible(false);
 	}
@@ -506,8 +518,11 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyMandPanel.add(new JLabel("ScaleSize:"));
 		this.diyMandPanel.add(this.diyMandScaleSizeCombos);
 		
-		/*this.diyMandPanel.add(new JLabel("Rotate:"));
-		this.diyMandPanel.add(this.rotateCombo);*/
+		this.diyMandPanel.add(this.colrPRb);
+		this.diyMandPanel.add(this.colrCRb);
+		
+		this.diyMandPanel.add(new JLabel("Rotate:"));
+		this.diyMandPanel.add(this.rotateCombo);
 		
 		this.diyMandPanel.setVisible(false);
 	}
@@ -1503,7 +1518,12 @@ class SierpinskiComboPanel extends JPanel {
 //		this.startProgress();
 		final FractalBase frame = ff;
 		frame.setTitle(ff.getFractalShapeTitle());
-		frame.setSize(FractalBase.getAreaSize(),FractalBase.getAreaSize());//(FractalBase.WIDTH, FractalBase.HEIGHT);
+		
+		if (!(this.diyApolloRb.isSelected() || this.getComboChoice().equals(APOLLONIAN_CIRCLES))) {
+			frame.setSize(FractalBase.getAreaSize(), FractalBase.getAreaSize());//(FractalBase.WIDTH, FractalBase.HEIGHT);
+		}/* else {
+			frame.setSize(FractalBase.WIDTH, FractalBase.HEIGHT);
+		}*/
 		frame.setDefaultCloseOperation(closeIt(frame));
 		frame.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth())/2, 
 	            (Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight())/2);
