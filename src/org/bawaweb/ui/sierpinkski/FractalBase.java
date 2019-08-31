@@ -17,6 +17,7 @@ import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.util.Objects;
+import java.util.Random;
 
 import javax.swing.JFrame;
 
@@ -373,12 +374,12 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	}
 	
 	
-//	protected int corectColorRGB(int colorRGB) {
-//		int corrected = colorRGB > 255 ? 255 : colorRGB;
-//		corrected = corrected < 0 ? 0 : corrected;
-//		return corrected;
-//	}
-//
+	protected int corectColorRGB(int colorRGB) {
+		int corrected = colorRGB > 255 ? 255 : colorRGB;
+		corrected = corrected < 0 ? 0 : corrected;
+		return corrected;
+	}
+
 
 	/**
 	 * // correction for color range  0--255
@@ -612,6 +613,49 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		public Color getColor(){
 			return this.collor;
 		}
+	}
+
+	protected Color[] computeColorPalette() {
+		final int numColors = MAX_DEPTH;
+		Color[] colors = new Color[numColors];
+		for (int i = 0; i < numColors; i++) {
+			final boolean isEven = i % 2 == 0;
+			int rComp = isEven ? this.corectColorRGB(30 + (i * 25) + 100)
+					: this.corectColorRGB(COLORMAXRGB - (30 + (i * 25) + 100));
+			int gComp = isEven ? this.corectColorRGB(COLORMAXRGB / (i + 1) + 100)
+					: this.corectColorRGB(COLORMAXRGB - (COLORMAXRGB / (i + 1) + 100));
+			int bComp = isEven ? this.corectColorRGB(COLORMAXRGB - (i * 25) + 100)
+					: this.corectColorRGB(COLORMAXRGB - (i * 25) + 100);
+			int alpha = (rComp + gComp + bComp) / 3;
+			colors[i] = new Color(rComp, gComp, bComp, alpha);
+		}
+		return colors;
+
+	}
+	
+	//TODO	l8r
+	protected Color[] computeRandomColorPalette() {/*Random*/
+		final int numColors = MAX_DEPTH;
+		Color[] colors = new Color[numColors];
+		for (int i = 0; i < numColors; i++) {
+			final boolean isEven = i % 2 == 0;
+			Random rand = new Random();
+			
+			int rRand = rand.nextInt(COLORMAXRGB);
+			int gRand = rand.nextInt(COLORMAXRGB);
+			int bRand = rand.nextInt(COLORMAXRGB);
+			
+			int rComp = isEven ? this.corectColorRGB(30 + (rRand * 25) + 100)
+					: this.corectColorRGB(COLORMAXRGB - (30 + (rRand * 25) + 100));
+			int gComp = isEven ? this.corectColorRGB(COLORMAXRGB / (gRand + 1) + 100)
+					: this.corectColorRGB(COLORMAXRGB - (COLORMAXRGB / (gRand + 1) + 100));
+			int bComp = isEven ? this.corectColorRGB(COLORMAXRGB - (bRand * 25) + 100)
+					: this.corectColorRGB(COLORMAXRGB - (bRand * 25) + 100);
+			int alpha = (rComp + gComp + bComp) / 3;
+			colors[i] = new Color(rComp, gComp, bComp, alpha);
+		}
+		return colors;
+
 	}
 	
 	protected double rotation = 0.0;

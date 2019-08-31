@@ -159,8 +159,12 @@ public class ApollonianCircles extends FractalBase {
 		
 		////////////////////////////////////////////////////
 		////////////////////////////////////////////////////
+		Color[] colors=null;
+		
+		if(this.useColorPalette){colors=ColorPalette;}
+		else{colors=this.computeColorPalette();}
 
-		createApollonianCircles(g,/*colors*/ ColorPalette, c, m, depth);
+		createApollonianCircles(g,colors /*ColorPalette*/, c, m, depth);
 
 	}
 
