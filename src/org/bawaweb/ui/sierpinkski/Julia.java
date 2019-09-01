@@ -229,7 +229,7 @@ public class Julia extends FractalBase {
 	private void createJulia(Graphics2D g, boolean diff) {
 		double xc = getxC();//0;
 		double yc = getyC();//0;
-		double size = this.power;//getScaleSize();//this.mag;//2;
+		double size = getScaleSize();//this.power;//this.mag;//2;
 
 		int n = getAreaSize();//512;
 		
@@ -311,7 +311,7 @@ public class Julia extends FractalBase {
 			@Override
 			public void run() {
 //				final FractalBase frame = new Julia(2,0.279);	//(3,0.4);//(2,0.279);	//f(z) = z2 + 0.279
-				final Julia frame = new Julia(2,"C2");//2,0.279);
+				final Julia frame = new Julia(2,0.279,true/*false*/);//Julia(2,"C3",true);//
 				/*frame.setPower(2);
 				frame.setComplex(frame.c1);*/
 //				frame.depth = 5;
