@@ -381,19 +381,22 @@ class SierpinskiComboPanel extends JPanel {
 		// creates-rototation-choice-options	-- does not add
 		this.createRotationCombo();
 */
-		this.createPanels();
 		
+
+		this.createColorChoiceRB();
+		this.createRotationCombo();
+		this.createPanels();
 		this.createActionControls();		
 		
-		this.createColorChoiceRB();
-
-		this.createRotationCombo();
+		
+		
+		this.setUpListeners();
 		
 	}
 
 	private void createActionControls() {
 
-		//	fanny
+		/*//	fanny
 		this.createFannyPanel();
 		
 		//apollo
@@ -407,10 +410,12 @@ class SierpinskiComboPanel extends JPanel {
 		
 		
 		//	diy	panel
-		this.createDIYPanel();
+		this.createDIYPanel();*/
 		
 		this.add(this.rotLabel);
 		this.add(this.rotateCombo);
+		this.rotLabel.setVisible(false);
+		this.rotateCombo.setVisible(false);
 
 		this.buStart.setEnabled(false);
 		this.add(this.buStart);
@@ -596,6 +601,7 @@ class SierpinskiComboPanel extends JPanel {
 
 	private void createDiyMandelbrotPanel() {
 		this.rotLabel.setVisible(true);
+		this.rotateCombo.setVisible(true);
 		this.diyMandPanel.add(new JLabel("Magnification:"));
 		this.diyMandPanel.add(this.diyMandMagCombos);
 		this.diyMandPanel.add(new JLabel("Exponent:"));
@@ -635,6 +641,7 @@ class SierpinskiComboPanel extends JPanel {
 
 	private void createMandelbrotPanel() {
 		this.rotLabel.setVisible(true);
+		this.rotateCombo.setVisible(true);
 		this.mandOptionsPanel.add(new JLabel("Magnification(M):"));
 		this.mandOptionsPanel.add(this.mandCombos);
 		this.mandOptionsPanel.add(new JLabel("Exponent(X):"));
@@ -690,6 +697,8 @@ class SierpinskiComboPanel extends JPanel {
 	}
 
 	private void createJuliaPanel() {
+		this.rotLabel.setVisible(true);
+		this.rotateCombo.setVisible(true);
 		this.juliaOptionsPanel.add(new JLabel("Power-Constant:"));
 		this.juliaOptionsPanel.add(this.juliaCombos);		
 		this.juliaOptionsPanel.add(this.juliaUseDiff);
