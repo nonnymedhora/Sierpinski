@@ -311,7 +311,7 @@ public class Julia extends FractalBase {
 			@Override
 			public void run() {
 //				final FractalBase frame = new Julia(2,0.279);	//(3,0.4);//(2,0.279);	//f(z) = z2 + 0.279
-				final Julia frame = new Julia(2,0.279,true/*false*/);//Julia(2,"C3",true);//
+				final Julia frame = new Julia(2,true,-0.4,0.59); //new Julia(2,false,-1.29904,-0.75); //new Julia(2,0.279,true/*false*/);//Julia(2,"C3",true);//
 				/*frame.setPower(2);
 				frame.setComplex(frame.c1);*/
 //				frame.depth = 5;
@@ -344,3 +344,21 @@ public class Julia extends FractalBase {
 	}
 */
 }
+
+
+/*//http://paulbourke.net/fractals/juliaset/
+
+c = 0 + 0.8i
+c = 0.37 + 0.1i
+c = 0.355 + 0.355i
+c = -0.54 + 0.54i
+c = -0.4 + -0.59i
+c = 0.34 + -0.05i
+c = 0 + 0.8i
+c = 0.37 + 0.1i
+c = 0.355 + 0.355i
+c = -0.54 + 0.54i
+c = -0.4 + -0.59i
+c = 0.355534 - 0.337292i
+/
+*/
