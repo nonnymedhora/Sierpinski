@@ -1605,7 +1605,10 @@ class SierpinskiComboPanel extends JPanel {
 			ff = new KochSnowFlakeFractal();
 		} else if (choice.equals(DIY)) {
 //			this.doReset();
-			if (this.diyMandRb.isSelected()) {
+//			System.out.println("A---this.diyMandRb.isSelected()==="+this.diyMandRb.isSelected());
+//			System.out.println("B---this.diyJuliaRb.isSelected()==="+this.diyJuliaRb.isSelected());
+//			System.out.println("C---this.diyApolloRb.isSelected()==="+this.diyApolloRb.isSelected());
+			if (this.diyMandRb.isSelected()) {//System.out.println("hererererere---this.diyMandRb.isSelected()");
 				// for diy mandelbrot
 				int diyMag = this.getDiyMandMagnification();
 				int diyMandExp = this.getDiyMandExponent();
