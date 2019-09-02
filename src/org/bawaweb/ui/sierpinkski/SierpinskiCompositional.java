@@ -228,6 +228,7 @@ class SierpinskiComboPanel extends JPanel {
 	protected boolean diyMandUseDiff;		//v	mandUseDiffCb
 	protected boolean diyMandKeepConst;
 	protected int diyMandMaxIter;
+	protected int diyMandSize;
 	protected double diyMandBound;
 	
 	protected double diyMandXC;
@@ -244,6 +245,10 @@ class SierpinskiComboPanel extends JPanel {
 	private final JCheckBox diyMandKeepConstantCb = new JCheckBox("DynamicConstant",false);
 	private final Integer[] diyMandMaxIterOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 300, 350, 400, 500, 1000 };
 	private final JComboBox<Integer> diyMandMaxIterCombos = new JComboBox<Integer>(diyMandMaxIterOptions);
+	
+	private final Integer[] diyMandSizeOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 500, 512, 599, 800 };
+	private final JComboBox<Integer> diyMandSizeCombos = new JComboBox<Integer>(diyMandSizeOptions);
+	
 	private final Double[] diyMandBoundOptions = new Double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
 	private final JComboBox<Double> diyMandBoundCombos = new JComboBox<Double>(diyMandBoundOptions);
 
@@ -265,6 +270,8 @@ class SierpinskiComboPanel extends JPanel {
 	protected boolean diyJuliaKeepConst;
 	protected int diyJuliaMaxIter;
 	protected double diyJuliaBound;
+
+	protected int diyJuliaSize;
 	
 	protected double diyJuliaXC;
 	protected double diyJuliaYC;
@@ -279,6 +286,12 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private final Integer[] diyJuliaMaxIterOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 300, 350, 400, 500, 1000 };
 	private final JComboBox<Integer> diyJuliaMaxIterCombos = new JComboBox<Integer>(diyJuliaMaxIterOptions);
+	
+
+	private final Integer[] diyJuliaSizeOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 500, 512, 599, 800 };
+	private final JComboBox<Integer> diyJuliaSizeCombos = new JComboBox<Integer>(diyJuliaSizeOptions);
+	
+	
 	private final Double[] diyJuliaBoundOptions = new Double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
 	private final JComboBox<Double> diyJuliaBoundCombos = new JComboBox<Double>(diyJuliaBoundOptions);
 
@@ -346,41 +359,28 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(new JLabel("Choose: "));//FractalArt:"));
 		this.add(this.combos);
 		
-		this.colrBg.add(this.colrPRb);
-		this.colrBg.add(this.colrCRb);
-		
-		this.colrPRb.setActionCommand("ColorPalette");
-		this.colrCRb.setActionCommand("ComputeColor");
+		this.createColorChoiceRB();
 
-		this.colrPRb.setName("ColorPalette");
-		this.colrCRb.setName("ComputeColor");
+		this.createRotationCombo();
 		
 
 		//	fanny
-		createFannyPanel();
+		this.createFannyPanel();
 		
 		//apollo
-		createApolloPanel();
+		this.createApolloPanel();
 		
 		//julia
-		createJuliaPanel();
+		this.createJuliaPanel();
 		
 		//mandelbrot
-		createMandelbrotPanel();
+		this.createMandelbrotPanel();
 		
 		
 		//	diy	panel
-		createDIYPanel();
-
-		for (int i = 0; i < 1000; i+=15) {
-			this.rotOptions.add((double) i);
-		}
+		this.createDIYPanel();
 		
 		this.add(this.rotLabel);
-		this.rotLabel.setVisible(false);
-		
-		this.rotateCombo=new JComboBox<Double>(this.rotOptions);
-		this.rotateCombo.setVisible(false);
 		this.add(this.rotateCombo);
 
 		this.buStart.setEnabled(false);
@@ -401,33 +401,41 @@ class SierpinskiComboPanel extends JPanel {
 		
 	}
 
+	private void createColorChoiceRB() {
+		this.colrBg.add(this.colrPRb);
+		this.colrBg.add(this.colrCRb);
+		
+		this.colrPRb.setActionCommand("ColorPalette");
+		this.colrCRb.setActionCommand("ComputeColor");
+
+		this.colrPRb.setName("ColorPalette");
+		this.colrCRb.setName("ComputeColor");
+	}
+
+	private void createRotationCombo() {
+		for (int i = 0; i < 1000; i+=15) {
+			this.rotOptions.add((double) i);
+		}
+		
+		/*this.add(this.rotLabel);
+		this.rotLabel.setVisible(false);*/
+		
+		this.rotateCombo=new JComboBox<Double>(this.rotOptions);
+		/*this.add(this.rotateCombo);*/
+		this.rotateCombo.setVisible(false);
+	}
+
 	private void createDIYPanel() {
-		this.rotLabel.setVisible(true);
-		this.rotateCombo.setVisible(true);
+		/*this.rotLabel.setVisible(true);
+		this.rotateCombo.setVisible(true);*/
 //		this.diyOptionsPanel.add(new JLabel("Choose Fractal Art:"));
-		this.diyMandRb.setActionCommand("DIY_"+MANDELBROT);
-		this.diyJuliaRb.setActionCommand("DIY_"+JULIA);
-		this.diyApolloRb.setActionCommand("DIY_"+APOLLONIAN_CIRCLES);
+		this.setupDIYRBs();		
 		
-		this.diyBg.add(this.diyMandRb);
-		this.diyBg.add(this.diyJuliaRb);
-		this.diyBg.add(this.diyApolloRb);
+		this.createDiyMandelbrotPanel();
 		
-		this.diyMandRb.setSelected(true);
-		this.diyMandRb.setName("DIY_"+MANDELBROT);
-		this.diyJuliaRb.setName("DIY_"+JULIA);
-		this.diyApolloRb.setName("DIY_"+APOLLONIAN_CIRCLES);
+		this.createDiyJuliaPanel();
 		
-		this.diyOptionsPanel.add(this.diyMandRb);
-		this.diyOptionsPanel.add(this.diyJuliaRb);
-		this.diyOptionsPanel.add(this.diyApolloRb);
-		
-		
-		createDiyMandelbrotPanel();
-		
-		createDiyJuliaPanel();
-		
-		createDiyApolloPanel();
+		this.createDiyApolloPanel();
 		
 		
 		this.diyOptionsPanel.add(this.diyMandPanel);
@@ -452,7 +460,28 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(diyOptionsPanel);
 	}
 
+	private void setupDIYRBs() {
+		this.diyMandRb.setActionCommand("DIY_"+MANDELBROT);
+		this.diyJuliaRb.setActionCommand("DIY_"+JULIA);
+		this.diyApolloRb.setActionCommand("DIY_"+APOLLONIAN_CIRCLES);
+		
+		this.diyBg.add(this.diyMandRb);
+		this.diyBg.add(this.diyJuliaRb);
+		this.diyBg.add(this.diyApolloRb);
+		
+		this.diyMandRb.setSelected(true);
+		this.diyMandRb.setName("DIY_"+MANDELBROT);
+		this.diyJuliaRb.setName("DIY_"+JULIA);
+		this.diyApolloRb.setName("DIY_"+APOLLONIAN_CIRCLES);
+		
+		this.diyOptionsPanel.add(this.diyMandRb);
+		this.diyOptionsPanel.add(this.diyJuliaRb);
+		this.diyOptionsPanel.add(this.diyApolloRb);
+	}
+
 	private void createDiyApolloPanel() {
+		this.rotLabel.setVisible(false);
+		this.rotateCombo.setVisible(false);
 		this.diyApolloPanel.add(new JLabel("C1"));
 		this.diyApolloPanel.add(this.diyApolloC1Combos);
 		this.diyApolloPanel.add(new JLabel("C2"));
@@ -465,6 +494,8 @@ class SierpinskiComboPanel extends JPanel {
 	}
 
 	private void createDiyJuliaPanel() {
+		this.rotLabel.setVisible(true);
+		this.rotateCombo.setVisible(true);
 		this.diyJuliaPanel.add(new JLabel("Power:"));
 		this.diyJuliaPanel.add(this.diyJuliaPowerCombos);
 		this.diyJuliaPanel.add(new JLabel("ComplexConstant - Real (R) "));
@@ -475,6 +506,11 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaPanel.add(this.diyJuliaKeepConstantCb);
 		this.diyJuliaPanel.add(new JLabel("Max Iterations: "));
 		this.diyJuliaPanel.add(this.diyJuliaMaxIterCombos);
+
+
+		this.diyJuliaPanel.add(new JLabel("Area: "));
+		this.diyJuliaPanel.add(this.diyJuliaSizeCombos);
+		
 		this.diyJuliaPanel.add(new JLabel("Boundary: "));
 		this.diyJuliaPanel.add(this.diyJuliaBoundCombos);
 		
@@ -488,13 +524,14 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaPanel.add(this.colrPRb);
 		this.diyJuliaPanel.add(this.colrCRb);
 		
-		this.diyJuliaPanel.add(new JLabel("Rotate:"));
-		this.diyJuliaPanel.add(this.rotateCombo);
+		/*this.diyJuliaPanel.add(new JLabel("Rotate:"));
+		this.diyJuliaPanel.add(this.rotateCombo);*/
 		
 		this.diyJuliaPanel.setVisible(false);
 	}
 
 	private void createDiyMandelbrotPanel() {
+		this.rotLabel.setVisible(true);
 		this.rotateCombo.setVisible(true);
 		this.diyMandPanel.add(new JLabel("Magnification:"));
 		this.diyMandPanel.add(this.diyMandMagCombos);
@@ -508,6 +545,10 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyMandPanel.add(this.diyMandKeepConstantCb);
 		this.diyMandPanel.add(new JLabel("Max Iterations: "));
 		this.diyMandPanel.add(this.diyMandMaxIterCombos);
+
+		this.diyMandPanel.add(new JLabel("Area: "));
+		this.diyMandPanel.add(this.diyMandSizeCombos);
+		
 		this.diyMandPanel.add(new JLabel("Boundary: "));
 		this.diyMandPanel.add(this.diyMandBoundCombos);
 		
@@ -521,13 +562,14 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyMandPanel.add(this.colrPRb);
 		this.diyMandPanel.add(this.colrCRb);
 		
-		this.diyMandPanel.add(new JLabel("Rotate:"));
-		this.diyMandPanel.add(this.rotateCombo);
+		/*this.diyMandPanel.add(new JLabel("Rotate:"));
+		this.diyMandPanel.add(this.rotateCombo);*/
 		
 		this.diyMandPanel.setVisible(false);
 	}
 
 	private void createMandelbrotPanel() {
+		this.rotLabel.setVisible(true);
 		this.rotateCombo.setVisible(true);
 		this.mandOptionsPanel.add(new JLabel("Magnification(M):"));
 		this.mandOptionsPanel.add(this.mandCombos);
@@ -690,6 +732,9 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaXC=0.0;
 		this.diyJuliaYC=0.0;
 		this.diyJuliaScaleSize=2.0;
+		
+		this.diyMandSize = 599;
+		this.diyJuliaSize = 599;
 
 		this.diyApolloC1 = 0;
 		this.diyApolloC2 = 0;
@@ -843,7 +888,13 @@ class SierpinskiComboPanel extends JPanel {
 			this.formulaArea.setVisible(true);
 			this.formulaArea.setText("");
 		}  else if (this.comboChoice.equals(DIY)) {
-			this.rotateCombo.setVisible(true);
+			if (!this.diyApolloRb.isSelected()) {
+				this.rotLabel.setVisible(true);
+				this.rotateCombo.setVisible(true);
+			}else{
+				this.rotLabel.setVisible(false);
+				this.rotateCombo.setVisible(false);
+			}
 			this.fannyOptionsPanel.setVisible(false);
 			this.juliaOptionsPanel.setVisible(false);
 			this.mandOptionsPanel.setVisible(false);
@@ -1219,20 +1270,20 @@ class SierpinskiComboPanel extends JPanel {
 	private void doSetDiyMandKeepConstantCommand(boolean useConst) {
 		this.diyMandKeepConst = useConst;
 		this.formulaArea.setVisible(true);
-		this.doDiyJuliaChoicesCheck();
+		this.doDiyMandelbrotChoicesCheck();
 	}
 	
 	private void doSelectDiyMandMaxIterCombosCommand(Integer max) {
 		this.diyMandMaxIter = max;
 		this.formulaArea.setVisible(true);
-		this.doDiyJuliaChoicesCheck();
+		this.doDiyMandelbrotChoicesCheck();
 	}
 
 	
 	private void doSelectDiyMandBoundCombosCommand(Double bd) {
 		this.diyMandBound = bd;
 		this.formulaArea.setVisible(true);
-		this.doDiyJuliaChoicesCheck();
+		this.doDiyMandelbrotChoicesCheck();
 	}
 
 	private void doSelectDiyMandXCCombosCommand(Double x) {
@@ -1322,6 +1373,8 @@ class SierpinskiComboPanel extends JPanel {
 			this.diyJuliaPanel.setVisible(true);
 			this.diyApolloPanel.setVisible(false);
 		} else if (diyChoice.equals("DIY_" + APOLLONIAN_CIRCLES) && this.diyApolloRb.isSelected()) {
+			this.rotLabel.setVisible(false);
+			this.rotateCombo.setVisible(false);
 			this.diyMandPanel.setVisible(false);
 			this.diyJuliaPanel.setVisible(false);
 			this.diyApolloPanel.setVisible(true);
@@ -1452,7 +1505,7 @@ class SierpinskiComboPanel extends JPanel {
 				double diyMXc = this.diyMandXC;
 				double diyMYc = this.diyMandYC;
 				double diyMScale = this.diyMandScaleSize;
-				
+			
 				if (diyMKConst) {
 					ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD,diyMandB, diyMKConst);
 				} else {
@@ -1966,6 +2019,15 @@ class SierpinskiComboPanel extends JPanel {
 				doSelectDiyMandMaxIterCombosCommand(diyMandMaxIterComboOption);				
 			}});
 		
+		this.diyMandSizeCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
+				Integer diyMandLoopLimitComboOption = (Integer)cb.getSelectedItem();
+				doSelectMandLoopLimitCombosCommand(diyMandLoopLimitComboOption);				
+			}});
+		
 
 		this.diyMandBoundCombos.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
@@ -2046,6 +2108,15 @@ class SierpinskiComboPanel extends JPanel {
 				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
 				Integer diyJuliaMaxIterComboOption = (Integer)cb.getSelectedItem();
 				doSelectDiyJuliaMaxIterCombosCommand(diyJuliaMaxIterComboOption);				
+			}});
+		
+		this.diyJuliaSizeCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
+				Integer diyJuliaLoopLimitComboOption = (Integer)cb.getSelectedItem();
+				doSelectJuliaLoopLimitCombosCommand(diyJuliaLoopLimitComboOption);				
 			}});
 		
 
