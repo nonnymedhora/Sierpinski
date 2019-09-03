@@ -383,39 +383,33 @@ class SierpinskiComboPanel extends JPanel {
 */
 		
 
-		this.createColorChoiceRB();
-		this.createRotationCombo();
+		this.createActionControls();
+		/*this.createColorChoiceRB();
+		this.createRotationCombo();*/
 		this.createPanels();
-		this.createActionControls();		
-		
+		this.setLayout(new FlowLayout());
+
+		this.setComboSelections();
 		
 		
 		this.setUpListeners();
 		
 	}
-
+	
 	private void createActionControls() {
 
-		/*//	fanny
-		this.createFannyPanel();
-		
-		//apollo
-		this.createApolloPanel();
-		
-		//julia
-		this.createJuliaPanel();
-		
-		//mandelbrot
-		this.createMandelbrotPanel();
+		// creates-color-choice-options ////////-- does not add
+		this.createColorChoiceRBs();
 		
 		
-		//	diy	panel
-		this.createDIYPanel();*/
 		
+		// creates-rototation-choice-options -- does not add
+		this.createRotationCombo();
+
+		this.rotLabel.setVisible(true);
+		this.rotateCombo.setVisible(true);
 		this.add(this.rotLabel);
 		this.add(this.rotateCombo);
-		this.rotLabel.setVisible(false);
-		this.rotateCombo.setVisible(false);
 
 		this.buStart.setEnabled(false);
 		this.add(this.buStart);
@@ -427,6 +421,40 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(this.formulaArea);
 
 	}
+
+//	private void createActionControls() {
+//
+//		/*//	fanny
+//		this.createFannyPanel();
+//		
+//		//apollo
+//		this.createApolloPanel();
+//		
+//		//julia
+//		this.createJuliaPanel();
+//		
+//		//mandelbrot
+//		this.createMandelbrotPanel();
+//		
+//		
+//		//	diy	panel
+//		this.createDIYPanel();*/
+//		
+//		this.add(this.rotLabel);
+//		this.add(this.rotateCombo);
+//		this.rotLabel.setVisible(false);
+//		this.rotateCombo.setVisible(false);
+//
+//		this.buStart.setEnabled(false);
+//		this.add(this.buStart);
+//		// this.add(this.buPause);
+//		this.add(this.buPrint);
+//		this.add(this.buSave);
+//
+//		this.formulaArea.setVisible(false);
+//		this.add(this.formulaArea);
+//
+//	}
 
 	private void createPanels() {
 		//	fanny	--	does add
@@ -455,17 +483,13 @@ class SierpinskiComboPanel extends JPanel {
 
 		this.colrPRb.setName("ColorPalette");
 		this.colrCRb.setName("ComputeColor");
-	}
 
-	private void createColorChoiceRB() {
-		this.colrBg.add(this.colrPRb);
-		this.colrBg.add(this.colrCRb);
+		this.add(this.colrPRb);
+		this.add(this.colrCRb);
 		
-		this.colrPRb.setActionCommand("ColorPalette");
-		this.colrCRb.setActionCommand("ComputeColor");
-
-		this.colrPRb.setName("ColorPalette");
-		this.colrCRb.setName("ComputeColor");
+		this.colrPRb.setVisible(false);
+		this.colrCRb.setVisible(false);
+		
 	}
 
 	private void createRotationCombo() {
@@ -489,7 +513,6 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.createDiyMandelbrotPanel();
 		
-		createDiyJuliaPanel();
 		this.createDiyJuliaPanel();
 		
 		this.createDiyApolloPanel();
@@ -528,19 +551,19 @@ class SierpinskiComboPanel extends JPanel {
 	}
 
 	private void setupDIYRBs() {
-		this.diyMandRb.setActionCommand("DIY_"+MANDELBROT);
-		this.diyJuliaRb.setActionCommand("DIY_"+JULIA);
-		this.diyApolloRb.setActionCommand("DIY_"+APOLLONIAN_CIRCLES);
-		
+		this.diyMandRb.setActionCommand("DIY_" + MANDELBROT);
+		this.diyJuliaRb.setActionCommand("DIY_" + JULIA);
+		this.diyApolloRb.setActionCommand("DIY_" + APOLLONIAN_CIRCLES);
+
 		this.diyBg.add(this.diyMandRb);
 		this.diyBg.add(this.diyJuliaRb);
 		this.diyBg.add(this.diyApolloRb);
-		
+
 		this.diyMandRb.setSelected(true);
-		this.diyMandRb.setName("DIY_"+MANDELBROT);
-		this.diyJuliaRb.setName("DIY_"+JULIA);
-		this.diyApolloRb.setName("DIY_"+APOLLONIAN_CIRCLES);
-		
+		this.diyMandRb.setName("DIY_" + MANDELBROT);
+		this.diyJuliaRb.setName("DIY_" + JULIA);
+		this.diyApolloRb.setName("DIY_" + APOLLONIAN_CIRCLES);
+
 		this.diyOptionsPanel.add(this.diyMandRb);
 		this.diyOptionsPanel.add(this.diyJuliaRb);
 		this.diyOptionsPanel.add(this.diyApolloRb);
@@ -549,6 +572,8 @@ class SierpinskiComboPanel extends JPanel {
 	private void createDiyApolloPanel() {
 		this.rotLabel.setVisible(false);
 		this.rotateCombo.setVisible(false);
+		this.colrPRb.setVisible(true);
+		this.colrCRb.setVisible(true);
 		this.diyApolloPanel.add(new JLabel("C1"));
 		this.diyApolloPanel.add(this.diyApolloC1Combos);
 		this.diyApolloPanel.add(new JLabel("C2"));
@@ -561,6 +586,8 @@ class SierpinskiComboPanel extends JPanel {
 	}
 
 	private void createDiyJuliaPanel() {
+		this.colrPRb.setVisible(true);
+		this.colrCRb.setVisible(true);
 		this.rotLabel.setVisible(true);
 		this.rotateCombo.setVisible(true);
 		this.diyJuliaPanel.add(new JLabel("Power:"));
@@ -600,6 +627,8 @@ class SierpinskiComboPanel extends JPanel {
 	}
 
 	private void createDiyMandelbrotPanel() {
+		this.colrPRb.setVisible(true);
+		this.colrCRb.setVisible(true);
 		this.rotLabel.setVisible(true);
 		this.rotateCombo.setVisible(true);
 		this.diyMandPanel.add(new JLabel("Magnification:"));
@@ -642,6 +671,8 @@ class SierpinskiComboPanel extends JPanel {
 	private void createMandelbrotPanel() {
 		this.rotLabel.setVisible(true);
 		this.rotateCombo.setVisible(true);
+		this.colrPRb.setVisible(true);
+		this.colrCRb.setVisible(true);
 		this.mandOptionsPanel.add(new JLabel("Magnification(M):"));
 		this.mandOptionsPanel.add(this.mandCombos);
 		this.mandOptionsPanel.add(new JLabel("Exponent(X):"));
@@ -699,6 +730,8 @@ class SierpinskiComboPanel extends JPanel {
 	private void createJuliaPanel() {
 		this.rotLabel.setVisible(true);
 		this.rotateCombo.setVisible(true);
+		this.colrPRb.setVisible(true);
+		this.colrCRb.setVisible(true);
 		this.juliaOptionsPanel.add(new JLabel("Power-Constant:"));
 		this.juliaOptionsPanel.add(this.juliaCombos);		
 		this.juliaOptionsPanel.add(this.juliaUseDiff);
@@ -747,6 +780,8 @@ class SierpinskiComboPanel extends JPanel {
 		if (this.rotateCombo!=null) {
 			this.rotateCombo.setVisible(false);
 		}
+		this.colrPRb.setVisible(true);
+		this.colrCRb.setVisible(true);
 		this.apolloOptionsPanel.add(new JLabel("CurvatureOptions:"));
 		this.apolloOptionsPanel.add(this.curvCombos);
 		
@@ -772,6 +807,8 @@ class SierpinskiComboPanel extends JPanel {
 		if (this.rotateCombo!=null) {
 			this.rotateCombo.setVisible(false);
 		}
+		this.colrPRb.setVisible(false);
+		this.colrCRb.setVisible(false);
 		this.fannyOptionsPanel.add(new JLabel("Dimension Size:"));
 		this.fannyOptionsPanel.add(this.sideCombos);
 
@@ -1526,10 +1563,11 @@ class SierpinskiComboPanel extends JPanel {
 		double mXc = this.mandXC;
 		double mYc = this.mandYC;
 		double mScale = this.mandScaleSize;
-		
-		boolean useCP = this.juliaColrPRb.isSelected() || 
-						this.mandColrPRb.isSelected() || this.colrPRb.isSelected()||
-						this.diyJuliaColrPRb.isSelected()||this.diyMandColrPRb.isSelected();
+
+		boolean useCP = this.juliaColrPRb.isSelected() || this.diyJuliaColrPRb.isSelected() ||
+						this.mandColrPRb.isSelected() || this.diyMandColrPRb.isSelected() ||
+						this.apolloColrPRb.isSelected() || this.diyApolloColrPRb.isSelected() ||
+						this.colrPRb.isSelected();
 		
 		double rot = this.getRotation();
 		
@@ -1632,6 +1670,7 @@ class SierpinskiComboPanel extends JPanel {
 				ff.setUseColorPalette(useCP);
 				ff.setRotation(rot);
 				FractalBase.setMaxIter(diyMaxIt);
+				FractalBase.setAreaSize(mandLoopLt);
 				FractalBase.setxC(diyMXc);
 				FractalBase.setxC(diyMYc);
 				FractalBase.setScaleSize(diyMScale);
@@ -1659,6 +1698,7 @@ class SierpinskiComboPanel extends JPanel {
 				ff.setUseColorPalette(useCP);
 				ff.setRotation(rot);
 				FractalBase.setMaxIter(diyJuliaMaxIt);
+				FractalBase.setAreaSize(juliaLoopLt);
 				FractalBase.setxC(diyJXc);
 				FractalBase.setxC(diyJYc);
 				FractalBase.setScaleSize(diyJScale);
@@ -1864,6 +1904,10 @@ class SierpinskiComboPanel extends JPanel {
 		        String comboOption = (String)cb.getSelectedItem();
 				doSelectCombosCommand(comboOption);				
 			}});
+
+		this.diyMandRb.addActionListener(diyFractChoiceRbListener());		
+		this.diyJuliaRb.addActionListener(diyFractChoiceRbListener());
+		this.diyApolloRb.addActionListener(diyFractChoiceRbListener());
 		
 		this.setupFannyListeners();
 		
@@ -1873,22 +1917,222 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.setupMandelbrotListeners();
 		
-		this.diyMandRb.addActionListener(diyFractChoiceRbListener());
-		this.diyJuliaRb.addActionListener(diyFractChoiceRbListener());
-		this.diyApolloRb.addActionListener(diyFractChoiceRbListener());
+		
+		//DIY-Listeners
+		this.setupDIYMandelbrotListeners();
+
+		this.setupDIYJuliaListeners();
+		
+		this.setupDIYApolloListeners();
 		
 		
 		this.colrPRb.addActionListener(colorChoiceRbListener());
 		this.colrCRb.addActionListener(colorChoiceRbListener());
 		
+		this.magnifyCb.setActionCommand("Magnify");
+		this.magnifyCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doMagnify(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doMagnify(false);
+				}
+			}
+        });
 		
-		this.diyMandColrPRb.addActionListener(colorChoiceRbListener());
-		this.diyMandColrCRb.addActionListener(colorChoiceRbListener());
-		this.diyJuliaColrPRb.addActionListener(colorChoiceRbListener());
-		this.diyJuliaColrCRb.addActionListener(colorChoiceRbListener());
+		this.rotateCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double rotationComboOption = (Double)cb.getSelectedItem();
+				doSetRotationCombosCommand(rotationComboOption);				
+			}});
+
+		this.buStart.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doStartCommand();				
+			}});		
+
+		this.buPause.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doPauseCommand(fbf);				
+			}
+		});	
+		
+		this.buPrint.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doPrintCommand();				
+			}
+		});			
+
+		this.buSave.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doSaveImageCommand();				
+			}
+		});
+	}
+
+	private void setupDIYApolloListeners() {
+		//////////////////////////////////
+		//	apollo-diy
+		//
+		this.diyApolloC1Combos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
+				Integer diyApolloC1ComboOption = (Integer)cb.getSelectedItem();
+				doSelectDiyApolloC1CombosCommand(diyApolloC1ComboOption);				
+			}});
+		this.diyApolloC2Combos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
+				Integer diyApolloC2ComboOption = (Integer)cb.getSelectedItem();
+				doSelectDiyApolloC2CombosCommand(diyApolloC2ComboOption);				
+			}});
+		this.diyApolloC3Combos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
+				Integer diyApolloC3ComboOption = (Integer)cb.getSelectedItem();
+				doSelectDiyApolloC3CombosCommand(diyApolloC3ComboOption);				
+			}});
+		this.diyApolloMultCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
+				Integer diyApolloMultComboOption = (Integer)cb.getSelectedItem();
+				doSelectDiyApolloMultCombosCommand(diyApolloMultComboOption);				
+			}});
+		
 		this.diyApolloColrPRb.addActionListener(colorChoiceRbListener());
 		this.diyApolloColrCRb.addActionListener(colorChoiceRbListener());
 		
+		//////////////	ends	apollo-duy	/////////////////
+	}
+
+	private void setupDIYJuliaListeners() {
+		////////////////////////////////////////
+		//		julia-diy
+		//
+		this.diyJuliaPowerCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
+				Integer diyJuliaPowerComboOption = (Integer)cb.getSelectedItem();
+				doSelectDiyJuliaPowerCombosCommand(diyJuliaPowerComboOption);				
+			}});
+		
+
+		
+		this.diyJuliaUseDiffCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetDiyJuliaUseDiffCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetDiyJuliaUseDiffCommand(false);
+				}
+			}
+        });
+		
+		this.diyJuliaKeepConstantCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetDiyJuliaKeepConstantCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetDiyJuliaKeepConstantCommand(false);
+				}
+			}
+        });
+		
+		this.diyJuliaMaxIterCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
+				Integer diyJuliaMaxIterComboOption = (Integer)cb.getSelectedItem();
+				doSelectDiyJuliaMaxIterCombosCommand(diyJuliaMaxIterComboOption);				
+			}});
+		
+		this.diyJuliaSizeCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
+				Integer diyJuliaLoopLimitComboOption = (Integer)cb.getSelectedItem();
+				doSelectJuliaLoopLimitCombosCommand(diyJuliaLoopLimitComboOption);				
+			}});
+		
+
+		this.diyJuliaBoundCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double diyJuliaBoundComboOption = (Double)cb.getSelectedItem();
+				doSelectDiyJuliaBoundCombosCommand(diyJuliaBoundComboOption);				
+			}});
+		
+
+		
+		this.diyJuliaXCCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double diyJuliaXCComboOption = (Double)cb.getSelectedItem();
+				doSelectDiyJuliaXCCombosCommand(diyJuliaXCComboOption);				
+			}});
+		
+		
+		this.diyJuliaYCCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double diyJuliaYCComboOption = (Double)cb.getSelectedItem();
+				doSelectDiyJuliaYCCombosCommand(diyJuliaYCComboOption);				
+			}});
+		
+		
+		this.diyJuliaScaleSizeCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double diyJuliaScaleSizeComboOption = (Double)cb.getSelectedItem();
+				doSelectDiyJuliaScaleSizeCombosCommand(diyJuliaScaleSizeComboOption);				
+			}});
+		
+//		this.diyJuliaSizeCombos.addActionListener(new ActionListener() {
+//			@SuppressWarnings("unchecked")
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
+//				Integer juliaLoopLimitComboOption = (Integer)cb.getSelectedItem();
+//				doSelectJuliaLoopLimitCombosCommand(juliaLoopLimitComboOption);				
+//			}});
+		
+		this.diyJuliaColrPRb.addActionListener(colorChoiceRbListener());
+		this.diyJuliaColrCRb.addActionListener(colorChoiceRbListener());
+	}
+
+	private void setupDIYMandelbrotListeners() {
+		///////////////////////////////////////////////
+		//		diy--mandelbrot
 		//
 		this.diyMandMagCombos.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
@@ -1989,209 +2233,8 @@ class SierpinskiComboPanel extends JPanel {
 				doSelectDiyMandScaleSizeCombosCommand(diyMandScaleSizeComboOption);				
 			}});
 		
-		this.diyMandSizeCombos.addActionListener(new ActionListener() {
-			@SuppressWarnings("unchecked")
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
-				Integer mandLoopLimitComboOption = (Integer)cb.getSelectedItem();
-				doSelectMandLoopLimitCombosCommand(mandLoopLimitComboOption);				
-			}});
-		
 		this.diyMandColrPRb.addActionListener(colorChoiceRbListener());
 		this.diyMandColrCRb.addActionListener(colorChoiceRbListener());
-		
-
-		//--julia-diy
-		this.diyJuliaPowerCombos.addActionListener(new ActionListener() {
-			@SuppressWarnings("unchecked")
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
-				Integer diyJuliaPowerComboOption = (Integer)cb.getSelectedItem();
-				doSelectDiyJuliaPowerCombosCommand(diyJuliaPowerComboOption);				
-			}});
-		
-
-		
-		this.diyJuliaUseDiffCb.addItemListener(new ItemListener() {
-            @Override
-			public void itemStateChanged(ItemEvent event) {
-				if (event.getStateChange() == ItemEvent.SELECTED) {
-					doSetDiyJuliaUseDiffCommand(true);
-				} else if(event.getStateChange()==ItemEvent.DESELECTED){
-					doSetDiyJuliaUseDiffCommand(false);
-				}
-			}
-        });
-		
-		this.diyJuliaKeepConstantCb.addItemListener(new ItemListener() {
-            @Override
-			public void itemStateChanged(ItemEvent event) {
-				if (event.getStateChange() == ItemEvent.SELECTED) {
-					doSetDiyJuliaKeepConstantCommand(true);
-				} else if(event.getStateChange()==ItemEvent.DESELECTED){
-					doSetDiyJuliaKeepConstantCommand(false);
-				}
-			}
-        });
-		
-		this.diyJuliaMaxIterCombos.addActionListener(new ActionListener() {
-			@SuppressWarnings("unchecked")
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
-				Integer diyJuliaMaxIterComboOption = (Integer)cb.getSelectedItem();
-				doSelectDiyJuliaMaxIterCombosCommand(diyJuliaMaxIterComboOption);				
-			}});
-		
-		this.diyJuliaSizeCombos.addActionListener(new ActionListener() {
-			@SuppressWarnings("unchecked")
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
-				Integer diyJuliaLoopLimitComboOption = (Integer)cb.getSelectedItem();
-				doSelectJuliaLoopLimitCombosCommand(diyJuliaLoopLimitComboOption);				
-			}});
-		
-
-		this.diyJuliaBoundCombos.addActionListener(new ActionListener() {
-			@SuppressWarnings("unchecked")
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
-				Double diyJuliaBoundComboOption = (Double)cb.getSelectedItem();
-				doSelectDiyJuliaBoundCombosCommand(diyJuliaBoundComboOption);				
-			}});
-		
-
-		
-		this.diyJuliaXCCombos.addActionListener(new ActionListener() {
-			@SuppressWarnings("unchecked")
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
-				Double diyJuliaXCComboOption = (Double)cb.getSelectedItem();
-				doSelectDiyJuliaXCCombosCommand(diyJuliaXCComboOption);				
-			}});
-		
-		
-		this.diyJuliaYCCombos.addActionListener(new ActionListener() {
-			@SuppressWarnings("unchecked")
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
-				Double diyJuliaYCComboOption = (Double)cb.getSelectedItem();
-				doSelectDiyJuliaYCCombosCommand(diyJuliaYCComboOption);				
-			}});
-		
-		
-		this.diyJuliaScaleSizeCombos.addActionListener(new ActionListener() {
-			@SuppressWarnings("unchecked")
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
-				Double diyJuliaScaleSizeComboOption = (Double)cb.getSelectedItem();
-				doSelectDiyJuliaScaleSizeCombosCommand(diyJuliaScaleSizeComboOption);				
-			}});
-		
-		this.diyJuliaSizeCombos.addActionListener(new ActionListener() {
-			@SuppressWarnings("unchecked")
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
-				Integer juliaLoopLimitComboOption = (Integer)cb.getSelectedItem();
-				doSelectJuliaLoopLimitCombosCommand(juliaLoopLimitComboOption);				
-			}});
-		
-
-		this.diyJuliaColrPRb.addActionListener(colorChoiceRbListener());
-		this.diyJuliaColrCRb.addActionListener(colorChoiceRbListener());
-		
-		
-		
-		//apollo-diy
-		this.diyApolloC1Combos.addActionListener(new ActionListener() {
-			@SuppressWarnings("unchecked")
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
-				Integer diyApolloC1ComboOption = (Integer)cb.getSelectedItem();
-				doSelectDiyApolloC1CombosCommand(diyApolloC1ComboOption);				
-			}});
-		this.diyApolloC2Combos.addActionListener(new ActionListener() {
-			@SuppressWarnings("unchecked")
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
-				Integer diyApolloC2ComboOption = (Integer)cb.getSelectedItem();
-				doSelectDiyApolloC2CombosCommand(diyApolloC2ComboOption);				
-			}});
-		this.diyApolloC3Combos.addActionListener(new ActionListener() {
-			@SuppressWarnings("unchecked")
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
-				Integer diyApolloC3ComboOption = (Integer)cb.getSelectedItem();
-				doSelectDiyApolloC3CombosCommand(diyApolloC3ComboOption);				
-			}});
-		this.diyApolloMultCombos.addActionListener(new ActionListener() {
-			@SuppressWarnings("unchecked")
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
-				Integer diyApolloMultComboOption = (Integer)cb.getSelectedItem();
-				doSelectDiyApolloMultCombosCommand(diyApolloMultComboOption);				
-			}});
-		//
-		
-		this.magnifyCb.setActionCommand("Magnify");
-		this.magnifyCb.addItemListener(new ItemListener() {
-            @Override
-			public void itemStateChanged(ItemEvent event) {
-				if (event.getStateChange() == ItemEvent.SELECTED) {
-					doMagnify(true);
-				} else if(event.getStateChange()==ItemEvent.DESELECTED){
-					doMagnify(false);
-				}
-			}
-        });
-		
-		this.rotateCombo.addActionListener(new ActionListener() {
-			@SuppressWarnings("unchecked")
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
-				Double rotationComboOption = (Double)cb.getSelectedItem();
-				doSetRotationCombosCommand(rotationComboOption);				
-			}});
-
-		this.buStart.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				doStartCommand();				
-			}});		
-
-		this.buPause.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				doPauseCommand(fbf);				
-			}
-		});	
-		
-		this.buPrint.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				doPrintCommand();				
-			}
-		});			
-
-		this.buSave.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				doSaveImageCommand();				
-			}
-		});
 	}
 
 	private void setupMandelbrotListeners() {
@@ -2294,6 +2337,9 @@ class SierpinskiComboPanel extends JPanel {
 	}
 
 	private void setupJuliaListeners() {
+		///////////////////////////////////////
+		//		JULIA
+		//
 		this.juliaCombos.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
 			@Override
@@ -2378,9 +2424,14 @@ class SierpinskiComboPanel extends JPanel {
 
 		this.juliaColrPRb.addActionListener(colorChoiceRbListener());
 		this.juliaColrCRb.addActionListener(colorChoiceRbListener());
+		///////////////////	ends	julia	/////////////////////
+		
 	}
 
 	private void setupApolloListeners() {
+		//////////////////////////////////////////////////
+		//		APOLLO
+		//
 		this.curvCombos.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
 			@Override
@@ -2389,6 +2440,11 @@ class SierpinskiComboPanel extends JPanel {
 				String curvComboOption = (String)cb.getSelectedItem();
 				doSelectCurvCombosCommand(curvComboOption);				
 			}});
+		
+
+		this.apolloColrPRb.addActionListener(colorChoiceRbListener());
+		this.apolloColrCRb.addActionListener(colorChoiceRbListener());
+		
 	}
 
 	private void setupFannyListeners() {
