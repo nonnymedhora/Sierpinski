@@ -107,9 +107,11 @@ class SierpinskiComboPanel extends JPanel {
 	private final JComboBox<Double> juliaXCCombos = new JComboBox<Double>(juliaXCOptions);
 	private final Double[] juliaYCOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
 	private final JComboBox<Double> juliaYCCombos = new JComboBox<Double>(juliaYCOptions);
+	/*	TODO 	- 	increase range scaleSize from -5 to 10 with .2/.5 increments
+		TODO	-	move juliaScaleSizeOptions to common action controls	*/
 	private final Double[] juliaScaleSizeOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
 	private final JComboBox<Double> juliaScaleSizeCombos = new JComboBox<Double>(juliaScaleSizeOptions);
-	
+	/*	TODO	-	move color choice buttons to common action controls	*/
 	protected JRadioButton juliaColrPRb = new JRadioButton("Use Color Palette",false);
 	protected JRadioButton juliaColrCRb = new JRadioButton("Compute Color",true);
 	
@@ -134,11 +136,11 @@ class SierpinskiComboPanel extends JPanel {
 	private final JComboBox<Double> mandXCCombos = new JComboBox<Double>(mandXCOptions);
 	private final Double[] mandYCOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
 	private final JComboBox<Double> mandYCCombos = new JComboBox<Double>(mandYCOptions);
-
+	/*	TODO 	- 	increase range scaleSize from -5 to 10 with .2/.5 increments
+		TODO	-	move mandScaleSizeOptions to common action controls	*/
 	private final Double[] mandScaleSizeOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
 	private final JComboBox<Double> mandScaleSizeCombos = new JComboBox<Double>(mandScaleSizeOptions);
-	
-
+	/*	TODO	-	move color choice buttons to common action controls	*/
 	protected JRadioButton mandColrPRb = new JRadioButton("Use Color Palette",false);
 	protected JRadioButton mandColrCRb = new JRadioButton("Compute Color",true);
 	
@@ -186,14 +188,14 @@ class SierpinskiComboPanel extends JPanel {
 	protected double compConst;
 	protected String complex;
 	protected String juliaSelection;
-	protected boolean jUseDiff;
+	protected boolean jUseDiff;			
 	protected int juliaMaxIter;
-	protected int juliaSize;
+	protected int juliaSize;			/*	TODO	-	move juliaSize to common action control variables	*/
 	protected double juliaBound;
 	
 	protected double juliaXC;
 	protected double juliaYC;
-	protected double juliaScaleSize;
+	protected double juliaScaleSize;	/*	TODO	-	move juliaScaleSize to common action control variables	*/
 	
 	
 	
@@ -202,13 +204,13 @@ class SierpinskiComboPanel extends JPanel {
 	protected int exponent;
 	protected boolean mUseDiff;
 	protected int mandMaxIter;
-	protected int mandSize;
+	protected int mandSize;			/*	TODO	-	move mandSize to common action control variables	*/
 	protected double mandBound;
 
 	
 	protected double mandXC;
 	protected double mandYC;
-	protected double mandScaleSize;
+	protected double mandScaleSize;	/*	TODO	-	move mandScaleSize to common action control variables	*/
 	
 	// for DIY
 	//radioButton
@@ -376,32 +378,21 @@ class SierpinskiComboPanel extends JPanel {
 		super();
 		this.add(new JLabel("Choose: "));//FractalArt:"));
 		this.add(this.combos);
-		/*// creates-color-choice-options	-- does not add 
-		this.createColorChoiceRBs();
-		// creates-rototation-choice-options	-- does not add
-		this.createRotationCombo();
-*/
-		
 
 		this.createActionControls();
-		/*this.createColorChoiceRB();
-		this.createRotationCombo();*/
+
 		this.createPanels();
 		this.setLayout(new FlowLayout());
 
-		this.setComboSelections();
+		this.setComboSelections();		
 		
-		
-		this.setUpListeners();
-		
+		this.setUpListeners();		
 	}
 	
 	private void createActionControls() {
 
 		// creates-color-choice-options ////////-- does not add
 		this.createColorChoiceRBs();
-		
-		
 		
 		// creates-rototation-choice-options -- does not add
 		this.createRotationCombo();
@@ -421,40 +412,6 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(this.formulaArea);
 
 	}
-
-//	private void createActionControls() {
-//
-//		/*//	fanny
-//		this.createFannyPanel();
-//		
-//		//apollo
-//		this.createApolloPanel();
-//		
-//		//julia
-//		this.createJuliaPanel();
-//		
-//		//mandelbrot
-//		this.createMandelbrotPanel();
-//		
-//		
-//		//	diy	panel
-//		this.createDIYPanel();*/
-//		
-//		this.add(this.rotLabel);
-//		this.add(this.rotateCombo);
-//		this.rotLabel.setVisible(false);
-//		this.rotateCombo.setVisible(false);
-//
-//		this.buStart.setEnabled(false);
-//		this.add(this.buStart);
-//		// this.add(this.buPause);
-//		this.add(this.buPrint);
-//		this.add(this.buSave);
-//
-//		this.formulaArea.setVisible(false);
-//		this.add(this.formulaArea);
-//
-//	}
 
 	private void createPanels() {
 		//	fanny	--	does add
@@ -497,56 +454,22 @@ class SierpinskiComboPanel extends JPanel {
 			this.rotOptions.add((double) i);
 		}
 		
-		/*this.add(this.rotLabel);
-		this.rotLabel.setVisible(false);*/
-		
 		this.rotateCombo=new JComboBox<Double>(this.rotOptions);
-		/*this.add(this.rotateCombo);*/
 		this.rotateCombo.setVisible(false);
 	}
 
 	private void createDIYPanel() {
-		/*this.rotLabel.setVisible(true);
-		this.rotateCombo.setVisible(true);*/
-//		this.diyOptionsPanel.add(new JLabel("Choose Fractal Art:"));
 		this.setupDIYRBs();		
 		
-		this.createDiyMandelbrotPanel();
-		
-		this.createDiyJuliaPanel();
-		
-		this.createDiyApolloPanel();
-		
+		this.createDiyMandelbrotPanel();		
+		this.createDiyJuliaPanel();		
+		this.createDiyApolloPanel();		
 		
 		this.diyOptionsPanel.add(this.diyMandPanel);
 		this.diyOptionsPanel.add(this.diyJuliaPanel);
 		this.diyOptionsPanel.add(this.diyApolloPanel);
 		this.diyOptionsPanel.setVisible(false);
 
-		/*this.colrBg.add(this.colrPRb);
-		this.colrBg.add(this.colrCRb);
-		
-		this.colrPRb.setActionCommand("ColorPalette");
-		this.colrCRb.setActionCommand("ComputeColor");
-
-		this.colrPRb.setName("ColorPalette");
-		this.colrCRb.setName("ComputeColor");
-		this.diyOptionsPanel.add(this.colrPRb);
-		this.diyOptionsPanel.add(this.colrCRb);*/
-		
-		/*this.diyOptionsPanel.add(new JLabel("Rotate:"));
-		this.diyOptionsPanel.add(this.rotateCombo);*/
-		
-		/*if (!this.diyApolloRb.isSelected()) {
-			for (int i = 0; i < 1000; i += 15) {
-				this.rotOptions.add((double) i);
-			}
-			this.diyOptionsPanel.add(this.rotLabel);
-			this.rotLabel.setVisible(false);
-			this.rotateCombo = new JComboBox<Double>(this.rotOptions);
-			this.rotateCombo.setVisible(false);
-			this.diyOptionsPanel.add(this.rotateCombo);
-		}*/
 		this.add(diyOptionsPanel);
 	}
 
@@ -615,14 +538,6 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaPanel.add(new JLabel("ScaleSize:"));
 		this.diyJuliaPanel.add(this.diyJuliaScaleSizeCombos);
 		
-		/*this.diyJuliaColrPRb.setVisible(true);
-		this.diyJuliaColrCRb.setVisible(true);		
-		this.diyJuliaPanel.add(this.diyJuliaColrPRb);
-		this.diyJuliaPanel.add(this.diyJuliaColrCRb);
-		
-		/*this.diyJuliaPanel.add(new JLabel("Rotate:"));
-		this.diyJuliaPanel.add(this.rotateCombo);*/
-		
 		this.diyJuliaPanel.setVisible(false);
 	}
 
@@ -657,14 +572,6 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyMandPanel.add(new JLabel("ScaleSize:"));
 		this.diyMandPanel.add(this.diyMandScaleSizeCombos);
 		
-		/*this.diyMandColrPRb.setVisible(true);
-		this.diyMandColrCRb.setVisible(true);
-		this.diyMandPanel.add(this.diyMandColrPRb);
-		this.diyMandPanel.add(this.diyMandColrCRb);
-		
-		/*this.diyMandPanel.add(new JLabel("Rotate:"));
-		this.diyMandPanel.add(this.rotateCombo);*/
-		
 		this.diyMandPanel.setVisible(false);
 	}
 
@@ -691,38 +598,6 @@ class SierpinskiComboPanel extends JPanel {
 		this.mandOptionsPanel.add(new JLabel("ScaleSize:"));
 		this.mandOptionsPanel.add(this.mandScaleSizeCombos);
 		
-/*
-		this.mandColrBg.add(this.mandColrPRb);
-		this.mandColrBg.add(this.mandColrCRb);
-		
-		this.mandColrPRb.setActionCommand("ColorPalette");
-		this.mandColrCRb.setActionCommand("ComputeColor");
-
-		this.mandColrPRb.setName("ColorPalette");
-		this.mandColrCRb.setName("ComputeColor");
-		
-		this.mandOptionsPanel.add(this.mandColrPRb);
-		this.mandOptionsPanel.add(this.mandColrCRb);
-
-		this.mandColrPRb.setVisible(true);
-		this.mandColrCRb.setVisible(true);
-		this.mandOptionsPanel.add(this.mandColrPRb);
-		this.mandOptionsPanel.add(this.mandColrCRb);
-		
-		this.rotLabel.setVisible(true);
-		this.rotateCombo.setVisible(true);*/
-		
-		
-		/*
-		this.juliaOptionsPanel.add(new JLabel("Rotate:"));*/
-		/*this.mandOptionsPanel.add(this.rotLabel);
-		this.mandOptionsPanel.add(this.rotateCombo);*/
-		
-
-		
-		/*this.mandOptionsPanel.add(new JLabel("Rotate:"));
-		this.mandOptionsPanel.add(this.rotateCombo);*/
-		
 		this.mandOptionsPanel.setVisible(false);
 		this.add(this.mandOptionsPanel);
 	}
@@ -741,8 +616,6 @@ class SierpinskiComboPanel extends JPanel {
 		this.juliaOptionsPanel.add(this.juliaSizeCombos);
 		this.juliaOptionsPanel.add(new JLabel("Boundary:"));
 		this.juliaOptionsPanel.add(this.juliaBoundCombos);
-		
-		
 
 		this.juliaOptionsPanel.add(new JLabel("Center: X "));
 		this.juliaOptionsPanel.add(this.juliaXCCombos);
@@ -750,26 +623,6 @@ class SierpinskiComboPanel extends JPanel {
 		this.juliaOptionsPanel.add(this.juliaYCCombos);
 		this.juliaOptionsPanel.add(new JLabel("ScaleSize:"));
 		this.juliaOptionsPanel.add(this.juliaScaleSizeCombos);
-		
-		/*this.juliaColrBg.add(this.juliaColrPRb);
-		this.juliaColrBg.add(this.juliaColrCRb);
-		
-		this.juliaColrPRb.setActionCommand("ColorPalette");
-		this.juliaColrCRb.setActionCommand("ComputeColor");
-
-		this.juliaColrPRb.setName("ColorPalette");
-		this.juliaColrCRb.setName("ComputeColor");
-		
-		this.juliaColrPRb.setVisible(true);
-		this.juliaColrCRb.setVisible(true);
-		this.juliaOptionsPanel.add(this.juliaColrPRb);
-		this.juliaOptionsPanel.add(this.juliaColrCRb);
-		
-		this.rotLabel.setVisible(true);
-		this.rotateCombo.setVisible(true);
-		this.juliaOptionsPanel.add(this.rotLabel);
-		this.juliaOptionsPanel.add(this.rotateCombo);*/
-		
 		
 		this.juliaOptionsPanel.setVisible(false);		
 		this.add(this.juliaOptionsPanel);
@@ -1909,22 +1762,15 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaRb.addActionListener(diyFractChoiceRbListener());
 		this.diyApolloRb.addActionListener(diyFractChoiceRbListener());
 		
-		this.setupFannyListeners();
-		
-		this.setupApolloListeners();
-		
-		this.setupJuliaListeners();
-		
-		this.setupMandelbrotListeners();
-		
+		this.setupFannyListeners();		
+		this.setupApolloListeners();		
+		this.setupJuliaListeners();		
+		this.setupMandelbrotListeners();		
 		
 		//DIY-Listeners
 		this.setupDIYMandelbrotListeners();
-
-		this.setupDIYJuliaListeners();
-		
-		this.setupDIYApolloListeners();
-		
+		this.setupDIYJuliaListeners();		
+		this.setupDIYApolloListeners();		
 		
 		this.colrPRb.addActionListener(colorChoiceRbListener());
 		this.colrCRb.addActionListener(colorChoiceRbListener());
@@ -2116,15 +1962,6 @@ class SierpinskiComboPanel extends JPanel {
 				Double diyJuliaScaleSizeComboOption = (Double)cb.getSelectedItem();
 				doSelectDiyJuliaScaleSizeCombosCommand(diyJuliaScaleSizeComboOption);				
 			}});
-		
-//		this.diyJuliaSizeCombos.addActionListener(new ActionListener() {
-//			@SuppressWarnings("unchecked")
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
-//				Integer juliaLoopLimitComboOption = (Integer)cb.getSelectedItem();
-//				doSelectJuliaLoopLimitCombosCommand(juliaLoopLimitComboOption);				
-//			}});
 		
 		this.diyJuliaColrPRb.addActionListener(colorChoiceRbListener());
 		this.diyJuliaColrCRb.addActionListener(colorChoiceRbListener());
