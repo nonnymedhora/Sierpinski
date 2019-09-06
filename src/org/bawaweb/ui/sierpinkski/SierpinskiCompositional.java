@@ -79,11 +79,12 @@ class SierpinskiComboPanel extends JPanel {
 	private static final String FANNY_TRIANGLES = "FannyTriangles";
 	private static final String FANNY_CIRCLE = "FannyCircle";
 	private static final String KOCHSNOWFLAKE = "KochSnowFlake";
-	private static final String DIY	="Do_It_Yourself";
+	private static final String DIY = "Do_It_Yourself";
+	private static final String POLY = "Poly_Fractals";
 
 	private static final long serialVersionUID = 156478L;
 	
-	private final String[] comboOptions = new String[]{DIY,FANNY_CIRCLE,FANNY_TRIANGLES,SIERPINSKI_TRIANGLES,SIERPINSKI_SQUARES,APOLLONIAN_CIRCLES,CST_FRACTAL,SAMPLE,MANDELBROT,JULIA,KOCHSNOWFLAKE};
+	private final String[] comboOptions = new String[]{DIY,FANNY_CIRCLE,FANNY_TRIANGLES,SIERPINSKI_TRIANGLES,SIERPINSKI_SQUARES,APOLLONIAN_CIRCLES,CST_FRACTAL,SAMPLE,MANDELBROT,JULIA,KOCHSNOWFLAKE,POLY};
 	private final JComboBox<String> combos = new JComboBox<String>(comboOptions);
 	
 	//	for	FannyCircle & FannyTriangles
@@ -160,6 +161,7 @@ class SierpinskiComboPanel extends JPanel {
 	private JPanel apolloOptionsPanel = new JPanel(new FlowLayout(),true);
 	private JPanel juliaOptionsPanel = new JPanel(new GridLayout(/*4,8*/10,5),true);
 	private JPanel mandOptionsPanel = new JPanel(new GridLayout(10,5),true);
+	private JPanel polyOptionsPanel = new JPanel(new GridLayout(10,5),true);
 	private JPanel diyOptionsPanel	= new JPanel(new FlowLayout(),true);//GridLayout(4,7),true);
 	
 	private JPanel diyMandPanel = new JPanel(new GridLayout(5,8),true);
@@ -342,6 +344,37 @@ class SierpinskiComboPanel extends JPanel {
 	protected ButtonGroup diyApolloColrBg = new ButtonGroup();
 	
 	
+	//POLY
+	private final Integer[] polyExpOptions = EXPONENTS;
+	private final JComboBox<Integer> polyExpCombos = new JComboBox<Integer>(polyExpOptions);
+	private final JCheckBox polyUseDiffCb = new JCheckBox("UseDifferencesOnly",true);
+	private final Integer[] polyMaxIterOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 300, 350, 400, 500, 1000 };
+	private final JComboBox<Integer> polyMaxIterCombos = new JComboBox<Integer>(polyMaxIterOptions);
+	private final Integer[] polySizeOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 500, 512, 599, 800 };
+	private final JComboBox<Integer> polySizeCombos = new JComboBox<Integer>(polySizeOptions);
+	private final Double[] polyBoundOptions = new Double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private final JComboBox<Double> polyBoundCombos = new JComboBox<Double>(polyBoundOptions);
+	private final Double[] polyXCOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
+	private final JComboBox<Double> polyXCCombos = new JComboBox<Double>(polyXCOptions);
+	private final Double[] polyYCOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
+	private final JComboBox<Double> polyYCCombos = new JComboBox<Double>(polyYCOptions);
+	/*	TODO 	- 	increase range scaleSize from -5 to 10 with .2/.5 increments
+		TODO	-	move polyScaleSizeOptions to common action controls	*/
+	private final Double[] polyScaleSizeOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private final JComboBox<Double> polyScaleSizeCombos = new JComboBox<Double>(polyScaleSizeOptions);
+	
+	//variables_for_poly
+	protected int polyPower;
+	protected boolean polyUseDiff;
+	protected int polyMaxIter;
+	protected int polySize;			/*	TODO	-	move polySize to common action control variables	*/
+	protected double polyBound;
+
+	
+	protected double polyXC;
+	protected double polyYC;
+	protected double polyScaleSize;
+	
 	
 	//controlPanel
 	private JPanel controlPanel = new JPanel();
@@ -426,6 +459,8 @@ class SierpinskiComboPanel extends JPanel {
 		//mandelbrot	--	does add
 		this.createMandelbrotPanel();
 		
+		//poly -- does add
+		this.createPolyPanel();		
 		
 		//	diy	panel	--	does add
 		this.createDIYPanel();
@@ -456,6 +491,31 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.rotateCombo=new JComboBox<Double>(this.rotOptions);
 		this.rotateCombo.setVisible(false);
+	}
+	
+	private void createPolyPanel() {
+		this.rotLabel.setVisible(true);
+		this.rotateCombo.setVisible(true);
+		this.colrPRb.setVisible(true);
+		this.colrCRb.setVisible(true);
+		this.polyOptionsPanel.add(new JLabel("Exponent(X):"));
+		this.polyOptionsPanel.add(this.polyExpCombos);		
+		this.polyOptionsPanel.add(this.polyUseDiffCb);
+		this.polyOptionsPanel.add(new JLabel("Max Iterations:"));
+		this.polyOptionsPanel.add(this.polyMaxIterCombos);		
+		this.polyOptionsPanel.add(new  JLabel("Area Size:"));
+		this.polyOptionsPanel.add(this.polySizeCombos);
+		this.polyOptionsPanel.add(new JLabel("Boundary:"));
+		this.polyOptionsPanel.add(this.polyBoundCombos);
+		this.polyOptionsPanel.add(new JLabel("Center: X "));
+		this.polyOptionsPanel.add(this.polyXCCombos);
+		this.polyOptionsPanel.add(new JLabel(" Y "));
+		this.polyOptionsPanel.add(this.polyYCCombos);
+		this.polyOptionsPanel.add(new JLabel("ScaleSize:"));
+		this.polyOptionsPanel.add(this.polyScaleSizeCombos);
+		
+		this.polyOptionsPanel.setVisible(false);
+		this.add(this.polyOptionsPanel);
 	}
 
 	private void createDIYPanel() {
@@ -838,6 +898,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.mandOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(true);
 			this.diyOptionsPanel.setVisible(false);
+			this.polyOptionsPanel.setVisible(false);
 			this.formulaArea.setVisible(false);
 
 			if (this.curvChoices == null || this.mult == 0) {
@@ -853,6 +914,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.mandOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(false);
 			this.diyOptionsPanel.setVisible(false);
+			this.polyOptionsPanel.setVisible(false);
 			this.formulaArea.setVisible(false);
 			if (this.sideChoice == 0 || this.ratioChoice == 0) {
 				this.buStart.setEnabled(false);
@@ -867,6 +929,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.mandOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(false);
 			this.diyOptionsPanel.setVisible(false);
+			this.polyOptionsPanel.setVisible(false);
 			this.formulaArea.setVisible(true);
 			this.formulaArea.setText("");
 			if (this.power == 0 && (this.compConst == 0.0 || this.complex == null)) {
@@ -882,9 +945,21 @@ class SierpinskiComboPanel extends JPanel {
 			this.mandOptionsPanel.setVisible(true);
 			this.apolloOptionsPanel.setVisible(false);
 			this.diyOptionsPanel.setVisible(false);
+			this.polyOptionsPanel.setVisible(false);
 			this.formulaArea.setVisible(true);
 			this.formulaArea.setText("");
-		}  else if (this.comboChoice.equals(DIY)) {
+		} else if (this.comboChoice.equals(POLY)) {
+			this.rotLabel.setVisible(true);
+			this.rotateCombo.setVisible(true);
+			this.fannyOptionsPanel.setVisible(false);
+			this.juliaOptionsPanel.setVisible(false);
+			this.mandOptionsPanel.setVisible(false);
+			this.apolloOptionsPanel.setVisible(false);
+			this.diyOptionsPanel.setVisible(false);
+			this.polyOptionsPanel.setVisible(true);
+			this.formulaArea.setVisible(true);
+			this.formulaArea.setText("");
+		} else if (this.comboChoice.equals(DIY)) {
 			this.rotLabel.setVisible(true);
 			if (!this.diyApolloRb.isSelected()) {
 				this.rotLabel.setVisible(true);
@@ -897,7 +972,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.juliaOptionsPanel.setVisible(false);
 			this.mandOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(false);
-			
+			this.polyOptionsPanel.setVisible(false);
 			this.diyOptionsPanel.setVisible(true);
 			this.diyMandPanel.setVisible(true);
 			/*if(this.diyMandRb.isSelected()){
@@ -917,6 +992,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.mandOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(false);
 			this.diyOptionsPanel.setVisible(false);
+			this.polyOptionsPanel.setVisible(false);
 			this.formulaArea.setVisible(false);
 			this.buStart.setEnabled(true);
 		}
@@ -1244,7 +1320,61 @@ class SierpinskiComboPanel extends JPanel {
 	private void doSelectMandScaleSizeCombosCommand(Double size) {
 		this.mandScaleSize = size;
 	}
+	////////ends-mand
 	
+	////////////poly/////////////
+	private void doSelectPolyExponentCombosCommand(Integer expOption) {
+		this.polyPower = expOption;
+		this.formulaArea.setVisible(true);
+		this.doPolyChoicesCheck();
+	}
+	
+	private void doSetPolyUseDiffCommand(boolean useDiffs) {
+		this.polyUseDiff = useDiffs;
+		this.formulaArea.setVisible(true);
+		this.doPolyChoicesCheck();
+	}
+	
+
+	private void doSelectPolyBoundCombosCommand(Double bound) {
+		this.polyBound = bound;
+	}
+	
+	private void doSelectPolyXCCombosCommand(Double x) {
+		this.polyXC = x;
+	}
+	private void doSelectPolyYCCombosCommand(Double y) {
+		this.polyYC = y;
+	}
+	private void doSelectPolyScaleSizeCombosCommand(Double size) {
+		this.polyScaleSize = size;
+	}
+	private void doSelectPolyMaxIterCombosCommand(Integer max) {
+		this.polyMaxIter = max;
+		this.formulaArea.setVisible(true);
+		this.doPolyChoicesCheck();
+	}
+	private void doSelectPolyLoopLimitCombosCommand(Integer limit) {
+		this.polySize = limit;
+	}
+	
+	private void doPolyChoicesCheck() {
+		this.formulaArea.setVisible(true);
+		if (this.polyPower != 0) {
+			this.buStart.setEnabled(true);
+			this.formulaArea.setText("Poynomial Set:\n\nf(z) = (x ^ " + this.polyPower + " + y ^ " + this.polyPower + ") + C"+
+					"\n  x = Row + 0 * i , y = 0 + Column * i");
+			if (this.polyUseDiff || this.polyUseDiffCb.isSelected()) {
+				this.formulaArea
+						.append("\n\nCalculated inverted colors based on differences in pixel values from origin");
+			} else {
+				this.formulaArea.append("\n\nCalculated colors based on pixel values with a 'top-and-left' origin");
+			}
+		} else {
+			this.buStart.setEnabled(false);
+		}
+	}
+	////////ends-poly////////////
 	
 	///////////////////
 	private void doSelectDiyMandMagnificationCombosCommand(Integer magOption) {
@@ -1417,9 +1547,9 @@ class SierpinskiComboPanel extends JPanel {
 		double mYc = this.mandYC;
 		double mScale = this.mandScaleSize;
 
-		boolean useCP = this.juliaColrPRb.isSelected() || this.diyJuliaColrPRb.isSelected() ||
+		boolean useCP = /*this.juliaColrPRb.isSelected() || this.diyJuliaColrPRb.isSelected() ||
 						this.mandColrPRb.isSelected() || this.diyMandColrPRb.isSelected() ||
-						this.apolloColrPRb.isSelected() || this.diyApolloColrPRb.isSelected() ||
+						this.apolloColrPRb.isSelected() || this.diyApolloColrPRb.isSelected() ||*/
 						this.colrPRb.isSelected();
 		
 		double rot = this.getRotation();
@@ -1445,6 +1575,25 @@ class SierpinskiComboPanel extends JPanel {
 		} else if (choice.equals(SAMPLE)) {
 			this.doReset();
 			ff = new FractalBaseSample();
+		} else if (choice.equals(POLY)) {
+			this.formulaArea.setVisible(true);
+			this.formulaArea.setText("");
+			this.formulaArea.setText("Poynomial Set:\n\nf(z) = (x ^ " + this.polyPower + " + y ^ " + this.polyPower + ") + C"+
+					"\n  x = Row + 0 * i , y = 0 + Column * i");
+			if (this.polyUseDiff) {
+				this.formulaArea.append("\n\nCalculated based on differences in pixel values from origin");
+			} else {
+				this.formulaArea.append("\n\nCalculated based on pixel values with a top-left origin");
+			}
+			ff = new PolyFract(this.polyPower, this.polyUseDiff, this.polyBound, true);
+			ff.setUseColorPalette(useCP);
+			ff.setRotation(rot);
+			FractalBase.setxC(this.polyXC);
+			FractalBase.setxC(this.polyYC);
+			FractalBase.setScaleSize(this.polyScaleSize);
+			FractalBase.setMaxIter(this.polyMaxIter);
+			FractalBase.setAreaSize(this.polySize);
+			this.doReset();
 		} else if (choice.equals(MANDELBROT)) {
 			this.formulaArea.setVisible(true);
 			this.formulaArea.setText("");
@@ -1765,7 +1914,8 @@ class SierpinskiComboPanel extends JPanel {
 		this.setupFannyListeners();		
 		this.setupApolloListeners();		
 		this.setupJuliaListeners();		
-		this.setupMandelbrotListeners();		
+		this.setupMandelbrotListeners();
+		this.setupPolyListeners();
 		
 		//DIY-Listeners
 		this.setupDIYMandelbrotListeners();
@@ -2072,6 +2222,101 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.diyMandColrPRb.addActionListener(colorChoiceRbListener());
 		this.diyMandColrCRb.addActionListener(colorChoiceRbListener());
+	}
+	
+	private void setupPolyListeners() {
+		//////////////////////////////////////////////////
+		// POLY
+/*
+ * this.polyCombos.addActionListener(new ActionListener() {
+ * 
+ * @SuppressWarnings("unchecked")
+ * 
+ * @Override public void actionPerformed(ActionEvent e) {
+ * JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource(); Integer
+ * polyComboOption = (Integer)cb.getSelectedItem();
+ * doSelectPolyelCombosCompoly(polyComboOption); }});
+ */
+		this.polyExpCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Integer> cb = (JComboBox<Integer>) e.getSource();
+				Integer polyExpComboOption = (Integer) cb.getSelectedItem();
+				doSelectPolyExponentCombosCommand(polyExpComboOption);
+			}
+		});
+
+		this.polyUseDiffCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetPolyUseDiffCommand(true);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSetPolyUseDiffCommand(false);
+				}
+			}
+		});
+
+		this.polyMaxIterCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Integer> cb = (JComboBox<Integer>) e.getSource();
+				Integer polyMaxIterComboOption = (Integer) cb.getSelectedItem();
+				doSelectPolyMaxIterCombosCommand(polyMaxIterComboOption);
+			}
+		});
+
+		this.polySizeCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Integer> cb = (JComboBox<Integer>) e.getSource();
+				Integer polyLoopLimitComboOption = (Integer) cb.getSelectedItem();
+				doSelectPolyLoopLimitCombosCommand(polyLoopLimitComboOption);
+			}
+		});
+
+		this.polyBoundCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>) e.getSource();
+				Double polyBoundComboOption = (Double) cb.getSelectedItem();
+				doSelectPolyBoundCombosCommand(polyBoundComboOption);
+			}
+		});
+
+		this.polyXCCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>) e.getSource();
+				Double polyXCComboOption = (Double) cb.getSelectedItem();
+				doSelectPolyXCCombosCommand(polyXCComboOption);
+			}
+		});
+
+		this.polyYCCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>) e.getSource();
+				Double polyYCComboOption = (Double) cb.getSelectedItem();
+				doSelectPolyYCCombosCommand(polyYCComboOption);
+			}
+		});
+
+		this.polyScaleSizeCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>) e.getSource();
+				Double polyScaleSizeComboOption = (Double) cb.getSelectedItem();
+				doSelectPolyScaleSizeCombosCommand(polyScaleSizeComboOption);
+			}
+		});
 	}
 
 	private void setupMandelbrotListeners() {
