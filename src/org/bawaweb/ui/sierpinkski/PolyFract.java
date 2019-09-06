@@ -41,7 +41,7 @@ public class PolyFract extends FractalBase {
 	
 	public PolyFract(int pow, boolean uD, double bd, boolean complexNumIsConst) {
 		this(pow, uD,bd);
-		this.isComplexNumConst = complexNumIsConst;
+		this.setComplexNumConst(complexNumIsConst);
 	}
 
 	/* (non-Javadoc)
@@ -157,12 +157,12 @@ public class PolyFract extends FractalBase {
 		this.power = pow;
 	}
 
-	/*public boolean isComplexNumConst() {
+	public boolean isComplexNumConst() {
 		return this.isComplexNumConst;
 	}
 
 	public void setComplexNumConst(boolean isConstant) {
 		this.isComplexNumConst = isConstant;
-	}*/
+	}
 
 }
