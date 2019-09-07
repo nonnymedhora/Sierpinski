@@ -24,9 +24,6 @@ public class PolyFract extends FractalBase {
 	private boolean isComplexNumConst;
 	private ComplexNumber compConst;
 	
-	private double power;
-	
-	
 	public PolyFract() {
 		super();
 	}
@@ -45,6 +42,15 @@ public class PolyFract extends FractalBase {
 	public PolyFract(int pow, boolean uD, double bd, boolean complexNumIsConst) {
 		this(pow, uD,bd);
 		this.setComplexNumConst(complexNumIsConst);
+	}
+
+	public PolyFract(int pow, boolean uD, double bd, boolean complexNumIsConst, double realVal,
+			double imgVal) {
+		this(pow, uD, bd, complexNumIsConst);
+
+		if (!complexNumIsConst) {
+			this.compConst = new ComplexNumber(realVal, imgVal);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -67,9 +73,10 @@ public class PolyFract extends FractalBase {
 		double bd = this.getBound();
 		double pow = this.getPower();	
 		String type = this.getRowColMixType();
-//System.out.println("isComplexNumConst---->"+(isComplexNumConst));	
-//System.out.println("this.compConst == null---->"+(this.compConst == null));	
-//System.out.println("type---->"+(type));	
+/*System.out.println("isComplexNumConst---->"+(isComplexNumConst));	
+System.out.println("this.compConst == null---->"+(this.compConst == null));	
+System.out.println("(BEFOR)this.compConst == "+this.compConst);
+System.out.println("type---->"+(type));	*/
 		
 		for (int row = 0; row < n; row++) {
 			for (int col = 0; col < n; col++) {
@@ -133,7 +140,7 @@ System.out.println("zy_is_nul____"+(zy==null));	*/
 					// new ComplexNumber(-0.75,0.11);
 					//this.compConst = new ComplexNumber(-0.75, 0.11);
 				}
-				
+/*System.out.println("(AFTER)this.compConst == "+this.compConst);*/
 				int colorRGB;
 				// int gray = /*maxIter - */mand(z0, maxIter);
 				if (diff) {
@@ -153,14 +160,14 @@ System.out.println("zy_is_nul____"+(zy==null));	*/
 	private int polyFract(ComplexNumber z1, ComplexNumber z2, 
 							int maxItr, double powr, ComplexNumber constant,
 							double boundary) {
-		ComplexNumber z11 = z1.power((int) this.power).plus(constant);
-		ComplexNumber z22 = z2.power((int) this.power).plus(constant);
+		ComplexNumber z11 = z1.power(this.power).plus(constant);
+		ComplexNumber z22 = z2.power(this.power).plus(constant);
 		ComplexNumber zz = z11.plus(z22).plus(constant);
 		for (int t = 0; t < maxIter; t++) {
 			if (zz.abs() > boundary)
 				return t;
-			z11 = z11.power((int) this.power).plus(constant);
-			z22 = z22.power((int) this.power).plus(constant);
+			z11 = z11.power(this.power).plus(constant);
+			z22 = z22.power(this.power).plus(constant);
 			zz = z11.plus(z22).plus(constant);//zz.power((int) power).plus(constant);
 		}
 		return maxIter;
@@ -206,14 +213,6 @@ System.out.println("zy_is_nul____"+(zy==null));	*/
 
 	public void setCompConst(ComplexNumber cConst) {
 		this.compConst = cConst;
-	}
-
-	public double getPower() {
-		return this.power;
-	}
-
-	public void setPower(double pow) {
-		this.power = pow;
 	}
 
 	public boolean isComplexNumConst() {

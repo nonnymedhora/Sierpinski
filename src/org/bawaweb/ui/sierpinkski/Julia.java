@@ -33,8 +33,6 @@ public class Julia extends FractalBase {
 
 	private static final long serialVersionUID = 1987L;
 	
-	private int power;
-	
 	private double complexConst;		//	either this	
 	private ComplexNumber complex; 		// or this
 	private boolean useDiff = false;

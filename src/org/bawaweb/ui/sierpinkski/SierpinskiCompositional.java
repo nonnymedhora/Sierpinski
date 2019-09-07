@@ -364,14 +364,18 @@ class SierpinskiComboPanel extends JPanel {
 	private final JComboBox<Double> polyScaleSizeCombos = new JComboBox<Double>(polyScaleSizeOptions);
 	private final String[] polyTypeOptions = new String[] {"Reverse","Exchange","Single","Duplicate","Exponent","Default"};
 	private final JComboBox<String> polyTypeCombos = new JComboBox<String>(polyTypeOptions);
+	private JTextField polyRealTf = new JTextField(5);
+	private JTextField polyImgTf = new JTextField(5);
+	private final JCheckBox polyKeepConstantCb = new JCheckBox("DynamicConstant",false);
 	
 	//variables_for_poly
 	protected int polyPower;
 	protected boolean polyUseDiff;
 	protected int polyMaxIter;
+	protected boolean polyKeepConst;
 	protected int polySize;			/*	TODO	-	move polySize to common action control variables	*/
 	protected double polyBound;
-	protected String polyType;
+	protected String polyType = "Reverse";
 
 	
 	protected double polyXC;
@@ -504,6 +508,11 @@ class SierpinskiComboPanel extends JPanel {
 		this.polyOptionsPanel.add(new JLabel("Exponent(X):"));
 		this.polyOptionsPanel.add(this.polyExpCombos);		
 		this.polyOptionsPanel.add(this.polyUseDiffCb);
+		this.polyOptionsPanel.add(new JLabel("ComplexConstant - Real (R) "));
+		this.polyOptionsPanel.add(this.polyRealTf);
+		this.polyOptionsPanel.add(new JLabel("Imaginary (*i)"));
+		this.polyOptionsPanel.add(this.polyImgTf);
+		this.polyOptionsPanel.add(this.polyKeepConstantCb);
 		this.polyOptionsPanel.add(new JLabel("Max Iterations:"));
 		this.polyOptionsPanel.add(this.polyMaxIterCombos);	
 		this.polyOptionsPanel.add(new JLabel("RowColumnMixType:"));
@@ -1359,6 +1368,11 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setVisible(true);
 		this.doPolyChoicesCheck();
 	}
+	private void doSetPolyKeepConstantCommand(boolean useConst) {
+		this.polyKeepConst = useConst;
+		this.formulaArea.setVisible(true);
+		this.doPolyChoicesCheck();
+	}
 	private void doSelectPolyTypeCombosCommand(String tp) {
 		this.polyType = tp;
 		this.formulaArea.setVisible(true);
@@ -1595,7 +1609,13 @@ class SierpinskiComboPanel extends JPanel {
 			} else {
 				this.formulaArea.append("\n\nCalculated based on pixel values with a top-left origin");
 			}
-			ff = new PolyFract(this.polyPower, this.polyUseDiff, this.polyBound, true);
+			if (this.polyKeepConst) {
+				ff = new PolyFract(this.polyPower, this.polyUseDiff, this.polyBound, this.polyKeepConst);
+			}else{
+				double polyRealVal = Double.parseDouble(this.polyRealTf.getText());
+				double polyImgVal = Double.parseDouble(this.polyImgTf.getText());
+				ff = new PolyFract(this.polyPower, this.polyUseDiff, this.polyBound, this.polyKeepConst, polyRealVal, polyImgVal);
+			}
 			ff.setUseColorPalette(useCP);
 			ff.setRotation(rot);
 			ff.setRowColMixType(this.polyType);
@@ -2278,6 +2298,17 @@ class SierpinskiComboPanel extends JPanel {
 				doSelectPolyMaxIterCombosCommand(polyMaxIterComboOption);
 			}
 		});
+		
+		this.polyKeepConstantCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetPolyKeepConstantCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetPolyKeepConstantCommand(false);
+				}
+			}
+        });
 		
 		this.polyTypeCombos.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")

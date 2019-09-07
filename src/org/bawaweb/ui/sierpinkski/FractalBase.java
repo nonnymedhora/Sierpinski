@@ -54,6 +54,25 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	static double yC = 0.0;
 	static double scaleSize = 1.0;
 	
+	protected double rotation = 0.0;
+	//	type-1	Reverse
+	//		zx = new ComplexNumber(x0, y0);		zy = new ComplexNumber(y0, x0);
+	//	type-2	Exchange
+	//		zx = new ComplexNumber(x0, 0.0);	zy = new ComplexNumber(0.0, y0);	
+	//
+	//	type-3	Single
+	//		zx = new ComplexNumber(x0, y0);		zy = new ComplexNumber(0.0, 0.0);
+	//	type-4	Duplicate
+	//		zx = zy = new ComplexNumber(x0, y0);
+	//	type-5	Exponent
+	//		zx = new ComplexNumber(x0, y0).power((int)x0);	zy = new ComplexNumber(y0, x0).power((int)y0);
+	//	default	
+	//		zy = new ComplexNumber(x0, 0.0);	zy = new ComplexNumber(y0, 0.0);
+	
+	
+	protected String rowColMixType = "Reverse";
+	protected int power;
+	
 	protected boolean running = false;
 
 	/** Constructor: an instance */
@@ -674,8 +693,6 @@ public abstract class FractalBase extends JFrame implements Runnable {
 
 	}
 	
-	protected double rotation = 0.0;
-	
 	public double getRotation() {
 		return this.rotation;
 	}
@@ -686,20 +703,6 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	
 
 	
-	//	type-1	Reverse
-	//		zx = new ComplexNumber(x0, y0);		zy = new ComplexNumber(y0, x0);
-	//	type-2	Exchange
-	//		zx = new ComplexNumber(x0, 0.0);	zy = new ComplexNumber(0.0, y0);	
-	//
-	//	type-3	Single
-	//		zx = new ComplexNumber(x0, y0);		zy = new ComplexNumber(0.0, 0.0);
-	//	type-4	Duplicate
-	//		zx = zy = new ComplexNumber(x0, y0);
-	//	type-5	Exponent
-	//		zx = new ComplexNumber(x0, y0).power((int)x0);	zy = new ComplexNumber(y0, x0).power((int)y0);
-	//	default	
-	//		zy = new ComplexNumber(x0, 0.0);	zy = new ComplexNumber(y0, 0.0);
-	private String rowColMixType = "Reverse";
 
 
 	public String getRowColMixType() {
@@ -708,6 +711,14 @@ public abstract class FractalBase extends JFrame implements Runnable {
 
 	public void setRowColMixType(String ty) {
 		this.rowColMixType=ty;
+	}
+
+	public int getPower() {
+		return this.power;
+	}
+
+	public void setPower(int pow) {
+		this.power = pow;
 	}
 
 	class Line {
