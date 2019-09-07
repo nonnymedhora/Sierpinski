@@ -683,6 +683,32 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	public void setRotation(double rot) {
 		this.rotation = rot;
 	}
+	
+
+	
+	//	type-1	Reverse
+	//		zx = new ComplexNumber(x0, y0);		zy = new ComplexNumber(y0, x0);
+	//	type-2	Exchange
+	//		zx = new ComplexNumber(x0, 0.0);	zy = new ComplexNumber(0.0, y0);	
+	//
+	//	type-3	Single
+	//		zx = new ComplexNumber(x0, y0);		zy = new ComplexNumber(0.0, 0.0);
+	//	type-4	Duplicate
+	//		zx = zy = new ComplexNumber(x0, y0);
+	//	type-5	Exponent
+	//		zx = new ComplexNumber(x0, y0).power((int)x0);	zy = new ComplexNumber(y0, x0).power((int)y0);
+	//	default	
+	//		zy = new ComplexNumber(x0, 0.0);	zy = new ComplexNumber(y0, 0.0);
+	private String rowColMixType = "Reverse";
+
+
+	public String getRowColMixType() {
+		return this.rowColMixType;
+	}
+
+	public void setRowColMixType(String ty) {
+		this.rowColMixType=ty;
+	}
 
 	class Line {
 		private double x, y, length, angle;

@@ -9,6 +9,8 @@ import java.awt.Graphics2D;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
+
 
 /**
  * @author Navroz
@@ -23,7 +25,8 @@ public class PolyFract extends FractalBase {
 	private ComplexNumber compConst;
 	
 	private double power;
-
+	
+	
 	public PolyFract() {
 		super();
 	}
@@ -62,17 +65,73 @@ public class PolyFract extends FractalBase {
 
 		int max = getMaxIter();	//255
 		double bd = this.getBound();
-		double pow = this.getPower();
+		double pow = this.getPower();	
+		String type = this.getRowColMixType();
+//System.out.println("isComplexNumConst---->"+(isComplexNumConst));	
+//System.out.println("this.compConst == null---->"+(this.compConst == null));	
+//System.out.println("type---->"+(type));	
 		
 		for (int row = 0; row < n; row++) {
 			for (int col = 0; col < n; col++) {
 				double x0 = xc - size / 2 + size * row / n;
 				double y0 = yc - size / 2 + size * col / n;
-				ComplexNumber zx = new ComplexNumber(x0, 0.0);
-				ComplexNumber zy = new ComplexNumber(0.0, y0);
+				
+				ComplexNumber zx = null;
+				ComplexNumber zy = null;
+				
+				switch (type) {
+					case "Reverse":
+						zx = new ComplexNumber(x0, y0);
+						zy = new ComplexNumber(y0, x0);
+						break;
+					case "Exchange":
+						zx = new ComplexNumber(x0, 0.0);
+						zy = new ComplexNumber(0.0, y0);
+						break;
+					case "Single":
+						zx = new ComplexNumber(x0, y0);
+						zy = new ComplexNumber(0.0, 0.0);
+					case "Duplicate":
+						zx = zy = new ComplexNumber(x0, y0);
+						break;
+					case	"Exponent"	:
+						zx = new ComplexNumber(x0, y0).power((int)x0);
+						zy = new ComplexNumber(y0, x0).power((int)y0);
+					case	"Default"	:
+						zx = new ComplexNumber(x0, 0.0);
+						zy = new ComplexNumber(y0, 0.0);
+					default:
+						zx = new ComplexNumber(x0, 0.0);
+						zy = new ComplexNumber(y0, 0.0);
+						break;
 
-				if (isComplexNumConst || this.compConst == null) {
-					this.compConst = zx.plus(zy);
+				}/*
+System.out.println("zx_is_nul____"+(zx==null));	
+System.out.println("zy_is_nul____"+(zy==null));	*/			
+				
+///////////////////////////////////////////////////////////////////////////				
+//				/////////////////////////////////////////
+//				//	reverse complex numbers
+//				ComplexNumber zx = new ComplexNumber(x0, y0);
+//				ComplexNumber zy = new ComplexNumber(y0, x0);
+//
+//				//	exchange
+//				/*ComplexNumber zx = new ComplexNumber(x0, 0.0);
+//				ComplexNumber zy = 				new ComplexNumber(0.0, y0);
+////////////////////////////////////////////////////////////////////////*/
+				
+				if (this.isComplexNumConst || this.compConst == null) {
+					this.compConst =	zx.plus(zy);
+/*if (row<5&&col<5) {
+	System.out.println("this.compConst is " + this.compConst);
+	//this.compConst =	 zx.power((int)pow).plus(zy.power((int)pow));
+}*/
+					
+					//c=-0.74543+0.11301*i
+					//this.compConst = new ComplexNumber(-0.74543, 0.11301);
+					
+					// new ComplexNumber(-0.75,0.11);
+					//this.compConst = new ComplexNumber(-0.75, 0.11);
 				}
 				
 				int colorRGB;

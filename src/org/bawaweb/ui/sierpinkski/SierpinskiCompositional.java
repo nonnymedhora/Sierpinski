@@ -362,6 +362,8 @@ class SierpinskiComboPanel extends JPanel {
 		TODO	-	move polyScaleSizeOptions to common action controls	*/
 	private final Double[] polyScaleSizeOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
 	private final JComboBox<Double> polyScaleSizeCombos = new JComboBox<Double>(polyScaleSizeOptions);
+	private final String[] polyTypeOptions = new String[] {"Reverse","Exchange","Single","Duplicate","Exponent","Default"};
+	private final JComboBox<String> polyTypeCombos = new JComboBox<String>(polyTypeOptions);
 	
 	//variables_for_poly
 	protected int polyPower;
@@ -369,6 +371,7 @@ class SierpinskiComboPanel extends JPanel {
 	protected int polyMaxIter;
 	protected int polySize;			/*	TODO	-	move polySize to common action control variables	*/
 	protected double polyBound;
+	protected String polyType;
 
 	
 	protected double polyXC;
@@ -502,7 +505,9 @@ class SierpinskiComboPanel extends JPanel {
 		this.polyOptionsPanel.add(this.polyExpCombos);		
 		this.polyOptionsPanel.add(this.polyUseDiffCb);
 		this.polyOptionsPanel.add(new JLabel("Max Iterations:"));
-		this.polyOptionsPanel.add(this.polyMaxIterCombos);		
+		this.polyOptionsPanel.add(this.polyMaxIterCombos);	
+		this.polyOptionsPanel.add(new JLabel("RowColumnMixType:"));
+		this.polyOptionsPanel.add(this.polyTypeCombos);		
 		this.polyOptionsPanel.add(new  JLabel("Area Size:"));
 		this.polyOptionsPanel.add(this.polySizeCombos);
 		this.polyOptionsPanel.add(new JLabel("Boundary:"));
@@ -1354,6 +1359,11 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setVisible(true);
 		this.doPolyChoicesCheck();
 	}
+	private void doSelectPolyTypeCombosCommand(String tp) {
+		this.polyType = tp;
+		this.formulaArea.setVisible(true);
+		this.doPolyChoicesCheck();
+	}
 	private void doSelectPolyLoopLimitCombosCommand(Integer limit) {
 		this.polySize = limit;
 	}
@@ -1588,6 +1598,7 @@ class SierpinskiComboPanel extends JPanel {
 			ff = new PolyFract(this.polyPower, this.polyUseDiff, this.polyBound, true);
 			ff.setUseColorPalette(useCP);
 			ff.setRotation(rot);
+			ff.setRowColMixType(this.polyType);
 			FractalBase.setxC(this.polyXC);
 			FractalBase.setxC(this.polyYC);
 			FractalBase.setScaleSize(this.polyScaleSize);
@@ -1747,7 +1758,7 @@ class SierpinskiComboPanel extends JPanel {
 			new ZoomInBox(frame);
 		}*/
 
-		if ( !((this.comboChoice.equals(MANDELBROT) || this.comboChoice.equals(JULIA)) || 
+		if ( !((this.comboChoice.equals(MANDELBROT) || this.comboChoice.equals(JULIA)|| this.comboChoice.equals(POLY)) || 
 				( this.comboChoice.equals(DIY) && !this.diyApolloRb.isSelected()) )) {
 			//	Threaded -- so as the FractalBase depth increases
 			// the iteration's image is rendered recursively till depth = 0
@@ -2267,7 +2278,17 @@ class SierpinskiComboPanel extends JPanel {
 				doSelectPolyMaxIterCombosCommand(polyMaxIterComboOption);
 			}
 		});
-
+		
+		this.polyTypeCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<String> cb = (JComboBox<String>) e.getSource();
+				String polyTypeComboOption = (String) cb.getSelectedItem();
+				doSelectPolyTypeCombosCommand(polyTypeComboOption);
+			}
+		});
+		
 		this.polySizeCombos.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
 			@Override
