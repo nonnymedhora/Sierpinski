@@ -18,8 +18,6 @@ import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
 public class FieldLines extends FractalBase {
 	private static final long serialVersionUID = 166L;
 
-	private double bound = 2.0;
-
 	private double complexConst; // either this
 	private ComplexNumber complex; // or this
 	private boolean useDiff = false;
@@ -84,9 +82,9 @@ public class FieldLines extends FractalBase {
 //System.out.println("row is "+row+" and col is "+col+" and this.complex is => "+this.complex.toString());
 				int colorRGB=0;
 				if (diff) {
-					colorRGB = fieldLines(z0, max, bound);// ? 0 : 255;
+					colorRGB = fieldLines(z0, max, this.bound);// ? 0 : 255;
 				} else {
-					colorRGB = max - fieldLines(z0, max, bound);// ? 255 : 0);
+					colorRGB = max - fieldLines(z0, max, this.bound);// ? 255 : 0);
 				}
 				Color color;
 				color = getPixelDisplayColor(row, col, colorRGB, diff);
@@ -150,14 +148,6 @@ public class FieldLines extends FractalBase {
 	@Override
 	protected String getFractalShapeTitle() {		
 		return "FieldLines";
-	}
-
-	public double getBound() {
-		return bound;
-	}
-
-	public void setBound(double bound) {
-		this.bound = bound;
 	}
 
 	public double getComplexConst() {

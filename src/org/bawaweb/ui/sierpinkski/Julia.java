@@ -37,14 +37,13 @@ public class Julia extends FractalBase {
 	private ComplexNumber complex; 		// or this
 	private boolean useDiff = false;
 	private boolean isComplexNumConst=false;
+	private boolean useSineCalc = false;
 	
 	public final ComplexNumber C1 = new ComplexNumber(-0.74543,0.11301);	//c=-0.74543+0.11301*i
 	public final ComplexNumber C2 = new ComplexNumber(-0.75,0.11);			//c= -0.75+0.11*i
 	public final ComplexNumber C3 = new ComplexNumber(-0.1,0.651);			//c=-0.1+0.651*i
 	
 	
-	private double bound=2.0;
-
 	public Julia() {
 		super();
 	}
@@ -89,24 +88,24 @@ public class Julia extends FractalBase {
 	 * @param uDiff
 	 */
 	public Julia(int mul, ComplexNumber comp, boolean uDiff) {
-		this(mul,comp);
+		this(mul, comp);
 		this.useDiff = uDiff;
 	}
-	
 
 	public Julia(int mul, String comp, boolean uDiff) {
-		this(mul,comp);
+		this(mul, comp);
 		this.useDiff = uDiff;
 	}
+
 	public Julia(int mul, String comp, double bd, boolean uDiff) {
-		this(mul,comp,uDiff);
+		this(mul, comp, uDiff);
 		this.setBound(bd);
 	}
 
 	public Julia(int m, boolean uDiff, double realVal, double imagVal) {
-		this.power=m;
-		this.useDiff=uDiff;
-		this.complex=new ComplexNumber(realVal,imagVal);
+		this.power = m;
+		this.useDiff = uDiff;
+		this.complex = new ComplexNumber(realVal, imagVal);
 	}
 
 	public Julia(int mul, String comp) {
@@ -128,7 +127,7 @@ public class Julia extends FractalBase {
 	}
 
 	public Julia(int m, double con, double bd, boolean uDiff) {
-		this(m,con,uDiff);
+		this(m, con, uDiff);
 		this.setBound(bd);
 	}
 
@@ -136,20 +135,33 @@ public class Julia extends FractalBase {
 		this();
 		this.power = m;
 		this.useDiff = uDiff;
-		this.isComplexNumConst=keepConst;
-		if(keepConst){
-			this.complex=null;
+		this.isComplexNumConst = keepConst;
+		if (keepConst) {
+			this.complex = null;
 		}
 	}
 
 	public Julia(int m, boolean uDiff, double bd, boolean keepConst) {
-		this(m,uDiff,keepConst);
+		this(m, uDiff, keepConst);
 		this.setBound(bd);
+	}
+	
+	public Julia(int m, boolean uDiff, double bd, boolean keepConst,boolean useSine) {
+		this(m, uDiff, bd,keepConst);
+		this.setUseSineCalc(useSine);
 	}
 
 	public Julia(int m, boolean uDiff, double bd, double realVal, double imgVal) {
-		this(m,uDiff,realVal,imgVal);
+		this(m, uDiff, realVal, imgVal);
 		this.setBound(bd);
+	}
+	
+	public Julia(int m, boolean uDiff, double bd, double realVal, double imgVal, boolean useSine) {
+		this(m, uDiff, bd, realVal, imgVal);
+		this.setUseSineCalc(useSine);
+		if (useSine && this.complex != null) {
+			this.complex = this.complex.sin();
+		}
 	}
 
 	/**
@@ -208,12 +220,12 @@ public class Julia extends FractalBase {
 		this.useDiff = useDiff;
 	}
 
-	public double getBound() {
-		return this.bound;
+	public boolean isUseSineCalc() {
+		return this.useSineCalc;
 	}
 
-	public void setBound(double bod) {
-		this.bound = bod;
+	public void setUseSineCalc(boolean useSine) {
+		this.useSineCalc = useSine;
 	}
 
 	/* (non-Javadoc)
@@ -240,8 +252,12 @@ public class Julia extends FractalBase {
 				double x0 = xc - size / 2 + size * row / n;
 				double y0 = yc - size / 2 + size * col / n;
 				ComplexNumber z0 = new ComplexNumber(x0, y0);
-				if (isComplexNumConst || this.complex == null) {
-					this.complex = z0;
+				if (this.isComplexNumConst || this.complex == null) {
+					if (!this.useSineCalc) {
+						this.complex = z0;
+					} else {
+						this.complex = z0.sin();
+					}
 				}
 				int colorRGB;
 				if (diff) {
@@ -358,5 +374,37 @@ c = 0.355 + 0.355i
 c = -0.54 + 0.54i
 c = -0.4 + -0.59i
 c = 0.355534 - 0.337292i
-/
-*/
+/////////////////////////////////////////////////
+http://paulbourke.net/fractals/sinjulia/
+If you are wondering how to compute the sine of a complex number, 
+you can use the following relationships:
+
+xk+1 = sin(xk) cosh(yk)
+yk+1 = cos(xk) sinh(yk)
+
+where zk = xk + i yk
+
+ 	
+c = 1 + 0i
+c = 1 + 0.1i
+c = 1 + 0.2i
+c = 1 + 0.3i
+c = 1 + 0.4i
+c = 1 + 0.5i
+c = 1 + i
+c = 3i/2
+c = 0.984808 + 0.173648i
+c = -1.29904 + -0.75i
+c = 1.17462 + 0.427525i
+c = 1.87939 + 0.68404i
+c = 1 + i
+c = -0.2 + i
+
+Contributions by Klaus Messner
+
+c = 1 + 0i
+x = -1.201171875, y = -0.963541666666666
+
+c = 0 + i
+x = -0.5390625, y = -1.4296875 
+ */

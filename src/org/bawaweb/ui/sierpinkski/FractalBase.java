@@ -592,6 +592,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 
 	protected boolean useColorPalette = false;
 	protected boolean useComputeColor = !this.isUseColorPalette();
+	protected double bound = 2.0;
 
 	public boolean isUseColorPalette() {
 		return this.useColorPalette;
@@ -719,6 +720,14 @@ public abstract class FractalBase extends JFrame implements Runnable {
 
 	public void setPower(int pow) {
 		this.power = pow;
+	}
+
+	public double getBound() {
+		return this.bound;
+	}
+
+	public void setBound(double bod) {
+		this.bound = bod;
 	}
 
 	class Line {
@@ -973,6 +982,19 @@ public abstract class FractalBase extends JFrame implements Runnable {
 
 			}
 			return new ComplexNumber(1.0,0.0);	//	^0==1
+		}
+
+		public ComplexNumber sine() {
+			double sineR = Math.sin(this.real) * Math.cosh(this.imaginary);
+			double sineI = Math.cos(this.real) * Math.sinh(this.imaginary);
+			return new ComplexNumber(sineR,sineI);
+		}
+		
+		public ComplexNumber cosine() {
+			//cos(x)cosh(y) - isin(x)sinh(y)
+			double cosR = Math.cos(this.real) * Math.cosh(this.imaginary);
+			double cosI = Math.sin(this.real) * Math.sinh(this.imaginary);
+			return new ComplexNumber(cosR,cosI*-1);
 		}
 		
 	}

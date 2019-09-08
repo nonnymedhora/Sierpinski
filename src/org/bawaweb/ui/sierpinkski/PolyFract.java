@@ -20,7 +20,6 @@ public class PolyFract extends FractalBase {
 
 	private static final long serialVersionUID = 14565L;
 	private boolean useDiff = false;
-	private double bound = 2.0;
 	private boolean isComplexNumConst;
 	private ComplexNumber compConst;
 	
@@ -197,14 +196,6 @@ System.out.println("zy_is_nul____"+(zy==null));	*/
 			}
 		});
 
-	}
-
-	public double getBound() {
-		return this.bound;
-	}
-
-	public void setBound(double bd) {
-		this.bound = bd;
 	}
 
 	public ComplexNumber getCompConst() {

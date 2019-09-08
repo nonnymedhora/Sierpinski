@@ -19,19 +19,16 @@ import javax.swing.SwingUtilities;
 public class Mandelbrot extends FractalBase {
 
 	private int mag;
-	private int exp;
 	private boolean useDiff = false;
 //	private int size;		//0-599 4 ltr
 	
 	private boolean isComplexNumConst;
 	private ComplexNumber compConst;// = new ComplexNumber(-0.75, 0.11);
 	
-	private double bound=2.0;
-
 	public Mandelbrot() {
 		super();
 		this.mag = 2;
-		this.exp = 2;
+		this.power = 2;
 	}
 
 	/**
@@ -41,7 +38,7 @@ public class Mandelbrot extends FractalBase {
 	public Mandelbrot(int mg) {
 		super();
 		this.mag = mg;
-		this.exp = 2;
+		this.power = 2;
 		this.isComplexNumConst=true;
 		this.compConst=null;
 	}
@@ -52,7 +49,7 @@ public class Mandelbrot extends FractalBase {
 	 */
 	public Mandelbrot(int mg, int ep) {
 		this(mg);
-		this.exp = ep;
+		this.power = ep;
 	}
 
 	/**
@@ -137,9 +134,9 @@ public class Mandelbrot extends FractalBase {
 				int colorRGB;
 				// int gray = /*maxIter - */mand(z0, maxIter);
 				if (diff) {
-					colorRGB = mand(z0, max, exp, this.compConst, bd);
+					colorRGB = mand(z0, max, this.power, this.compConst, bd);
 				} else {
-					colorRGB = max - mand(z0, max, exp, this.compConst,bd);
+					colorRGB = max - mand(z0, max, this.power, this.compConst,bd);
 				}
 				Color color = this.getPixelDisplayColor(row, col, colorRGB, diff);
 
@@ -150,12 +147,12 @@ public class Mandelbrot extends FractalBase {
 	}
 
 	
-	private int mand(ComplexNumber z0, int maxIterations, int power, ComplexNumber constant, double bd) {
+	private int mand(ComplexNumber z0, int maxIterations, int pwr, ComplexNumber constant, double bd) {
 		ComplexNumber z = z0;
 		for (int t = 0; t < maxIterations; t++) {
 			if (z.abs() > bd)
 				return t;
-			z = z.power(power).plus(constant);
+			z = z.power(pwr).plus(constant);
 		}
 		return maxIterations;
 	}
@@ -179,14 +176,6 @@ public class Mandelbrot extends FractalBase {
 	@Override
 	protected String getFractalShapeTitle() {
 		return "Bawaz _ Mandelbrot";
-	}
-
-	public double getBound() {
-		return this.bound;
-	}
-
-	public void setBound(double bod) {
-		this.bound = bod;
 	}
 
 }
