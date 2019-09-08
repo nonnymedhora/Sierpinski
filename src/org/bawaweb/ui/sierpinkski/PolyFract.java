@@ -77,6 +77,13 @@ System.out.println("this.compConst == null---->"+(this.compConst == null));
 System.out.println("(BEFOR)this.compConst == "+this.compConst);
 System.out.println("type---->"+(type));	*/
 		
+		String func2Apply = this.useFuncConst;
+		/*boolean applyFun = this.applyFuncConst;
+		String func2Apply = "None";
+		if (applyFun) {
+			func2Apply = this.useFuncConst;
+		}*/
+		
 		for (int row = 0; row < n; row++) {
 			for (int col = 0; col < n; col++) {
 				double x0 = xc - size / 2 + size * row / n;
@@ -127,7 +134,31 @@ System.out.println("zy_is_nul____"+(zy==null));	*/
 ////////////////////////////////////////////////////////////////////////*/
 				
 				if (this.isComplexNumConst || this.compConst == null) {
-					this.compConst =	zx.plus(zy);
+						this.compConst = zx.plus(zy);
+				}
+					/*if (!applyFun) {
+						this.compConst = zx.plus(zy);
+					} else {*/
+						
+						switch (func2Apply) {
+						case "Sine"	:
+								this.compConst = this.compConst.sine();	//z0.sin();
+								break;
+						case "Cosine" :
+								this.compConst = this.compConst.cosine();	//z0.cos();
+								break;
+						case "Tan" :
+								this.compConst = this.compConst.tangent();	//z0.tan();
+								break;
+						case "None" :
+								this.compConst = zx.plus(zy);
+								break;
+						default:
+							this.compConst = zx.plus(zy);
+							break;
+						}
+					
+					/*this.compConst =	zx.plus(zy);*/
 /*if (row<5&&col<5) {
 	System.out.println("this.compConst is " + this.compConst);
 	//this.compConst =	 zx.power((int)pow).plus(zy.power((int)pow));
@@ -138,7 +169,7 @@ System.out.println("zy_is_nul____"+(zy==null));	*/
 					
 					// new ComplexNumber(-0.75,0.11);
 					//this.compConst = new ComplexNumber(-0.75, 0.11);
-				}
+				/*}*/
 /*System.out.println("(AFTER)this.compConst == "+this.compConst);*/
 				int colorRGB;
 				// int gray = /*maxIter - */mand(z0, maxIter);
@@ -151,6 +182,7 @@ System.out.println("zy_is_nul____"+(zy==null));	*/
 
 				setPixel(row, n - 1 - col, color.getRGB());
 
+				/*}*/
 			}
 		}
 		

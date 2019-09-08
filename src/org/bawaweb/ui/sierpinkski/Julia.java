@@ -146,23 +146,23 @@ public class Julia extends FractalBase {
 		this.setBound(bd);
 	}
 	
-	public Julia(int m, boolean uDiff, double bd, boolean keepConst,boolean useSine) {
+	/*public Julia(int m, boolean uDiff, double bd, boolean keepConst,boolean useSine) {
 		this(m, uDiff, bd,keepConst);
 		this.setUseSineCalc(useSine);
-	}
+	}*/
 
 	public Julia(int m, boolean uDiff, double bd, double realVal, double imgVal) {
 		this(m, uDiff, realVal, imgVal);
 		this.setBound(bd);
 	}
 	
-	public Julia(int m, boolean uDiff, double bd, double realVal, double imgVal, boolean useSine) {
+	/*public Julia(int m, boolean uDiff, double bd, double realVal, double imgVal, boolean useSine) {
 		this(m, uDiff, bd, realVal, imgVal);
 		this.setUseSineCalc(useSine);
 		if (useSine && this.complex != null) {
 			this.complex = this.complex.sin();
 		}
-	}
+	}*/
 
 	/**
 	 * @return the power
@@ -245,20 +245,48 @@ public class Julia extends FractalBase {
 		
 		int max = getMaxIter();
 		double bd = this.getBound();
-		
-		
+		boolean applyFun = this.applyFuncConst;
+		String func2Apply = this.useFuncConst;
+/*		String func2Apply = "None";
+		if (applyFun) {
+			func2Apply = this.useFuncConst;
+		}
+*/		
 		for (int row = 0; row < n; row++) {
 			for (int col = 0; col < n; col++) {
 				double x0 = xc - size / 2 + size * row / n;
 				double y0 = yc - size / 2 + size * col / n;
 				ComplexNumber z0 = new ComplexNumber(x0, y0);
-				if (this.isComplexNumConst || this.complex == null) {
-					if (!this.useSineCalc) {
+				if (this.isComplexNumConst || this.complex == null) {this.complex = z0;}
+					/*if (!applyFun) {
+						this.complex = z0;
+					} else {*/
+						
+						switch (func2Apply) {
+						case "Sine"	:
+								this.complex = z0.sine();	//z0.sin();
+								break;
+						case "Cosine" :
+								this.complex = z0.cosine();	//z0.cos();
+								break;
+						case "Tan" :
+								this.complex = z0.tangent();	//z0.tan();
+								break;
+						case "None" :
+								this.complex = z0;
+								break;
+						default:
+							this.complex = z0;
+							break;
+						}
+					/*}*/
+
+					/*if (!this.useSineCalc) {
 						this.complex = z0;
 					} else {
 						this.complex = z0.sin();
-					}
-				}
+					}*/
+				
 				int colorRGB;
 				if (diff) {
 					colorRGB = julia(z0, max, bd);

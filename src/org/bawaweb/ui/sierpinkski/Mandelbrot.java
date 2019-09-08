@@ -23,7 +23,7 @@ public class Mandelbrot extends FractalBase {
 //	private int size;		//0-599 4 ltr
 	
 	private boolean isComplexNumConst;
-	private ComplexNumber compConst;// = new ComplexNumber(-0.75, 0.11);
+	private ComplexNumber complex;// = new ComplexNumber(-0.75, 0.11);
 	
 	public Mandelbrot() {
 		super();
@@ -40,7 +40,7 @@ public class Mandelbrot extends FractalBase {
 		this.mag = mg;
 		this.power = 2;
 		this.isComplexNumConst=true;
-		this.compConst=null;
+		this.complex=null;
 	}
 
 	/**
@@ -70,14 +70,14 @@ public class Mandelbrot extends FractalBase {
 	 */
 	public Mandelbrot(int mg, int ep, boolean useD, ComplexNumber complexConst) {
 		this(mg, ep, useD);
-		this.compConst = complexConst;
+		this.complex = complexConst;
 		this.isComplexNumConst = false;
 	}
 	
 	public Mandelbrot(int mg, int ep, boolean useD, double real, double img) {
 		this(mg,ep,useD);
 //		System.out.println(" Mandelbrot(int mg("+mg+"), int ep("+ep+"), boolean useD, double real("+real+"), double img("+img+"))");
-		this.compConst = new ComplexNumber(real, img);
+		this.complex = new ComplexNumber(real, img);
 		this.isComplexNumConst = false;
 	}
 	
@@ -121,6 +121,13 @@ public class Mandelbrot extends FractalBase {
 		double bd = this.getBound();
 		int max = getMaxIter();
 
+		boolean applyFun = this.applyFuncConst;
+		String func2Apply = this.useFuncConst;
+		/*String func2Apply = "None";
+		if (applyFun) {
+			func2Apply = this.useFuncConst;
+		}*/
+		
 		int n = getAreaSize();//599;//512;	(0-599)
 		//System.out.println("here with depth " + depth);
 		for (int row = 0; row < n; row++) {
@@ -128,15 +135,38 @@ public class Mandelbrot extends FractalBase {
 				double x0 = xc - size / 2 + size * row / n;
 				double y0 = yc - size / 2 + size * col / n;
 				ComplexNumber z0 = new ComplexNumber(x0, y0);
-				if (isComplexNumConst || this.compConst == null) {
-					this.compConst = z0;
-				}
+				if (isComplexNumConst || this.complex == null) {this.complex = z0;}
+
+					/*if (!applyFun) {
+						this.complex = z0;
+					} else {*/
+						
+						switch (func2Apply) {
+						case "Sine"	:
+								this.complex = z0.sine();	//z0.sin();
+								break;
+						case "Cosine" :
+								this.complex = z0.cosine();	//z0.cos();
+								break;
+						case "Tan" :
+								this.complex = z0.tangent();	//z0.tan();
+								break;
+						case "None" :
+								this.complex = z0;
+								break;
+						default:
+							this.complex = z0;
+							break;
+						}
+					/*}*/
+					/*this.compConst = z0;*/
+				
 				int colorRGB;
 				// int gray = /*maxIter - */mand(z0, maxIter);
 				if (diff) {
-					colorRGB = mand(z0, max, this.power, this.compConst, bd);
+					colorRGB = mand(z0, max, this.power, this.complex, bd);
 				} else {
-					colorRGB = max - mand(z0, max, this.power, this.compConst,bd);
+					colorRGB = max - mand(z0, max, this.power, this.complex,bd);
 				}
 				Color color = this.getPixelDisplayColor(row, col, colorRGB, diff);
 

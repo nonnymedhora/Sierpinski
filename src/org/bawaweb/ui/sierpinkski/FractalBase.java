@@ -73,6 +73,9 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	protected String rowColMixType = "Reverse";
 	protected int power;
 	
+	protected boolean applyFuncConst = false;
+	protected String useFuncConst = "None";	//	others are "Sine", "Cosine", "Tangent"
+	
 	protected boolean running = false;
 
 	/** Constructor: an instance */
@@ -730,6 +733,22 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		this.bound = bod;
 	}
 
+	public boolean isApplyFuncConst() {
+		return this.applyFuncConst;
+	}
+
+	public void setApplyFuncConst(boolean applyFun) {
+		this.applyFuncConst = applyFun;
+	}
+
+	public String getUseFuncConst() {
+		return this.useFuncConst;
+	}
+
+	public void setUseFuncConst(String useFuncConst) {
+		this.useFuncConst = useFuncConst;
+	}
+
 	class Line {
 		private double x, y, length, angle;
 		
@@ -928,8 +947,10 @@ public abstract class FractalBase extends JFrame implements Runnable {
 			return Math.hypot(real, imaginary);
 		}
 		
+		/*public final ComplexNumber one = new ComplexNumber(1.0, 0.0);*/
 
 	    // return a new Complex object whose value is the complex exponential of this
+		// return e ^ z
 	    public ComplexNumber exp() {
 	        return new ComplexNumber(Math.exp(real) * Math.cos(imaginary), Math.exp(real) * Math.sin(imaginary));
 	    }
@@ -990,11 +1011,27 @@ public abstract class FractalBase extends JFrame implements Runnable {
 			return new ComplexNumber(sineR,sineI);
 		}
 		
+		public ComplexNumber inverseSine(){
+			return new ComplexNumber(1.0, 0.0).divides(this.sine());
+		}
+		
 		public ComplexNumber cosine() {
-			//cos(x)cosh(y) - isin(x)sinh(y)
+			// cos(x)*cosh(y) - isin(x)*sinh(y)
 			double cosR = Math.cos(this.real) * Math.cosh(this.imaginary);
-			double cosI = Math.sin(this.real) * Math.sinh(this.imaginary);
-			return new ComplexNumber(cosR,cosI*-1);
+			double cosI = -Math.sin(this.real) * Math.sinh(this.imaginary);
+			return new ComplexNumber(cosR, cosI);
+		}
+		
+		public ComplexNumber inverseCosine(){
+			return new ComplexNumber(1.0, 0.0).divides(this.cosine());
+		}
+		
+		public ComplexNumber tangent(){
+			return this.sine().divides(this.cosine());
+		}
+		
+		public ComplexNumber inverseTangent(){
+			return new ComplexNumber(1.0, 0.0).divides(this.tangent());
 		}
 		
 	}
