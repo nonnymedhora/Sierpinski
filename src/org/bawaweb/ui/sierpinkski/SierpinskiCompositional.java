@@ -364,7 +364,7 @@ class SierpinskiComboPanel extends JPanel {
 		TODO	-	move polyScaleSizeOptions to common action controls	*/
 	private final Double[] polyScaleSizeOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
 	private final JComboBox<Double> polyScaleSizeCombos = new JComboBox<Double>(polyScaleSizeOptions);
-	private final String[] polyTypeOptions = new String[] {"Reverse","Exchange","Single","Duplicate","Exponent","Default"};
+	private final String[] polyTypeOptions = new String[] {"Reverse","Exchange","Single","Duplicate","Exponent","Power","Default"};
 	private final JComboBox<String> polyTypeCombos = new JComboBox<String>(polyTypeOptions);
 	private JTextField polyRealTf = new JTextField(5);
 	private JTextField polyImgTf = new JTextField(5);

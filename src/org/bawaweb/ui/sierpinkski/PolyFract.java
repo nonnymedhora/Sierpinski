@@ -107,7 +107,10 @@ System.out.println("type---->"+(type));	*/
 					case "Duplicate":
 						zx = zy = new ComplexNumber(x0, y0);
 						break;
-					case	"Exponent"	:
+					case "Exponent"	:
+						zx = new ComplexNumber(x0, 0.0).exp();
+						zy = new ComplexNumber(y0, 0.0).exp();
+					case	"Power"	:
 						zx = new ComplexNumber(x0, y0).power((int)x0);
 						zy = new ComplexNumber(y0, x0).power((int)y0);
 					case	"Default"	:

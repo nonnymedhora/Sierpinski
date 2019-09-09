@@ -64,8 +64,11 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	//		zx = new ComplexNumber(x0, y0);		zy = new ComplexNumber(0.0, 0.0);
 	//	type-4	Duplicate
 	//		zx = zy = new ComplexNumber(x0, y0);
-	//	type-5	Exponent
+	//	type-5	Exponent	pOWER
 	//		zx = new ComplexNumber(x0, y0).power((int)x0);	zy = new ComplexNumber(y0, x0).power((int)y0);
+	//	type-6	Exponent	(e)
+	//		zx = new ComplexNumber(x0,0.0).exp();		zy	=	new ComplexNumber(y0,0.0).exp();
+	//
 	//	default	
 	//		zy = new ComplexNumber(x0, 0.0);	zy = new ComplexNumber(y0, 0.0);
 	
