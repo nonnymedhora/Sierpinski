@@ -76,7 +76,6 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	protected String rowColMixType = "Reverse";
 	protected int power;
 	
-	protected boolean applyFuncConst = false;
 	protected String useFuncConst = "None";	//	others are "Sine", "Cosine", "Tangent"
 	
 	protected boolean running = false;
@@ -734,14 +733,6 @@ public abstract class FractalBase extends JFrame implements Runnable {
 
 	public void setBound(double bod) {
 		this.bound = bod;
-	}
-
-	public boolean isApplyFuncConst() {
-		return this.applyFuncConst;
-	}
-
-	public void setApplyFuncConst(boolean applyFun) {
-		this.applyFuncConst = applyFun;
 	}
 
 	public String getUseFuncConst() {

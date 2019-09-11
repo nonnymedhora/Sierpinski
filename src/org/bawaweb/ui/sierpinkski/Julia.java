@@ -245,60 +245,49 @@ public class Julia extends FractalBase {
 		
 		int max = getMaxIter();
 		double bd = this.getBound();
-		boolean applyFun = this.applyFuncConst;
+
 		String func2Apply = this.useFuncConst;
-/*		String func2Apply = "None";
-		if (applyFun) {
-			func2Apply = this.useFuncConst;
-		}
-*/		System.out.println("this.complex==null  "+(this.complex==null ));
+/*System.out.println("this.complex==null  "+(this.complex==null ));
 System.out.println("this.isComplexNumConst  --  "+this.isComplexNumConst);
 System.out.println("this.isComplexNumConst || this.complex == null  is  "+(this.isComplexNumConst || this.complex == null));
-System.out.println("this.complex==="+this.complex);
+System.out.println("this.complex==="+this.complex);*/
+
 		for (int row = 0; row < n; row++) {
 			for (int col = 0; col < n; col++) {
 				double x0 = xc - size / 2 + size * row / n;
 				double y0 = yc - size / 2 + size * col / n;
 				ComplexNumber z0 = new ComplexNumber(x0, y0);
-				if (this.isComplexNumConst || this.complex == null) {this.complex = z0;}
-					/*if (!applyFun) {
-						this.complex = z0;
-					} else {*/
-						
-						switch (func2Apply) {
-						case "Sine"	:
-								this.complex = z0.sine();	//z0.sin();
-								break;
-						case "Cosine" :
-								this.complex = z0.cosine();	//z0.cos();
-								break;
-						case "Tan" :
-								this.complex = z0.tangent();	//z0.tan();
-								break;
-						case "ArcSine"	:
+				if (this.isComplexNumConst || this.complex == null) {
+					this.complex = z0;
+				}
+				
+				switch (func2Apply) {
+					case "Sine"	:
+							this.complex = z0.sine();	//z0.sin();
+							break;
+					case "Cosine" :
+							this.complex = z0.cosine();	//z0.cos();
+							break;
+					case "Tan" :
+							this.complex = z0.tangent();	//z0.tan();
+							break;
+					case "ArcSine"	:
 							this.complex = z0.inverseSine();	//z0.sin();
 							break;
-						case "ArcCosine" :
-								this.complex = z0.inverseCosine();	//z0.cos();
-								break;
-						case "ArcTan" :
-								this.complex = z0.inverseTangent();	//z0.tan();
-								break;
-						case "None" :
-								this.complex = z0;
-								break;
-						default:
+					case "ArcCosine" :
+							this.complex = z0.inverseCosine();	//z0.cos();
+							break;
+					case "ArcTan" :
+							this.complex = z0.inverseTangent();	//z0.tan();
+							break;
+					case "None" :
 							this.complex = z0;
 							break;
-						}
-					/*}*/
-
-					/*if (!this.useSineCalc) {
+					default:
 						this.complex = z0;
-					} else {
-						this.complex = z0.sin();
-					}*/
-				
+						break;
+				}
+
 				int colorRGB;
 				if (diff) {
 					colorRGB = julia(z0, max, bd);
