@@ -153,6 +153,15 @@ System.out.println("zy_is_nul____"+(zy==null));	*/
 						case "Tan" :
 								this.compConst = this.compConst.tangent();	//z0.tan();
 								break;
+						case "ArcSine"	:
+							this.compConst = this.compConst.inverseSine();	//z0.sin();
+							break;
+						case "ArcCosine" :
+								this.compConst = this.compConst.inverseCosine();	//z0.cos();
+								break;
+						case "ArcTan" :
+								this.compConst = this.compConst.inverseTangent();	//z0.tan();
+								break;
 						case "None" :
 								this.compConst = zx.plus(zy);
 								break;

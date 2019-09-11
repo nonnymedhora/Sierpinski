@@ -1014,6 +1014,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 			return new ComplexNumber(sineR,sineI);
 		}
 		
+		//arcsin
 		public ComplexNumber inverseSine(){
 			return new ComplexNumber(1.0, 0.0).divides(this.sine());
 		}
@@ -1025,6 +1026,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 			return new ComplexNumber(cosR, cosI);
 		}
 		
+		//arccos
 		public ComplexNumber inverseCosine(){
 			return new ComplexNumber(1.0, 0.0).divides(this.cosine());
 		}
@@ -1033,6 +1035,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 			return this.sine().divides(this.cosine());
 		}
 		
+		//arctan
 		public ComplexNumber inverseTangent(){
 			return new ComplexNumber(1.0, 0.0).divides(this.tangent());
 		}

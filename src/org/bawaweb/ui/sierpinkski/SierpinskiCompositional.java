@@ -409,6 +409,10 @@ class SierpinskiComboPanel extends JPanel {
 	protected JRadioButton sineRb = new JRadioButton("sine",false);
 	protected JRadioButton cosineRb = new JRadioButton("cosine",false);
 	protected JRadioButton tanRb = new JRadioButton("tan",false);	
+	protected JRadioButton arcSineRb = new JRadioButton("arcsine",false);
+	protected JRadioButton arcCosineRb = new JRadioButton("arccosine",false);
+	protected JRadioButton arcTanRb = new JRadioButton("arctan",false);	
+	
 	
 	protected ButtonGroup constFnBg = new ButtonGroup();
 	
@@ -492,26 +496,41 @@ class SierpinskiComboPanel extends JPanel {
 		this.constFnBg.add(this.sineRb);
 		this.constFnBg.add(this.cosineRb);
 		this.constFnBg.add(this.tanRb);
+		this.constFnBg.add(this.arcSineRb);
+		this.constFnBg.add(this.arcCosineRb);
+		this.constFnBg.add(this.arcTanRb);
 		
 		this.noFuncRb.setActionCommand("NoCalc");
 		this.sineRb.setActionCommand("SineCalc");
 		this.cosineRb.setActionCommand("CosineCalc");
 		this.tanRb.setActionCommand("TanCalc");
+		this.arcSineRb.setActionCommand("ArcSineCalc");
+		this.arcCosineRb.setActionCommand("ArcCosineCalc");
+		this.arcTanRb.setActionCommand("ArcTanCalc");
 		
 		this.noFuncRb.setName("None");
 		this.sineRb.setName("Sine");
 		this.cosineRb.setName("Cosine");
 		this.tanRb.setName("Tan");
+		this.arcSineRb.setName("ArcSine");
+		this.arcCosineRb.setName("ArcCosine");
+		this.arcTanRb.setName("ArcTan");
 		
 		this.add(this.noFuncRb);
 		this.add(this.sineRb);
 		this.add(this.cosineRb);
 		this.add(this.tanRb);
+		this.add(this.arcSineRb);
+		this.add(this.arcCosineRb);
+		this.add(this.arcTanRb);
 		
 		this.noFuncRb.setVisible(false);
 		this.sineRb.setVisible(false);
 		this.cosineRb.setVisible(false);
 		this.tanRb.setVisible(false);
+		this.arcSineRb.setVisible(false);
+		this.arcCosineRb.setVisible(false);
+		this.arcTanRb.setVisible(false);
 	}
 
 	private void createColorChoiceRBs() {
@@ -552,6 +571,9 @@ class SierpinskiComboPanel extends JPanel {
 		this.sineRb.setVisible(true);
 		this.cosineRb.setVisible(true);
 		this.tanRb.setVisible(true);
+		this.arcSineRb.setVisible(true);
+		this.arcCosineRb.setVisible(true);
+		this.arcTanRb.setVisible(true);
 		
 		this.polyOptionsPanel.add(new JLabel("Exponent(X):"));
 		this.polyOptionsPanel.add(this.polyExpCombos);		
@@ -637,6 +659,9 @@ class SierpinskiComboPanel extends JPanel {
 		this.sineRb.setVisible(true);
 		this.cosineRb.setVisible(true);
 		this.tanRb.setVisible(true);
+		this.arcSineRb.setVisible(true);
+		this.arcCosineRb.setVisible(true);
+		this.arcTanRb.setVisible(true);
 		this.rotLabel.setVisible(true);
 		this.rotateCombo.setVisible(true);
 		this.diyJuliaPanel.add(new JLabel("Power:"));
@@ -675,6 +700,9 @@ class SierpinskiComboPanel extends JPanel {
 		this.sineRb.setVisible(true);
 		this.cosineRb.setVisible(true);
 		this.tanRb.setVisible(true);
+		this.arcSineRb.setVisible(true);
+		this.arcCosineRb.setVisible(true);
+		this.arcTanRb.setVisible(true);
 		this.rotLabel.setVisible(true);
 		this.rotateCombo.setVisible(true);
 		this.diyMandPanel.add(new JLabel("Magnification:"));
@@ -715,6 +743,9 @@ class SierpinskiComboPanel extends JPanel {
 		this.sineRb.setVisible(true);
 		this.cosineRb.setVisible(true);
 		this.tanRb.setVisible(true);
+		this.arcSineRb.setVisible(true);
+		this.arcCosineRb.setVisible(true);
+		this.arcTanRb.setVisible(true);
 		this.mandOptionsPanel.add(new JLabel("Magnification(M):"));
 		this.mandOptionsPanel.add(this.mandCombos);
 		this.mandOptionsPanel.add(new JLabel("Exponent(X):"));
@@ -746,6 +777,9 @@ class SierpinskiComboPanel extends JPanel {
 		this.sineRb.setVisible(true);
 		this.cosineRb.setVisible(true);
 		this.tanRb.setVisible(true);
+		this.arcSineRb.setVisible(true);
+		this.arcCosineRb.setVisible(true);
+		this.arcTanRb.setVisible(true);
 		this.juliaOptionsPanel.add(new JLabel("Power-Constant:"));
 		this.juliaOptionsPanel.add(this.juliaCombos);		
 		this.juliaOptionsPanel.add(this.juliaUseDiff);
@@ -2051,6 +2085,9 @@ class SierpinskiComboPanel extends JPanel {
 		this.sineRb.addActionListener(this.funcCalcRbListener());
 		this.cosineRb.addActionListener(this.funcCalcRbListener());
 		this.tanRb.addActionListener(this.funcCalcRbListener());
+		this.arcSineRb.addActionListener(this.funcCalcRbListener());
+		this.arcCosineRb.addActionListener(this.funcCalcRbListener());
+		this.arcTanRb.addActionListener(this.funcCalcRbListener());
 		
 		this.magnifyCb.setActionCommand("Magnify");
 		this.magnifyCb.addItemListener(new ItemListener() {
@@ -2758,6 +2795,12 @@ class SierpinskiComboPanel extends JPanel {
 			this.setConstFuncChoice("Cosine");
 		} else if (this.tanRb.isSelected()) {
 			this.setConstFuncChoice("Tan");
+		} else if (this.arcSineRb.isSelected()) {
+			this.setConstFuncChoice("ArcSine");
+		} else if (this.arcCosineRb.isSelected()) {
+			this.setConstFuncChoice("ArcCosine");
+		} else if (this.arcTanRb.isSelected()) {
+			this.setConstFuncChoice("ArcTan");
 		} 
 	}
 

@@ -135,29 +135,7 @@ public class Mandelbrot extends FractalBase {
 				double x0 = xc - size / 2 + size * row / n;
 				double y0 = yc - size / 2 + size * col / n;
 				ComplexNumber z0 = new ComplexNumber(x0, y0);
-				if (isComplexNumConst || this.complex == null) {this.complex = z0;}
-
-					/*if (!applyFun) {
-						this.complex = z0;
-					} else {*/
-						
-						switch (func2Apply) {
-						case "Sine"	:
-								this.complex = z0.sine();	//z0.sin();
-								break;
-						case "Cosine" :
-								this.complex = z0.cosine();	//z0.cos();
-								break;
-						case "Tan" :
-								this.complex = z0.tangent();	//z0.tan();
-								break;
-						case "None" :
-								this.complex = z0;
-								break;
-						default:
-							this.complex = z0;
-							break;
-						}
+				z0=this.computeComplexConstant(func2Apply, z0);
 					/*}*/
 					/*this.compConst = z0;*/
 				
@@ -174,6 +152,43 @@ public class Mandelbrot extends FractalBase {
 
 			}
 		}
+	}
+
+	private ComplexNumber computeComplexConstant(String func2Apply, ComplexNumber z0) {
+		if (isComplexNumConst || this.complex == null) {this.complex = z0;}
+
+			/*if (!applyFun) {
+				this.complex = z0;
+			} else {*/
+				
+				switch (func2Apply) {
+				case "Sine"	:
+						this.complex = z0.sine();	//z0.sin();
+						break;
+				case "Cosine" :
+						this.complex = z0.cosine();	//z0.cos();
+						break;
+				case "Tan" :
+						this.complex = z0.tangent();	//z0.tan();
+						break;
+				case "ArcSine"	:
+					this.complex = z0.inverseSine();	//z0.sin();
+					break;
+				case "ArcCosine" :
+						this.complex = z0.inverseCosine();	//z0.cos();
+						break;
+				case "ArcTan" :
+						this.complex = z0.inverseTangent();	//z0.tan();
+						break;
+				case "None" :
+						this.complex = z0;
+						break;
+				default:
+					this.complex = z0;
+					break;
+				}
+				
+				return this.complex;
 	}
 
 	
