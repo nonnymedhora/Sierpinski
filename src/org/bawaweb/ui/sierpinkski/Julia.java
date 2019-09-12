@@ -9,7 +9,6 @@ import java.awt.Graphics2D;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
 
 /**
  * @author Navroz
@@ -37,13 +36,11 @@ public class Julia extends FractalBase {
 	private ComplexNumber complex; 		// or this
 	private boolean useDiff = false;
 	private boolean isComplexNumConst=false;
-	private boolean useSineCalc = false;
 	
 	public final ComplexNumber C1 = new ComplexNumber(-0.74543,0.11301);	//c=-0.74543+0.11301*i
 	public final ComplexNumber C2 = new ComplexNumber(-0.75,0.11);			//c= -0.75+0.11*i
 	public final ComplexNumber C3 = new ComplexNumber(-0.1,0.651);			//c=-0.1+0.651*i
-	
-	
+
 	public Julia() {
 		super();
 	}
@@ -88,24 +85,24 @@ public class Julia extends FractalBase {
 	 * @param uDiff
 	 */
 	public Julia(int mul, ComplexNumber comp, boolean uDiff) {
-		this(mul, comp);
+		this(mul,comp);
 		this.useDiff = uDiff;
 	}
+	
 
 	public Julia(int mul, String comp, boolean uDiff) {
-		this(mul, comp);
+		this(mul,comp);
 		this.useDiff = uDiff;
 	}
-
 	public Julia(int mul, String comp, double bd, boolean uDiff) {
-		this(mul, comp, uDiff);
+		this(mul,comp,uDiff);
 		this.setBound(bd);
 	}
 
 	public Julia(int m, boolean uDiff, double realVal, double imagVal) {
-		this.power = m;
-		this.useDiff = uDiff;
-		this.complex = new ComplexNumber(realVal, imagVal);
+		this.power=m;
+		this.useDiff=uDiff;
+		this.complex=new ComplexNumber(realVal,imagVal);
 	}
 
 	public Julia(int mul, String comp) {
@@ -127,7 +124,7 @@ public class Julia extends FractalBase {
 	}
 
 	public Julia(int m, double con, double bd, boolean uDiff) {
-		this(m, con, uDiff);
+		this(m,con,uDiff);
 		this.setBound(bd);
 	}
 
@@ -135,47 +132,21 @@ public class Julia extends FractalBase {
 		this();
 		this.power = m;
 		this.useDiff = uDiff;
-		this.isComplexNumConst = keepConst;
-		if (keepConst) {
-			this.complex = null;
+		this.isComplexNumConst=keepConst;
+		if(keepConst){
+			this.complex=null;
 		}
 	}
 
 	public Julia(int m, boolean uDiff, double bd, boolean keepConst) {
-		this(m, uDiff, keepConst);
+		this(m,uDiff,keepConst);
 		this.setBound(bd);
 	}
-	
-	/*public Julia(int m, boolean uDiff, double bd, boolean keepConst,boolean useSine) {
-		this(m, uDiff, bd,keepConst);
-		this.setUseSineCalc(useSine);
-	}*/
 
 	public Julia(int m, boolean uDiff, double bd, double realVal, double imgVal) {
-		this(m, uDiff, realVal, imgVal);
+		this(m,uDiff,realVal,imgVal);
 		this.setBound(bd);
-	}
-	
-	/*public Julia(int m, boolean uDiff, double bd, double realVal, double imgVal, boolean useSine) {
-		this(m, uDiff, bd, realVal, imgVal);
-		this.setUseSineCalc(useSine);
-		if (useSine && this.complex != null) {
-			this.complex = this.complex.sin();
-		}
-	}*/
-
-	/**
-	 * @return the power
-	 */
-	public int getPower() {
-		return power;
-	}
-
-	/**
-	 * @param power the power to set
-	 */
-	public void setPower(int power) {
-		this.power = power;
+		this.isComplexNumConst=false;
 	}
 
 	/**
@@ -220,14 +191,6 @@ public class Julia extends FractalBase {
 		this.useDiff = useDiff;
 	}
 
-	public boolean isUseSineCalc() {
-		return this.useSineCalc;
-	}
-
-	public void setUseSineCalc(boolean useSine) {
-		this.useSineCalc = useSine;
-	}
-
 	/* (non-Javadoc)
 	 * @see org.bawaweb.ui.sierpinkski.FractalBase#createFractalShape(java.awt.Graphics2D)
 	 */
@@ -245,49 +208,48 @@ public class Julia extends FractalBase {
 		
 		int max = getMaxIter();
 		double bd = this.getBound();
-
+		
 		String func2Apply = this.useFuncConst;
-/*System.out.println("this.complex==null  "+(this.complex==null ));
+System.out.println("this.complex==null  "+(this.complex==null ));
 System.out.println("this.isComplexNumConst  --  "+this.isComplexNumConst);
 System.out.println("this.isComplexNumConst || this.complex == null  is  "+(this.isComplexNumConst || this.complex == null));
-System.out.println("this.complex==="+this.complex);*/
-
+System.out.println("this.complex==="+this.complex);		
 		for (int row = 0; row < n; row++) {
 			for (int col = 0; col < n; col++) {
 				double x0 = xc - size / 2 + size * row / n;
 				double y0 = yc - size / 2 + size * col / n;
 				ComplexNumber z0 = new ComplexNumber(x0, y0);
-				if (this.isComplexNumConst || this.complex == null) {
+				if (isComplexNumConst || this.complex == null) {
 					this.complex = z0;
-				}
-				
-				switch (func2Apply) {
-					case "Sine"	:
-							this.complex = z0.sine();	//z0.sin();
-							break;
-					case "Cosine" :
-							this.complex = z0.cosine();	//z0.cos();
-							break;
-					case "Tan" :
-							this.complex = z0.tangent();	//z0.tan();
-							break;
-					case "ArcSine"	:
-							this.complex = z0.inverseSine();	//z0.sin();
-							break;
-					case "ArcCosine" :
-							this.complex = z0.inverseCosine();	//z0.cos();
-							break;
-					case "ArcTan" :
-							this.complex = z0.inverseTangent();	//z0.tan();
-							break;
-					case "None" :
+					
+					switch (func2Apply) {
+						case "Sine"	:
+								this.complex = z0.sine();	//z0.sin();
+								break;
+						case "Cosine" :
+								this.complex = z0.cosine();	//z0.cos();
+								break;
+						case "Tan" :
+								this.complex = z0.tangent();	//z0.tan();
+								break;
+						case "ArcSine"	:
+								this.complex = z0.inverseSine();	//z0.sin();
+								break;
+						case "ArcCosine" :
+								this.complex = z0.inverseCosine();	//z0.cos();
+								break;
+						case "ArcTan" :
+								this.complex = z0.inverseTangent();	//z0.tan();
+								break;
+						case "None" :
+								this.complex = z0;
+								break;
+						default:
 							this.complex = z0;
 							break;
-					default:
-						this.complex = z0;
-						break;
+					}
 				}
-
+				
 				int colorRGB;
 				if (diff) {
 					colorRGB = julia(z0, max, bd);
@@ -354,7 +316,7 @@ System.out.println("this.complex==="+this.complex);*/
 			@Override
 			public void run() {
 //				final FractalBase frame = new Julia(2,0.279);	//(3,0.4);//(2,0.279);	//f(z) = z2 + 0.279
-				final Julia frame = new Julia(2,"C3",true);//Julia(2,true,-0.4,0.59); //new Julia(2,false,-1.29904,-0.75); //new Julia(2,0.279,true/*false*/);//Julia(2,"C3",true);//
+				final Julia frame = new Julia(2,true,-0.4,0.59); //new Julia(2,false,-1.29904,-0.75); //new Julia(2,0.279,true/*false*/);//Julia(2,"C3",true);//
 				/*frame.setPower(2);
 				frame.setComplex(frame.c1);*/
 //				frame.depth = 5;
@@ -403,37 +365,5 @@ c = 0.355 + 0.355i
 c = -0.54 + 0.54i
 c = -0.4 + -0.59i
 c = 0.355534 - 0.337292i
-/////////////////////////////////////////////////
-http://paulbourke.net/fractals/sinjulia/
-If you are wondering how to compute the sine of a complex number, 
-you can use the following relationships:
-
-xk+1 = sin(xk) cosh(yk)
-yk+1 = cos(xk) sinh(yk)
-
-where zk = xk + i yk
-
- 	
-c = 1 + 0i
-c = 1 + 0.1i
-c = 1 + 0.2i
-c = 1 + 0.3i
-c = 1 + 0.4i
-c = 1 + 0.5i
-c = 1 + i
-c = 3i/2
-c = 0.984808 + 0.173648i
-c = -1.29904 + -0.75i
-c = 1.17462 + 0.427525i
-c = 1.87939 + 0.68404i
-c = 1 + i
-c = -0.2 + i
-
-Contributions by Klaus Messner
-
-c = 1 + 0i
-x = -1.201171875, y = -0.963541666666666
-
-c = 0 + i
-x = -0.5390625, y = -1.4296875 
- */
+/
+*/
