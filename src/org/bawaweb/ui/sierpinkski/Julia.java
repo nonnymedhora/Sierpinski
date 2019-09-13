@@ -9,6 +9,8 @@ import java.awt.Graphics2D;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
+
 
 /**
  * @author Navroz
@@ -210,51 +212,53 @@ public class Julia extends FractalBase {
 		double bd = this.getBound();
 		
 		String func2Apply = this.useFuncConst;
+/*System.out.println("this.complexConst==="+this.complexConst);		
 System.out.println("this.complex==null  "+(this.complex==null ));
 System.out.println("this.isComplexNumConst  --  "+this.isComplexNumConst);
 System.out.println("this.isComplexNumConst || this.complex == null  is  "+(this.isComplexNumConst || this.complex == null));
-System.out.println("this.complex==="+this.complex);		
+System.out.println("this.complex==="+this.complex);	*/	
 		for (int row = 0; row < n; row++) {
 			for (int col = 0; col < n; col++) {
 				double x0 = xc - size / 2 + size * row / n;
 				double y0 = yc - size / 2 + size * col / n;
 				ComplexNumber z0 = new ComplexNumber(x0, y0);
+				/*z0 = this.computeComplexConstant(func2Apply, z0);*/
 				if (isComplexNumConst || this.complex == null) {
 					this.complex = z0;
-					
-					switch (func2Apply) {
-						case "Sine"	:
-								this.complex = z0.sine();	//z0.sin();
-								break;
-						case "Cosine" :
-								this.complex = z0.cosine();	//z0.cos();
-								break;
-						case "Tan" :
-								this.complex = z0.tangent();	//z0.tan();
-								break;
-						case "ArcSine"	:
-								this.complex = z0.inverseSine();	//z0.sin();
-								break;
-						case "ArcCosine" :
-								this.complex = z0.inverseCosine();	//z0.cos();
-								break;
-						case "ArcTan" :
-								this.complex = z0.inverseTangent();	//z0.tan();
-								break;
-						case "None" :
-								this.complex = z0;
-								break;
-						default:
-							this.complex = z0;
-							break;
-					}
+				/*	
+//					switch (func2Apply) {
+//						case "Sine"	:
+//								this.complex = z0.sine();	//z0.sin();
+//								break;
+//						case "Cosine" :
+//								this.complex = z0.cosine();	//z0.cos();
+//								break;
+//						case "Tan" :
+//								this.complex = z0.tangent();	//z0.tan();
+//								break;
+//						case "ArcSine"	:
+//								this.complex = z0.inverseSine();	//z0.sin();
+//								break;
+//						case "ArcCosine" :
+//								this.complex = z0.inverseCosine();	//z0.cos();
+//								break;
+//						case "ArcTan" :
+//								this.complex = z0.inverseTangent();	//z0.tan();
+//								break;
+//						case "None" :
+//								this.complex = z0;
+//								break;
+//						default:
+//							this.complex = z0;
+//							break;
+//					}//ends-switch*/
 				}
-				
+//if(row+col<2){System.out.println(row+""+col+"_A(b4_julia)__this.complex=="+this.complex);}				
 				int colorRGB;
 				if (diff) {
-					colorRGB = julia(z0, max, bd);
+					colorRGB = this./*julia(z0,max,this.power,this.complex,bd);*/julia(z0, max, bd);
 				} else {
-					colorRGB = max - julia(z0, max, bd);
+					colorRGB = max - this./*julia(z0,max,this.power,this.complex,bd);*/julia(z0, max, bd);
 				}
 				Color color;
 				color = getPixelDisplayColor(row, col, colorRGB, diff);
@@ -267,12 +271,7 @@ System.out.println("this.complex==="+this.complex);
 		// f(z)=z^n+c
 		ComplexNumber z = zz;
 
-		final ComplexNumber complexConstant;
-		if (this.complex == null) {
-			complexConstant = new ComplexNumber(this.complexConst, 0);
-		} else {
-			complexConstant = this.complex;
-		}
+		ComplexNumber complexConstant = computeComplexConstant();
 
 		for (int t = 0; t < max; t++) {
 			if (z.abs() > bd) {
@@ -298,6 +297,91 @@ System.out.println("this.complex==="+this.complex);
 		=========================================================================*/
 		
 		return max;
+	}
+	
+	
+	private int julia(ComplexNumber z0, int maxIterations, int pwr, ComplexNumber constant, double bd) {
+		ComplexNumber z = z0;
+		for (int t = 0; t < maxIterations; t++) {
+			if (z.abs() > bd)
+				return t;
+			z = z.power(pwr).plus(constant);
+		}
+		return maxIterations;
+	}
+	
+	private ComplexNumber computeComplexConstant(String func2Apply, ComplexNumber z0) {
+		if (isComplexNumConst || this.complex == null) {
+			this.complex = z0;
+
+			switch (func2Apply) {
+				case "Sine"	:
+						this.complex = z0.sine();	//z0.sin();
+						break;
+				case "Cosine" :
+						this.complex = z0.cosine();	//z0.cos();
+						break;
+				case "Tan" :
+						this.complex = z0.tangent();	//z0.tan();
+						break;
+				case "ArcSine"	:
+					this.complex = z0.inverseSine();	//z0.sin();
+					break;
+				case "ArcCosine" :
+						this.complex = z0.inverseCosine();	//z0.cos();
+						break;
+				case "ArcTan" :
+						this.complex = z0.inverseTangent();	//z0.tan();
+						break;
+				case "None" :
+						this.complex = z0;
+						break;
+				default:
+					this.complex = z0;
+					break;
+			}
+		}
+
+		return this.complex;
+	}
+
+	private ComplexNumber computeComplexConstant() {
+		ComplexNumber cConst;
+		
+		if (this.complex == null) {
+			cConst = new ComplexNumber(this.complexConst, 0);
+		} else {
+			cConst = this.complex;
+		}
+		
+		String func2Apply = this.useFuncConst;
+		switch (func2Apply) {
+			case "Sine"	:
+				cConst = cConst.sine();	//z0.sin();
+					break;
+			case "Cosine" :
+				cConst = cConst.cosine();	//z0.cos();
+					break;
+			case "Tan" :
+				cConst = cConst.tangent();	//z0.tan();
+					break;
+			case "ArcSine"	:
+				cConst = cConst.inverseSine();	//z0.sin();
+					break;
+			case "ArcCosine" :
+				cConst = cConst.inverseCosine();	//z0.cos();
+					break;
+			case "ArcTan" :
+				cConst = cConst.inverseTangent();	//z0.tan();
+					break;
+			case "None" :
+				cConst = cConst;
+					break;
+			default:
+				this.complex = cConst;
+				break;
+		}//ends-switch
+		return cConst;
 	}
 
 	/* (non-Javadoc)

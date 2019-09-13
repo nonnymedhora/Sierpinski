@@ -1786,7 +1786,7 @@ class SierpinskiComboPanel extends JPanel {
 		} else if (choice.equals(KOCHSNOWFLAKE)) {
 			this.doReset();
 			ff = new KochSnowFlakeFractal();
-		} else if (choice.startsWith("DIY")) {
+		} else if ((choice.startsWith("DIY")||choice.endsWith("Yourself"))) {
 //			this.doReset();
 //			System.out.println("A---this.diyMandRb.isSelected()==="+this.diyMandRb.isSelected());
 //			System.out.println("B---this.diyJuliaRb.isSelected()==="+this.diyJuliaRb.isSelected());
@@ -1901,16 +1901,19 @@ class SierpinskiComboPanel extends JPanel {
 		if(this.doMagnify){
 			new ZoomInBox(frame);
 		}*/
-
-		if ( !((this.comboChoice.equals(MANDELBROT) || this.comboChoice.equals(JULIA)|| this.comboChoice.equals(POLY)) || 
-				( this.comboChoice.equals(DIY) && !this.diyApolloRb.isSelected()) )) {
+		
+		if(!(this.comboChoice.equals(MANDELBROT)||this.comboChoice.equals(JULIA)||this.comboChoice.equals(POLY))&&
+				!(this.diyMandRb.isSelected()||this.diyJuliaRb.isSelected())){
+/*
+		if ( (!(this.comboChoice.equals(MANDELBROT) || this.comboChoice.equals(JULIA)|| this.comboChoice.equals(POLY)) && 
+				( (this.comboChoice.equals(DIY)||this.comboChoice.endsWith("Yourself")) && !this.diyApolloRb.isSelected()) )) {*/
 			//	Threaded -- so as the FractalBase depth increases
 			// the iteration's image is rendered recursively till depth = 0
 			frame.setRunning(true);
-
-			if(this.doMagnify){
+System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
+			/*if(this.doMagnify){
 				new ZoomInBox(frame);
-			}
+			}*/
 			this.formulaArea.setVisible(false);
 			this.fbf = new Thread(frame);
 			this.fbf.start();
