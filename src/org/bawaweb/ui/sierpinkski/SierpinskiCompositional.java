@@ -7,6 +7,7 @@ package org.bawaweb.ui.sierpinkski;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -43,6 +44,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
+
 /**
  * @author Navroz
  *
@@ -50,7 +53,8 @@ import javax.swing.SwingUtilities;
 
 class SierpinskiComboPanel extends JPanel {
 	
-	private static final Integer[] EXPONENTS = new Integer[] { -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 9, 10 };
+	private static final Double[] BOUNDARIES = new Double[] { -5.0, -4.5, -4.0, -3.5, -3.0, -2.5, -2.0, -1.5, -1.0, 0.0, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private static final Integer[] EXPONENTS = new Integer[] { -10, -9, -8, -7, -6, -5 - 4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	// for Julia
 	private static final String J1 = "P[2] C[0.279]";	//f(z) = z^2 + 0.279
 	private static final String J2 = "P[3] C[0.4]";		//f(z) = z^3 + 0.400
@@ -106,7 +110,7 @@ class SierpinskiComboPanel extends JPanel {
 	private final JComboBox<Integer> juliaMaxIterCombos = new JComboBox<Integer>(juliaMaxIterOptions);
 	private final Integer[] juliaSizeOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 500, 512, 599, 800 };
 	private final JComboBox<Integer> juliaSizeCombos = new JComboBox<Integer>(juliaSizeOptions);
-	private final Double[] juliaBoundOptions = new Double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private final Double[] juliaBoundOptions = BOUNDARIES;//new Double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
 	private final JComboBox<Double> juliaBoundCombos = new JComboBox<Double>(juliaBoundOptions);
 	
 	private final Double[] juliaXCOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
@@ -134,7 +138,7 @@ class SierpinskiComboPanel extends JPanel {
 	private final JComboBox<Integer> mandMaxIterCombos = new JComboBox<Integer>(mandMaxIterOptions);
 	private final Integer[] mandSizeOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 500, 512, 599, 800 };
 	private final JComboBox<Integer> mandSizeCombos = new JComboBox<Integer>(mandSizeOptions);
-	private final Double[] mandBoundOptions = new Double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private final Double[] mandBoundOptions = BOUNDARIES;//new Double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
 	private final JComboBox<Double> mandBoundCombos = new JComboBox<Double>(mandBoundOptions);
 
 
@@ -251,7 +255,7 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private final Integer[] diyMandMagOptions = new Integer[] { -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	private final JComboBox<Integer> diyMandMagCombos = new JComboBox<Integer>(diyMandMagOptions);
-	private final Integer[] diyMandExpOptions = new Integer[] { -3, -2, -1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	private final Integer[] diyMandExpOptions = EXPONENTS;// new Integer[] { -3, -2, -1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	private final JComboBox<Integer> diyMandExpCombos = new JComboBox<Integer>(diyMandExpOptions);
 	private final JCheckBox diyMandUseDiffCb = new JCheckBox("UseDifferencesOnly",true);
 	private JTextField diyMandRealTf = new JTextField(5);
@@ -263,7 +267,7 @@ class SierpinskiComboPanel extends JPanel {
 	private final Integer[] diyMandSizeOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 500, 512, 599, 800 };
 	private final JComboBox<Integer> diyMandSizeCombos = new JComboBox<Integer>(diyMandSizeOptions);
 	
-	private final Double[] diyMandBoundOptions = new Double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private final Double[] diyMandBoundOptions = BOUNDARIES;//new Double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
 	private final JComboBox<Double> diyMandBoundCombos = new JComboBox<Double>(diyMandBoundOptions);
 
 	
@@ -296,7 +300,7 @@ class SierpinskiComboPanel extends JPanel {
 	protected double diyJuliaYC;
 	protected double diyJuliaScaleSize;
 	
-	private final Integer[] diyJuliaPowerOptions = new Integer[] { -3, -2, -1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	private final Integer[] diyJuliaPowerOptions = EXPONENTS;//new Integer[] { -3, -2, -1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	private final JComboBox<Integer> diyJuliaPowerCombos = new JComboBox<Integer>(diyJuliaPowerOptions);
 	private final JCheckBox diyJuliaUseDiffCb = new JCheckBox("UseDifferencesOnly",true);
 	private JTextField diyJuliaRealTf = new JTextField(5);
@@ -312,7 +316,7 @@ class SierpinskiComboPanel extends JPanel {
 	private final JComboBox<Integer> diyJuliaSizeCombos = new JComboBox<Integer>(diyJuliaSizeOptions);
 	
 	
-	private final Double[] diyJuliaBoundOptions = new Double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private final Double[] diyJuliaBoundOptions = BOUNDARIES;//new Double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
 	private final JComboBox<Double> diyJuliaBoundCombos = new JComboBox<Double>(diyJuliaBoundOptions);
 
 	private final Double[] diyJuliaXCOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
@@ -359,7 +363,7 @@ class SierpinskiComboPanel extends JPanel {
 	private final JComboBox<Integer> polyMaxIterCombos = new JComboBox<Integer>(polyMaxIterOptions);
 	private final Integer[] polySizeOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 500, 512, 599, 800 };
 	private final JComboBox<Integer> polySizeCombos = new JComboBox<Integer>(polySizeOptions);
-	private final Double[] polyBoundOptions = new Double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private final Double[] polyBoundOptions = BOUNDARIES;//new Double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
 	private final JComboBox<Double> polyBoundCombos = new JComboBox<Double>(polyBoundOptions);
 	private final Double[] polyXCOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
 	private final JComboBox<Double> polyXCCombos = new JComboBox<Double>(polyXCOptions);
@@ -857,7 +861,7 @@ class SierpinskiComboPanel extends JPanel {
 	}
 */	
 	private void doReset() {
-		this.sideChoice = 0;
+		/*this.sideChoice = 0;
 		this.ratioChoice = 0;
 		this.curvChoices = null;
 		this.mult = 0.0;
@@ -915,7 +919,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyApolloC2 = 0;
 		this.diyApolloC3 = 0;
 		this.diyApolloMult = 0;
-		
+		*/
 	}
 
 	private void setComboSelections() {
@@ -1188,26 +1192,35 @@ class SierpinskiComboPanel extends JPanel {
 		if (!(this.juliaSelection.equals("J7") || this.juliaSelection.equals("J8")
 				|| this.juliaSelection.equals("J9"))) {
 			
-			this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + " + this.compConst);
+			this.formulaArea.setText("<font color='blue'>Julia Set:<br/><br/>f(z) = z ^ " + this.power + " + " + this.compConst);
 			
 		} else {
 			if(this.juliaSelection.equals("J7")){
-				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + (-0.74543 + 0.11301 * i)");
+				this.formulaArea.setText("<font color='blue'>Julia Set:<br/><br/>f(z) = z ^ " + this.power + " + (-0.74543 + 0.11301 * i)");
 			}else if(this.juliaSelection.equals("J8")){
-				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + (-0.75 + 0.11 * i)");
+				this.formulaArea.setText("<font color='blue'>Julia Set:<br/><br/>f(z) = z ^ " + this.power + " + (-0.75 + 0.11 * i)");
 			}else if(this.juliaSelection.equals("J9")){
-				this.formulaArea.setText("Julia Set:\n\nf(z) = z ^ " + this.power + " + (-0.1 + 0.651 * i)");
+				this.formulaArea.setText("<font color='blue'>Julia Set:<br/><br/>f(z) = z ^ " + this.power + " + (-0.1 + 0.651 * i)");
 			}
 			
+		}
+	}
+	
+	private void addDiyJuliaUseDiffInfo() {
+		if (this.diyJuliaUseDiff || this.diyJuliaUseDiffCb.isSelected()) {
+			this.formulaArea
+					.append("<br/><br/>Calculated inverted colors based on differences in pixel values from origin</font>");
+		} else {
+			this.formulaArea.append("<br/><br/>Calculated colors based on pixel values with a 'top-and-left' origin</font>");
 		}
 	}
 
 	private void addJuliaUseDiffInfo() {
 		if (this.jUseDiff || this.juliaUseDiff.isSelected()) {
 			this.formulaArea
-					.append("\n\nCalculated inverted colors based on differences in pixel values from origin");
+					.append("<br/><br/>Calculated inverted colors based on differences in pixel values from origin</font>");
 		} else {
-			this.formulaArea.append("\n\nCalculated colors based on pixel values with a 'top-and-left' origin");
+			this.formulaArea.append("<br/><br/>Calculated colors based on pixel values with a 'top-and-left' origin</font>");
 		}
 	}
 
@@ -1338,12 +1351,12 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setVisible(true);
 		if (this.magnification != 0 && this.exponent != 0) {
 			this.buStart.setEnabled(true);
-			this.formulaArea.setText("Mandelbrot Set:\n\nf(z) = z ^ " + this.exponent + " + C");
+			this.formulaArea.setText("Mandelbrot Set:<br/><br/>f(z) = z ^ " + this.exponent + " + C");
 			if (this.mUseDiff || this.mandUseDiffCb.isSelected()) {
 				this.formulaArea
-						.append("\n\nCalculated inverted colors based on differences in pixel values from origin");
+						.append("<br/><br/>Calculated inverted colors based on differences in pixel values from origin");
 			} else {
-				this.formulaArea.append("\n\nCalculated colors based on pixel values with a 'top-and-left' origin");
+				this.formulaArea.append("<br/><br/>Calculated colors based on pixel values with a 'top-and-left' origin");
 			}
 		} else {
 			this.buStart.setEnabled(false);
@@ -1358,15 +1371,15 @@ class SierpinskiComboPanel extends JPanel {
 				|| this.diyMandKeepConst) {
 			
 			this.buStart.setEnabled(true);
-			String formula = "Mandelbrot Set:\n\nf(z) = z ^ " + this.diyMandExponent + " + C";
+			String formula = "Mandelbrot Set:<br/><br/>f(z) = z ^ " + this.diyMandExponent + " + C";
 			if (!this.diyMandKeepConst) {
-				formula += "\n  C = " + Double.parseDouble(this.diyMandRealTf.getText()) + " + ("
+				formula += "<br/>  C = " + Double.parseDouble(this.diyMandRealTf.getText()) + " + ("
 						+ Double.parseDouble(this.diyMandImgTf.getText()) + ")";
 			}
 			if (this.mUseDiff || this.mandUseDiffCb.isSelected()) {
-				formula += "\n\nCalculated inverted colors based on differences in pixel values from origin";
+				formula += "<br/><br/>Calculated inverted colors based on differences in pixel values from origin";
 			} else {
-				formula += "\n\nCalculated colors based on pixel values with a 'top-and-left' origin";
+				formula += "<br/><br/>Calculated colors based on pixel values with a 'top-and-left' origin";
 			}
 			this.formulaArea.setText(formula);
 		} else {
@@ -1381,15 +1394,15 @@ class SierpinskiComboPanel extends JPanel {
 						&& (this.diyJuliaImgTf.getText().length() > 0) && !this.diyJuliaKeepConst)
 				|| this.diyJuliaKeepConst) {
 			this.buStart.setEnabled(true);
-			String formula = "Julia Set:\n\nf(z) = z ^ " + this.diyJuliaPower + " + C";
+			String formula = "Julia Set:<br/><br/>f(z) = z ^ " + this.diyJuliaPower + " + C";
 			if (!this.diyJuliaKeepConst) {
-				formula += "\n  C = " + Double.parseDouble(this.diyJuliaRealTf.getText()) + " + ("
+				formula += "<br/>  C = " + Double.parseDouble(this.diyJuliaRealTf.getText()) + " + ("
 						+ Double.parseDouble(this.diyJuliaImgTf.getText()) + ")";
 			}
 			if (this.diyJuliaUseDiff || this.diyJuliaUseDiffCb.isSelected()) {
-				formula += "\n\nCalculated inverted colors based on differences in pixel values from origin";
+				formula += "<br/><br/>Calculated inverted colors based on differences in pixel values from origin";
 			} else {
-				formula += "\n\nCalculated colors based on pixel values with a 'top-and-left' origin";
+				formula += "<br/><br/>Calculated colors based on pixel values with a 'top-and-left' origin";
 			}
 
 			this.formulaArea.setText(formula);
@@ -1490,13 +1503,13 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setVisible(true);
 		if (this.polyPower != 0) {
 			this.buStart.setEnabled(true);
-			this.formulaArea.setText("Poynomial Set:\n\nf(z) = (x ^ " + this.polyPower + " + y ^ " + this.polyPower + ") + C"+
-					"\n  x = Row + 0 * i , y = 0 + Column * i");
+			this.formulaArea.setText("Poynomial Set:<br/><br/>nf(z) = (x ^ " + this.polyPower + " + y ^ " + this.polyPower + ") + C"+
+					"<br/>  x = Row + 0 * i , y = 0 + Column * i");
 			if (this.polyUseDiff || this.polyUseDiffCb.isSelected()) {
 				this.formulaArea
-						.append("\n\nCalculated inverted colors based on differences in pixel values from origin");
+						.append("<br/><br/>Calculated inverted colors based on differences in pixel values from origin");
 			} else {
-				this.formulaArea.append("\n\nCalculated colors based on pixel values with a 'top-and-left' origin");
+				this.formulaArea.append("<br/><br/>Calculated colors based on pixel values with a 'top-and-left' origin");
 			}
 		} else {
 			this.buStart.setEnabled(false);
@@ -1695,39 +1708,70 @@ class SierpinskiComboPanel extends JPanel {
 		FractalBase ff = null;;
 		
 		if (choice.equals(FANNY_CIRCLE)) {
-			this.doReset();
+			/*this.doReset();*/
 			ff = new FannyCircle(length, ratio);
 		} else if (choice.equals(FANNY_TRIANGLES)) {
-			this.doReset();
+			/*this.doReset();*/
 			ff = new FannyTriangles(length, ratio);
 		} else if (choice.equals(SIERPINSKI_TRIANGLES)) {
-			this.doReset();
+			/*this.doReset();*/
 			ff = new SierpinskiTriangle();
 		} else if (choice.equals(SIERPINSKI_SQUARES)) {
-			this.doReset();
+			/*this.doReset();*/
 			ff = new SierpinskiSquare();
 		} else if (choice.equals(APOLLONIAN_CIRCLES)) {
-			this.doReset();
+			/*this.doReset();*/
 			ff = new ApollonianCircles(cChoices, mXt);
 			ff.setUseColorPalette(useCP);
 		} else if (choice.equals(SAMPLE)) {
-			this.doReset();
+			/*this.doReset();*/
 			ff = new FractalBaseSample();
 		} else if (choice.equals(POLY)) {
 			this.formulaArea.setVisible(true);
 			this.formulaArea.setText("");
-			this.formulaArea.setText("Poynomial Set:\n\nf(z) = (x ^ " + this.polyPower + " + y ^ " + this.polyPower + ") + C"+
-					"\n  x = Row + 0 * i , y = 0 + Column * i");
+			this.formulaArea.setText("<font color='blue'>Poynomial Set:<br/><br/>f(z) = (x ^ " + this.polyPower + " + y ^ " + this.polyPower + ") + C"+
+					"<br/>  x = Row + 0 * i , y = 0 + Column * i");
+			if (this.polyType.equals("Reverse")) {
+				this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, y)<br/>");
+				this.formulaArea.append("<br/>Zy = new ComplexNumber(y, x)<br/>");
+			} else if (this.polyType.equals("Exchange")) {
+				this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, 0.0)<br/>");
+				this.formulaArea.append("<br/>Zy = new ComplexNumber(0.0, y)<br/>");
+			} else if (this.polyType.equals("Single")) {
+				this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, y)<br/>");
+				this.formulaArea.append("<br/>Zy = new ComplexNumber(0.0, 0.0)<br/>");
+			} else if (this.polyType.equals("Duplicate")) {
+				this.formulaArea.append("<br/><br/>Zx = Zy = new ComplexNumber(x, y)<br/>");
+			} else if (this.polyType.equals("Exponent")) {
+				this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, 0.0).exp()<br/>");
+				this.formulaArea.append("<br/>Zy = new ComplexNumber(y, 0.0).exp()<br/>");
+			} else if (this.polyType.equals("Power")) {
+				this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, y).power((int)x)<br/>");
+				this.formulaArea.append("<br/>Zy = new ComplexNumber(y, x).power((int)y)<br/>");
+			} else if (this.polyType.equals("Default")) {
+				this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, 0.0)<br/>");
+				this.formulaArea.append("<br/>Zy = new ComplexNumber(y, 0.0)<br/>");
+				/*
+				 * default: this.formulaArea.
+				 * append("<br/><br/>Zx = new ComplexNumber(x0, 0.0)<br/>");
+				 * this.formulaArea.
+				 * append("<br/>Zy = new ComplexNumber(y, 0.0)<br/>"); break;
+				 */
+			}
+			
 			if (this.polyUseDiff) {
-				this.formulaArea.append("\n\nCalculated based on differences in pixel values from origin");
+				this.formulaArea.append("<br/><br/>Calculated based on differences in pixel values from origin</font>");
 			} else {
-				this.formulaArea.append("\n\nCalculated based on pixel values with a top-left origin");
+				this.formulaArea.append("<br/><br/>Calculated based on pixel values with a top-left origin</font>");
 			}
 			if (this.polyKeepConst) {
+				this.formulaArea.append("<br/>Dynamic Constant = z</font>");
 				ff = new PolyFract(this.polyPower, this.polyUseDiff, this.polyBound, this.polyKeepConst);
 			}else{
 				double polyRealVal = Double.parseDouble(this.polyRealTf.getText());
 				double polyImgVal = Double.parseDouble(this.polyImgTf.getText());
+				this.formulaArea.append("<br/>Constant = " + polyRealVal + " + (" + polyImgVal + " * i)</font>");
+				
 				ff = new PolyFract(this.polyPower, this.polyUseDiff, this.polyBound, this.polyKeepConst, polyRealVal, polyImgVal);
 			}
 			ff.setUseColorPalette(useCP);
@@ -1739,15 +1783,15 @@ class SierpinskiComboPanel extends JPanel {
 			FractalBase.setScaleSize(this.polyScaleSize);
 			FractalBase.setMaxIter(this.polyMaxIter);
 			FractalBase.setAreaSize(this.polySize);
-			this.doReset();
+			/*this.doReset();*/
 		} else if (choice.equals(MANDELBROT)) {
 			this.formulaArea.setVisible(true);
 			this.formulaArea.setText("");
-			this.formulaArea.setText("Mandelbrot Set:\n\nf(z) = z ^ " + exp + " + C");
+			this.formulaArea.setText("<font color='blue'>Mandelbrot Set:<br/><br/>f(z) = z ^ " + exp + " + C");
 			if (mUseD) {
-				this.formulaArea.append("\n\nCalculated based on differences in pixel values from origin");
+				this.formulaArea.append("<br/><br/>Calculated based on differences in pixel values from origin</font>");
 			} else {
-				this.formulaArea.append("\n\nCalculated based on pixel values with a top-left origin");
+				this.formulaArea.append("<br/><br/>Calculated based on pixel values with a top-left origin</font>");
 			}
 			ff = new Mandelbrot(mag, exp, mUseD, mBound, true);
 			ff.setUseColorPalette(useCP);
@@ -1758,7 +1802,7 @@ class SierpinskiComboPanel extends JPanel {
 			FractalBase.setScaleSize(mScale);
 			FractalBase.setMaxIter(mandMax);
 			FractalBase.setAreaSize(mandLoopLt);
-			this.doReset();
+			/*this.doReset();*/
 		} else if (choice.equals(JULIA)) {
 			this.formulaArea.setVisible(true);
 			this.formulaArea.setText("");
@@ -1780,16 +1824,16 @@ class SierpinskiComboPanel extends JPanel {
 			FractalBase.setScaleSize(jScale);
 			FractalBase.setMaxIter(juliaMax);
 			FractalBase.setAreaSize(juliaLoopLt);
-			this.doReset();
+			/*this.doReset();*/
 
 		} else if (choice.equals(CST_FRACTAL)) {
-			this.doReset();
+			/*this.doReset();*/
 			ff = new CSTFractal();
 		} else if (choice.equals(SAMPLE)) {
-			this.doReset();
+			/*this.doReset();*/
 			ff = new FractalBaseSample();
 		} else if (choice.equals(KOCHSNOWFLAKE)) {
-			this.doReset();
+			/*this.doReset();*/
 			ff = new KochSnowFlakeFractal();
 		} else if ((choice.startsWith("DIY")||choice.endsWith("Yourself"))) {
 //			this.doReset();
@@ -1798,6 +1842,7 @@ class SierpinskiComboPanel extends JPanel {
 //			System.out.println("C---this.diyApolloRb.isSelected()==="+this.diyApolloRb.isSelected());
 			if (this.diyMandRb.isSelected()) {//System.out.println("hererererere---this.diyMandRb.isSelected()");
 				// for diy mandelbrot
+				
 				int diyMag = this.getDiyMandMagnification();
 				int diyMandExp = this.getDiyMandExponent();
 				boolean diyMandUseD = this.getDiyMandUseDiff();
@@ -1808,15 +1853,26 @@ class SierpinskiComboPanel extends JPanel {
 				double diyMYc = this.diyMandYC;
 				double diyMScale = this.diyMandScaleSize;
 			
+				this.formulaArea.setVisible(true);
+				this.formulaArea.setText("");
+				this.formulaArea.setText("<font color='blue'>(DIY)Mandelbrot Set:<br/><br/>f(z) = z ^ " + diyMandExp + " + C");
+				if (this.getDiyMandUseDiff()) {
+					this.formulaArea.append("<br/><br/>Calculated based on differences in pixel values from origin");
+				} else {
+					this.formulaArea.append("<br/><br/>Calculated based on pixel values with a top-left origin");
+				}
+				
 				if (diyMKConst) {
+					this.formulaArea.append("<br/>Dynamic Constant = z</font>");
 					ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD,diyMandB, diyMKConst);
+					
 				} else {
 
 					double diyMRealVal = Double.parseDouble(this.diyMandRealTf.getText());
 					double diyMImgVal = Double.parseDouble(this.diyMandImgTf.getText());
+					this.formulaArea.append("<br/>Constant = " + diyMRealVal + " + (" + diyMImgVal + " * i)</font>");
 					ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD,diyMandB, diyMRealVal, diyMImgVal);
 				}
-
 				ff.setUseColorPalette(useCP);
 				ff.setUseFuncConst(func);
 				ff.setRotation(rot);
@@ -1835,10 +1891,20 @@ class SierpinskiComboPanel extends JPanel {
 				double diyJXc = this.diyJuliaXC;
 				double diyJYc = this.diyJuliaYC;
 				double diyJScale = this.diyJuliaScaleSize;
+				
+				this.formulaArea.setVisible(true);
+				this.formulaArea.setText("");
+				this.formulaArea.setText("<font color='blue'>(DIY)Julia Set:<br/><br/>f(z) = z ^ " + diyJuliaP + " + C");
+				if (this.getDiyMandUseDiff()) {
+					this.formulaArea.append("<br/><br/>Calculated based on differences in pixel values from origin");
+				} else {
+					this.formulaArea.append("<br/><br/>Calculated based on pixel values with a top-left origin");
+				}
 
 				boolean diyJKConst = this.diyJuliaKeepConst;
 //				boolean diyJSine = this.diyJuliaUseSineCalc;
 				if (diyJKConst) {
+					this.formulaArea.append("<br/>Dynamic Constant = z</font>");
 					ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJKConst);
 					/*if (!diyJSine) {
 						ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJKConst);
@@ -1848,6 +1914,7 @@ class SierpinskiComboPanel extends JPanel {
 				} else {
 					double diyJuliaRealVal = Double.parseDouble(this.diyJuliaRealTf.getText());
 					double diyJuliaImgVal = Double.parseDouble(this.diyJuliaImgTf.getText());
+					this.formulaArea.append("<br/>Constant = " + diyJuliaRealVal + " + (" + diyJuliaImgVal + " * i)</font>");
 					ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJuliaRealVal, diyJuliaImgVal);
 					/*if (!diyJSine) {
 						ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJuliaRealVal, diyJuliaImgVal);
@@ -1874,7 +1941,7 @@ class SierpinskiComboPanel extends JPanel {
 			} else {
 				ff=null;
 			}
-			this.doReset();
+			/*this.doReset();*/
 		}  else {
 			ff = null;
 			return;
@@ -1907,8 +1974,8 @@ class SierpinskiComboPanel extends JPanel {
 			new ZoomInBox(frame);
 		}*/
 		
-		if(!(this.comboChoice.equals(MANDELBROT)||this.comboChoice.equals(JULIA)||this.comboChoice.equals(POLY))&&
-				!(this.diyMandRb.isSelected()||this.diyJuliaRb.isSelected())){
+		if (! (this.comboChoice.equals(MANDELBROT) || this.comboChoice.equals(JULIA) || this.comboChoice.equals(POLY))
+				&& ! (this.diyMandRb.isSelected() || this.diyJuliaRb.isSelected() )  ) {
 /*
 		if ( (!(this.comboChoice.equals(MANDELBROT) || this.comboChoice.equals(JULIA)|| this.comboChoice.equals(POLY)) && 
 				( (this.comboChoice.equals(DIY)||this.comboChoice.endsWith("Yourself")) && !this.diyApolloRb.isSelected()) )) {*/
@@ -1940,10 +2007,10 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 
 	private int closeIt(FractalBase frame) {
 		this.buStart.setEnabled(false);
-		if (!(this.comboChoice.equals(JULIA)||this.comboChoice.equals(MANDELBROT))) {
+		if (!(this.comboChoice.equals(JULIA)||this.comboChoice.equals(MANDELBROT)||this.comboChoice.equals(POLY))) {
 			this.formulaArea.setVisible(false);
 		}
-		frame.reset();
+		/*frame.reset();*/
 		frame.dispose();
 		return JFrame.DISPOSE_ON_CLOSE;
 	}
@@ -1955,111 +2022,409 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 	private void doSaveImageCommand() {
 		BufferedImage fractalImage = this.getFractalImage();
 		
-		
+		String imgBaseInfo = this.getImgBaseInfo();
 		String extraInfo = this.getExtraInfo();
 		
-		BufferedImage extraInfoImg = this.createImageInfo(extraInfo);
+		BufferedImage baseInfoImg = this.createImageInfo(imgBaseInfo);
         
         
 		String imageFilePath="images\\"+this.getComboChoice()+"["+extraInfo+"]"+" ____"+System.currentTimeMillis()+".png";
 		File outputfile = new File(imageFilePath);
 	    try {
-			ImageIO.write(FractalBase.joinBufferedImage(fractalImage,extraInfoImg), "png", outputfile);
+			ImageIO.write(FractalBase.joinBufferedImage(fractalImage,baseInfoImg), "png", outputfile);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private BufferedImage createImageInfo(String extraInfo) {
+	private BufferedImage createImageInfo(final String info) {
+		System.out.println("baseInfo==="+info);
 		BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = img.createGraphics();
-        Font font = new Font("Arial", Font.PLAIN, 18);
+       /* Font font = new Font("Arial", Font.PLAIN, 18);
         g2d.setFont(font);
-        FontMetrics fm = g2d.getFontMetrics();
-        int width = fm.stringWidth(extraInfo);
-        int height = fm.getHeight();
+        FontMetrics fm = g2d.getFontMetrics();*/
+        int width = this.getFractalImage().getWidth();//fm.stringWidth(extraInfo);
+        int height = 300;//fm.getHeight();
         g2d.dispose();
         
-        img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        /*img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         g2d = img.createGraphics();
-       /* g2d.setColor(Color.BLACK);
+        g2d.setColor(Color.BLACK);
         g2d.fillRect(0,0,width,height);*/
-        g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+
+		JLabel textLabel = new JLabel(info);
+		Dimension d = textLabel.getPreferredSize();
+		textLabel.setSize(d);
+		
+		img/*BufferedImage bi*/ = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
+        /*Graphics g = bi.createGraphics();*/
+		g2d = img.createGraphics();
+        g2d.setColor(new Color(255, 255, 255, 128));
+        g2d.fillRoundRect(0, 0, this.getFractalImage().getWidth(), 300, 15, 10);
+        g2d.setColor(Color.black);
+        textLabel.paint(g2d);
+         /*   Graphics g2 = img.getGraphics();
+            g2.drawImage(bi, 20, 20, f);*/
+        
+       /* g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
         g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
         g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-        g2d.setFont(font);
+        g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);*/
+        
+        /*g2d.setFont(font);
         fm = g2d.getFontMetrics();
         g2d.setColor(Color.RED);
-        g2d.drawString(extraInfo, 0, fm.getAscent());
-        g2d.dispose();
+        g2d.drawString(info, 0, fm.getAscent());
+        g2d.dispose();*/
 		return img;
+	}
+	
+	private String getImgBaseInfo() {
+		String eol = "<br/>";//System.lineSeparator();
+		
+		String choice = this.getComboChoice();
+		String baseInfo = "<html><font color='red'>"+choice + " {";
+		switch(choice){
+			case	FANNY_CIRCLE :	
+				int lengthFc = this.getSideComboChoice();
+				int ratioFc = this.getRatioChoice();
+	
+				baseInfo += "Length(" + lengthFc + "), ";
+				baseInfo += "Ratio(" + ratioFc + ") }";
+				break;
+			case	FANNY_TRIANGLES :	
+				int lengthFt = this.getSideComboChoice();
+				int ratioFt = this.getRatioChoice();
+	
+				baseInfo += "Length(" + lengthFt + "), ";
+				baseInfo += "Ratio(" + ratioFt + ") }";
+				break;
+				
+			case	SIERPINSKI_TRIANGLES	:
+				baseInfo += "}";
+				break;
+				
+			case	APOLLONIAN_CIRCLES	:
+				double[] cChoices = this.getCurvChoice();
+				double mXt = this.getMultiplier();
+				
+			baseInfo += "Radii: C1(" + cChoices[0] + "), C2(" + cChoices[1] + "), C3(" + cChoices[2] + ")" + eol;
+				baseInfo+=" Multiplier("+mXt+") }";
+				break;
+			
+			case	SAMPLE	:
+				baseInfo+="}";
+				break;
+				
+			case	CST_FRACTAL	:
+				baseInfo+="}";
+				
+			case	KOCHSNOWFLAKE	:
+				baseInfo+="}";
+				
+			case 	POLY:
+				if (this.colrPRb.isSelected()) {
+					baseInfo += "ColorPalette, "+eol;
+				} else {
+					baseInfo += "ColorComputed, "+eol;
+				}
+				baseInfo += "Power: " + this.polyPower + ", ";
+				if (this.polyUseDiff) {
+					baseInfo += "Ud, ";
+				}
+				baseInfo += "Boundary: " + this.polyBound + ", ";
+				if (this.polyKeepConst) {
+					baseInfo += "Dynamic Constant	Z=C"+eol;
+				} else {
+					baseInfo += "Real Value = " + Double.parseDouble(this.polyRealTf.getText()) + "," + eol;
+					baseInfo += "Imaginary Value = " + Double.parseDouble(this.polyImgTf.getText()) + eol;
+				}
+				if (!(this.constFuncChoice.equals("None") || this.noFuncRb.isSelected())) {
+					if (this.sineRb.isSelected()) {
+						baseInfo += "Sine of Constant" + eol;
+					} else if (this.cosineRb.isSelected()) {
+						baseInfo += "Cosine of Constant" + eol;
+					} else if (this.tanRb.isSelected()) {
+						baseInfo += "Tan of Constant" + eol;
+					} else if (this.arcSineRb.isSelected()) {
+						baseInfo += "ArcSine of Constant" + eol;
+					} else if (this.arcCosineRb.isSelected()) {
+						baseInfo += "ArcCosine of Constant" + eol;
+					} else if (this.arcTanRb.isSelected()) {
+						baseInfo += "ArcTan of Constant" + eol;
+					}
+				}
+				baseInfo += "Rotation: " + this.getRotation() + eol;
+				baseInfo += "Row-Column Mix-Type: " + this.polyType + eol;
+				baseInfo += "Center: P(x,y): (" + this.polyXC + ", " + this.polyYC + ")" + eol;
+				baseInfo += "Maximum Iterations: " + this.polyMaxIter + eol;
+				baseInfo += " Scaled Size: " + this.polyScaleSize + "}" + eol + eol;
+	
+				baseInfo += this.formulaArea.getText();
+				break;
+			
+			case	MANDELBROT	:
+				if (this.colrPRb.isSelected()) {
+					baseInfo += "ColorPalette, " + eol;
+				} else {
+					baseInfo += "ColorComputed, " + eol;
+				}
+				baseInfo += "Power: " + this.exponent + ", ";
+				if (this.getMUseDiff()) {
+					baseInfo += "Ud, ";
+				}
+				baseInfo += "Boundary: " + this.mandBound + eol;
+				if (!(this.constFuncChoice.equals("None") || this.noFuncRb.isSelected())) {
+					if (this.sineRb.isSelected()) {
+						baseInfo += "Sine of Constant" + eol;
+					} else if (this.cosineRb.isSelected()) {
+						baseInfo += "Cosine of Constant" + eol;
+					} else if (this.tanRb.isSelected()) {
+						baseInfo += "Tan of Constant" + eol;
+					} else if (this.arcSineRb.isSelected()) {
+						baseInfo += "ArcSine of Constant" + eol;
+					} else if (this.arcCosineRb.isSelected()) {
+						baseInfo += "ArcCosine of Constant" + eol;
+					} else if (this.arcTanRb.isSelected()) {
+						baseInfo += "ArcTan of Constant" + eol;
+					}
+				}
+				baseInfo += "Rotation: " + this.getRotation() + eol;
+				baseInfo += "Center: P(x,y): (" + this.mandXC + ", " + this.mandYC + ")" + eol;
+				baseInfo += "Maximum Iterations: " + this.mandMaxIter + eol;
+				baseInfo += " Scaled Size: " + this.mandScaleSize + "}" + eol + eol;
+	
+				baseInfo += this.formulaArea.getText();
+				break;
+			case	JULIA	:	
+				if (this.colrPRb.isSelected()) {
+					baseInfo += "ColorPalette, "+eol;
+				} else {
+					baseInfo += "ColorComputed, "+eol;
+				}
+				baseInfo += "Power: " + this.polyPower + ", ";
+				if (this.getJUseDiff()) {
+					baseInfo += "Ud, ";
+				}
+				baseInfo += "Boundary: " + this.juliaBound + eol;
+				if (!(this.constFuncChoice.equals("None") || this.noFuncRb.isSelected())) {
+					if (this.sineRb.isSelected()) {
+						baseInfo += "Sine of Constant" + eol;
+					} else if (this.cosineRb.isSelected()) {
+						baseInfo += "Cosine of Constant" + eol;
+					} else if (this.tanRb.isSelected()) {
+						baseInfo += "Tan of Constant" + eol;
+					} else if (this.arcSineRb.isSelected()) {
+						baseInfo += "ArcSine of Constant" + eol;
+					} else if (this.arcCosineRb.isSelected()) {
+						baseInfo += "ArcCosine of Constant" + eol;
+					} else if (this.arcTanRb.isSelected()) {
+						baseInfo += "ArcTan of Constant" + eol;
+					}
+				}
+				baseInfo += "Rotation: " + this.getRotation() + eol;
+				baseInfo += "Center: P(x,y): (" + this.juliaXC + ", " + this.juliaYC + ")" + eol;
+				baseInfo += "Maximum Iterations: " + this.juliaMaxIter + eol;
+				baseInfo += " Scaled Size: " + this.juliaScaleSize + "}" + eol + eol;
+	
+				baseInfo += this.formulaArea.getText();
+				break;
+				
+			case	DIY:	//if ((choice.startsWith("DIY")||choice.endsWith("Yourself"))) {
+				if (this.diyMandRb.isSelected()) {
+					baseInfo+=MANDELBROT+"<br/>";
+					if (this.colrPRb.isSelected()) {
+						baseInfo += "ColorPalette, " + eol;
+					} else {
+						baseInfo += "ColorComputed, " + eol;
+					}
+					baseInfo += "Power: " + this.diyMandExponent + ", ";
+					if (this.getDiyMandUseDiff()) {
+						baseInfo += "Ud, ";
+					}
+					baseInfo += "Boundary: " + this.diyMandBound + ", ";
+					if (this.diyMandKeepConst) {
+						baseInfo += "Dynamic Constant	Z=C" + eol;
+					} else {
+						baseInfo += "Real Value = " + Double.parseDouble(this.diyMandRealTf.getText()) + ","+eol;
+						baseInfo += "Imaginary Value = " + Double.parseDouble(this.diyMandImgTf.getText()) + eol;
+					}
+					if (!(this.constFuncChoice.equals("None") || this.noFuncRb.isSelected())) {
+						if (this.sineRb.isSelected()) {
+							baseInfo += "Sine of Constant" + eol;
+						} else if (this.cosineRb.isSelected()) {
+							baseInfo += "Cosine of Constant" + eol;
+						} else if (this.tanRb.isSelected()) {
+							baseInfo += "Tan of Constant" + eol;
+						} else if (this.arcSineRb.isSelected()) {
+							baseInfo += "ArcSine of Constant" + eol;
+						} else if (this.arcCosineRb.isSelected()) {
+							baseInfo += "ArcCosine of Constant" + eol;
+						} else if (this.arcTanRb.isSelected()) {
+							baseInfo += "ArcTan of Constant" + eol;
+						}
+					}
+					baseInfo += "Rotation: " + this.getRotation() + eol;
+					baseInfo += "Center: P(x,y): (" + this.diyMandXC + ", " + this.diyMandYC + ")" + eol;
+					baseInfo += "Maximum Iterations: " + this.diyMandMaxIter + eol;
+					baseInfo += " Scaled Size: " + this.diyMandScaleSize + "}" + eol + eol;
+		
+					baseInfo += this.formulaArea.getText();
+					break;
+				}else if(this.diyJuliaRb.isSelected()){
+					baseInfo+=JULIA+"<br/>";
+					if (this.colrPRb.isSelected()) {
+						baseInfo += "ColorPalette, " + eol;
+					} else {
+						baseInfo += "ColorComputed, " + eol;
+					}
+					baseInfo += "Power: " + this.diyJuliaPower + ", ";
+					if (this.getDiyJuliaUseDiff()) {
+						baseInfo += "Ud, ";
+					}
+					baseInfo += "Boundary: " + this.diyJuliaBound + ", ";
+					if (this.diyJuliaKeepConst) {
+						baseInfo += "Dynamic Constant	Z=C" + eol;
+					} else {
+						baseInfo += "Real Value = " + Double.parseDouble(this.diyJuliaRealTf.getText()) + "," + eol;
+						baseInfo += "Imaginary Value = " + Double.parseDouble(this.diyJuliaImgTf.getText()) + eol;
+					}
+					if (!(this.constFuncChoice.equals("None") || this.noFuncRb.isSelected())) {
+						if (this.sineRb.isSelected()) {
+							baseInfo += "Sine of Constant" + eol;
+						} else if (this.cosineRb.isSelected()) {
+							baseInfo += "Cosine of Constant" + eol;
+						} else if (this.tanRb.isSelected()) {
+							baseInfo += "Tan of Constant" + eol;
+						} else if (this.arcSineRb.isSelected()) {
+							baseInfo += "ArcSine of Constant" + eol;
+						} else if (this.arcCosineRb.isSelected()) {
+							baseInfo += "ArcCosine of Constant" + eol;
+						} else if (this.arcTanRb.isSelected()) {
+							baseInfo += "ArcTan of Constant" + eol;
+						}
+					}
+					baseInfo += "Rotation: " + this.getRotation() + eol;
+					baseInfo += "Center: P(x,y): (" + this.diyJuliaXC + ", " + this.diyJuliaYC + ")" + eol;
+					baseInfo += "Maximum Iterations: " + this.diyJuliaMaxIter + eol;
+					baseInfo += " Scaled Size: " + this.diyJuliaScaleSize + "}" + eol + eol;
+		
+					baseInfo += this.formulaArea.getText();
+					break;
+				} else if (this.diyApolloRb.isSelected()) {
+					double c1 = this.diyApolloC1;
+					double c2 = this.diyApolloC2;
+					double c3 = this.diyApolloC3;
+					double mult = this.diyApolloMult;
+					
+					baseInfo += APOLLONIAN_CIRCLES + eol;
+					baseInfo += "Radii: C1(" + c1 + "), C2(" + c2 + "), C3(" + c3 + ")";
+					baseInfo += " Multiplier(" + mult + ") }";
+					break;
+				}
+				
+			default:
+				baseInfo+="}";
+		}
+		
+		return baseInfo+"</font></html>";		
 	}
 	
 	private String getExtraInfo() {
 		String choice = this.getComboChoice();
 		String extra = "";
-//		System.out.println("Choice--to--saveimage--" + choice);
+		System.out.println("Choice--to--saveimage--" + choice);
 		switch (choice) {
+			case APOLLONIAN_CIRCLES:
+				extra+=""+APOLLONIAN_CIRCLES+"_";
+				double[] cc = this.getCurvChoice();
+				extra+=	"C1["+cc[0]+"],C2["+cc[1]+"],C3["+cc[2]+"],Mul("+this.getMultiplier()+")";
+				break;
+			case POLY:
+				extra += ""+POLY+"_";
+				extra += "P("+this.polyPower+"),";
+				/*if(this.compConst!=0.0)
+					extra+="C("+this.compConst+")";
+				else
+					extra+="C("+this.complex+")";*/
+				extra += "B(" + this.polyBound + "),";
+				extra += "RCMT( " + this.polyType + "),";
+				
+				extra += "MxIt(" + this.polyMaxIter + "),";
+				extra += "Cx(" + this.polyXC + "),";
+				extra += "Cy(" + this.polyYC + "),";
+				extra += "Sz(" + this.polyScaleSize + ")";
+				break;
 			case MANDELBROT:
-				extra = "";
-				extra += "Z(" + this.magnification + ")";
-				extra += "E(" + this.exponent + ")";
-				extra += "B(" + this.mandBound + ")";
-				extra += "MxIt(" + this.mandMaxIter + ")";
-				extra += "Cx(" + this.mandXC + ")";
-				extra += "Cy(" + this.mandYC + ")";
+				extra += ""+MANDELBROT+"_";
+				extra += "Z(" + this.magnification + "),";
+				extra += "E(" + this.exponent + "),";
+				extra += "B(" + this.mandBound + "),";
+				extra += "MxIt(" + this.mandMaxIter + "),";
+				extra += "Cx(" + this.mandXC + "),";
+				extra += "Cy(" + this.mandYC + "),";
 				extra += "Sz(" + this.mandScaleSize + ")";
 				break;
 			case JULIA:
-				extra = "";
-				extra += "P("+this.power+")";
+				extra += ""+JULIA+"_";
+				extra += "P("+this.power+"),";
 				if(this.compConst!=0.0)
-					extra+="C("+this.compConst+")";
+					extra+="C("+this.compConst+"),";
 				else
-					extra+="C("+this.complex+")";
-				extra += "B(" + this.mandBound + ")";
-				extra += "MxIt(" + this.juliaMaxIter + ")";
-				extra += "Cx(" + this.juliaXC + ")";
-				extra += "Cy(" + this.juliaYC + ")";
+					extra+="C("+this.complex+"),";
+				extra += "B(" + this.juliaBound + "),";
+				extra += "MxIt(" + this.juliaMaxIter + "),";
+				extra += "Cx(" + this.juliaXC + "),";
+				extra += "Cy(" + this.juliaYC + "),";
 				extra += "Sz(" + this.juliaScaleSize + ")";
-			case "DIY_"+MANDELBROT:
-				extra = "";
-				extra += "Z(" + this.diyMandMagnification + ")";
-				extra += "E(" + this.diyMandExponent + ")";
-				extra += "B(" + this.diyMandBound + ")";
-				extra += "MxIt(" + this.diyMandMaxIter + ")";
-				extra += "Cx(" + this.diyMandXC + ")";
-				extra += "Cy(" + this.diyMandYC + ")";
-				extra += "Sz(" + this.diyMandScaleSize + ")";
+				break;
+			case DIY:	//"DIY_"+MANDELBROT:
+			if (this.diyMandRb.isSelected()) {
+				extra += "DIY_" + MANDELBROT+"_";
+				extra += "Z(" + this.diyMandMagnification + "),";
+				extra += "E(" + this.diyMandExponent + "),";
+				extra += "B(" + this.diyMandBound + "),";
+				extra += "MxIt(" + this.diyMandMaxIter + "),";
+				extra += "Cx(" + this.diyMandXC + "),";
+				extra += "Cy(" + this.diyMandYC + "),";
+				extra += "Sz(" + this.diyMandScaleSize + "),";
 				if (diyMandKeepConst) {
 					extra += "CONST";
-				}else{
-					extra += "Real(" + this.diyMandConstReal + ")";
+				} else {
+					extra += "Real(" + this.diyMandConstReal + "),";
 					extra += "Img(" + this.diyMandConstImg + ")";
 				}
 				break;
-			case "DIY_"+JULIA:
-				extra = "";
-				extra += "P("+this.diyJuliaPower+")";
+			}else if(this.diyJuliaRb.isSelected()){
+				extra += "DIY_"+JULIA+"_";
+				extra += "P("+this.diyJuliaPower+"),";
 				
-				extra += "B(" + this.diyJuliaBound + ")";
-				extra += "MxIt(" + this.diyJuliaMaxIter + ")";
-				extra += "Cx(" + this.diyJuliaXC + ")";
-				extra += "Cy(" + this.diyJuliaYC + ")";
-				extra += "Sz(" + this.diyJuliaScaleSize + ")";
+				extra += "B(" + this.diyJuliaBound + "),";
+				extra += "MxIt(" + this.diyJuliaMaxIter + "),";
+				extra += "Cx(" + this.diyJuliaXC + "),";
+				extra += "Cy(" + this.diyJuliaYC + "),";
+				extra += "Sz(" + this.diyJuliaScaleSize + "),";
 				if (diyJuliaKeepConst) {
 					extra += "CONST";
 				}else{
-					extra += "Real(" + this.diyJuliaConstReal + ")";
+					extra += "Real(" + this.diyJuliaConstReal + "),";
 					extra += "Img(" + this.diyJuliaConstImg + ")";
 				}
+				break;
+			} else if (this.diyApolloRb.isSelected()){
+				extra+="DIY_"+APOLLONIAN_CIRCLES+"_";
+				extra+="C1("+this.diyApolloC1+"),C2("+this.diyApolloC2+"),C3("+this.diyApolloC3+"),Mx("+this.diyApolloMult+")";
+				break;
+			}
+			break;
 			default:
 				extra="";
+				break;
 		}
 		
 		
@@ -3039,7 +3404,7 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 	}
 
 	public int getDiyJuliaPower() {
-		return diyJuliaPower;
+		return this.diyJuliaPower;
 	}
 
 	public void setDiyJuliaPower(int diyJuliaPower) {
