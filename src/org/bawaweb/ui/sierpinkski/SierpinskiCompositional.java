@@ -54,7 +54,7 @@ import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
 class SierpinskiComboPanel extends JPanel {
 	
 	private static final Double[] BOUNDARIES = new Double[] { -5.0, -4.5, -4.0, -3.5, -3.0, -2.5, -2.0, -1.5, -1.0, 0.0, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
-	private static final Integer[] EXPONENTS = new Integer[] { -10, -9, -8, -7, -6, -5 - 4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	private static final Integer[] EXPONENTS = new Integer[] { -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	// for Julia
 	private static final String J1 = "P[2] C[0.279]";	//f(z) = z^2 + 0.279
 	private static final String J2 = "P[3] C[0.4]";		//f(z) = z^3 + 0.400
@@ -2038,7 +2038,7 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 	}
 
 	private BufferedImage createImageInfo(final String info) {
-		System.out.println("baseInfo==="+info);
+//		System.out.println("baseInfo==="+info);
 		BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = img.createGraphics();
        /* Font font = new Font("Arial", Font.PLAIN, 18);
@@ -2338,7 +2338,7 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 	private String getExtraInfo() {
 		String choice = this.getComboChoice();
 		String extra = "";
-		System.out.println("Choice--to--saveimage--" + choice);
+//		System.out.println("Choice--to--saveimage--" + choice);
 		switch (choice) {
 			case APOLLONIAN_CIRCLES:
 				extra+=""+APOLLONIAN_CIRCLES+"_";
