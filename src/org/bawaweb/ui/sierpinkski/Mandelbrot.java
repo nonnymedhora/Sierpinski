@@ -170,6 +170,28 @@ public class Mandelbrot extends FractalBase {
 				case "ArcTan" :
 						this.complex = z0.inverseTangent();	//z0.tan();
 						break;
+
+						
+				case "Square"	:
+					this.complex = z0.power(2);	//z0.sin();
+						break;
+				case "Cube" :
+					this.complex = z0.power(3);	//z0.cos();
+						break;
+				case "Exponent" :
+					this.complex = z0.exp();	//z0.tan();
+						break;
+				case "Root"	:
+					this.complex = z0.sqroot();	//z0.sin();
+						break;
+				case "CubeRoot" :
+					this.complex = z0.curoot();	//z0.cos();
+						break;
+				case "Log" :
+					this.complex = z0.ln();	//z0.tan();
+						break;
+						
+						
 				case "None" :
 						this.complex = z0;
 						break;

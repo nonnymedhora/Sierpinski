@@ -422,6 +422,15 @@ class SierpinskiComboPanel extends JPanel {
 	protected JRadioButton arcCosineRb = new JRadioButton("arccosine",false);
 	protected JRadioButton arcTanRb = new JRadioButton("arctan",false);	
 	
+	protected JRadioButton sqRb = new JRadioButton("square",false);	
+	protected JRadioButton cuRb = new JRadioButton("cube",false);
+	protected JRadioButton expRb = new JRadioButton("exponent(e)",false);
+	protected JRadioButton rootRb = new JRadioButton("root",false);
+	protected JRadioButton cuRootRb = new JRadioButton("cube-root",false);
+	protected JRadioButton lnRb = new JRadioButton("log(e)",false);		
+	
+	
+	
 	
 	protected ButtonGroup constFnBg = new ButtonGroup();
 	
@@ -509,6 +518,13 @@ class SierpinskiComboPanel extends JPanel {
 		this.constFnBg.add(this.arcCosineRb);
 		this.constFnBg.add(this.arcTanRb);
 		
+		this.constFnBg.add(this.sqRb);
+		this.constFnBg.add(this.cuRb);
+		this.constFnBg.add(this.expRb);
+		this.constFnBg.add(this.rootRb);
+		this.constFnBg.add(this.cuRootRb);
+		this.constFnBg.add(this.lnRb);
+		
 		this.noFuncRb.setActionCommand("NoCalc");
 		this.sineRb.setActionCommand("SineCalc");
 		this.cosineRb.setActionCommand("CosineCalc");
@@ -516,6 +532,13 @@ class SierpinskiComboPanel extends JPanel {
 		this.arcSineRb.setActionCommand("ArcSineCalc");
 		this.arcCosineRb.setActionCommand("ArcCosineCalc");
 		this.arcTanRb.setActionCommand("ArcTanCalc");
+
+		this.sqRb.setActionCommand("SquareCalc");
+		this.cuRb.setActionCommand("CubeCalc");
+		this.expRb.setActionCommand("ExponentCalc");
+		this.rootRb.setActionCommand("RootCalc");
+		this.cuRootRb.setActionCommand("CubeRootCalc");
+		this.lnRb.setActionCommand("LogCalc");
 		
 		this.noFuncRb.setName("None");
 		this.sineRb.setName("Sine");
@@ -525,6 +548,14 @@ class SierpinskiComboPanel extends JPanel {
 		this.arcCosineRb.setName("ArcCosine");
 		this.arcTanRb.setName("ArcTan");
 		
+
+		this.sqRb.setName("Square");
+		this.cuRb.setName("Cube");
+		this.expRb.setName("Exponent");
+		this.rootRb.setName("Root");
+		this.cuRootRb.setName("CubeRoot");
+		this.lnRb.setName("Log");
+		
 		this.add(this.noFuncRb);
 		this.add(this.sineRb);
 		this.add(this.cosineRb);
@@ -532,6 +563,13 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(this.arcSineRb);
 		this.add(this.arcCosineRb);
 		this.add(this.arcTanRb);
+
+		this.add(this.sqRb);
+		this.add(this.cuRb);
+		this.add(this.expRb);
+		this.add(this.rootRb);
+		this.add(this.cuRootRb);
+		this.add(this.lnRb);
 		
 		this.noFuncRb.setVisible(false);
 		this.sineRb.setVisible(false);
@@ -540,6 +578,13 @@ class SierpinskiComboPanel extends JPanel {
 		this.arcSineRb.setVisible(false);
 		this.arcCosineRb.setVisible(false);
 		this.arcTanRb.setVisible(false);
+
+		this.sqRb.setVisible(false);
+		this.cuRb.setVisible(false);
+		this.expRb.setVisible(false);
+		this.rootRb.setVisible(false);
+		this.cuRootRb.setVisible(false);
+		this.lnRb.setVisible(false);
 	}
 
 	private void createColorChoiceRBs() {
@@ -583,6 +628,13 @@ class SierpinskiComboPanel extends JPanel {
 		this.arcSineRb.setVisible(true);
 		this.arcCosineRb.setVisible(true);
 		this.arcTanRb.setVisible(true);
+
+		this.sqRb.setVisible(true);
+		this.cuRb.setVisible(true);
+		this.expRb.setVisible(true);
+		this.rootRb.setVisible(true);
+		this.cuRootRb.setVisible(true);
+		this.lnRb.setVisible(true);
 		
 		this.polyOptionsPanel.add(new JLabel("Exponent(X):"));
 		this.polyOptionsPanel.add(this.polyExpCombos);		
@@ -673,6 +725,16 @@ class SierpinskiComboPanel extends JPanel {
 		this.arcTanRb.setVisible(true);
 		this.rotLabel.setVisible(true);
 		this.rotateCombo.setVisible(true);
+		this.sqRb.setVisible(true);
+		this.cuRb.setVisible(true);
+		this.expRb.setVisible(true);
+		this.rootRb.setVisible(true);
+		this.cuRootRb.setVisible(true);
+		this.lnRb.setVisible(true);
+		
+		this.rotLabel.setVisible(true);
+		this.rotateCombo.setVisible(true);
+		
 		this.diyJuliaPanel.add(new JLabel("Power:"));
 		this.diyJuliaPanel.add(this.diyJuliaPowerCombos);
 		this.diyJuliaPanel.add(new JLabel("ComplexConstant - Real (R) "));
@@ -712,6 +774,13 @@ class SierpinskiComboPanel extends JPanel {
 		this.arcSineRb.setVisible(true);
 		this.arcCosineRb.setVisible(true);
 		this.arcTanRb.setVisible(true);
+		this.sqRb.setVisible(true);
+		this.cuRb.setVisible(true);
+		this.expRb.setVisible(true);
+		this.rootRb.setVisible(true);
+		this.cuRootRb.setVisible(true);
+		this.lnRb.setVisible(true);
+		
 		this.rotLabel.setVisible(true);
 		this.rotateCombo.setVisible(true);
 		this.diyMandPanel.add(new JLabel("Magnification:"));
@@ -755,6 +824,13 @@ class SierpinskiComboPanel extends JPanel {
 		this.arcSineRb.setVisible(true);
 		this.arcCosineRb.setVisible(true);
 		this.arcTanRb.setVisible(true);
+		this.sqRb.setVisible(true);
+		this.cuRb.setVisible(true);
+		this.expRb.setVisible(true);
+		this.rootRb.setVisible(true);
+		this.cuRootRb.setVisible(true);
+		this.lnRb.setVisible(true);
+		
 		this.mandOptionsPanel.add(new JLabel("Magnification(M):"));
 		this.mandOptionsPanel.add(this.mandCombos);
 		this.mandOptionsPanel.add(new JLabel("Exponent(X):"));
@@ -789,6 +865,13 @@ class SierpinskiComboPanel extends JPanel {
 		this.arcSineRb.setVisible(true);
 		this.arcCosineRb.setVisible(true);
 		this.arcTanRb.setVisible(true);
+		this.sqRb.setVisible(true);
+		this.cuRb.setVisible(true);
+		this.expRb.setVisible(true);
+		this.rootRb.setVisible(true);
+		this.cuRootRb.setVisible(true);
+		this.lnRb.setVisible(true);
+		
 		this.juliaOptionsPanel.add(new JLabel("Power-Constant:"));
 		this.juliaOptionsPanel.add(this.juliaCombos);		
 		this.juliaOptionsPanel.add(this.juliaUseDiff);
@@ -2146,17 +2229,29 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 				}
 				if (!(this.constFuncChoice.equals("None") || this.noFuncRb.isSelected())) {
 					if (this.sineRb.isSelected()) {
-						baseInfo += "Sine of Constant" + eol;
+						baseInfo += "Sine of Constant	sine(C)" + eol;
 					} else if (this.cosineRb.isSelected()) {
-						baseInfo += "Cosine of Constant" + eol;
+						baseInfo += "Cosine of Constant		cos(C)" + eol;
 					} else if (this.tanRb.isSelected()) {
-						baseInfo += "Tan of Constant" + eol;
+						baseInfo += "Tan of Constant	tan(C)" + eol;
 					} else if (this.arcSineRb.isSelected()) {
-						baseInfo += "ArcSine of Constant" + eol;
+						baseInfo += "ArcSine of Constant	arcsin(C)" + eol;
 					} else if (this.arcCosineRb.isSelected()) {
-						baseInfo += "ArcCosine of Constant" + eol;
+						baseInfo += "ArcCosine of Constant	arccos(C)" + eol;
 					} else if (this.arcTanRb.isSelected()) {
-						baseInfo += "ArcTan of Constant" + eol;
+						baseInfo += "ArcTan of Constant		arctan(C)" + eol;
+					} else if (this.sqRb.isSelected()) {
+						baseInfo += "Square of Constant		(C ^ 2)" + eol;
+					} else if (this.cuRb.isSelected()) {
+						baseInfo += "Cube of Constant		(C ^ 3)" + eol;
+					} else if (this.expRb.isSelected()) {
+						baseInfo += "Exponent of Constant	(e ^ C)" + eol;
+					} else if (this.rootRb.isSelected()) {
+						baseInfo += "Square Root of Constant	(C ^ (1/2))" + eol;
+					} else if (this.arcTanRb.isSelected()) {
+						baseInfo += "Cube Root of Constant		(C ^ (1/3))" + eol;
+					} else if (this.lnRb.isSelected()) {
+						baseInfo += "Log(e) of Constant		Ln(C)" + eol;
 					}
 				}
 				baseInfo += "Rotation: " + this.getRotation() + eol;
@@ -2192,6 +2287,18 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 						baseInfo += "ArcCosine of Constant" + eol;
 					} else if (this.arcTanRb.isSelected()) {
 						baseInfo += "ArcTan of Constant" + eol;
+					} else if (this.sqRb.isSelected()) {
+						baseInfo += "Square of Constant		(C ^ 2)" + eol;
+					} else if (this.cuRb.isSelected()) {
+						baseInfo += "Cube of Constant		(C ^ 3)" + eol;
+					} else if (this.expRb.isSelected()) {
+						baseInfo += "Exponent of Constant	(e ^ C)" + eol;
+					} else if (this.rootRb.isSelected()) {
+						baseInfo += "Square Root of Constant	(C ^ (1/2))" + eol;
+					} else if (this.arcTanRb.isSelected()) {
+						baseInfo += "Cube Root of Constant		(C ^ (1/3))" + eol;
+					} else if (this.lnRb.isSelected()) {
+						baseInfo += "Log(e) of Constant		Ln(C)" + eol;
 					}
 				}
 				baseInfo += "Rotation: " + this.getRotation() + eol;
@@ -2225,6 +2332,18 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 						baseInfo += "ArcCosine of Constant" + eol;
 					} else if (this.arcTanRb.isSelected()) {
 						baseInfo += "ArcTan of Constant" + eol;
+					} else if (this.sqRb.isSelected()) {
+						baseInfo += "Square of Constant		(C ^ 2)" + eol;
+					} else if (this.cuRb.isSelected()) {
+						baseInfo += "Cube of Constant		(C ^ 3)" + eol;
+					} else if (this.expRb.isSelected()) {
+						baseInfo += "Exponent of Constant	(e ^ C)" + eol;
+					} else if (this.rootRb.isSelected()) {
+						baseInfo += "Square Root of Constant	(C ^ (1/2))" + eol;
+					} else if (this.arcTanRb.isSelected()) {
+						baseInfo += "Cube Root of Constant		(C ^ (1/3))" + eol;
+					} else if (this.lnRb.isSelected()) {
+						baseInfo += "Log(e) of Constant		Ln(C)" + eol;
 					}
 				}
 				baseInfo += "Rotation: " + this.getRotation() + eol;
@@ -2267,6 +2386,18 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 							baseInfo += "ArcCosine of Constant" + eol;
 						} else if (this.arcTanRb.isSelected()) {
 							baseInfo += "ArcTan of Constant" + eol;
+						} else if (this.sqRb.isSelected()) {
+							baseInfo += "Square of Constant		(C ^ 2)" + eol;
+						} else if (this.cuRb.isSelected()) {
+							baseInfo += "Cube of Constant		(C ^ 3)" + eol;
+						} else if (this.expRb.isSelected()) {
+							baseInfo += "Exponent of Constant	(e ^ C)" + eol;
+						} else if (this.rootRb.isSelected()) {
+							baseInfo += "Square Root of Constant	(C ^ (1/2))" + eol;
+						} else if (this.arcTanRb.isSelected()) {
+							baseInfo += "Cube Root of Constant		(C ^ (1/3))" + eol;
+						} else if (this.lnRb.isSelected()) {
+							baseInfo += "Log(e) of Constant		Ln(C)" + eol;
 						}
 					}
 					baseInfo += "Rotation: " + this.getRotation() + eol;
@@ -2307,6 +2438,18 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 							baseInfo += "ArcCosine of Constant" + eol;
 						} else if (this.arcTanRb.isSelected()) {
 							baseInfo += "ArcTan of Constant" + eol;
+						} else if (this.sqRb.isSelected()) {
+							baseInfo += "Square of Constant		(C ^ 2)" + eol;
+						} else if (this.cuRb.isSelected()) {
+							baseInfo += "Cube of Constant		(C ^ 3)" + eol;
+						} else if (this.expRb.isSelected()) {
+							baseInfo += "Exponent of Constant	(e ^ C)" + eol;
+						} else if (this.rootRb.isSelected()) {
+							baseInfo += "Square Root of Constant	(C ^ (1/2))" + eol;
+						} else if (this.arcTanRb.isSelected()) {
+							baseInfo += "Cube Root of Constant		(C ^ (1/3))" + eol;
+						} else if (this.lnRb.isSelected()) {
+							baseInfo += "Log(e) of Constant		Ln(C)" + eol;
 						}
 					}
 					baseInfo += "Rotation: " + this.getRotation() + eol;
@@ -2497,6 +2640,13 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 		this.arcSineRb.addActionListener(this.funcCalcRbListener());
 		this.arcCosineRb.addActionListener(this.funcCalcRbListener());
 		this.arcTanRb.addActionListener(this.funcCalcRbListener());
+
+		this.sqRb.addActionListener(this.funcCalcRbListener());
+		this.cuRb.addActionListener(this.funcCalcRbListener());
+		this.expRb.addActionListener(this.funcCalcRbListener());
+		this.rootRb.addActionListener(this.funcCalcRbListener());
+		this.cuRootRb.addActionListener(this.funcCalcRbListener());
+		this.lnRb.addActionListener(this.funcCalcRbListener());
 		
 		this.magnifyCb.setActionCommand("Magnify");
 		this.magnifyCb.addItemListener(new ItemListener() {
@@ -3210,7 +3360,19 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 			this.setConstFuncChoice("ArcCosine");
 		} else if (this.arcTanRb.isSelected()) {
 			this.setConstFuncChoice("ArcTan");
-		} 
+		} else if (this.sqRb.isSelected()) {
+			this.setConstFuncChoice("Square");
+		} else if (this.cuRb.isSelected()) {
+			this.setConstFuncChoice("Cube");
+		} else if (this.expRb.isSelected()) {
+			this.setConstFuncChoice("Exponent");
+		} else if (this.rootRb.isSelected()) {
+			this.setConstFuncChoice("Root");
+		} else if (this.cuRootRb.isSelected()) {
+			this.setConstFuncChoice("CubeRoot");
+		} else if (this.lnRb.isSelected()) {
+			this.setConstFuncChoice("Log");
+		}
 	}
 
 	private void setUseColorPalette(boolean b) {

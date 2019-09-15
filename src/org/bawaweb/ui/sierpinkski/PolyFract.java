@@ -140,6 +140,26 @@ System.out.println("type---->"+(type));	*/
 							case "ArcTan" :
 									this.compConst = this.compConst.inverseTangent();	//z0.tan();
 									break;
+
+									
+							case "Square"	:
+								this.compConst = this.compConst.power(2);	//z0.sin();
+									break;
+							case "Cube" :
+								this.compConst = this.compConst.power(3);	//z0.cos();
+									break;
+							case "Exponent" :
+								this.compConst = this.compConst.exp();	//z0.tan();
+									break;
+							case "Root"	:
+								this.compConst = this.compConst.sqroot();	//z0.sin();
+									break;
+							case "CubeRoot" :
+								this.compConst = this.compConst.curoot();	//z0.cos();
+									break;
+							case "Log" :
+								this.compConst = this.compConst.ln();	//z0.tan();
+									break;	
 							case "None" :
 									this.compConst = zx.plus(zy);
 									break;

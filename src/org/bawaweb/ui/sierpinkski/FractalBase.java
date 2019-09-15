@@ -941,6 +941,20 @@ public abstract class FractalBase extends JFrame implements Runnable {
 			return Math.hypot(real, imaginary);
 		}
 		
+		public ComplexNumber sqroot(){
+			return null;
+		}
+		
+		public ComplexNumber curoot(){
+			return null;
+		}
+
+		
+		public ComplexNumber ln(){
+			return null;
+		}
+		
+		
 		/*public final ComplexNumber one = new ComplexNumber(1.0, 0.0);*/
 
 	    // return a new Complex object whose value is the complex exponential of this
