@@ -1315,18 +1315,22 @@ class SierpinskiComboPanel extends JPanel {
 		String func2Apply = m.useFuncConst;
 		if (c != null) {
 			addFuncTypeConstInfo(c, func2Apply);
+		} else {
+			this.formulaArea.append("<br/>ComplexConstant == Z<br/>");
 		}
 	}
 	
 	
-	private void addPolyConstInfo(FractalBase fBase){
-		PolyFract p = (PolyFract)fBase;
-		ComplexNumber	c	=p.getCompConst();
-		
-		System.out.println("B4---in-addPolyConstInfo---c=="+c);		
+	private void addPolyConstInfo(FractalBase fBase) {
+		PolyFract p = (PolyFract) fBase;
+		ComplexNumber c = p.getCompConst();
+
+System.out.println("B4---in-addPolyConstInfo---c==" + c);
 		String func2Apply = p.useFuncConst;
 		if (c != null) {
 			addFuncTypeConstInfo(c, func2Apply);
+		} else {
+			this.formulaArea.append("<br/>ComplexConstant == Z<br/>");
 		}
 	}
 	
@@ -1338,9 +1342,9 @@ System.out.println("B4---in-addJliaConsrInfo---c=="+c);
 		if (c != null) {
 			addFuncTypeConstInfo(c, func2Apply);
 		
-		}else{
+		} else {
 			double con = j.getComplexConst();
-			this.formulaArea.append("</br>ComplexConstant == "+con+"+ (0.0 * i)</br>");
+			this.formulaArea.append("<br/>ComplexConstant == " + con + "+ (0.0 * i)<br/>");
 		}
 	}
 
@@ -1841,7 +1845,7 @@ System.out.println("B4---in-addJliaConsrInfo---c=="+c);
 	private void doStartCommand() {
 		this.formulaArea.setText("");
 		// fractal art choice
-		String choice = this.getComboChoice();
+		String choice = this.getComboChoice();System.out.println("choice--startC--is="+choice);
 		// for Fanny
 		int length = this.getSideComboChoice();
 		int ratio = this.getRatioChoice();
@@ -2159,8 +2163,12 @@ System.out.println("B4---in-addJliaConsrInfo---c=="+c);
 			new ZoomInBox(frame);
 		}*/
 		
-		if (! (this.comboChoice.equals(MANDELBROT) || this.comboChoice.equals(JULIA) || this.comboChoice.equals(POLY))
-				&& ! (this.diyMandRb.isSelected() || this.diyJuliaRb.isSelected() )  ) {
+		boolean staticFractalChoice=( this.comboChoice.contains(MANDELBROT) || this.comboChoice.contains(JULIA) || this.comboChoice.contains(POLY) );
+		if(!staticFractalChoice){
+/****************			
+//		if (! (this.comboChoice.equals(MANDELBROT) || this.comboChoice.equals(JULIA) || this.comboChoice.equals(POLY) )
+//				|| ((this.comboChoice.equals(DIY)||this.comboChoice.startsWith("DIY"))&& ! (this.diyMandRb.isSelected() || this.diyJuliaRb.isSelected()) )  ) {
+**********/
 /*
 		if ( (!(this.comboChoice.equals(MANDELBROT) || this.comboChoice.equals(JULIA)|| this.comboChoice.equals(POLY)) && 
 				( (this.comboChoice.equals(DIY)||this.comboChoice.endsWith("Yourself")) && !this.diyApolloRb.isSelected()) )) {*/

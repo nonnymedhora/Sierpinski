@@ -120,6 +120,7 @@ public class Mandelbrot extends FractalBase {
 		double size = this.mag;//getScaleSize();//this.mag;	//10;//4;//2;
 		double bd = this.getBound();
 		int max = getMaxIter();
+		System.out.println("in__Mandelbrot__createMandelbrot (isComplexNumConst || this.complex == null) = "+(isComplexNumConst || this.complex == null));		
 
 		String func2Apply = this.useFuncConst;
 
@@ -150,55 +151,54 @@ public class Mandelbrot extends FractalBase {
 	private ComplexNumber computeComplexConstant(String func2Apply, ComplexNumber z0) {
 		if (isComplexNumConst || this.complex == null) {
 			this.complex = z0;
-
-			switch (func2Apply) {
-				case "Sine"	:
-						this.complex = z0.sine();	//z0.sin();
-						break;
-				case "Cosine" :
-						this.complex = z0.cosine();	//z0.cos();
-						break;
-				case "Tan" :
-						this.complex = z0.tangent();	//z0.tan();
-						break;
-				case "ArcSine"	:
-					this.complex = z0.inverseSine();	//z0.sin();
+		}
+		switch (func2Apply) {
+			case "Sine"	:
+					this.complex = z0.sine();	//z0.sin();
 					break;
-				case "ArcCosine" :
-						this.complex = z0.inverseCosine();	//z0.cos();
-						break;
-				case "ArcTan" :
-						this.complex = z0.inverseTangent();	//z0.tan();
-						break;
+			case "Cosine" :
+					this.complex = z0.cosine();	//z0.cos();
+					break;
+			case "Tan" :
+					this.complex = z0.tangent();	//z0.tan();
+					break;
+			case "ArcSine"	:
+				this.complex = z0.inverseSine();	//z0.sin();
+				break;
+			case "ArcCosine" :
+					this.complex = z0.inverseCosine();	//z0.cos();
+					break;
+			case "ArcTan" :
+					this.complex = z0.inverseTangent();	//z0.tan();
+					break;
 
-						
-				case "Square"	:
-					this.complex = z0.power(2);	//z0.sin();
-						break;
-				case "Cube" :
-					this.complex = z0.power(3);	//z0.cos();
-						break;
-				case "Exponent" :
-					this.complex = z0.exp();	//z0.tan();
-						break;
-				case "Root"	:
-					this.complex = z0.sqroot();	//z0.sin();
-						break;
-				case "CubeRoot" :
-					this.complex = z0.curoot();	//z0.cos();
-						break;
-				case "Log" :
-					this.complex = z0.ln();	//z0.tan();
-						break;
-						
-						
-				case "None" :
-						this.complex = z0;
-						break;
-				default:
+					
+			case "Square"	:
+				this.complex = z0.power(2);	//z0.sin();
+					break;
+			case "Cube" :
+				this.complex = z0.power(3);	//z0.cos();
+					break;
+			case "Exponent" :
+				this.complex = z0.exp();	//z0.tan();
+					break;
+			case "Root"	:
+				this.complex = z0.sqroot();	//z0.sin();
+					break;
+			case "CubeRoot" :
+				this.complex = z0.curoot();	//z0.cos();
+					break;
+			case "Log" :
+				this.complex = z0.ln();	//z0.tan();
+					break;
+					
+					
+			case "None" :
 					this.complex = z0;
 					break;
-			}
+			default:
+				this.complex = z0;
+				break;
 		}
 
 		return this.complex;
