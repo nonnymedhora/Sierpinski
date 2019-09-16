@@ -119,55 +119,56 @@ System.out.println("type---->"+(type));	*/
 				}
 				
 				if (this.isComplexNumConst || this.compConst == null) {
-						this.compConst = zx.plus(zy);
-						
-						switch (func2Apply) {
-							case "Sine"	:
-									this.compConst = this.compConst.sine();	//z0.sin();
-									break;
-							case "Cosine" :
-									this.compConst = this.compConst.cosine();	//z0.cos();
-									break;
-							case "Tan" :
-									this.compConst = this.compConst.tangent();	//z0.tan();
-									break;
-							case "ArcSine"	:
-								this.compConst = this.compConst.inverseSine();	//z0.sin();
-								break;
-							case "ArcCosine" :
-									this.compConst = this.compConst.inverseCosine();	//z0.cos();
-									break;
-							case "ArcTan" :
-									this.compConst = this.compConst.inverseTangent();	//z0.tan();
-									break;
-
-									
-							case "Square"	:
-								this.compConst = this.compConst.power(2);	//z0.sin();
-									break;
-							case "Cube" :
-								this.compConst = this.compConst.power(3);	//z0.cos();
-									break;
-							case "Exponent" :
-								this.compConst = this.compConst.exp();	//z0.tan();
-									break;
-							case "Root"	:
-								this.compConst = this.compConst.sqroot();	//z0.sin();
-									break;
-							case "CubeRoot" :
-								this.compConst = this.compConst.curoot();	//z0.cos();
-									break;
-							case "Log" :
-								this.compConst = this.compConst.ln();	//z0.tan();
-									break;	
-							case "None" :
-									this.compConst = zx.plus(zy);
-									break;
-							default:
-								this.compConst = zx.plus(zy);
-								break;
-						}
+					this.compConst = zx.plus(zy);
 				}
+						
+				switch (func2Apply) {
+					case "Sine"	:
+							this.compConst = this.compConst.sine();	//z0.sin();
+							break;
+					case "Cosine" :
+							this.compConst = this.compConst.cosine();	//z0.cos();
+							break;
+					case "Tan" :
+							this.compConst = this.compConst.tangent();	//z0.tan();
+							break;
+					case "ArcSine"	:
+						this.compConst = this.compConst.inverseSine();	//z0.sin();
+						break;
+					case "ArcCosine" :
+							this.compConst = this.compConst.inverseCosine();	//z0.cos();
+							break;
+					case "ArcTan" :
+							this.compConst = this.compConst.inverseTangent();	//z0.tan();
+							break;
+
+							
+					case "Square"	:
+						this.compConst = this.compConst.power(2);	//z0.sin();
+							break;
+					case "Cube" :
+						this.compConst = this.compConst.power(3);	//z0.cos();
+							break;
+					case "Exponent" :
+						this.compConst = this.compConst.exp();	//z0.tan();
+							break;
+					case "Root"	:
+						this.compConst = this.compConst.sqroot();	//z0.sin();
+							break;
+					case "CubeRoot" :
+						this.compConst = this.compConst.curoot();	//z0.cos();
+							break;
+					case "Log" :
+						this.compConst = this.compConst.ln();	//z0.tan();
+							break;	
+					case "None" :
+							this.compConst = zx.plus(zy);
+							break;
+					default:
+						this.compConst = zx.plus(zy);
+						break;
+				}
+				
 				
 				
 

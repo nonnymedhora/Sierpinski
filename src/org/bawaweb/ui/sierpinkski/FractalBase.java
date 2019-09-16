@@ -958,11 +958,11 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		 */
 		public ComplexNumber sqroot() {
 //			System.out.println("Real==="+real+"---Img:=="+imaginary);
-			double a = Math.sqrt(real + ( Math.pow(real, 2.0) + Math.pow(Math.abs(imaginary), 2.0) ) / 2.0);
-			double b = Math.sqrt( (real /** (-1.0)*/) + Math.sqrt( Math.pow(real, 2.0) + Math.pow(Math.abs(imaginary), 2.0) ) / 2.0);
+			double a = Math.sqrt(Math.abs(real) + ( Math.pow(Math.abs(real), 2.0) + Math.pow(Math.abs(imaginary), 2.0) ) / 2.0);
+			double b = Math.sqrt( Math.abs(real /** (-1.0)*/) + Math.sqrt( Math.pow(Math.abs(real), 2.0) + Math.pow(Math.abs(imaginary), 2.0) ) / 2.0);
 //System.out.println("a==="+a);
 //System.out.println("b==="+b);
-			if (real == 0.0) {
+			if (real == 0.0 && imaginary != 0.0) {
 //				System.out.println("returning___new ComplexNumber(0.0, Math.sqrt(Math.abs(imaginary)));"+new ComplexNumber(0.0, Math.sqrt(Math.abs(imaginary))));
 				return new ComplexNumber(0.0, Math.sqrt(Math.abs(imaginary)));
 			}
