@@ -232,9 +232,9 @@ class SierpinskiComboPanel extends JPanel {
 	protected ButtonGroup diyBg = new ButtonGroup();
 	
 	// diy fractal art option choice
-	private String diyMand = "DIY_"+MANDELBROT;
-	private String diyJulia = "DIY_"+JULIA;
-	private String diyApollo = "DIY_"+APOLLONIAN_CIRCLES;
+	private final String diyMand = "DIY_"+MANDELBROT;
+	private final String diyJulia = "DIY_"+JULIA;
+	private final String diyApollo = "DIY_"+APOLLONIAN_CIRCLES;
 
 	private String diyFractChoice;
 	
@@ -522,7 +522,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.constFnBg.add(this.cuRb);
 		this.constFnBg.add(this.expRb);
 		this.constFnBg.add(this.rootRb);
-		/*this.constFnBg.add(this.cuRootRb);*/
+		this.constFnBg.add(this.cuRootRb);
 		this.constFnBg.add(this.lnRb);
 		
 		this.noFuncRb.setActionCommand("NoCalc");
@@ -568,7 +568,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(this.cuRb);
 		this.add(this.expRb);
 		this.add(this.rootRb);
-		this.add(this.cuRootRb);
+		/*this.add(this.cuRootRb);*/
 		this.add(this.lnRb);
 		
 		this.noFuncRb.setVisible(false);
@@ -679,18 +679,18 @@ class SierpinskiComboPanel extends JPanel {
 	}
 
 	private void setupDIYRBs() {
-		this.diyMandRb.setActionCommand("DIY_" + MANDELBROT);
-		this.diyJuliaRb.setActionCommand("DIY_" + JULIA);
-		this.diyApolloRb.setActionCommand("DIY_" + APOLLONIAN_CIRCLES);
+		this.diyMandRb.setActionCommand(diyMand);//("DIY_" + MANDELBROT);
+		this.diyJuliaRb.setActionCommand(diyJulia/*"DIY_" + JULIA*/);
+		this.diyApolloRb.setActionCommand(diyApollo/*"DIY_" + APOLLONIAN_CIRCLES*/);
 
 		this.diyBg.add(this.diyMandRb);
 		this.diyBg.add(this.diyJuliaRb);
 		this.diyBg.add(this.diyApolloRb);
 
 		this.diyMandRb.setSelected(true);
-		this.diyMandRb.setName("DIY_" + MANDELBROT);
-		this.diyJuliaRb.setName("DIY_" + JULIA);
-		this.diyApolloRb.setName("DIY_" + APOLLONIAN_CIRCLES);
+		this.diyMandRb.setName(diyMand/*"DIY_" + MANDELBROT*/);
+		this.diyJuliaRb.setName(diyJulia/*"DIY_" + JULIA*/);
+		this.diyApolloRb.setName(diyApollo/*"DIY_" + APOLLONIAN_CIRCLES*/);
 
 		this.diyOptionsPanel.add(this.diyMandRb);
 		this.diyOptionsPanel.add(this.diyJuliaRb);
@@ -1343,8 +1343,9 @@ System.out.println("B4---in-addJliaConsrInfo---c=="+c);
 			addFuncTypeConstInfo(c, func2Apply);
 		
 		} else {
-			double con = j.getComplexConst();
-			this.formulaArea.append("<br/>ComplexConstant == " + con + "+ (0.0 * i)<br/>");
+			this.formulaArea.append("<br/>ComplexConstant == Z<br/>");
+			/*double con = j.getComplexConst();
+			this.formulaArea.append("<br/>ComplexConstant == " + con + "+ (0.0 * i)<br/>");*/
 		}
 	}
 
@@ -1819,17 +1820,19 @@ System.out.println("B4---in-addJliaConsrInfo---c=="+c);
 	
 	private void doSetDiyFractalChoice(String diyChoice) {
 		this.setDiyFractChoice(diyChoice);
-//System.out.println("Here---doSetDiyFractalChoice -- "+diyChoice);
-		if (diyChoice.equals("DIY_" + MANDELBROT) && this.diyMandRb.isSelected()) {
-			this.comboChoice="DIY_" + MANDELBROT;
+System.out.println("Here---doSetDiyFractalChoice -- "+diyChoice);
+		if (diyChoice.equals(diyMand/*"DIY_" + MANDELBROT*/) && this.diyMandRb.isSelected()) {
+			this.comboChoice=diyMand;//"DIY_" + MANDELBROT;
 			this.diyMandPanel.setVisible(true);
 			this.diyJuliaPanel.setVisible(false);
 			this.diyApolloPanel.setVisible(false);
-		} else if (diyChoice.equals("DIY_" + JULIA) && this.diyJuliaRb.isSelected()) {
+		} else if (diyChoice.equals(diyJulia/*"DIY_" + JULIA*/) && this.diyJuliaRb.isSelected()) {
+			this.comboChoice=diyJulia;
 			this.diyMandPanel.setVisible(false);
 			this.diyJuliaPanel.setVisible(true);
 			this.diyApolloPanel.setVisible(false);
-		} else if (diyChoice.equals("DIY_" + APOLLONIAN_CIRCLES) && this.diyApolloRb.isSelected()) {
+		} else if (diyChoice.equals(diyApollo/*"DIY_" + APOLLONIAN_CIRCLES*/) && this.diyApolloRb.isSelected()) {
+			this.comboChoice=diyApollo;
 			this.rotLabel.setVisible(false);
 			this.rotateCombo.setVisible(false);
 			this.diyMandPanel.setVisible(false);
@@ -2163,7 +2166,8 @@ System.out.println("B4---in-addJliaConsrInfo---c=="+c);
 			new ZoomInBox(frame);
 		}*/
 		
-		boolean staticFractalChoice=( this.comboChoice.contains(MANDELBROT) || this.comboChoice.contains(JULIA) || this.comboChoice.contains(POLY) );
+		boolean staticFractalChoice=( this.comboChoice.contains(MANDELBROT) || this.comboChoice.contains(JULIA) || this.comboChoice.contains(POLY) ||
+				(this.comboChoice.contains("self")&&!(this.diyApolloRb.isSelected() || this.getComboChoice().equals(APOLLONIAN_CIRCLES))));
 		if(!staticFractalChoice){
 /****************			
 //		if (! (this.comboChoice.equals(MANDELBROT) || this.comboChoice.equals(JULIA) || this.comboChoice.equals(POLY) )
@@ -2464,9 +2468,9 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 				baseInfo += this.formulaArea.getText();
 				break;
 				
-			case	DIY:	//if ((choice.startsWith("DIY")||choice.endsWith("Yourself"))) {
-				if (this.diyMandRb.isSelected()) {
-					baseInfo+=MANDELBROT+"<br/>";
+			case	diyMand://DIY:	//if ((choice.startsWith("DIY")||choice.endsWith("Yourself"))) {
+				/*if (this.diyMandRb.isSelected()) {*/
+					baseInfo+=MANDELBROT+eol;
 					if (this.colrPRb.isSelected()) {
 						baseInfo += "ColorPalette, " + eol;
 					} else {
@@ -2517,8 +2521,9 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 		
 					baseInfo += this.formulaArea.getText();
 					break;
-				}else if(this.diyJuliaRb.isSelected()){
-					baseInfo+=JULIA+"<br/>";
+					case diyJulia:
+				/*}else if(this.diyJuliaRb.isSelected()){*/
+					baseInfo+=JULIA+eol;
 					if (this.colrPRb.isSelected()) {
 						baseInfo += "ColorPalette, " + eol;
 					} else {
@@ -2569,7 +2574,8 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 		
 					baseInfo += this.formulaArea.getText();
 					break;
-				} else if (this.diyApolloRb.isSelected()) {
+					case diyApollo:
+				/*} else if (this.diyApolloRb.isSelected()) {*/
 					double c1 = this.diyApolloC1;
 					double c2 = this.diyApolloC2;
 					double c3 = this.diyApolloC3;
@@ -2579,7 +2585,7 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 					baseInfo += "Radii: C1(" + c1 + "), C2(" + c2 + "), C3(" + c3 + ")";
 					baseInfo += " Multiplier(" + mult + ") }";
 					break;
-				}
+				/*}*/
 				
 			default:
 				baseInfo+="}";
@@ -2636,8 +2642,8 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 				extra += "Cy(" + this.juliaYC + "),";
 				extra += "Sz(" + this.juliaScaleSize + ")";
 				break;
-			case DIY:	//"DIY_"+MANDELBROT:
-			if (this.diyMandRb.isSelected()) {
+			case diyMand://DIY:	//"DIY_"+MANDELBROT:
+			/*if (this.diyMandRb.isSelected()) {*/
 				extra += "DIY_" + MANDELBROT+"_";
 				extra += "Z(" + this.diyMandMagnification + "),";
 				extra += "E(" + this.diyMandExponent + "),";
@@ -2653,7 +2659,8 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 					extra += "Img(" + this.diyMandConstImg + ")";
 				}
 				break;
-			}else if(this.diyJuliaRb.isSelected()){
+			case diyJulia:
+			/*}else if(this.diyJuliaRb.isSelected()){*/
 				extra += "DIY_"+JULIA+"_";
 				extra += "P("+this.diyJuliaPower+"),";
 				
@@ -2669,12 +2676,13 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 					extra += "Img(" + this.diyJuliaConstImg + ")";
 				}
 				break;
-			} else if (this.diyApolloRb.isSelected()){
+			case diyApollo:
+			/*} else if (this.diyApolloRb.isSelected()){*/
 				extra+="DIY_"+APOLLONIAN_CIRCLES+"_";
 				extra+="C1("+this.diyApolloC1+"),C2("+this.diyApolloC2+"),C3("+this.diyApolloC3+"),Mx("+this.diyApolloMult+")";
 				break;
-			}
-			break;
+			/*}
+			break;*/
 			default:
 				extra="";
 				break;
