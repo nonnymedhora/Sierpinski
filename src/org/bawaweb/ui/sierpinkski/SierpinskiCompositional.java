@@ -522,7 +522,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.constFnBg.add(this.cuRb);
 		this.constFnBg.add(this.expRb);
 		this.constFnBg.add(this.rootRb);
-		this.constFnBg.add(this.cuRootRb);
+		/*this.constFnBg.add(this.cuRootRb);*/
 		this.constFnBg.add(this.lnRb);
 		
 		this.noFuncRb.setActionCommand("NoCalc");
@@ -1306,6 +1306,100 @@ class SierpinskiComboPanel extends JPanel {
 			this.formulaArea.append("<br/><br/>Calculated colors based on pixel values with a 'top-and-left' origin</font>");
 		}
 	}
+	
+	private void addMandelbrotConstInfo(FractalBase fBase){
+		Mandelbrot m = (Mandelbrot)fBase;
+		ComplexNumber	c	=m.getComplex();
+		
+		System.out.println("B4---in-addMandelbrotConstInfo---c=="+c);		
+		String func2Apply = m.useFuncConst;
+		if (c != null) {
+			addFuncTypeConstInfo(c, func2Apply);
+		}
+	}
+	
+	
+	private void addPolyConstInfo(FractalBase fBase){
+		PolyFract p = (PolyFract)fBase;
+		ComplexNumber	c	=p.getCompConst();
+		
+		System.out.println("B4---in-addPolyConstInfo---c=="+c);		
+		String func2Apply = p.useFuncConst;
+		if (c != null) {
+			addFuncTypeConstInfo(c, func2Apply);
+		}
+	}
+	
+	private void addJuliaConstInfo(FractalBase fBase){
+		Julia j = (Julia)fBase;
+		ComplexNumber c = j.getComplex();
+System.out.println("B4---in-addJliaConsrInfo---c=="+c);		
+		String func2Apply = j.useFuncConst;
+		if (c != null) {
+			addFuncTypeConstInfo(c, func2Apply);
+		
+		}else{
+			double con = j.getComplexConst();
+			this.formulaArea.append("</br>ComplexConstant == "+con+"+ (0.0 * i)</br>");
+		}
+	}
+
+	private void addFuncTypeConstInfo(ComplexNumber c, String func2Apply) {
+		switch (func2Apply) {
+		case	"None":
+			System.out.println("NONE-<br/>ComplexConstant == "+c.toString()+"<br/>");
+			this.formulaArea.append("<br/>ComplexConstant == "+c.toString()+"<br/>");
+			break;
+		case	"Sine":
+			System.out.println("SINE-<br/>ComplexConstant == "+c.sine().toString()+"<br/>");
+			this.formulaArea.append("<br/>sin(ComplexConstant) == "+c.sine().toString()+"<br/>");
+			break;
+		case	"Cosine":
+			System.out.println("COSINE-<br/>ComplexConstant == "+c.cosine().toString()+"<br/>");
+			this.formulaArea.append("<br/>cos(ComplexConstant) == "+c.cosine().toString()+"<br/>");
+			break;
+
+		case	"Tan":
+			this.formulaArea.append("<br/>tan(ComplexConstant) == "+c.tan().toString()+"<br/>");
+			break;
+			
+
+		case	"ArcSine":
+			this.formulaArea.append("<br/>asin2(ComplexConstant) == "+c.inverseSine().toString()+"<br/>");
+			break;
+		case	"ArcCosine":
+			this.formulaArea.append("<br/>acos2(ComplexConstant) == "+c.inverseCosine().toString()+"<br/>");
+			break;
+		case	"ArcTan":
+			this.formulaArea.append("<br/>atan(ComplexConstant) == "+c.inverseTangent().toString()+"<br/>");
+			break;
+		case	"Square":
+			System.out.println("SQUARE-<br/>ComplexConstant == "+c.power(2).toString()+"<br/>");
+			this.formulaArea.append("<br/>(ComplexConstant)squared or C^2 == "+c.power(2).toString()+"<br/>");
+			break;
+		case	"Cube":
+			this.formulaArea.append("<br/>(ComplexConstant)cubed or C^3== "+c.power(3).toString()+"<br/>");
+			break;
+		case	"Exponent":
+			this.formulaArea.append("<br/>exponent(ComplexConstant) or e^C == "+c.exp().toString()+"<br/>");
+			break;
+		case	"Root":
+			System.out.println("ROOT-<br/>ComplexConstant == "+c.sqroot().toString()+"<br/>");
+			this.formulaArea.append("<br/>sqrt(ComplexConstant) == "+c.sqroot().toString()+"<br/>");
+			break;
+		/*case	"CubeRoot":
+			this.formulaArea.append("<br/>ComplexConstant == "+c.curoot().toString()+"<br/>");
+			break;*/
+		case	"Log":
+			System.out.println("LOG--<br/>ComplexConstant == "+c.ln().toString()+"<br/>");
+			this.formulaArea.append("<br/>log(ComplexConstant) [base e] == "+c.ln().toString()+"<br/>");
+			break;
+
+		default:
+			this.formulaArea.append("<br/>ComplexConstant == "+c.toString()+"<br/>");
+			break;
+		}
+	}
 
 	private void doSetJuliaUseDiffCommand(boolean useDiffs) {
 		this.jUseDiff = useDiffs;
@@ -1867,6 +1961,7 @@ class SierpinskiComboPanel extends JPanel {
 			FractalBase.setMaxIter(this.polyMaxIter);
 			FractalBase.setAreaSize(this.polySize);
 			/*this.doReset();*/
+			this.addPolyConstInfo(ff);
 		} else if (choice.equals(MANDELBROT)) {
 			this.formulaArea.setVisible(true);
 			this.formulaArea.setText("");
@@ -1886,6 +1981,7 @@ class SierpinskiComboPanel extends JPanel {
 			FractalBase.setMaxIter(mandMax);
 			FractalBase.setAreaSize(mandLoopLt);
 			/*this.doReset();*/
+			this.addMandelbrotConstInfo(ff);
 		} else if (choice.equals(JULIA)) {
 			this.formulaArea.setVisible(true);
 			this.formulaArea.setText("");
@@ -1898,7 +1994,7 @@ class SierpinskiComboPanel extends JPanel {
 			} else {
 				ff = new Julia(pow, comp, jBound, jUseD);
 			}
-
+			
 			ff.setUseColorPalette(useCP);
 			ff.setUseFuncConst(func);
 			ff.setRotation(rot);
@@ -1908,6 +2004,7 @@ class SierpinskiComboPanel extends JPanel {
 			FractalBase.setMaxIter(juliaMax);
 			FractalBase.setAreaSize(juliaLoopLt);
 			/*this.doReset();*/
+			this.addJuliaConstInfo(ff);
 
 		} else if (choice.equals(CST_FRACTAL)) {
 			/*this.doReset();*/
@@ -1964,6 +2061,8 @@ class SierpinskiComboPanel extends JPanel {
 				FractalBase.setxC(diyMXc);
 				FractalBase.setxC(diyMYc);
 				FractalBase.setScaleSize(diyMScale);
+
+				this.addMandelbrotConstInfo(ff);
 				
 			} else if(this.diyJuliaRb.isSelected()){
 				//
@@ -2006,6 +2105,7 @@ class SierpinskiComboPanel extends JPanel {
 					}*/
 				}
 
+				
 				ff.setUseColorPalette(useCP);
 				ff.setUseFuncConst(func);
 				ff.setRotation(rot);
@@ -2014,6 +2114,8 @@ class SierpinskiComboPanel extends JPanel {
 				FractalBase.setxC(diyJXc);
 				FractalBase.setxC(diyJYc);
 				FractalBase.setScaleSize(diyJScale);
+				
+				this.addJuliaConstInfo(ff);
 			} else if (this.diyApolloRb.isSelected()) {
 				double c1 = this.diyApolloC1;
 				double c2 = this.diyApolloC2;
@@ -2218,9 +2320,9 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 				}
 				baseInfo += "Power: " + this.polyPower + ", ";
 				if (this.polyUseDiff) {
-					baseInfo += "Ud, ";
+					baseInfo += "Ud, "+eol;
 				}
-				baseInfo += "Boundary: " + this.polyBound + ", ";
+				baseInfo += "Boundary: " + this.polyBound + ", " + eol;
 				if (this.polyKeepConst) {
 					baseInfo += "Dynamic Constant	Z=C"+eol;
 				} else {
@@ -2366,7 +2468,7 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 					if (this.getDiyMandUseDiff()) {
 						baseInfo += "Ud, ";
 					}
-					baseInfo += "Boundary: " + this.diyMandBound + ", ";
+					baseInfo += "Boundary: " + this.diyMandBound + ", " + eol;
 					if (this.diyMandKeepConst) {
 						baseInfo += "Dynamic Constant	Z=C" + eol;
 					} else {
@@ -2418,7 +2520,7 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 					if (this.getDiyJuliaUseDiff()) {
 						baseInfo += "Ud, ";
 					}
-					baseInfo += "Boundary: " + this.diyJuliaBound + ", ";
+					baseInfo += "Boundary: " + this.diyJuliaBound + ", "+eol;
 					if (this.diyJuliaKeepConst) {
 						baseInfo += "Dynamic Constant	Z=C" + eol;
 					} else {
@@ -2446,7 +2548,7 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 							baseInfo += "Exponent of Constant	(e ^ C)" + eol;
 						} else if (this.rootRb.isSelected()) {
 							baseInfo += "Square Root of Constant	(C ^ (1/2))" + eol;
-						} else if (this.arcTanRb.isSelected()) {
+						} else if (this.cuRootRb.isSelected()) {
 							baseInfo += "Cube Root of Constant		(C ^ (1/3))" + eol;
 						} else if (this.lnRb.isSelected()) {
 							baseInfo += "Log(e) of Constant		Ln(C)" + eol;

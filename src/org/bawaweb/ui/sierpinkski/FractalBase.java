@@ -905,18 +905,18 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		 */
 		@Override
 		public String toString() {
-			if (imaginary == 0 && real != 0.0)
+			if (imaginary == 0.0 && real != 0.0)
 				return real + "";
-			if (real == 0 && imaginary != 0.0)
+			if (real == 0.0 && imaginary != 0.0)
 				return imaginary + "i";
-			if (real < 0) {
-				if (imaginary < 0)
-					return "- " + real + " - " + (-imaginary) + "i";
+			if (real < 0.0) {
+				if (imaginary < 0.0)
+					return real + " - " + (-1*imaginary) + "i";
 				else
-					return "- " + real + " + " + imaginary + "i";
-			} else if (real > 0) {
-				if (imaginary < 0)
-					return real + " - " + (-imaginary) + "i";
+					return real + " + " + imaginary + "i";
+			} else if (real > 0.0) {
+				if (imaginary < 0.0)
+					return real + " - " + (-1*imaginary) + "i";
 				else
 					return real + " + " + imaginary + "i";
 			}
@@ -941,17 +941,59 @@ public abstract class FractalBase extends JFrame implements Runnable {
 			return Math.hypot(real, imaginary);
 		}
 		
-		public ComplexNumber sqroot(){
-			return null;
+		
+		/**
+		 * https://math.stackexchange.com/questions/44406/how-do-i-get-the-square-root-of-a-complex-number
+		 * 
+		 * z=c+d*i				c=real,	d=imaginary
+		 * 
+		 * sqroot(z)=a+b*i
+		 * 
+		 * a=root((c+root(c^2+d^2))/2) 
+		 * b=d/|d|*root((-c+root(c^2+d^2))/2)
+		 * 
+		 * d/|d|	==> b has same sign as d
+		 * 
+		 * @return
+		 */
+		public ComplexNumber sqroot() {
+//			System.out.println("Real==="+real+"---Img:=="+imaginary);
+			double a = Math.sqrt(real + ( Math.pow(real, 2.0) + Math.pow(Math.abs(imaginary), 2.0) ) / 2.0);
+			double b = Math.sqrt( (real /** (-1.0)*/) + Math.sqrt( Math.pow(real, 2.0) + Math.pow(Math.abs(imaginary), 2.0) ) / 2.0);
+//System.out.println("a==="+a);
+//System.out.println("b==="+b);
+			if (real == 0.0) {
+//				System.out.println("returning___new ComplexNumber(0.0, Math.sqrt(Math.abs(imaginary)));"+new ComplexNumber(0.0, Math.sqrt(Math.abs(imaginary))));
+				return new ComplexNumber(0.0, Math.sqrt(Math.abs(imaginary)));
+			}
+			if (imaginary > 0.0) {
+//				System.out.println("returning___new ComplexNumber(a, b);"+new ComplexNumber(a, b));
+				return new ComplexNumber(a, b);
+			} else if (imaginary < 0.0) {
+//				System.out.println("returning___new ComplexNumber(a, b * (-1.0));"+new ComplexNumber(a,( Math.abs(b) * (-1.0))));
+			
+				return new ComplexNumber(a,( Math.abs(b) * (-1.0)));
+			}
+//			System.out.println("returning___new ComplexNumber(Math.sqrt(Math.abs(real)), 0.0);"+new ComplexNumber(Math.sqrt(Math.abs(real)), 0.0));
+			return new ComplexNumber(Math.sqrt(Math.abs(real)), 0.0);
 		}
 		
 		public ComplexNumber curoot(){
-			return null;
+			return sqroot();	//for-now
 		}
 
 		
-		public ComplexNumber ln(){
-			return null;
+		/**https://en.wikipedia.org/wiki/Complex_logarithm
+		//
+		//	z=x+y*i
+		//	log(z)=ln(root(x^2+y^2))+atan2(y,x)*i
+		 * 
+		 * @return
+		 */
+		public ComplexNumber ln() {
+			double a = Math.log(Math.sqrt(Math.pow(real, 2.0) + Math.pow(imaginary, 2.0)));
+			double b = Math.atan2(imaginary, real);
+			return new ComplexNumber(a, b);
 		}
 		
 		

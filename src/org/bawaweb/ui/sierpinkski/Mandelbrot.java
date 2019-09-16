@@ -236,4 +236,12 @@ public class Mandelbrot extends FractalBase {
 		return "Bawaz _ Mandelbrot";
 	}
 
+	public ComplexNumber getComplex() {
+		return this.complex;
+	}
+
+	public void setComplex(ComplexNumber comp) {
+		this.complex = comp;
+	}
+
 }
