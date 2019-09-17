@@ -120,7 +120,7 @@ public class Mandelbrot extends FractalBase {
 		double size = this.mag;//getScaleSize();//this.mag;	//10;//4;//2;
 		double bd = this.getBound();
 		int max = getMaxIter();
-		System.out.println("in__Mandelbrot__createMandelbrot (isComplexNumConst || this.complex == null) = "+(isComplexNumConst || this.complex == null));		
+//		System.out.println("in__Mandelbrot__createMandelbrot (isComplexNumConst || this.complex == null) = "+(isComplexNumConst || this.complex == null));		
 
 		String func2Apply = this.useFuncConst;
 

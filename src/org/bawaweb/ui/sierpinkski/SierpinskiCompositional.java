@@ -426,7 +426,7 @@ class SierpinskiComboPanel extends JPanel {
 	protected JRadioButton cuRb = new JRadioButton("cube",false);
 	protected JRadioButton expRb = new JRadioButton("exponent(e)",false);
 	protected JRadioButton rootRb = new JRadioButton("root",false);
-	protected JRadioButton cuRootRb = new JRadioButton("cube-root",false);
+	/*protected JRadioButton cuRootRb = new JRadioButton("cube-root",false);*/
 	protected JRadioButton lnRb = new JRadioButton("log(e)",false);		
 	
 	
@@ -522,7 +522,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.constFnBg.add(this.cuRb);
 		this.constFnBg.add(this.expRb);
 		this.constFnBg.add(this.rootRb);
-		this.constFnBg.add(this.cuRootRb);
+		/*this.constFnBg.add(this.cuRootRb);*/
 		this.constFnBg.add(this.lnRb);
 		
 		this.noFuncRb.setActionCommand("NoCalc");
@@ -537,7 +537,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.cuRb.setActionCommand("CubeCalc");
 		this.expRb.setActionCommand("ExponentCalc");
 		this.rootRb.setActionCommand("RootCalc");
-		this.cuRootRb.setActionCommand("CubeRootCalc");
+		/*this.cuRootRb.setActionCommand("CubeRootCalc");*/
 		this.lnRb.setActionCommand("LogCalc");
 		
 		this.noFuncRb.setName("None");
@@ -553,7 +553,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.cuRb.setName("Cube");
 		this.expRb.setName("Exponent");
 		this.rootRb.setName("Root");
-		this.cuRootRb.setName("CubeRoot");
+		/*this.cuRootRb.setName("CubeRoot");*/
 		this.lnRb.setName("Log");
 		
 		this.add(this.noFuncRb);
@@ -583,7 +583,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.cuRb.setVisible(false);
 		this.expRb.setVisible(false);
 		this.rootRb.setVisible(false);
-		this.cuRootRb.setVisible(false);
+		/*this.cuRootRb.setVisible(false);*/
 		this.lnRb.setVisible(false);
 	}
 
@@ -633,7 +633,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.cuRb.setVisible(true);
 		this.expRb.setVisible(true);
 		this.rootRb.setVisible(true);
-		this.cuRootRb.setVisible(true);
+		/*this.cuRootRb.setVisible(true);*/
 		this.lnRb.setVisible(true);
 		
 		this.polyOptionsPanel.add(new JLabel("Exponent(X):"));
@@ -729,7 +729,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.cuRb.setVisible(true);
 		this.expRb.setVisible(true);
 		this.rootRb.setVisible(true);
-		this.cuRootRb.setVisible(true);
+		/*this.cuRootRb.setVisible(true);*/
 		this.lnRb.setVisible(true);
 		
 		this.rotLabel.setVisible(true);
@@ -778,7 +778,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.cuRb.setVisible(true);
 		this.expRb.setVisible(true);
 		this.rootRb.setVisible(true);
-		this.cuRootRb.setVisible(true);
+		/*this.cuRootRb.setVisible(true);*/
 		this.lnRb.setVisible(true);
 		
 		this.rotLabel.setVisible(true);
@@ -828,7 +828,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.cuRb.setVisible(true);
 		this.expRb.setVisible(true);
 		this.rootRb.setVisible(true);
-		this.cuRootRb.setVisible(true);
+		/*this.cuRootRb.setVisible(true);*/
 		this.lnRb.setVisible(true);
 		
 		this.mandOptionsPanel.add(new JLabel("Magnification(M):"));
@@ -869,7 +869,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.cuRb.setVisible(true);
 		this.expRb.setVisible(true);
 		this.rootRb.setVisible(true);
-		this.cuRootRb.setVisible(true);
+		/*this.cuRootRb.setVisible(true);*/
 		this.lnRb.setVisible(true);
 		
 		this.juliaOptionsPanel.add(new JLabel("Power-Constant:"));
@@ -1311,7 +1311,7 @@ class SierpinskiComboPanel extends JPanel {
 		Mandelbrot m = (Mandelbrot)fBase;
 		ComplexNumber	c	=m.getComplex();
 		
-		System.out.println("B4---in-addMandelbrotConstInfo---c=="+c);		
+//		System.out.println("B4---in-addMandelbrotConstInfo---c=="+c);		
 		String func2Apply = m.useFuncConst;
 		if (c != null) {
 			addFuncTypeConstInfo(c, func2Apply);
@@ -1325,7 +1325,7 @@ class SierpinskiComboPanel extends JPanel {
 		PolyFract p = (PolyFract) fBase;
 		ComplexNumber c = p.getCompConst();
 
-System.out.println("B4---in-addPolyConstInfo---c==" + c);
+//System.out.println("B4---in-addPolyConstInfo---c==" + c);
 		String func2Apply = p.useFuncConst;
 		if (c != null) {
 			addFuncTypeConstInfo(c, func2Apply);
@@ -1337,7 +1337,7 @@ System.out.println("B4---in-addPolyConstInfo---c==" + c);
 	private void addJuliaConstInfo(FractalBase fBase){
 		Julia j = (Julia)fBase;
 		ComplexNumber c = j.getComplex();
-System.out.println("B4---in-addJliaConsrInfo---c=="+c);		
+//System.out.println("B4---in-addJliaConsrInfo---c=="+c);		
 		String func2Apply = j.useFuncConst;
 		if (c != null) {
 			addFuncTypeConstInfo(c, func2Apply);
@@ -1352,15 +1352,15 @@ System.out.println("B4---in-addJliaConsrInfo---c=="+c);
 	private void addFuncTypeConstInfo(ComplexNumber c, String func2Apply) {
 		switch (func2Apply) {
 		case	"None":
-			System.out.println("NONE-<br/>ComplexConstant == "+c.toString()+"<br/>");
+//			System.out.println("NONE-<br/>ComplexConstant == "+c.toString()+"<br/>");
 			this.formulaArea.append("<br/>ComplexConstant == "+c.toString()+"<br/>");
 			break;
 		case	"Sine":
-			System.out.println("SINE-<br/>ComplexConstant == "+c.sine().toString()+"<br/>");
+//			System.out.println("SINE-<br/>ComplexConstant == "+c.sine().toString()+"<br/>");
 			this.formulaArea.append("<br/>sin(ComplexConstant) == "+c.sine().toString()+"<br/>");
 			break;
 		case	"Cosine":
-			System.out.println("COSINE-<br/>ComplexConstant == "+c.cosine().toString()+"<br/>");
+//			System.out.println("COSINE-<br/>ComplexConstant == "+c.cosine().toString()+"<br/>");
 			this.formulaArea.append("<br/>cos(ComplexConstant) == "+c.cosine().toString()+"<br/>");
 			break;
 
@@ -1379,7 +1379,7 @@ System.out.println("B4---in-addJliaConsrInfo---c=="+c);
 			this.formulaArea.append("<br/>atan(ComplexConstant) == "+c.inverseTangent().toString()+"<br/>");
 			break;
 		case	"Square":
-			System.out.println("SQUARE-<br/>ComplexConstant == "+c.power(2).toString()+"<br/>");
+//			System.out.println("SQUARE-<br/>ComplexConstant == "+c.power(2).toString()+"<br/>");
 			this.formulaArea.append("<br/>(ComplexConstant)squared or C^2 == "+c.power(2).toString()+"<br/>");
 			break;
 		case	"Cube":
@@ -1389,14 +1389,14 @@ System.out.println("B4---in-addJliaConsrInfo---c=="+c);
 			this.formulaArea.append("<br/>exponent(ComplexConstant) or e^C == "+c.exp().toString()+"<br/>");
 			break;
 		case	"Root":
-			System.out.println("ROOT-<br/>ComplexConstant == "+c.sqroot().toString()+"<br/>");
+//			System.out.println("ROOT-<br/>ComplexConstant == "+c.sqroot().toString()+"<br/>");
 			this.formulaArea.append("<br/>sqrt(ComplexConstant) == "+c.sqroot().toString()+"<br/>");
 			break;
 		/*case	"CubeRoot":
 			this.formulaArea.append("<br/>ComplexConstant == "+c.curoot().toString()+"<br/>");
 			break;*/
 		case	"Log":
-			System.out.println("LOG--<br/>ComplexConstant == "+c.ln().toString()+"<br/>");
+//			System.out.println("LOG--<br/>ComplexConstant == "+c.ln().toString()+"<br/>");
 			this.formulaArea.append("<br/>log(ComplexConstant) [base e] == "+c.ln().toString()+"<br/>");
 			break;
 
@@ -1820,7 +1820,7 @@ System.out.println("B4---in-addJliaConsrInfo---c=="+c);
 	
 	private void doSetDiyFractalChoice(String diyChoice) {
 		this.setDiyFractChoice(diyChoice);
-System.out.println("Here---doSetDiyFractalChoice -- "+diyChoice);
+//System.out.println("Here---doSetDiyFractalChoice -- "+diyChoice);
 		if (diyChoice.equals(diyMand/*"DIY_" + MANDELBROT*/) && this.diyMandRb.isSelected()) {
 			this.comboChoice=diyMand;//"DIY_" + MANDELBROT;
 			this.diyMandPanel.setVisible(true);
@@ -1848,7 +1848,7 @@ System.out.println("Here---doSetDiyFractalChoice -- "+diyChoice);
 	private void doStartCommand() {
 		this.formulaArea.setText("");
 		// fractal art choice
-		String choice = this.getComboChoice();System.out.println("choice--startC--is="+choice);
+		String choice = this.getComboChoice();//System.out.println("choice--startC--is="+choice);
 		// for Fanny
 		int length = this.getSideComboChoice();
 		int ratio = this.getRatioChoice();
@@ -1856,7 +1856,7 @@ System.out.println("Here---doSetDiyFractalChoice -- "+diyChoice);
 		double[] cChoices = this.getCurvChoice();
 		double mXt = this.getMultiplier();
 		// for Julia
-		int pow = this.getPower();
+		/*int pow = this.getPower();
 		double con = this.getComplexConst();
 		String comp = this.getComplex();
 		boolean jUseD = this.getJUseDiff();
@@ -1866,10 +1866,10 @@ System.out.println("Here---doSetDiyFractalChoice -- "+diyChoice);
 		
 		double jXc = this.juliaXC;
 		double jYc = this.juliaYC;
-		double jScale = this.juliaScaleSize;
+		double jScale = this.juliaScaleSize;*/
 
 		// for Mandelbrot
-		int mag = this.getMagnification();
+		/*int mag = this.getMagnification();
 		int exp = this.getExponent();
 		boolean mUseD = this.getMUseDiff();
 		int mandMax = this.mandMaxIter;
@@ -1877,7 +1877,7 @@ System.out.println("Here---doSetDiyFractalChoice -- "+diyChoice);
 		double mBound=this.mandBound;
 		double mXc = this.mandXC;
 		double mYc = this.mandYC;
-		double mScale = this.mandScaleSize;
+		double mScale = this.mandScaleSize;*/
 
 		boolean useCP = /*this.juliaColrPRb.isSelected() || this.diyJuliaColrPRb.isSelected() ||
 						this.mandColrPRb.isSelected() || this.diyMandColrPRb.isSelected() ||
@@ -1910,108 +1910,12 @@ System.out.println("Here---doSetDiyFractalChoice -- "+diyChoice);
 		} else if (choice.equals(SAMPLE)) {
 			/*this.doReset();*/
 			ff = new FractalBaseSample();
-		} else if (choice.equals(POLY)) {
-			this.formulaArea.setVisible(true);
-			this.formulaArea.setText("");
-			this.formulaArea.setText("<font color='blue'>Poynomial Set:<br/><br/>f(z) = (x ^ " + this.polyPower + " + y ^ " + this.polyPower + ") + C"+
-					"<br/>  x = Row + 0 * i , y = 0 + Column * i");
-			if (this.polyType.equals("Reverse")) {
-				this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, y)<br/>");
-				this.formulaArea.append("<br/>Zy = new ComplexNumber(y, x)<br/>");
-			} else if (this.polyType.equals("Exchange")) {
-				this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, 0.0)<br/>");
-				this.formulaArea.append("<br/>Zy = new ComplexNumber(0.0, y)<br/>");
-			} else if (this.polyType.equals("Single")) {
-				this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, y)<br/>");
-				this.formulaArea.append("<br/>Zy = new ComplexNumber(0.0, 0.0)<br/>");
-			} else if (this.polyType.equals("Duplicate")) {
-				this.formulaArea.append("<br/><br/>Zx = Zy = new ComplexNumber(x, y)<br/>");
-			} else if (this.polyType.equals("Exponent")) {
-				this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, 0.0).exp()<br/>");
-				this.formulaArea.append("<br/>Zy = new ComplexNumber(y, 0.0).exp()<br/>");
-			} else if (this.polyType.equals("Power")) {
-				this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, y).power((int)x)<br/>");
-				this.formulaArea.append("<br/>Zy = new ComplexNumber(y, x).power((int)y)<br/>");
-			} else if (this.polyType.equals("Default")) {
-				this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, 0.0)<br/>");
-				this.formulaArea.append("<br/>Zy = new ComplexNumber(y, 0.0)<br/>");
-				/*
-				 * default: this.formulaArea.
-				 * append("<br/><br/>Zx = new ComplexNumber(x0, 0.0)<br/>");
-				 * this.formulaArea.
-				 * append("<br/>Zy = new ComplexNumber(y, 0.0)<br/>"); break;
-				 */
-			}
-			
-			if (this.polyUseDiff) {
-				this.formulaArea.append("<br/><br/>Calculated based on differences in pixel values from origin</font>");
-			} else {
-				this.formulaArea.append("<br/><br/>Calculated based on pixel values with a top-left origin</font>");
-			}
-			if (this.polyKeepConst) {
-				this.formulaArea.append("<br/>Dynamic Constant = z</font>");
-				ff = new PolyFract(this.polyPower, this.polyUseDiff, this.polyBound, this.polyKeepConst);
-			}else{
-				double polyRealVal = Double.parseDouble(this.polyRealTf.getText());
-				double polyImgVal = Double.parseDouble(this.polyImgTf.getText());
-				this.formulaArea.append("<br/>Constant = " + polyRealVal + " + (" + polyImgVal + " * i)</font>");
-				
-				ff = new PolyFract(this.polyPower, this.polyUseDiff, this.polyBound, this.polyKeepConst, polyRealVal, polyImgVal);
-			}
-			ff.setUseColorPalette(useCP);
-			ff.setUseFuncConst(func);
-			ff.setRotation(rot);
-			ff.setRowColMixType(this.polyType);
-			FractalBase.setxC(this.polyXC);
-			FractalBase.setxC(this.polyYC);
-			FractalBase.setScaleSize(this.polyScaleSize);
-			FractalBase.setMaxIter(this.polyMaxIter);
-			FractalBase.setAreaSize(this.polySize);
-			/*this.doReset();*/
-			this.addPolyConstInfo(ff);
+		} else if (choice.equals(POLY)) {			
+			ff = startPoly();
 		} else if (choice.equals(MANDELBROT)) {
-			this.formulaArea.setVisible(true);
-			this.formulaArea.setText("");
-			this.formulaArea.setText("<font color='blue'>Mandelbrot Set:<br/><br/>f(z) = z ^ " + exp + " + C");
-			if (mUseD) {
-				this.formulaArea.append("<br/><br/>Calculated based on differences in pixel values from origin</font>");
-			} else {
-				this.formulaArea.append("<br/><br/>Calculated based on pixel values with a top-left origin</font>");
-			}
-			ff = new Mandelbrot(mag, exp, mUseD, mBound, true);
-			ff.setUseColorPalette(useCP);
-			ff.setUseFuncConst(func);
-			ff.setRotation(rot);
-			FractalBase.setxC(mXc);
-			FractalBase.setxC(mYc);
-			FractalBase.setScaleSize(mScale);
-			FractalBase.setMaxIter(mandMax);
-			FractalBase.setAreaSize(mandLoopLt);
-			/*this.doReset();*/
-			this.addMandelbrotConstInfo(ff);
+			ff = startMandelbrot();
 		} else if (choice.equals(JULIA)) {
-			this.formulaArea.setVisible(true);
-			this.formulaArea.setText("");
-			this.addJuliaFormulaInfo();
-			this.addJuliaUseDiffInfo();
-			if (!(this.juliaSelection.equals("J7") || this.juliaSelection.equals("J8")
-					|| this.juliaSelection.equals("J9"))) {
-				ff = new Julia(pow, con, jBound, jUseD);
-				
-			} else {
-				ff = new Julia(pow, comp, jBound, jUseD);
-			}
-			
-			ff.setUseColorPalette(useCP);
-			ff.setUseFuncConst(func);
-			ff.setRotation(rot);
-			FractalBase.setxC(jXc);
-			FractalBase.setxC(jYc);
-			FractalBase.setScaleSize(jScale);
-			FractalBase.setMaxIter(juliaMax);
-			FractalBase.setAreaSize(juliaLoopLt);
-			/*this.doReset();*/
-			this.addJuliaConstInfo(ff);
+			ff = startJulia();
 
 		} else if (choice.equals(CST_FRACTAL)) {
 			/*this.doReset();*/
@@ -2028,108 +1932,12 @@ System.out.println("Here---doSetDiyFractalChoice -- "+diyChoice);
 //			System.out.println("B---this.diyJuliaRb.isSelected()==="+this.diyJuliaRb.isSelected());
 //			System.out.println("C---this.diyApolloRb.isSelected()==="+this.diyApolloRb.isSelected());
 			if (this.diyMandRb.isSelected()) {//System.out.println("hererererere---this.diyMandRb.isSelected()");
-				// for diy mandelbrot
-				
-				int diyMag = this.getDiyMandMagnification();
-				int diyMandExp = this.getDiyMandExponent();
-				boolean diyMandUseD = this.getDiyMandUseDiff();
-				boolean diyMKConst = this.diyMandKeepConst;
-				int diyMaxIt = this.diyMandMaxIter;
-				double diyMandB = this.diyMandBound;
-				double diyMXc = this.diyMandXC;
-				double diyMYc = this.diyMandYC;
-				double diyMScale = this.diyMandScaleSize;
-			
-				this.formulaArea.setVisible(true);
-				this.formulaArea.setText("");
-				this.formulaArea.setText("<font color='blue'>(DIY)Mandelbrot Set:<br/><br/>f(z) = z ^ " + diyMandExp + " + C");
-				if (this.getDiyMandUseDiff()) {
-					this.formulaArea.append("<br/><br/>Calculated based on differences in pixel values from origin");
-				} else {
-					this.formulaArea.append("<br/><br/>Calculated based on pixel values with a top-left origin");
-				}
-				
-				if (diyMKConst) {
-					this.formulaArea.append("<br/>Dynamic Constant = z</font>");
-					ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD,diyMandB, diyMKConst);
-					
-				} else {
-
-					double diyMRealVal = Double.parseDouble(this.diyMandRealTf.getText());
-					double diyMImgVal = Double.parseDouble(this.diyMandImgTf.getText());
-					this.formulaArea.append("<br/>Constant = " + diyMRealVal + " + (" + diyMImgVal + " * i)</font>");
-					ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD,diyMandB, diyMRealVal, diyMImgVal);
-				}
-				ff.setUseColorPalette(useCP);
-				ff.setUseFuncConst(func);
-				ff.setRotation(rot);
-				FractalBase.setMaxIter(diyMaxIt);
-				FractalBase.setAreaSize(mandLoopLt);
-				FractalBase.setxC(diyMXc);
-				FractalBase.setxC(diyMYc);
-				FractalBase.setScaleSize(diyMScale);
-
-				this.addMandelbrotConstInfo(ff);
+				ff = createDIYMandelbrot();
 				
 			} else if(this.diyJuliaRb.isSelected()){
-				//
-				int diyJuliaP = this.getDiyJuliaPower();
-				boolean diyJuliaUseD = this.getDiyJuliaUseDiff();
-				int diyJuliaMaxIt = this.diyJuliaMaxIter;
-				double diyJuliaBd = this.diyJuliaBound;
-				double diyJXc = this.diyJuliaXC;
-				double diyJYc = this.diyJuliaYC;
-				double diyJScale = this.diyJuliaScaleSize;
-				
-				this.formulaArea.setVisible(true);
-				this.formulaArea.setText("");
-				this.formulaArea.setText("<font color='blue'>(DIY)Julia Set:<br/><br/>f(z) = z ^ " + diyJuliaP + " + C");
-				if (this.getDiyMandUseDiff()) {
-					this.formulaArea.append("<br/><br/>Calculated based on differences in pixel values from origin");
-				} else {
-					this.formulaArea.append("<br/><br/>Calculated based on pixel values with a top-left origin");
-				}
-
-				boolean diyJKConst = this.diyJuliaKeepConst;
-//				boolean diyJSine = this.diyJuliaUseSineCalc;
-				if (diyJKConst) {
-					this.formulaArea.append("<br/>Dynamic Constant = z</font>");
-					ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJKConst);
-					/*if (!diyJSine) {
-						ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJKConst);
-					}else{
-						ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJKConst,diyJSine);
-					}*/
-				} else {
-					double diyJuliaRealVal = Double.parseDouble(this.diyJuliaRealTf.getText());
-					double diyJuliaImgVal = Double.parseDouble(this.diyJuliaImgTf.getText());
-					this.formulaArea.append("<br/>Constant = " + diyJuliaRealVal + " + (" + diyJuliaImgVal + " * i)</font>");
-					ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJuliaRealVal, diyJuliaImgVal);
-					/*if (!diyJSine) {
-						ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJuliaRealVal, diyJuliaImgVal);
-					} else {
-						ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJuliaRealVal, diyJuliaImgVal, diyJSine);
-					}*/
-				}
-
-				
-				ff.setUseColorPalette(useCP);
-				ff.setUseFuncConst(func);
-				ff.setRotation(rot);
-				FractalBase.setMaxIter(diyJuliaMaxIt);
-				FractalBase.setAreaSize(juliaLoopLt);
-				FractalBase.setxC(diyJXc);
-				FractalBase.setxC(diyJYc);
-				FractalBase.setScaleSize(diyJScale);
-				
-				this.addJuliaConstInfo(ff);
+				ff = createDIYJulia();
 			} else if (this.diyApolloRb.isSelected()) {
-				double c1 = this.diyApolloC1;
-				double c2 = this.diyApolloC2;
-				double c3 = this.diyApolloC3;
-				double mult = this.diyApolloMult;
-				ff = new ApollonianCircles(new double[] {c1,c2,c3}, mult);
-				ff.setUseColorPalette(useCP);
+				ff = startDIYApollo();
 			} else {
 				ff=null;
 			}
@@ -2141,6 +1949,262 @@ System.out.println("Here---doSetDiyFractalChoice -- "+diyChoice);
 
 		ff.reset();
 		this.startFractals(ff);
+	}
+
+	private FractalBase startDIYApollo() {
+		FractalBase ff;
+		boolean useCP = this.colrPRb.isSelected();
+		double c1 = this.diyApolloC1;
+		double c2 = this.diyApolloC2;
+		double c3 = this.diyApolloC3;
+		double mult = this.diyApolloMult;
+		ff = new ApollonianCircles(new double[] {c1,c2,c3}, mult);
+		ff.setUseColorPalette(useCP);
+		return ff;
+	}
+
+	private FractalBase createDIYJulia() {
+		FractalBase ff;
+		//diyJulia
+		boolean useCP = this.colrPRb.isSelected();
+		String func = this.constFuncChoice;
+		double rot = this.getRotation();
+		int diyJuliaLoopLt = this.juliaSize;
+		int diyJuliaP = this.getDiyJuliaPower();
+		boolean diyJuliaUseD = this.getDiyJuliaUseDiff();
+		int diyJuliaMaxIt = this.diyJuliaMaxIter;
+		double diyJuliaBd = this.diyJuliaBound;
+		double diyJXc = this.diyJuliaXC;
+		double diyJYc = this.diyJuliaYC;
+		double diyJScale = this.diyJuliaScaleSize;
+		
+		this.formulaArea.setVisible(true);
+		this.formulaArea.setText("");
+		this.formulaArea.setText("<font color='blue'>(DIY)Julia Set:<br/><br/>f(z) = z ^ " + diyJuliaP + " + C");
+		if (this.getDiyMandUseDiff()) {
+			this.formulaArea.append("<br/><br/>Calculated based on differences in pixel values from origin");
+		} else {
+			this.formulaArea.append("<br/><br/>Calculated based on pixel values with a top-left origin");
+		}
+
+		boolean diyJKConst = this.diyJuliaKeepConst;
+		if (diyJKConst) {
+			this.formulaArea.append("<br/>Dynamic Constant = z</font>");
+			ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJKConst);
+		} else {
+			double diyJuliaRealVal = Double.parseDouble(this.diyJuliaRealTf.getText());
+			double diyJuliaImgVal = Double.parseDouble(this.diyJuliaImgTf.getText());
+			this.formulaArea.append("<br/>Constant = " + diyJuliaRealVal + " + (" + diyJuliaImgVal + " * i)</font>");
+			ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJuliaRealVal, diyJuliaImgVal);
+		}
+
+		
+		ff.setUseColorPalette(useCP);
+		ff.setUseFuncConst(func);
+		ff.setRotation(rot);
+		FractalBase.setMaxIter(diyJuliaMaxIt);
+		FractalBase.setAreaSize(diyJuliaLoopLt);
+		FractalBase.setxC(diyJXc);
+		FractalBase.setxC(diyJYc);
+		FractalBase.setScaleSize(diyJScale);
+		
+		this.addJuliaConstInfo(ff);
+		return ff;
+	}
+
+	private FractalBase createDIYMandelbrot() {
+		FractalBase ff;
+		// for diy mandelbrot
+
+		boolean useCP = this.colrPRb.isSelected();
+		String func = this.constFuncChoice;
+
+		double rot = this.getRotation();
+		int diyMandLoopLt = this.mandSize;
+		int diyMag = this.getDiyMandMagnification();
+		int diyMandExp = this.getDiyMandExponent();
+		boolean diyMandUseD = this.getDiyMandUseDiff();
+		boolean diyMKConst = this.diyMandKeepConst;
+		int diyMaxIt = this.diyMandMaxIter;
+		double diyMandB = this.diyMandBound;
+		double diyMXc = this.diyMandXC;
+		double diyMYc = this.diyMandYC;
+		double diyMScale = this.diyMandScaleSize;
+
+		this.formulaArea.setVisible(true);
+		this.formulaArea.setText("");
+		this.formulaArea.setText("<font color='blue'>(DIY)Mandelbrot Set:<br/><br/>f(z) = z ^ " + diyMandExp + " + C");
+		if (this.getDiyMandUseDiff()) {
+			this.formulaArea.append("<br/><br/>Calculated based on differences in pixel values from origin");
+		} else {
+			this.formulaArea.append("<br/><br/>Calculated based on pixel values with a top-left origin");
+		}
+		
+		if (diyMKConst) {
+			this.formulaArea.append("<br/>Dynamic Constant = z</font>");
+			ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD,diyMandB, diyMKConst);
+			
+		} else {
+
+			double diyMRealVal = Double.parseDouble(this.diyMandRealTf.getText());
+			double diyMImgVal = Double.parseDouble(this.diyMandImgTf.getText());
+			this.formulaArea.append("<br/>Constant = " + diyMRealVal + " + (" + diyMImgVal + " * i)</font>");
+			ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD,diyMandB, diyMRealVal, diyMImgVal);
+		}
+		ff.setUseColorPalette(useCP);
+		ff.setUseFuncConst(func);
+		ff.setRotation(rot);
+		FractalBase.setMaxIter(diyMaxIt);
+		FractalBase.setAreaSize(diyMandLoopLt);
+		FractalBase.setxC(diyMXc);
+		FractalBase.setxC(diyMYc);
+		FractalBase.setScaleSize(diyMScale);
+
+		this.addMandelbrotConstInfo(ff);
+		return ff;
+	}
+
+	private FractalBase startJulia() {
+		int pow = this.getPower();
+		double con = this.getComplexConst();
+		String comp = this.getComplex();
+		boolean jUseD = this.getJUseDiff();
+		int juliaMax = this.juliaMaxIter;
+		int juliaLoopLt = this.juliaSize;
+		double jBound = this.juliaBound;// this.getJuliaBound();
+		
+		double jXc = this.juliaXC;
+		double jYc = this.juliaYC;
+		double jScale = this.juliaScaleSize;
+
+		boolean useCP = this.colrPRb.isSelected();
+		
+		String func = this.constFuncChoice;
+		
+		double rot = this.getRotation();
+		FractalBase ff;
+		this.formulaArea.setVisible(true);
+		this.formulaArea.setText("");
+		this.addJuliaFormulaInfo();
+		this.addJuliaUseDiffInfo();
+		if (!(this.juliaSelection.equals("J7") || this.juliaSelection.equals("J8")
+				|| this.juliaSelection.equals("J9"))) {
+			ff = new Julia(pow, con, jBound, jUseD);
+			
+		} else {
+			ff = new Julia(pow, comp, jBound, jUseD);
+		}
+		
+		ff.setUseColorPalette(useCP);
+		ff.setUseFuncConst(func);
+		ff.setRotation(rot);
+		FractalBase.setxC(jXc);
+		FractalBase.setxC(jYc);
+		FractalBase.setScaleSize(jScale);
+		FractalBase.setMaxIter(juliaMax);
+		FractalBase.setAreaSize(juliaLoopLt);
+		/*this.doReset();*/
+		this.addJuliaConstInfo(ff);
+		return ff;
+	}
+
+	private FractalBase startMandelbrot() {
+		int mag = this.getMagnification();
+		int exp = this.getExponent();
+		boolean mUseD = this.getMUseDiff();
+		int mandMax = this.mandMaxIter;
+		int mandLoopLt = this.mandSize;
+		double mBound=this.mandBound;
+		double mXc = this.mandXC;
+		double mYc = this.mandYC;
+		double mScale = this.mandScaleSize;
+		boolean useCP = this.colrPRb.isSelected();		
+		String func = this.constFuncChoice;	
+		double rot = this.getRotation();
+		
+		FractalBase ff;
+		this.formulaArea.setVisible(true);
+		this.formulaArea.setText("");
+		this.formulaArea.setText("<font color='blue'>Mandelbrot Set:<br/><br/>f(z) = z ^ " + exp + " + C");
+		if (mUseD) {
+			this.formulaArea.append("<br/><br/>Calculated based on differences in pixel values from origin</font>");
+		} else {
+			this.formulaArea.append("<br/><br/>Calculated based on pixel values with a top-left origin</font>");
+		}
+		ff = new Mandelbrot(mag, exp, mUseD, mBound, true);
+		ff.setUseColorPalette(useCP);
+		ff.setUseFuncConst(func);
+		ff.setRotation(rot);
+		FractalBase.setxC(mXc);
+		FractalBase.setxC(mYc);
+		FractalBase.setScaleSize(mScale);
+		FractalBase.setMaxIter(mandMax);
+		FractalBase.setAreaSize(mandLoopLt);
+		/*this.doReset();*/
+		this.addMandelbrotConstInfo(ff);
+		return ff;
+	}
+
+	private FractalBase startPoly() {
+
+		boolean useCP = this.colrPRb.isSelected();
+		String func = this.constFuncChoice;
+		double rot = this.getRotation();
+		
+		FractalBase ff;
+		this.formulaArea.setVisible(true);
+		this.formulaArea.setText("");
+		this.formulaArea.setText("<font color='blue'>Poynomial Set:<br/><br/>f(z) = (x ^ " + this.polyPower + " + y ^ " + this.polyPower + ") + C"+
+				"<br/>  x = Row + 0 * i , y = 0 + Column * i");
+		if (this.polyType.equals("Reverse")) {
+			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, y)<br/>");
+			this.formulaArea.append("<br/>Zy = new ComplexNumber(y, x)<br/>");
+		} else if (this.polyType.equals("Exchange")) {
+			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, 0.0)<br/>");
+			this.formulaArea.append("<br/>Zy = new ComplexNumber(0.0, y)<br/>");
+		} else if (this.polyType.equals("Single")) {
+			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, y)<br/>");
+			this.formulaArea.append("<br/>Zy = new ComplexNumber(0.0, 0.0)<br/>");
+		} else if (this.polyType.equals("Duplicate")) {
+			this.formulaArea.append("<br/><br/>Zx = Zy = new ComplexNumber(x, y)<br/>");
+		} else if (this.polyType.equals("Exponent")) {
+			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, 0.0).exp()<br/>");
+			this.formulaArea.append("<br/>Zy = new ComplexNumber(y, 0.0).exp()<br/>");
+		} else if (this.polyType.equals("Power")) {
+			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, y).power((int)x)<br/>");
+			this.formulaArea.append("<br/>Zy = new ComplexNumber(y, x).power((int)y)<br/>");
+		} else if (this.polyType.equals("Default")) {
+			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, 0.0)<br/>");
+			this.formulaArea.append("<br/>Zy = new ComplexNumber(y, 0.0)<br/>");
+		}
+		
+		if (this.polyUseDiff) {
+			this.formulaArea.append("<br/><br/>Calculated based on differences in pixel values from origin</font>");
+		} else {
+			this.formulaArea.append("<br/><br/>Calculated based on pixel values with a top-left origin</font>");
+		}
+		if (this.polyKeepConst) {
+			this.formulaArea.append("<br/>Dynamic Constant = z</font>");
+			ff = new PolyFract(this.polyPower, this.polyUseDiff, this.polyBound, this.polyKeepConst);
+		}else{
+			double polyRealVal = Double.parseDouble(this.polyRealTf.getText());
+			double polyImgVal = Double.parseDouble(this.polyImgTf.getText());
+			this.formulaArea.append("<br/>Constant = " + polyRealVal + " + (" + polyImgVal + " * i)</font>");
+			
+			ff = new PolyFract(this.polyPower, this.polyUseDiff, this.polyBound, this.polyKeepConst, polyRealVal, polyImgVal);
+		}
+		ff.setUseColorPalette(useCP);
+		ff.setUseFuncConst(func);
+		ff.setRotation(rot);
+		ff.setRowColMixType(this.polyType);
+		FractalBase.setxC(this.polyXC);
+		FractalBase.setxC(this.polyYC);
+		FractalBase.setScaleSize(this.polyScaleSize);
+		FractalBase.setMaxIter(this.polyMaxIter);
+		FractalBase.setAreaSize(this.polySize);
+		/*this.doReset();*/
+		this.addPolyConstInfo(ff);
+		return ff;
 	}	
 
 	private void startFractals(final FractalBase ff) {
@@ -2179,7 +2243,7 @@ System.out.println("Here---doSetDiyFractalChoice -- "+diyChoice);
 			//	Threaded -- so as the FractalBase depth increases
 			// the iteration's image is rendered recursively till depth = 0
 			frame.setRunning(true);
-System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
+//System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 			/*if(this.doMagnify){
 				new ZoomInBox(frame);
 			}*/
@@ -2383,6 +2447,7 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 				} else {
 					baseInfo += "ColorComputed, " + eol;
 				}
+				baseInfo += "ImageMagnification: " + this.magnification + eol;
 				baseInfo += "Power: " + this.exponent + ", ";
 				if (this.getMUseDiff()) {
 					baseInfo += "Ud, ";
@@ -2476,6 +2541,7 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 					} else {
 						baseInfo += "ColorComputed, " + eol;
 					}
+					baseInfo += "ImageMagnification: " + this.diyMandMagnification + eol;
 					baseInfo += "Power: " + this.diyMandExponent + ", ";
 					if (this.getDiyMandUseDiff()) {
 						baseInfo += "Ud, ";
@@ -2561,9 +2627,9 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 							baseInfo += "Exponent of Constant	(e ^ C)" + eol;
 						} else if (this.rootRb.isSelected()) {
 							baseInfo += "Square Root of Constant	(C ^ (1/2))" + eol;
-						} else if (this.cuRootRb.isSelected()) {
+						}/* else if (this.cuRootRb.isSelected()) {
 							baseInfo += "Cube Root of Constant		(C ^ (1/3))" + eol;
-						} else if (this.lnRb.isSelected()) {
+						}*/ else if (this.lnRb.isSelected()) {
 							baseInfo += "Log(e) of Constant		Ln(C)" + eol;
 						}
 					}
@@ -2763,7 +2829,7 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 		this.cuRb.addActionListener(this.funcCalcRbListener());
 		this.expRb.addActionListener(this.funcCalcRbListener());
 		this.rootRb.addActionListener(this.funcCalcRbListener());
-		this.cuRootRb.addActionListener(this.funcCalcRbListener());
+		/*this.cuRootRb.addActionListener(this.funcCalcRbListener());*/
 		this.lnRb.addActionListener(this.funcCalcRbListener());
 		
 		this.magnifyCb.setActionCommand("Magnify");
@@ -3486,9 +3552,9 @@ System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
 			this.setConstFuncChoice("Exponent");
 		} else if (this.rootRb.isSelected()) {
 			this.setConstFuncChoice("Root");
-		} else if (this.cuRootRb.isSelected()) {
+		}/* else if (this.cuRootRb.isSelected()) {
 			this.setConstFuncChoice("CubeRoot");
-		} else if (this.lnRb.isSelected()) {
+		}*/ else if (this.lnRb.isSelected()) {
 			this.setConstFuncChoice("Log");
 		}
 	}
