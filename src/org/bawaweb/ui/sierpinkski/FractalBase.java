@@ -256,7 +256,8 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
 
 		// Drawing the rotated image at the required drawing locations
-		g2.drawImage( op.filter(img, null), drawLocX, drawLocY, null );
+		img = op.filter(img, null);
+		g2.drawImage(img, drawLocX, drawLocY, null);
 
 		this.setImage(img);
 

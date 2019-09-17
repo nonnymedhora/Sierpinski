@@ -182,6 +182,7 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private final JButton buStart = new JButton("Start |>");
 	private final JButton buPause = new JButton("Pause ||");
+	private final JButton buClose = new JButton("CLOSEImage");
 	
 	// for running sub-implementation of FractalBase
 	protected String comboChoice;
@@ -440,7 +441,9 @@ class SierpinskiComboPanel extends JPanel {
 	private boolean doMagnify = false;
 	
 	private BufferedImage fractalImage;
+	private FractalBase fBase;
 
+	
 	private JButton buPrint = new JButton("Print");
 	private JButton buSave = new JButton("Save");
 	
@@ -483,6 +486,8 @@ class SierpinskiComboPanel extends JPanel {
 		// this.add(this.buPause);
 		this.add(this.buPrint);
 		this.add(this.buSave);
+		this.buClose.setEnabled(false);
+		this.add(this.buClose);
 
 		this.formulaArea.setVisible(false);
 		this.add(this.formulaArea);
@@ -1845,6 +1850,11 @@ class SierpinskiComboPanel extends JPanel {
 		this.setRotation(rot);
 	}
 	
+	private void doCloseCommand(){
+		this.getFractalBase().dispose();
+		this.buStart.setEnabled(false);
+	}
+	
 	private void doStartCommand() {
 		this.formulaArea.setText("");
 		// fractal art choice
@@ -1889,7 +1899,7 @@ class SierpinskiComboPanel extends JPanel {
 		
 		double rot = this.getRotation();
 		
-		FractalBase ff = null;;
+		FractalBase ff = null;
 		
 		if (choice.equals(FANNY_CIRCLE)) {
 			/*this.doReset();*/
@@ -2224,15 +2234,18 @@ class SierpinskiComboPanel extends JPanel {
 		frame.setVisible(true);
 
 		this.setFractalImage(frame.getBufferedImage());
+		this.setFractalBase(frame);
+		
+		this.buClose.setEnabled(true);
 //		frame.setRunning(true);
 		/*
 		if(this.doMagnify){
 			new ZoomInBox(frame);
 		}*/
 		
-		boolean staticFractalChoice=( this.comboChoice.contains(MANDELBROT) || this.comboChoice.contains(JULIA) || this.comboChoice.contains(POLY) ||
+		boolean staticFractalChoice = ( this.comboChoice.contains(MANDELBROT) || this.comboChoice.contains(JULIA) || this.comboChoice.contains(POLY) ||
 				(this.comboChoice.contains("self")&&!(this.diyApolloRb.isSelected() || this.getComboChoice().equals(APOLLONIAN_CIRCLES))));
-		if(!staticFractalChoice){
+		if(!staticFractalChoice) {
 /****************			
 //		if (! (this.comboChoice.equals(MANDELBROT) || this.comboChoice.equals(JULIA) || this.comboChoice.equals(POLY) )
 //				|| ((this.comboChoice.equals(DIY)||this.comboChoice.startsWith("DIY"))&& ! (this.diyMandRb.isSelected() || this.diyJuliaRb.isSelected()) )  ) {
@@ -2252,12 +2265,14 @@ class SierpinskiComboPanel extends JPanel {
 			this.fbf.start();
 			
 			this.setFractalImage(frame.getBufferedImage());
+			this.setFractalBase(frame);
 			
+			this.buClose.setEnabled(true);
 			return;
 		}
 		
 
-		if(this.doMagnify){
+		if (this.doMagnify) {
 			this.setFractalImage(frame.getBufferedImage());
 			new ZoomInBox(frame);
 		}
@@ -2857,7 +2872,15 @@ class SierpinskiComboPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				doStartCommand();				
-			}});		
+			}});
+		
+		this.buClose.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doCloseCommand();				
+			}
+		});
+		
 
 		this.buPause.addActionListener(new ActionListener() {
 			@Override
@@ -3835,6 +3858,14 @@ class SierpinskiComboPanel extends JPanel {
 
 	public void setMandScaleSize(double mandScaleSize) {
 		this.mandScaleSize = mandScaleSize;
+	}
+	
+	public FractalBase getFractalBase() {
+		return this.fBase;
+	}
+
+	public void setFractalBase(FractalBase fBase) {
+		this.fBase = fBase;
 	}
 
 	public BufferedImage getFractalImage() {
