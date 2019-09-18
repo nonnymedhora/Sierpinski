@@ -31,20 +31,21 @@ import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
 public abstract class FractalBase extends JFrame implements Runnable {
 	
 	private static final long serialVersionUID = 123456543L;
-	protected static final int HEIGHT = 800;
-	protected static final int WIDTH = 800;
+	
+	protected static final int HEIGHT 	= 800;
+	protected static final int WIDTH 	= 800;
 
-    boolean isOriginUpperLeft = true;  	// location of origin
-	static int OFFSET = 25; 			// pixel offset from edge
+    boolean isOriginUpperLeft 	= true;  	// location of origin
+	static int OFFSET 			= 25; 			// pixel offset from edge
 
 	static int depth; 					// recursion depth
-	static final int MAX_DEPTH = 10;
+	static final int MAX_DEPTH 		= 10;
 	
-	static final int COLORMAXRGB=255;
+	static final int COLORMAXRGB	= 255;
 	
-	//used in Mandelbrot & Julia
-	/*final */static int maxIter = 255;		//	maximum iterations to check for Mandelbrot
-	static int areaSize = 599;//512;	(0-599)
+	//used in Mandelbrot & Julia & Poly
+	static int maxIter 	= 255;		//	maximum iterations to check for Mandelbrot, Julia & Poly
+	static int areaSize = 599;	//512;	(0-599)
 	
 	BufferedImage bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 
@@ -58,8 +59,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	//	type-1	Reverse
 	//		zx = new ComplexNumber(x0, y0);		zy = new ComplexNumber(y0, x0);
 	//	type-2	Exchange
-	//		zx = new ComplexNumber(x0, 0.0);	zy = new ComplexNumber(0.0, y0);	
-	//
+	//		zx = new ComplexNumber(x0, 0.0);	zy = new ComplexNumber(0.0, y0);
 	//	type-3	Single
 	//		zx = new ComplexNumber(x0, y0);		zy = new ComplexNumber(0.0, 0.0);
 	//	type-4	Duplicate
@@ -68,7 +68,6 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	//		zx = new ComplexNumber(x0, y0).power((int)x0);	zy = new ComplexNumber(y0, x0).power((int)y0);
 	//	type-6	Exponent	(e)
 	//		zx = new ComplexNumber(x0,0.0).exp();		zy	=	new ComplexNumber(y0,0.0).exp();
-	//
 	//	default	
 	//		zy = new ComplexNumber(x0, 0.0);	zy = new ComplexNumber(y0, 0.0);
 	
@@ -76,7 +75,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	protected String rowColMixType = "Reverse";
 	protected int power;
 	
-	protected String useFuncConst = "None";	//	others are "Sine", "Cosine", "Tangent"
+	protected String useFuncConst = "None";	//	others are "Sine", "Cosine", "Tangent", etc
 	
 	protected boolean running = false;
 

@@ -115,7 +115,6 @@ System.out.println("type---->"+(type));	*/
 						zx = new ComplexNumber(x0, 0.0);
 						zy = new ComplexNumber(y0, 0.0);
 						break;
-
 				}
 				
 				if (this.isComplexNumConst || this.compConst == null) {

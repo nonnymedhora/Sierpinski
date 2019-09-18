@@ -53,8 +53,20 @@ import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
 
 class SierpinskiComboPanel extends JPanel {
 	
+	private static final long serialVersionUID = 156478L;
+	
 	private static final Double[] BOUNDARIES = new Double[] { -5.0, -4.5, -4.0, -3.5, -3.0, -2.5, -2.0, -1.5, -1.0, 0.0, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
 	private static final Integer[] EXPONENTS = new Integer[] { -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	private static final Integer[] MAX_ITERATIONS = new Integer[] { 10, 50, 100, 200, 225, 255, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 2000, 3000, 5000, 7500, 10000 };
+	private static final Integer[] AREA_SIZES = new Integer[] { 10, 50, 100, 200, 225, 255, 500, 512, 599, 800 };
+	private static final Double[] CENTER_XY = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
+	private static final Double[] SCALE_SIZES = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private static final String[] POLY_RCMT_TYPES = new String[] { "Reverse", "Exchange", "Single", "Duplicate", "Exponent", "Power", "Default" };
+	private static final Integer[] FANNY_RATIOS = new Integer[] { 1, 2, 3, 4, 5, 6, 7 };
+	private static final Integer[] FANNY_SIZE_OPTIONS = new Integer[] { 50, 60, 70, 80, 90, 100, 120, 150, 170, 200, 250, 300, 350 };
+	private static final Integer[] APOLLO_MULTS = new Integer[]{2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
+	private static final Integer[] APOLLO_CURVES = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
+	
 	// for Julia
 	private static final String J1 = "P[2] C[0.279]";	//f(z) = z^2 + 0.279
 	private static final String J2 = "P[3] C[0.4]";		//f(z) = z^3 + 0.400
@@ -78,50 +90,47 @@ class SierpinskiComboPanel extends JPanel {
 	private static final String A1 = "C[1, 1, 1] M[1]";
 
 	// Fractal Art Choices
-	private static final String SIERPINSKI_SQUARES = "SierpinskiSquares";
-	private static final String APOLLONIAN_CIRCLES = "ApollonianCircles";
-	private static final String SIERPINSKI_TRIANGLES = "SierpinskiTriangles";
-	private static final String CST_FRACTAL = "CSTFractal";
-	private static final String SAMPLE = "Sample";
-	private static final String MANDELBROT = "Mandelbrot";
-	private static final String JULIA = "Julia";
-	private static final String FANNY_TRIANGLES = "FannyTriangles";
-	private static final String FANNY_CIRCLE = "FannyCircle";
-	private static final String KOCHSNOWFLAKE = "KochSnowFlake";
-	private static final String DIY = "Do_It_Yourself";
-	private static final String POLY = "Poly_Fractals";
+	private static final String SIERPINSKI_SQUARES 		= "SierpinskiSquares";
+	private static final String APOLLONIAN_CIRCLES 		= "ApollonianCircles";
+	private static final String SIERPINSKI_TRIANGLES 	= "SierpinskiTriangles";
+	private static final String CST_FRACTAL 			= "CSTFractal";
+	private static final String SAMPLE 					= "Sample";
+	private static final String MANDELBROT 				= "Mandelbrot";
+	private static final String JULIA 					= "Julia";
+	private static final String FANNY_TRIANGLES 		= "FannyTriangles";
+	private static final String FANNY_CIRCLE 			= "FannyCircle";
+	private static final String KOCHSNOWFLAKE 			= "KochSnowFlake";
+	private static final String DIY 					= "Do_It_Yourself";
+	private static final String POLY 					= "Poly_Fractals";
 
-	private static final long serialVersionUID = 156478L;
 	
-	private final String[] comboOptions = new String[]{DIY,FANNY_CIRCLE,FANNY_TRIANGLES,SIERPINSKI_TRIANGLES,SIERPINSKI_SQUARES,APOLLONIAN_CIRCLES,CST_FRACTAL,SAMPLE,MANDELBROT,JULIA,KOCHSNOWFLAKE,POLY};
+	private final String[] comboOptions = new String[]{ DIY, FANNY_CIRCLE, FANNY_TRIANGLES, SIERPINSKI_TRIANGLES, SIERPINSKI_SQUARES, APOLLONIAN_CIRCLES, CST_FRACTAL, SAMPLE, MANDELBROT, JULIA, KOCHSNOWFLAKE, POLY };
 	private final JComboBox<String> combos = new JComboBox<String>(comboOptions);
 	
 	//	for	FannyCircle & FannyTriangles
-	private final Integer[] sideOptions = new Integer[] { 50, 60, 70, 80, 90, 100, 120, 150, 170, 200, 250, 300, 350 };
+	private final Integer[] sideOptions = FANNY_SIZE_OPTIONS;
 	private final JComboBox<Integer> sideCombos = new JComboBox<Integer>(sideOptions);
-	private final Integer[] ratioOptions = new Integer[] { 1, 2, 3, 4, 5, 6, 7 };
+	private final Integer[] ratioOptions = FANNY_RATIOS;
 	private final JComboBox<Integer> ratioCombos = new JComboBox<Integer>(ratioOptions);
 	
 	// for Julia
 	private final String[] juliaOptions = new String[] { J1, J2, J3, J4, J5, J6, J7, J8, J9 };
 	private final JComboBox<String> juliaCombos = new JComboBox<String>(juliaOptions);
 	private final JCheckBox juliaUseDiff = new JCheckBox("UseDifferencesOnly", true);
-	private final Integer[] juliaMaxIterOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 500, 1000 };
+	private final Integer[] juliaMaxIterOptions = MAX_ITERATIONS;
 	private final JComboBox<Integer> juliaMaxIterCombos = new JComboBox<Integer>(juliaMaxIterOptions);
-	private final Integer[] juliaSizeOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 500, 512, 599, 800 };
+	private final Integer[] juliaSizeOptions = AREA_SIZES;
 	private final JComboBox<Integer> juliaSizeCombos = new JComboBox<Integer>(juliaSizeOptions);
-	private final Double[] juliaBoundOptions = BOUNDARIES;//new Double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private final Double[] juliaBoundOptions = BOUNDARIES;
 	private final JComboBox<Double> juliaBoundCombos = new JComboBox<Double>(juliaBoundOptions);
 	
-	private final Double[] juliaXCOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
+	private final Double[] juliaXCOptions = CENTER_XY;
 	private final JComboBox<Double> juliaXCCombos = new JComboBox<Double>(juliaXCOptions);
-	private final Double[] juliaYCOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
+	private final Double[] juliaYCOptions = CENTER_XY;
 	private final JComboBox<Double> juliaYCCombos = new JComboBox<Double>(juliaYCOptions);
-	/*	TODO 	- 	increase range scaleSize from -5 to 10 with .2/.5 increments
-		TODO	-	move juliaScaleSizeOptions to common action controls	*/
-	private final Double[] juliaScaleSizeOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private final Double[] juliaScaleSizeOptions = SCALE_SIZES;
 	private final JComboBox<Double> juliaScaleSizeCombos = new JComboBox<Double>(juliaScaleSizeOptions);
-	/*	TODO	-	move color choice buttons to common action controls	*/
+
 	protected JRadioButton juliaColrPRb = new JRadioButton("Use Color Palette",false);
 	protected JRadioButton juliaColrCRb = new JRadioButton("Compute Color",true);
 	
@@ -129,28 +138,28 @@ class SierpinskiComboPanel extends JPanel {
 	
 
 	// for Mandelbrot
-	private final Integer[] mandOptions = new Integer[] { -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	private final Integer[] mandOptions = EXPONENTS;	//TODO	-	ok for now
 	private final JComboBox<Integer> mandCombos = new JComboBox<Integer>(mandOptions);
 	private final Integer[] mandExpOptions = EXPONENTS;
 	private final JComboBox<Integer> mandExpCombos = new JComboBox<Integer>(mandExpOptions);
 	private final JCheckBox mandUseDiffCb = new JCheckBox("UseDifferencesOnly", true);
-	private final Integer[] mandMaxIterOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 300, 350, 400, 500, 1000 };
+	private final Integer[] mandMaxIterOptions = MAX_ITERATIONS;
+			
 	private final JComboBox<Integer> mandMaxIterCombos = new JComboBox<Integer>(mandMaxIterOptions);
-	private final Integer[] mandSizeOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 500, 512, 599, 800 };
+	private final Integer[] mandSizeOptions = AREA_SIZES;
 	private final JComboBox<Integer> mandSizeCombos = new JComboBox<Integer>(mandSizeOptions);
-	private final Double[] mandBoundOptions = BOUNDARIES;//new Double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private final Double[] mandBoundOptions = BOUNDARIES;
 	private final JComboBox<Double> mandBoundCombos = new JComboBox<Double>(mandBoundOptions);
 
 
-	private final Double[] mandXCOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
+	private final Double[] mandXCOptions = CENTER_XY;
 	private final JComboBox<Double> mandXCCombos = new JComboBox<Double>(mandXCOptions);
-	private final Double[] mandYCOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
+	private final Double[] mandYCOptions = CENTER_XY;
 	private final JComboBox<Double> mandYCCombos = new JComboBox<Double>(mandYCOptions);
-	/*	TODO 	- 	increase range scaleSize from -5 to 10 with .2/.5 increments
-		TODO	-	move mandScaleSizeOptions to common action controls	*/
-	private final Double[] mandScaleSizeOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+
+	private final Double[] mandScaleSizeOptions = SCALE_SIZES;
 	private final JComboBox<Double> mandScaleSizeCombos = new JComboBox<Double>(mandScaleSizeOptions);
-	/*	TODO	-	move color choice buttons to common action controls	*/
+	
 	protected JRadioButton mandColrPRb = new JRadioButton("Use Color Palette",false);
 	protected JRadioButton mandColrCRb = new JRadioButton("Compute Color",true);
 	
@@ -202,12 +211,12 @@ class SierpinskiComboPanel extends JPanel {
 	protected String juliaSelection;
 	protected boolean jUseDiff;			
 	protected int juliaMaxIter;
-	protected int juliaSize;			/*	TODO	-	move juliaSize to common action control variables	*/
+	protected int juliaSize;			
 	protected double juliaBound;
 	
 	protected double juliaXC;
 	protected double juliaYC;
-	protected double juliaScaleSize;	/*	TODO	-	move juliaScaleSize to common action control variables	*/
+	protected double juliaScaleSize;	
 	
 	
 	
@@ -216,13 +225,13 @@ class SierpinskiComboPanel extends JPanel {
 	protected int exponent;
 	protected boolean mUseDiff;
 	protected int mandMaxIter;
-	protected int mandSize;			/*	TODO	-	move mandSize to common action control variables	*/
+	protected int mandSize;			
 	protected double mandBound;
 
 	
 	protected double mandXC;
 	protected double mandYC;
-	protected double mandScaleSize;	/*	TODO	-	move mandScaleSize to common action control variables	*/
+	protected double mandScaleSize;	
 	
 	// for DIY
 	//radioButton
@@ -254,30 +263,30 @@ class SierpinskiComboPanel extends JPanel {
 	protected double diyMandYC;
 	protected double diyMandScaleSize;
 	
-	private final Integer[] diyMandMagOptions = new Integer[] { -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	private final Integer[] diyMandMagOptions = EXPONENTS;
 	private final JComboBox<Integer> diyMandMagCombos = new JComboBox<Integer>(diyMandMagOptions);
-	private final Integer[] diyMandExpOptions = EXPONENTS;// new Integer[] { -3, -2, -1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	private final Integer[] diyMandExpOptions = EXPONENTS;
 	private final JComboBox<Integer> diyMandExpCombos = new JComboBox<Integer>(diyMandExpOptions);
 	private final JCheckBox diyMandUseDiffCb = new JCheckBox("UseDifferencesOnly",true);
 	private JTextField diyMandRealTf = new JTextField(5);
 	private JTextField diyMandImgTf = new JTextField(5);
 	private final JCheckBox diyMandKeepConstantCb = new JCheckBox("DynamicConstant",false);
-	private final Integer[] diyMandMaxIterOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 300, 350, 400, 500, 1000 };
+	private final Integer[] diyMandMaxIterOptions = MAX_ITERATIONS;
 	private final JComboBox<Integer> diyMandMaxIterCombos = new JComboBox<Integer>(diyMandMaxIterOptions);
 	
-	private final Integer[] diyMandSizeOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 500, 512, 599, 800 };
+	private final Integer[] diyMandSizeOptions = AREA_SIZES;
 	private final JComboBox<Integer> diyMandSizeCombos = new JComboBox<Integer>(diyMandSizeOptions);
 	
-	private final Double[] diyMandBoundOptions = BOUNDARIES;//new Double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private final Double[] diyMandBoundOptions = BOUNDARIES;
 	private final JComboBox<Double> diyMandBoundCombos = new JComboBox<Double>(diyMandBoundOptions);
 
 	
-	private final Double[] diyMandXCOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
+	private final Double[] diyMandXCOptions = CENTER_XY;
 	private final JComboBox<Double> diyMandXCCombos = new JComboBox<Double>(diyMandXCOptions);
-	private final Double[] diyMandYCOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
+	private final Double[] diyMandYCOptions = CENTER_XY;
 	private final JComboBox<Double> diyMandYCCombos = new JComboBox<Double>(diyMandYCOptions);
 
-	private final Double[] diyMandScaleSizeOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private final Double[] diyMandScaleSizeOptions = SCALE_SIZES;
 	private final JComboBox<Double> diyMandScaleSizeCombos = new JComboBox<Double>(diyMandScaleSizeOptions);
 	
 	protected JRadioButton diyMandColrPRb = new JRadioButton("Use Color Palette",false);
@@ -301,31 +310,30 @@ class SierpinskiComboPanel extends JPanel {
 	protected double diyJuliaYC;
 	protected double diyJuliaScaleSize;
 	
-	private final Integer[] diyJuliaPowerOptions = EXPONENTS;//new Integer[] { -3, -2, -1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+	private final Integer[] diyJuliaPowerOptions = EXPONENTS;
 	private final JComboBox<Integer> diyJuliaPowerCombos = new JComboBox<Integer>(diyJuliaPowerOptions);
 	private final JCheckBox diyJuliaUseDiffCb = new JCheckBox("UseDifferencesOnly",true);
 	private JTextField diyJuliaRealTf = new JTextField(5);
 	private JTextField diyJuliaImgTf = new JTextField(5);
 	private final JCheckBox diyJuliaKeepConstantCb = new JCheckBox("DynamicConstant",false);
 
-	/*private final JCheckBox diyJuliaUseSineCalcCb = new JCheckBox("Sine(C)",false);*/
-	private final Integer[] diyJuliaMaxIterOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 300, 350, 400, 500, 1000 };
+	private final Integer[] diyJuliaMaxIterOptions = MAX_ITERATIONS;
 	private final JComboBox<Integer> diyJuliaMaxIterCombos = new JComboBox<Integer>(diyJuliaMaxIterOptions);
 	
 
-	private final Integer[] diyJuliaSizeOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 500, 512, 599, 800 };
+	private final Integer[] diyJuliaSizeOptions = AREA_SIZES;
 	private final JComboBox<Integer> diyJuliaSizeCombos = new JComboBox<Integer>(diyJuliaSizeOptions);
 	
 	
-	private final Double[] diyJuliaBoundOptions = BOUNDARIES;//new Double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private final Double[] diyJuliaBoundOptions = BOUNDARIES;
 	private final JComboBox<Double> diyJuliaBoundCombos = new JComboBox<Double>(diyJuliaBoundOptions);
 
-	private final Double[] diyJuliaXCOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
+	private final Double[] diyJuliaXCOptions = CENTER_XY;
 	private final JComboBox<Double> diyJuliaXCCombos = new JComboBox<Double>(diyJuliaXCOptions);
-	private final Double[] diyJuliaYCOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
+	private final Double[] diyJuliaYCOptions = CENTER_XY;
 	private final JComboBox<Double> diyJuliaYCCombos = new JComboBox<Double>(diyJuliaYCOptions);
 
-	private final Double[] diyJuliaScaleSizeOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private final Double[] diyJuliaScaleSizeOptions = SCALE_SIZES;
 	private final JComboBox<Double> diyJuliaScaleSizeCombos = new JComboBox<Double>(diyJuliaScaleSizeOptions);
 	
 	protected JRadioButton diyJuliaColrPRb = new JRadioButton("Use Color Palette",false);
@@ -340,14 +348,14 @@ class SierpinskiComboPanel extends JPanel {
 	protected int diyApolloMult;
 	
 
-	private final Integer[] diyApolloC1Options = new Integer[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30};
+	private final Integer[] diyApolloC1Options = APOLLO_CURVES;
 	private final JComboBox<Integer> diyApolloC1Combos = new JComboBox<Integer>(diyApolloC1Options);
-	private final Integer[] diyApolloC2Options = new Integer[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30};
+	private final Integer[] diyApolloC2Options = APOLLO_CURVES;
 	private final JComboBox<Integer> diyApolloC2Combos = new JComboBox<Integer>(diyApolloC1Options);	
-	private final Integer[] diyApolloC3Options = new Integer[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30};
+	private final Integer[] diyApolloC3Options = APOLLO_CURVES;
 	private final JComboBox<Integer> diyApolloC3Combos = new JComboBox<Integer>(diyApolloC1Options);
 	
-	private final Integer[] diyApolloMultOptions = new Integer[]{2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
+	private final Integer[] diyApolloMultOptions = APOLLO_MULTS;
 	private final JComboBox<Integer> diyApolloMultCombos = new JComboBox<Integer>(diyApolloMultOptions);
 	
 	protected JRadioButton diyApolloColrPRb = new JRadioButton("Use Color Palette",false);
@@ -360,21 +368,20 @@ class SierpinskiComboPanel extends JPanel {
 	private final Integer[] polyExpOptions = EXPONENTS;
 	private final JComboBox<Integer> polyExpCombos = new JComboBox<Integer>(polyExpOptions);
 	private final JCheckBox polyUseDiffCb = new JCheckBox("UseDifferencesOnly",true);
-	private final Integer[] polyMaxIterOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 300, 350, 400, 500, 1000 };
+	private final Integer[] polyMaxIterOptions = MAX_ITERATIONS;
 	private final JComboBox<Integer> polyMaxIterCombos = new JComboBox<Integer>(polyMaxIterOptions);
-	private final Integer[] polySizeOptions = new Integer[] { 10, 50, 100, 200, 225, 255, 500, 512, 599, 800 };
+	private final Integer[] polySizeOptions = AREA_SIZES;
 	private final JComboBox<Integer> polySizeCombos = new JComboBox<Integer>(polySizeOptions);
-	private final Double[] polyBoundOptions = BOUNDARIES;//new Double[] { 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private final Double[] polyBoundOptions = BOUNDARIES;
 	private final JComboBox<Double> polyBoundCombos = new JComboBox<Double>(polyBoundOptions);
-	private final Double[] polyXCOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
+	private final Double[] polyXCOptions = CENTER_XY;
 	private final JComboBox<Double> polyXCCombos = new JComboBox<Double>(polyXCOptions);
-	private final Double[] polyYCOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
+	private final Double[] polyYCOptions = CENTER_XY;
 	private final JComboBox<Double> polyYCCombos = new JComboBox<Double>(polyYCOptions);
-	/*	TODO 	- 	increase range scaleSize from -5 to 10 with .2/.5 increments
-		TODO	-	move polyScaleSizeOptions to common action controls	*/
-	private final Double[] polyScaleSizeOptions = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+
+	private final Double[] polyScaleSizeOptions = SCALE_SIZES;
 	private final JComboBox<Double> polyScaleSizeCombos = new JComboBox<Double>(polyScaleSizeOptions);
-	private final String[] polyTypeOptions = new String[] {"Reverse","Exchange","Single","Duplicate","Exponent","Power","Default"};
+	private final String[] polyTypeOptions = POLY_RCMT_TYPES;
 	private final JComboBox<String> polyTypeCombos = new JComboBox<String>(polyTypeOptions);
 	private JTextField polyRealTf = new JTextField(5);
 	private JTextField polyImgTf = new JTextField(5);
@@ -385,7 +392,7 @@ class SierpinskiComboPanel extends JPanel {
 	protected boolean polyUseDiff;
 	protected int polyMaxIter;
 	protected boolean polyKeepConst;
-	protected int polySize;			/*	TODO	-	move polySize to common action control variables	*/
+	protected int polySize;			
 	protected double polyBound;
 	protected String polyType = "Reverse";
 
@@ -407,7 +414,7 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private JLabel rotLabel = new JLabel("Rotation:");
 	private Vector<Double> rotOptions = new Vector<Double>();
-	protected JComboBox<Double> rotateCombo ;//= new JComboBox<Double>(rotOptions);
+	protected JComboBox<Double> rotateCombo ;
 	
 	protected JRadioButton colrPRb = new JRadioButton("Use Color Palette",false);
 	protected JRadioButton colrCRb = new JRadioButton("Compute Color",true);
@@ -428,10 +435,8 @@ class SierpinskiComboPanel extends JPanel {
 	protected JRadioButton expRb = new JRadioButton("exponent(e)",false);
 	protected JRadioButton rootRb = new JRadioButton("root",false);
 	/*protected JRadioButton cuRootRb = new JRadioButton("cube-root",false);*/
-	protected JRadioButton lnRb = new JRadioButton("log(e)",false);		
-	
-	
-	
+	protected JRadioButton lnRb = new JRadioButton("log(e)",false);	
+
 	
 	protected ButtonGroup constFnBg = new ButtonGroup();
 	
@@ -453,7 +458,7 @@ class SierpinskiComboPanel extends JPanel {
 	
 	public SierpinskiComboPanel() {
 		super();
-		this.add(new JLabel("Choose: "));//FractalArt:"));
+		this.add(new JLabel("Choose: "));
 		this.add(this.combos);
 
 		this.createActionControls();
@@ -468,16 +473,17 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private void createActionControls() {
 
-		// creates-color-choice-options ////////-- does not add
+		// creates-color-choice-options
 		this.createColorChoiceRBs();
 		
 		// creates-rototation-choice-options -- does not add
 		this.createRotationCombo();
 		
+		// creates-functional-choices-for-constants
 		this.createConstantFunctionsRBs();
 
-		this.rotLabel.setVisible(false);//(true);
-		this.rotateCombo.setVisible(false);//(true);
+		this.rotLabel.setVisible(false);
+		this.rotateCombo.setVisible(false);
 		this.add(this.rotLabel);
 		this.add(this.rotateCombo);
 
@@ -684,18 +690,18 @@ class SierpinskiComboPanel extends JPanel {
 	}
 
 	private void setupDIYRBs() {
-		this.diyMandRb.setActionCommand(diyMand);//("DIY_" + MANDELBROT);
-		this.diyJuliaRb.setActionCommand(diyJulia/*"DIY_" + JULIA*/);
-		this.diyApolloRb.setActionCommand(diyApollo/*"DIY_" + APOLLONIAN_CIRCLES*/);
+		this.diyMandRb.setActionCommand(this.diyMand);
+		this.diyJuliaRb.setActionCommand(this.diyJulia);
+		this.diyApolloRb.setActionCommand(this.diyApollo);
 
 		this.diyBg.add(this.diyMandRb);
 		this.diyBg.add(this.diyJuliaRb);
 		this.diyBg.add(this.diyApolloRb);
 
 		this.diyMandRb.setSelected(true);
-		this.diyMandRb.setName(diyMand/*"DIY_" + MANDELBROT*/);
-		this.diyJuliaRb.setName(diyJulia/*"DIY_" + JULIA*/);
-		this.diyApolloRb.setName(diyApollo/*"DIY_" + APOLLONIAN_CIRCLES*/);
+		this.diyMandRb.setName(this.diyMand);
+		this.diyJuliaRb.setName(this.diyJulia);
+		this.diyApolloRb.setName(this.diyApollo);
 
 		this.diyOptionsPanel.add(this.diyMandRb);
 		this.diyOptionsPanel.add(this.diyJuliaRb);
@@ -1315,8 +1321,7 @@ class SierpinskiComboPanel extends JPanel {
 	private void addMandelbrotConstInfo(FractalBase fBase){
 		Mandelbrot m = (Mandelbrot)fBase;
 		ComplexNumber	c	=m.getComplex();
-		
-//		System.out.println("B4---in-addMandelbrotConstInfo---c=="+c);		
+	
 		String func2Apply = m.useFuncConst;
 		if (c != null) {
 			addFuncTypeConstInfo(c, func2Apply);
@@ -1330,7 +1335,6 @@ class SierpinskiComboPanel extends JPanel {
 		PolyFract p = (PolyFract) fBase;
 		ComplexNumber c = p.getCompConst();
 
-//System.out.println("B4---in-addPolyConstInfo---c==" + c);
 		String func2Apply = p.useFuncConst;
 		if (c != null) {
 			addFuncTypeConstInfo(c, func2Apply);
@@ -1342,15 +1346,13 @@ class SierpinskiComboPanel extends JPanel {
 	private void addJuliaConstInfo(FractalBase fBase){
 		Julia j = (Julia)fBase;
 		ComplexNumber c = j.getComplex();
-//System.out.println("B4---in-addJliaConsrInfo---c=="+c);		
+		
 		String func2Apply = j.useFuncConst;
 		if (c != null) {
 			addFuncTypeConstInfo(c, func2Apply);
 		
 		} else {
 			this.formulaArea.append("<br/>ComplexConstant == Z<br/>");
-			/*double con = j.getComplexConst();
-			this.formulaArea.append("<br/>ComplexConstant == " + con + "+ (0.0 * i)<br/>");*/
 		}
 	}
 

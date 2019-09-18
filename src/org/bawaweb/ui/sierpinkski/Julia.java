@@ -332,10 +332,7 @@ System.out.println("this.complex==="+this.complex);	*/
 						break;
 				case "ArcTan" :
 						this.complex = z0.inverseTangent();	//z0.tan();
-						break;
-						
-
-						
+						break;						
 				case "Square"	:
 					this.complex = z0.power(2);	//z0.sin();
 						break;
@@ -353,8 +350,7 @@ System.out.println("this.complex==="+this.complex);	*/
 						break;
 				case "Log" :
 					this.complex = z0.ln();	//z0.tan();
-						break;
-						
+						break;						
 				case "None" :
 						this.complex = z0;
 						break;
@@ -395,8 +391,7 @@ System.out.println("this.complex==="+this.complex);	*/
 					break;
 			case "ArcTan" :
 				cConst = cConst.inverseTangent();	//z0.tan();
-					break;
-			
+					break;			
 			case "Square"	:
 				cConst = cConst.power(2);	//z0.sin();
 					break;
@@ -414,8 +409,7 @@ System.out.println("this.complex==="+this.complex);	*/
 					break;
 			case "Log" :
 				cConst = cConst.ln();	//z0.tan();
-					break;
-					
+					break;					
 			case "None" :
 				cConst = cConst;
 					break;

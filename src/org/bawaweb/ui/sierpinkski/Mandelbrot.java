@@ -96,10 +96,6 @@ public class Mandelbrot extends FractalBase {
 		this(mg,ep,useD,complexNumIsConst);
 		this.setBound(bd);
 	}
-/*
-	public Mandelbrot(int mg, int ep, double bd, boolean diyMandUseD, boolean diyMKConst) {
-		// TODO Auto-generated constructor stub
-	}*/
 
 	private static final long serialVersionUID = 13456L;
 
@@ -170,9 +166,7 @@ public class Mandelbrot extends FractalBase {
 					break;
 			case "ArcTan" :
 					this.complex = z0.inverseTangent();	//z0.tan();
-					break;
-
-					
+					break;					
 			case "Square"	:
 				this.complex = z0.power(2);	//z0.sin();
 					break;
@@ -190,9 +184,7 @@ public class Mandelbrot extends FractalBase {
 					break;
 			case "Log" :
 				this.complex = z0.ln();	//z0.tan();
-					break;
-					
-					
+					break;					
 			case "None" :
 					this.complex = z0;
 					break;
