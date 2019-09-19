@@ -25,17 +25,28 @@ public class KochSnowFlakeFractal extends FractalBase {
 
 	private List<Point[]> filledCircumTriangles = null;
 
-	private boolean isFillCircumTriangles = true;
-	private boolean isMixColors = true;
+	private boolean isFillCircumTriangles = false;
+	private boolean isMixColors = false;
+	
+	private boolean isOuter = false;
 
 	public KochSnowFlakeFractal() {
 		super();
 	}
-	
 
 	public KochSnowFlakeFractal(boolean fillOuters) {
 		this();
 		this.setFillCircumTriangles(fillOuters);
+	}
+	
+	public KochSnowFlakeFractal(boolean fillOuters, boolean mix) {
+		this(fillOuters);
+		this.setMixColors(mix);
+	}
+
+	public KochSnowFlakeFractal(boolean fillOuters, boolean mix, boolean spreadOut) {
+		this(fillOuters,mix);
+		this.setOuter(spreadOut);
 	}
 
 	private Image createKochSnowFractal(Graphics2D g) {
@@ -162,7 +173,13 @@ System.out.println("Start___Line3 " + l3 + "\n\n");*/
 	 * will
 	 * then						          /\
 	 * become 				         ll3 /  \ll2
-	 * 4 lines			(end)_____ll4___/    \____ll1____	(start)
+	 * 4 lines			(end)_____ll4___/    \____ll1____	(start)		==	regular // outer
+	 * 
+	 * 
+	 * OR				(end)_____ll4___		____ll1____	(start)		==	inner
+	 * then								\     /	          
+	 * become 				    	 ll3 \   /ll2
+	 * 4 lines						   	   V	
 	 */
 	private List<Line> create4NewLines(Line aLine) {
 		double x_l1 = aLine.x;
@@ -170,25 +187,49 @@ System.out.println("Start___Line3 " + l3 + "\n\n");*/
 		double len_l1 = aLine.length / 3.0;
 		double ang_l1 = aLine.angle;
 
-		double x_l2 = aLine.x + (Math.cos(aLine.angle * (Math.PI / 180.0)) * aLine.length / 1.5);
-		double y_l2 = aLine.y + (Math.sin(aLine.angle * (Math.PI / 180.0)) * aLine.length / 1.5);
-		double len_l2 = aLine.length / 3.0;
-		double ang_l2 = aLine.angle;
+		double x_l2;
+		double y_l2;
+		double len_l2;
+		double ang_l2;
 
-		double x_l3 = aLine.x + (Math.cos(aLine.angle * (Math.PI / 180.0)) * aLine.length / 3.0);
-		double y_l3 = aLine.y + (Math.sin(aLine.angle * (Math.PI / 180.0)) * aLine.length / 3.0);
-		double len_l3 = aLine.length / 3.0;
-		double ang_l3 = aLine.angle - 300.0;
+		double x_l3;
+		double y_l3;
+		double len_l3;
+		double ang_l3;
 
+		if (isOuter) {
+			x_l2 = aLine.x + (Math.cos(aLine.angle * (Math.PI / 180.0)) * aLine.length / 3.0);
+			y_l2 = aLine.y + (Math.sin(aLine.angle * (Math.PI / 180.0)) * aLine.length / 3.0);
+			len_l2 = aLine.length / 3.0;
+			ang_l2 = aLine.angle - 300.0;
+
+			x_l3 = aLine.x + (Math.cos(aLine.angle * (Math.PI / 180.0)) * aLine.length / 1.5);
+			y_l3 = aLine.y + (Math.sin(aLine.angle * (Math.PI / 180.0)) * aLine.length / 1.5);
+			len_l3 = aLine.length / 3.0;
+			ang_l3 = aLine.angle - 240.0;
+			// for angle re-orientation
+			x_l3 = x_l3 + Math.cos(ang_l3 * (Math.PI / 180.0)) * len_l3;
+			y_l3 = y_l3 + Math.sin(ang_l3 * (Math.PI / 180.0)) * len_l3;
+			ang_l3 -= 180.0;
+		} else {
+			x_l2 = aLine.x + (Math.cos(aLine.angle * (Math.PI / 180.0)) * aLine.length / 1.5);
+			y_l2 = aLine.y + (Math.sin(aLine.angle * (Math.PI / 180.0)) * aLine.length / 1.5);
+			len_l2 = aLine.length / 3.0;
+			ang_l2 = aLine.angle - 240.0;
+
+			x_l3 = aLine.x + (Math.cos(aLine.angle * (Math.PI / 180.0)) * aLine.length / 3.0);
+			y_l3 = aLine.y + (Math.sin(aLine.angle * (Math.PI / 180.0)) * aLine.length / 3.0);
+			len_l3 = aLine.length / 3.0;
+			ang_l3 = aLine.angle - 300.0;
+			// for angle re-orientation
+			x_l3 = x_l3 + Math.cos(ang_l3 * (Math.PI / 180.0)) * len_l3;
+			y_l3 = y_l3 + Math.sin(ang_l3 * (Math.PI / 180.0)) * len_l3;
+			ang_l3 -= 180.0;
+		}
 		double x_l4 = aLine.x + (Math.cos(aLine.angle * (Math.PI / 180.0)) * aLine.length / 1.5);
 		double y_l4 = aLine.y + (Math.sin(aLine.angle * (Math.PI / 180.0)) * aLine.length / 1.5);
 		double len_l4 = aLine.length / 3.0;
-		double ang_l4 = aLine.angle - 240.0;
-			
-			// for angle re-orientation
-		x_l4 = x_l4 + Math.cos(ang_l4 * (Math.PI / 180.0)) * len_l4;
-		y_l4 = y_l4 + Math.sin(ang_l4 * (Math.PI / 180.0)) * len_l4;
-		ang_l4 -= 180.0;
+		double ang_l4 = aLine.angle;
 		
 		Line ll1 = new Line(x_l1,y_l1,len_l1,ang_l1);
 		Line ll2 = new Line(x_l2,y_l2,len_l2,ang_l2);
@@ -197,9 +238,44 @@ System.out.println("Start___Line3 " + l3 + "\n\n");*/
 		
 		List<Line> newLines=new ArrayList<Line>();
 		newLines.add(ll1);				
-		newLines.add(ll3);					
-		newLines.add(ll4);			
-		newLines.add(ll2);
+		newLines.add(ll2);					
+		newLines.add(ll3);			
+		newLines.add(ll4);
+//		double x_l1 = aLine.x;
+//		double y_l1 = aLine.y;
+//		double len_l1 = aLine.length / 3.0;
+//		double ang_l1 = aLine.angle;
+//
+//		double x_l2 = aLine.x + (Math.cos(aLine.angle * (Math.PI / 180.0)) * aLine.length / 1.5);
+//		double y_l2 = aLine.y + (Math.sin(aLine.angle * (Math.PI / 180.0)) * aLine.length / 1.5);
+//		double len_l2 = aLine.length / 3.0;
+//		double ang_l2 = aLine.angle;
+//
+//		double x_l3 = aLine.x + (Math.cos(aLine.angle * (Math.PI / 180.0)) * aLine.length / 3.0);
+//		double y_l3 = aLine.y + (Math.sin(aLine.angle * (Math.PI / 180.0)) * aLine.length / 3.0);
+//		double len_l3 = aLine.length / 3.0;
+//		double ang_l3 = aLine.angle - 300.0;
+//
+//		double x_l4 = aLine.x + (Math.cos(aLine.angle * (Math.PI / 180.0)) * aLine.length / 1.5);
+//		double y_l4 = aLine.y + (Math.sin(aLine.angle * (Math.PI / 180.0)) * aLine.length / 1.5);
+//		double len_l4 = aLine.length / 3.0;
+//		double ang_l4 = aLine.angle - 240.0;
+//			
+//			// for angle re-orientation
+//		x_l4 = x_l4 + Math.cos(ang_l4 * (Math.PI / 180.0)) * len_l4;
+//		y_l4 = y_l4 + Math.sin(ang_l4 * (Math.PI / 180.0)) * len_l4;
+//		ang_l4 -= 180.0;
+//		
+//		Line ll1 = new Line(x_l1,y_l1,len_l1,ang_l1);
+//		Line ll2 = new Line(x_l2,y_l2,len_l2,ang_l2);
+//		Line ll3 = new Line(x_l3,y_l3,len_l3,ang_l3);
+//		Line ll4 = new Line(x_l4,y_l4,len_l4,ang_l4);
+//		
+//		List<Line> newLines=new ArrayList<Line>();
+//		newLines.add(ll1);				
+//		newLines.add(ll3);					
+//		newLines.add(ll4);			
+//		newLines.add(ll2);
 		
 		return newLines;
 	}
@@ -209,6 +285,9 @@ System.out.println("Start___Line3 " + l3 + "\n\n");*/
 			@Override
 			public void run() {
 				final KochSnowFlakeFractal frame = new KochSnowFlakeFractal(true);
+				frame.setMixColors(true);
+				frame.setOuter(true);
+				
 				frame.setTitle(frame.getFractalShapeTitle());
 				frame.setSize(WIDTH, HEIGHT);
 				frame.setRunning(true);
@@ -309,6 +388,14 @@ System.out.println("Start___Line3 " + l3 + "\n\n");*/
 
 	public void setMixColors(boolean isMixColors) {
 		this.isMixColors = isMixColors;
+	}
+
+	public boolean isOuter() {
+		return isOuter;
+	}
+
+	public void setOuter(boolean isOuter) {
+		this.isOuter = isOuter;
 	}
 
 }

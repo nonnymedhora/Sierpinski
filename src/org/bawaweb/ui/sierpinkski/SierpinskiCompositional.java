@@ -122,6 +122,16 @@ class SierpinskiComboPanel extends JPanel {
 	protected ButtonGroup sierpTBg = new ButtonGroup();
 	private String 			sierpTDir = "UP";
 	
+	// for KochSnowFlakeFractal
+	protected final JCheckBox kochFillExternalCb = new JCheckBox("FillOuterTriangles",false);
+	protected final JCheckBox kochMixColorsCb = new JCheckBox("MixColors",false);
+	protected final JCheckBox kochSpreadOuterCb = new JCheckBox("SpreadOuter",false);
+	
+	
+	private boolean kochFillExternals = false;
+	private boolean kochMixColors = false;
+	private boolean kochSpreadOuter = false;
+	
 	// for Julia
 	private final String[] juliaOptions = new String[] { J1, J2, J3, J4, J5, J6, J7, J8, J9 };
 	private final JComboBox<String> juliaCombos = new JComboBox<String>(juliaOptions);
@@ -184,18 +194,19 @@ class SierpinskiComboPanel extends JPanel {
 	protected ButtonGroup apolloColrBg = new ButtonGroup();
 
 	// Fractal Art Options
-	private JPanel fannyOptionsPanel = new JPanel(new FlowLayout(),true);
-	private JPanel apolloOptionsPanel = new JPanel(new FlowLayout(),true);
-	private JPanel sierpinskiTPanel = new JPanel(new FlowLayout(),true);	
+	private JPanel fannyOptionsPanel 	= new JPanel(new FlowLayout(),true);
+	private JPanel apolloOptionsPanel 	= new JPanel(new FlowLayout(),true);
+	private JPanel sierpinskiTPanel 	= new JPanel(new FlowLayout(),true);	
+	private JPanel kochSnowFlakePanel 	= new JPanel(new FlowLayout(),true);	
 	
-	private JPanel juliaOptionsPanel = new JPanel(new GridLayout(/*4,8*/10,5),true);
-	private JPanel mandOptionsPanel = new JPanel(new GridLayout(10,5),true);
-	private JPanel polyOptionsPanel = new JPanel(new GridLayout(10,5),true);
-	private JPanel diyOptionsPanel	= new JPanel(new FlowLayout(),true);//GridLayout(4,7),true);
+	private JPanel juliaOptionsPanel 	= new JPanel(new GridLayout(/*4,8*/10,5),true);
+	private JPanel mandOptionsPanel 	= new JPanel(new GridLayout(10,5),true);
+	private JPanel polyOptionsPanel 	= new JPanel(new GridLayout(10,5),true);
+	private JPanel diyOptionsPanel		= new JPanel(new FlowLayout(),true);//GridLayout(4,7),true);
 	
-	private JPanel diyMandPanel = new JPanel(new GridLayout(5,8),true);
-	private JPanel diyJuliaPanel = new JPanel(new GridLayout(5,8),true);
-	private JPanel diyApolloPanel = new JPanel(new GridLayout(4,8),true);
+	private JPanel diyMandPanel 		= new JPanel(new GridLayout(5,8),true);
+	private JPanel diyJuliaPanel 		= new JPanel(new GridLayout(5,8),true);
+	private JPanel diyApolloPanel 		= new JPanel(new GridLayout(4,8),true);
 	
 	private JTextArea formulaArea = new JTextArea(5,20);
 	//private JTextPane formulaPane;
@@ -517,6 +528,9 @@ class SierpinskiComboPanel extends JPanel {
 		
 		//sierpisnkiT
 		this.createSierpinskiTPanel();
+		
+		//koch
+		this.createKochSnowFlakePanel();
 		
 		//apollo	--	does add
 		this.createApolloPanel();
@@ -962,6 +976,15 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(this.fannyOptionsPanel);
 	}
 	
+	private void createKochSnowFlakePanel(){
+		this.kochSnowFlakePanel.add(this.kochFillExternalCb);
+		this.kochSnowFlakePanel.add(this.kochMixColorsCb);
+		this.kochSnowFlakePanel.add(this.kochSpreadOuterCb);
+		
+		this.kochSnowFlakePanel.setVisible(false);
+		this.add(this.kochSnowFlakePanel);
+	}
+	
 	private void createSierpinskiTPanel() {
 		this.sierpinskiTPanel.add(this.sierpinskiTFillInnerCb);
 		
@@ -1140,6 +1163,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.rotateCombo.setVisible(false);
 			this.fannyOptionsPanel.setVisible(false);
 			this.sierpinskiTPanel.setVisible(false);
+			this.kochSnowFlakePanel.setVisible(false);
 			this.juliaOptionsPanel.setVisible(false);
 			this.mandOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(true);
@@ -1157,6 +1181,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.rotateCombo.setVisible(false);
 			this.fannyOptionsPanel.setVisible(true);
 			this.sierpinskiTPanel.setVisible(false);
+			this.kochSnowFlakePanel.setVisible(false);
 			this.juliaOptionsPanel.setVisible(false);
 			this.mandOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(false);
@@ -1173,6 +1198,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.rotateCombo.setVisible(true);
 			this.fannyOptionsPanel.setVisible(false);
 			this.sierpinskiTPanel.setVisible(false);
+			this.kochSnowFlakePanel.setVisible(false);
 			this.juliaOptionsPanel.setVisible(true);
 			this.mandOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(false);
@@ -1190,6 +1216,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.rotateCombo.setVisible(true);
 			this.fannyOptionsPanel.setVisible(false);
 			this.sierpinskiTPanel.setVisible(false);
+			this.kochSnowFlakePanel.setVisible(false);
 			this.juliaOptionsPanel.setVisible(false);
 			this.mandOptionsPanel.setVisible(true);
 			this.apolloOptionsPanel.setVisible(false);
@@ -1202,6 +1229,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.rotateCombo.setVisible(true);
 			this.fannyOptionsPanel.setVisible(false);
 			this.sierpinskiTPanel.setVisible(false);
+			this.kochSnowFlakePanel.setVisible(false);
 			this.juliaOptionsPanel.setVisible(false);
 			this.mandOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(false);
@@ -1220,6 +1248,7 @@ class SierpinskiComboPanel extends JPanel {
 			}
 			this.fannyOptionsPanel.setVisible(false);
 			this.sierpinskiTPanel.setVisible(false);
+			this.kochSnowFlakePanel.setVisible(false);
 			this.juliaOptionsPanel.setVisible(false);
 			this.mandOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(false);
@@ -1241,6 +1270,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.rotateCombo.setVisible(false);
 			this.fannyOptionsPanel.setVisible(false);
 			this.sierpinskiTPanel.setVisible(true);
+			this.kochSnowFlakePanel.setVisible(false);
 			this.juliaOptionsPanel.setVisible(false);
 			this.mandOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(false);
@@ -1248,11 +1278,26 @@ class SierpinskiComboPanel extends JPanel {
 			this.polyOptionsPanel.setVisible(false);
 			this.formulaArea.setVisible(false);
 			this.buStart.setEnabled(true);
-		} else {
+		} else if(this.comboChoice.equals(KOCHSNOWFLAKE)){
 			this.rotLabel.setVisible(false);
 			this.rotateCombo.setVisible(false);
 			this.fannyOptionsPanel.setVisible(false);
 			this.sierpinskiTPanel.setVisible(false);
+			this.kochSnowFlakePanel.setVisible(true);
+			this.juliaOptionsPanel.setVisible(false);
+			this.mandOptionsPanel.setVisible(false);
+			this.apolloOptionsPanel.setVisible(false);
+			this.diyOptionsPanel.setVisible(false);
+			this.polyOptionsPanel.setVisible(false);
+			this.formulaArea.setVisible(false);
+			this.buStart.setEnabled(true);
+		}
+		else {
+			this.rotLabel.setVisible(false);
+			this.rotateCombo.setVisible(false);
+			this.fannyOptionsPanel.setVisible(false);
+			this.sierpinskiTPanel.setVisible(false);
+			this.kochSnowFlakePanel.setVisible(false);
 			this.juliaOptionsPanel.setVisible(false);
 			this.mandOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(false);
@@ -1460,6 +1505,19 @@ class SierpinskiComboPanel extends JPanel {
 			this.formulaArea.append("<br/>ComplexConstant == "+c.toString()+"<br/>");
 			break;
 		}
+	}
+
+	
+	private void doSetKochSpreadOuterCommand(boolean spread) {
+		this.kochSpreadOuter = spread;
+	}
+	
+	private void doSetKochFillExternalCommand(boolean fillExternal) {
+		this.kochFillExternals = fillExternal;
+	}
+	
+	private void doSetKochMixColorsCommand(boolean mix) {
+		this.kochMixColors = mix;
 	}
 	
 	private void doSetSierpinskiTFillInnerCommand(boolean fillInner) {
@@ -2011,7 +2069,10 @@ class SierpinskiComboPanel extends JPanel {
 			ff = new FractalBaseSample();
 		} else if (choice.equals(KOCHSNOWFLAKE)) {
 			/*this.doReset();*/
-			ff = new KochSnowFlakeFractal();
+			boolean fillExt = this.kochFillExternals;
+			boolean mixColors = this.kochMixColors;
+			boolean spreadOut = this.kochSpreadOuter;
+			ff = new KochSnowFlakeFractal(fillExt, mixColors,spreadOut);
 		} else if ((choice.startsWith("DIY")||choice.endsWith("Yourself"))) {
 //			this.doReset();
 //			System.out.println("A---this.diyMandRb.isSelected()==="+this.diyMandRb.isSelected());
@@ -2465,7 +2526,7 @@ class SierpinskiComboPanel extends JPanel {
 				double[] cChoices = this.getCurvChoice();
 				double mXt = this.getMultiplier();
 				
-			baseInfo += "Radii: C1(" + cChoices[0] + "), C2(" + cChoices[1] + "), C3(" + cChoices[2] + ")" + eol;
+				baseInfo += "Radii: C1(" + cChoices[0] + "), C2(" + cChoices[1] + "), C3(" + cChoices[2] + ")" + eol;
 				baseInfo+=" Multiplier("+mXt+") }";
 				break;
 			
@@ -2475,9 +2536,15 @@ class SierpinskiComboPanel extends JPanel {
 				
 			case	CST_FRACTAL	:
 				baseInfo+="}";
+				break;
 				
 			case	KOCHSNOWFLAKE	:
+				baseInfo += "Filled Circumscribed Triangles: " + this.kochFillExternals + eol;
+				baseInfo += "Mixed 2-colors: " + this.kochMixColors + eol;
+				baseInfo += "Spread External: " + this.kochSpreadOuter + eol;
+				
 				baseInfo+="}";
+				break;
 				
 			case 	POLY:
 				if (this.colrPRb.isSelected()) {
@@ -2578,6 +2645,7 @@ class SierpinskiComboPanel extends JPanel {
 	
 				baseInfo += this.formulaArea.getText();
 				break;
+				
 			case	JULIA	:	
 				if (this.colrPRb.isSelected()) {
 					baseInfo += "ColorPalette, "+eol;
@@ -2626,122 +2694,123 @@ class SierpinskiComboPanel extends JPanel {
 				
 			case	diyMand://DIY:	//if ((choice.startsWith("DIY")||choice.endsWith("Yourself"))) {
 				/*if (this.diyMandRb.isSelected()) {*/
-					baseInfo+=MANDELBROT+eol;
-					if (this.colrPRb.isSelected()) {
-						baseInfo += "ColorPalette, " + eol;
-					} else {
-						baseInfo += "ColorComputed, " + eol;
+				baseInfo+=MANDELBROT+eol;
+				if (this.colrPRb.isSelected()) {
+					baseInfo += "ColorPalette, " + eol;
+				} else {
+					baseInfo += "ColorComputed, " + eol;
+				}
+				baseInfo += "ImageMagnification: " + this.diyMandMagnification + eol;
+				baseInfo += "Power: " + this.diyMandExponent + ", ";
+				if (this.getDiyMandUseDiff()) {
+					baseInfo += "Ud, ";
+				}
+				baseInfo += "Boundary: " + this.diyMandBound + ", " + eol;
+				if (this.diyMandKeepConst) {
+					baseInfo += "Dynamic Constant	Z=C" + eol;
+				} else {
+					baseInfo += "Real Value = " + Double.parseDouble(this.diyMandRealTf.getText()) + ","+eol;
+					baseInfo += "Imaginary Value = " + Double.parseDouble(this.diyMandImgTf.getText()) + eol;
+				}
+				if (!(this.constFuncChoice.equals("None") || this.noFuncRb.isSelected())) {
+					if (this.sineRb.isSelected()) {
+						baseInfo += "Sine of Constant" + eol;
+					} else if (this.cosineRb.isSelected()) {
+						baseInfo += "Cosine of Constant" + eol;
+					} else if (this.tanRb.isSelected()) {
+						baseInfo += "Tan of Constant" + eol;
+					} else if (this.arcSineRb.isSelected()) {
+						baseInfo += "ArcSine of Constant" + eol;
+					} else if (this.arcCosineRb.isSelected()) {
+						baseInfo += "ArcCosine of Constant" + eol;
+					} else if (this.arcTanRb.isSelected()) {
+						baseInfo += "ArcTan of Constant" + eol;
+					} else if (this.sqRb.isSelected()) {
+						baseInfo += "Square of Constant		(C ^ 2)" + eol;
+					} else if (this.cuRb.isSelected()) {
+						baseInfo += "Cube of Constant		(C ^ 3)" + eol;
+					} else if (this.expRb.isSelected()) {
+						baseInfo += "Exponent of Constant	(e ^ C)" + eol;
+					} else if (this.rootRb.isSelected()) {
+						baseInfo += "Square Root of Constant	(C ^ (1/2))" + eol;
+					} else if (this.arcTanRb.isSelected()) {
+						baseInfo += "Cube Root of Constant		(C ^ (1/3))" + eol;
+					} else if (this.lnRb.isSelected()) {
+						baseInfo += "Log(e) of Constant		Ln(C)" + eol;
 					}
-					baseInfo += "ImageMagnification: " + this.diyMandMagnification + eol;
-					baseInfo += "Power: " + this.diyMandExponent + ", ";
-					if (this.getDiyMandUseDiff()) {
-						baseInfo += "Ud, ";
-					}
-					baseInfo += "Boundary: " + this.diyMandBound + ", " + eol;
-					if (this.diyMandKeepConst) {
-						baseInfo += "Dynamic Constant	Z=C" + eol;
-					} else {
-						baseInfo += "Real Value = " + Double.parseDouble(this.diyMandRealTf.getText()) + ","+eol;
-						baseInfo += "Imaginary Value = " + Double.parseDouble(this.diyMandImgTf.getText()) + eol;
-					}
-					if (!(this.constFuncChoice.equals("None") || this.noFuncRb.isSelected())) {
-						if (this.sineRb.isSelected()) {
-							baseInfo += "Sine of Constant" + eol;
-						} else if (this.cosineRb.isSelected()) {
-							baseInfo += "Cosine of Constant" + eol;
-						} else if (this.tanRb.isSelected()) {
-							baseInfo += "Tan of Constant" + eol;
-						} else if (this.arcSineRb.isSelected()) {
-							baseInfo += "ArcSine of Constant" + eol;
-						} else if (this.arcCosineRb.isSelected()) {
-							baseInfo += "ArcCosine of Constant" + eol;
-						} else if (this.arcTanRb.isSelected()) {
-							baseInfo += "ArcTan of Constant" + eol;
-						} else if (this.sqRb.isSelected()) {
-							baseInfo += "Square of Constant		(C ^ 2)" + eol;
-						} else if (this.cuRb.isSelected()) {
-							baseInfo += "Cube of Constant		(C ^ 3)" + eol;
-						} else if (this.expRb.isSelected()) {
-							baseInfo += "Exponent of Constant	(e ^ C)" + eol;
-						} else if (this.rootRb.isSelected()) {
-							baseInfo += "Square Root of Constant	(C ^ (1/2))" + eol;
-						} else if (this.arcTanRb.isSelected()) {
-							baseInfo += "Cube Root of Constant		(C ^ (1/3))" + eol;
-						} else if (this.lnRb.isSelected()) {
-							baseInfo += "Log(e) of Constant		Ln(C)" + eol;
-						}
-					}
-					baseInfo += "Rotation: " + this.getRotation() + eol;
-					baseInfo += "Center: P(x,y): (" + this.diyMandXC + ", " + this.diyMandYC + ")" + eol;
-					baseInfo += "Maximum Iterations: " + this.diyMandMaxIter + eol;
-					baseInfo += " Scaled Size: " + this.diyMandScaleSize + "}" + eol + eol;
-		
-					baseInfo += this.formulaArea.getText();
-					break;
-					case diyJulia:
+				}
+				baseInfo += "Rotation: " + this.getRotation() + eol;
+				baseInfo += "Center: P(x,y): (" + this.diyMandXC + ", " + this.diyMandYC + ")" + eol;
+				baseInfo += "Maximum Iterations: " + this.diyMandMaxIter + eol;
+				baseInfo += " Scaled Size: " + this.diyMandScaleSize + "}" + eol + eol;
+	
+				baseInfo += this.formulaArea.getText();
+				break;
+			case diyJulia:
 				/*}else if(this.diyJuliaRb.isSelected()){*/
-					baseInfo+=JULIA+eol;
-					if (this.colrPRb.isSelected()) {
-						baseInfo += "ColorPalette, " + eol;
-					} else {
-						baseInfo += "ColorComputed, " + eol;
+				baseInfo+=JULIA+eol;
+				if (this.colrPRb.isSelected()) {
+					baseInfo += "ColorPalette, " + eol;
+				} else {
+					baseInfo += "ColorComputed, " + eol;
+				}
+				baseInfo += "Power: " + this.diyJuliaPower + ", ";
+				if (this.getDiyJuliaUseDiff()) {
+					baseInfo += "Ud, ";
+				}
+				baseInfo += "Boundary: " + this.diyJuliaBound + ", "+eol;
+				if (this.diyJuliaKeepConst) {
+					baseInfo += "Dynamic Constant	Z=C" + eol;
+				} else {
+					baseInfo += "Real Value = " + Double.parseDouble(this.diyJuliaRealTf.getText()) + "," + eol;
+					baseInfo += "Imaginary Value = " + Double.parseDouble(this.diyJuliaImgTf.getText()) + eol;
+				}
+				if (!(this.constFuncChoice.equals("None") || this.noFuncRb.isSelected())) {
+					if (this.sineRb.isSelected()) {
+						baseInfo += "Sine of Constant" + eol;
+					} else if (this.cosineRb.isSelected()) {
+						baseInfo += "Cosine of Constant" + eol;
+					} else if (this.tanRb.isSelected()) {
+						baseInfo += "Tan of Constant" + eol;
+					} else if (this.arcSineRb.isSelected()) {
+						baseInfo += "ArcSine of Constant" + eol;
+					} else if (this.arcCosineRb.isSelected()) {
+						baseInfo += "ArcCosine of Constant" + eol;
+					} else if (this.arcTanRb.isSelected()) {
+						baseInfo += "ArcTan of Constant" + eol;
+					} else if (this.sqRb.isSelected()) {
+						baseInfo += "Square of Constant		(C ^ 2)" + eol;
+					} else if (this.cuRb.isSelected()) {
+						baseInfo += "Cube of Constant		(C ^ 3)" + eol;
+					} else if (this.expRb.isSelected()) {
+						baseInfo += "Exponent of Constant	(e ^ C)" + eol;
+					} else if (this.rootRb.isSelected()) {
+						baseInfo += "Square Root of Constant	(C ^ (1/2))" + eol;
+					}/* else if (this.cuRootRb.isSelected()) {
+						baseInfo += "Cube Root of Constant		(C ^ (1/3))" + eol;
+					}*/ else if (this.lnRb.isSelected()) {
+						baseInfo += "Log(e) of Constant		Ln(C)" + eol;
 					}
-					baseInfo += "Power: " + this.diyJuliaPower + ", ";
-					if (this.getDiyJuliaUseDiff()) {
-						baseInfo += "Ud, ";
-					}
-					baseInfo += "Boundary: " + this.diyJuliaBound + ", "+eol;
-					if (this.diyJuliaKeepConst) {
-						baseInfo += "Dynamic Constant	Z=C" + eol;
-					} else {
-						baseInfo += "Real Value = " + Double.parseDouble(this.diyJuliaRealTf.getText()) + "," + eol;
-						baseInfo += "Imaginary Value = " + Double.parseDouble(this.diyJuliaImgTf.getText()) + eol;
-					}
-					if (!(this.constFuncChoice.equals("None") || this.noFuncRb.isSelected())) {
-						if (this.sineRb.isSelected()) {
-							baseInfo += "Sine of Constant" + eol;
-						} else if (this.cosineRb.isSelected()) {
-							baseInfo += "Cosine of Constant" + eol;
-						} else if (this.tanRb.isSelected()) {
-							baseInfo += "Tan of Constant" + eol;
-						} else if (this.arcSineRb.isSelected()) {
-							baseInfo += "ArcSine of Constant" + eol;
-						} else if (this.arcCosineRb.isSelected()) {
-							baseInfo += "ArcCosine of Constant" + eol;
-						} else if (this.arcTanRb.isSelected()) {
-							baseInfo += "ArcTan of Constant" + eol;
-						} else if (this.sqRb.isSelected()) {
-							baseInfo += "Square of Constant		(C ^ 2)" + eol;
-						} else if (this.cuRb.isSelected()) {
-							baseInfo += "Cube of Constant		(C ^ 3)" + eol;
-						} else if (this.expRb.isSelected()) {
-							baseInfo += "Exponent of Constant	(e ^ C)" + eol;
-						} else if (this.rootRb.isSelected()) {
-							baseInfo += "Square Root of Constant	(C ^ (1/2))" + eol;
-						}/* else if (this.cuRootRb.isSelected()) {
-							baseInfo += "Cube Root of Constant		(C ^ (1/3))" + eol;
-						}*/ else if (this.lnRb.isSelected()) {
-							baseInfo += "Log(e) of Constant		Ln(C)" + eol;
-						}
-					}
-					baseInfo += "Rotation: " + this.getRotation() + eol;
-					baseInfo += "Center: P(x,y): (" + this.diyJuliaXC + ", " + this.diyJuliaYC + ")" + eol;
-					baseInfo += "Maximum Iterations: " + this.diyJuliaMaxIter + eol;
-					baseInfo += " Scaled Size: " + this.diyJuliaScaleSize + "}" + eol + eol;
-		
-					baseInfo += this.formulaArea.getText();
-					break;
-					case diyApollo:
+				}
+				baseInfo += "Rotation: " + this.getRotation() + eol;
+				baseInfo += "Center: P(x,y): (" + this.diyJuliaXC + ", " + this.diyJuliaYC + ")" + eol;
+				baseInfo += "Maximum Iterations: " + this.diyJuliaMaxIter + eol;
+				baseInfo += " Scaled Size: " + this.diyJuliaScaleSize + "}" + eol + eol;
+	
+				baseInfo += this.formulaArea.getText();
+				break;
+				
+			case diyApollo:
 				/*} else if (this.diyApolloRb.isSelected()) {*/
-					double c1 = this.diyApolloC1;
-					double c2 = this.diyApolloC2;
-					double c3 = this.diyApolloC3;
-					double mult = this.diyApolloMult;
-					
-					baseInfo += APOLLONIAN_CIRCLES + eol;
-					baseInfo += "Radii: C1(" + c1 + "), C2(" + c2 + "), C3(" + c3 + ")";
-					baseInfo += " Multiplier(" + mult + ") }";
-					break;
+				double c1 = this.diyApolloC1;
+				double c2 = this.diyApolloC2;
+				double c3 = this.diyApolloC3;
+				double mult = this.diyApolloMult;
+				
+				baseInfo += APOLLONIAN_CIRCLES + eol;
+				baseInfo += "Radii: C1(" + c1 + "), C2(" + c2 + "), C3(" + c3 + ")";
+				baseInfo += " Multiplier(" + mult + ") }";
+				break;
 				/*}*/
 				
 			default:
@@ -2895,6 +2964,7 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.setupFannyListeners();	
 		this.setupSierpisnkiTListeners();
+		this.setupKochListeners();
 		this.setupApolloListeners();		
 		this.setupJuliaListeners();		
 		this.setupMandelbrotListeners();
@@ -3566,6 +3636,41 @@ class SierpinskiComboPanel extends JPanel {
 		this.apolloColrPRb.addActionListener(colorChoiceRbListener());
 		this.apolloColrCRb.addActionListener(colorChoiceRbListener());
 		
+	}
+	
+	private void setupKochListeners() {
+		this.kochFillExternalCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetKochFillExternalCommand(true);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSetKochFillExternalCommand(false);
+				}
+			}
+		});
+
+		this.kochMixColorsCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetKochMixColorsCommand(true);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSetKochMixColorsCommand(false);
+				}
+			}
+		});
+
+		this.kochSpreadOuterCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetKochSpreadOuterCommand(true);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSetKochSpreadOuterCommand(false);
+				}
+			}
+		});
 	}
 	
 	private void setupSierpisnkiTListeners(){
