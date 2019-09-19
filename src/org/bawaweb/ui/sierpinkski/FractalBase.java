@@ -744,7 +744,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	}
 
 	class Line {
-		private double x, y, length, angle;
+		/*private*/ double x, y, length, angle;
 		
 		public Line(Point p1,Point p2){
 			super();
@@ -848,6 +848,14 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		    }
 
 		    return angle;
+		}
+		
+		@Override
+		public String toString(){
+			String lineInfo="";
+			lineInfo+="("+this.x+","+this.y+") to ("+this.getX2()+","+this.getY2()+")  angle="+this.angle;
+			return lineInfo;
+			
 		}
 
 

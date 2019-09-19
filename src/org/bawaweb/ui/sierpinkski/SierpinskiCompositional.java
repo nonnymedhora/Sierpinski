@@ -113,6 +113,15 @@ class SierpinskiComboPanel extends JPanel {
 	private final Integer[] ratioOptions = FANNY_RATIOS;
 	private final JComboBox<Integer> ratioCombos = new JComboBox<Integer>(ratioOptions);
 	
+	// for SierpinskiTraingles
+	private final JCheckBox sierpinskiTFillInnerCb = new JCheckBox("FillInnerTriangles", true);
+	private boolean sierpinskiFillInnerT = false;
+	
+	protected JRadioButton sierpTUpRb = new JRadioButton("UP",false);
+	protected JRadioButton sierpTDnRb = new JRadioButton("DOWN",true);	
+	protected ButtonGroup sierpTBg = new ButtonGroup();
+	private String 			sierpTDir = "UP";
+	
 	// for Julia
 	private final String[] juliaOptions = new String[] { J1, J2, J3, J4, J5, J6, J7, J8, J9 };
 	private final JComboBox<String> juliaCombos = new JComboBox<String>(juliaOptions);
@@ -177,6 +186,8 @@ class SierpinskiComboPanel extends JPanel {
 	// Fractal Art Options
 	private JPanel fannyOptionsPanel = new JPanel(new FlowLayout(),true);
 	private JPanel apolloOptionsPanel = new JPanel(new FlowLayout(),true);
+	private JPanel sierpinskiTPanel = new JPanel(new FlowLayout(),true);	
+	
 	private JPanel juliaOptionsPanel = new JPanel(new GridLayout(/*4,8*/10,5),true);
 	private JPanel mandOptionsPanel = new JPanel(new GridLayout(10,5),true);
 	private JPanel polyOptionsPanel = new JPanel(new GridLayout(10,5),true);
@@ -503,6 +514,9 @@ class SierpinskiComboPanel extends JPanel {
 	private void createPanels() {
 		//	fanny	--	does add
 		this.createFannyPanel();
+		
+		//sierpisnkiT
+		this.createSierpinskiTPanel();
 		
 		//apollo	--	does add
 		this.createApolloPanel();
@@ -948,6 +962,21 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(this.fannyOptionsPanel);
 	}
 	
+	private void createSierpinskiTPanel() {
+		this.sierpinskiTPanel.add(this.sierpinskiTFillInnerCb);
+		
+		this.sierpTBg.add(this.sierpTUpRb);
+		this.sierpTBg.add(this.sierpTDnRb);
+		
+		this.sierpinskiTPanel.add(new JLabel("Direction: "));
+		
+		this.sierpinskiTPanel.add(this.sierpTUpRb);
+		this.sierpinskiTPanel.add(this.sierpTDnRb);
+		
+		this.sierpinskiTPanel.setVisible(false);
+		this.add(this.sierpinskiTPanel);
+	}
+	
 	/*private void createControlPanel() {
 		this.mandOptionsPanel.add(new JLabel("Exponent(X):"));
 		this.mandOptionsPanel.add(this.expCombos);
@@ -1110,6 +1139,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.rotLabel.setVisible(false);
 			this.rotateCombo.setVisible(false);
 			this.fannyOptionsPanel.setVisible(false);
+			this.sierpinskiTPanel.setVisible(false);
 			this.juliaOptionsPanel.setVisible(false);
 			this.mandOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(true);
@@ -1126,6 +1156,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.rotLabel.setVisible(false);
 			this.rotateCombo.setVisible(false);
 			this.fannyOptionsPanel.setVisible(true);
+			this.sierpinskiTPanel.setVisible(false);
 			this.juliaOptionsPanel.setVisible(false);
 			this.mandOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(false);
@@ -1141,6 +1172,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.rotLabel.setVisible(true);
 			this.rotateCombo.setVisible(true);
 			this.fannyOptionsPanel.setVisible(false);
+			this.sierpinskiTPanel.setVisible(false);
 			this.juliaOptionsPanel.setVisible(true);
 			this.mandOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(false);
@@ -1157,6 +1189,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.rotLabel.setVisible(true);
 			this.rotateCombo.setVisible(true);
 			this.fannyOptionsPanel.setVisible(false);
+			this.sierpinskiTPanel.setVisible(false);
 			this.juliaOptionsPanel.setVisible(false);
 			this.mandOptionsPanel.setVisible(true);
 			this.apolloOptionsPanel.setVisible(false);
@@ -1168,6 +1201,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.rotLabel.setVisible(true);
 			this.rotateCombo.setVisible(true);
 			this.fannyOptionsPanel.setVisible(false);
+			this.sierpinskiTPanel.setVisible(false);
 			this.juliaOptionsPanel.setVisible(false);
 			this.mandOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(false);
@@ -1185,6 +1219,7 @@ class SierpinskiComboPanel extends JPanel {
 				this.rotateCombo.setVisible(false);
 			}
 			this.fannyOptionsPanel.setVisible(false);
+			this.sierpinskiTPanel.setVisible(false);
 			this.juliaOptionsPanel.setVisible(false);
 			this.mandOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(false);
@@ -1200,10 +1235,24 @@ class SierpinskiComboPanel extends JPanel {
 			}*/
 			this.formulaArea.setVisible(true);
 			this.formulaArea.setText("");
+		} else if (this.comboChoice.equals(SIERPINSKI_TRIANGLES)) {
+			this.rotLabel.setVisible(false);
+			this.formulaArea.setVisible(false);
+			this.rotateCombo.setVisible(false);
+			this.fannyOptionsPanel.setVisible(false);
+			this.sierpinskiTPanel.setVisible(true);
+			this.juliaOptionsPanel.setVisible(false);
+			this.mandOptionsPanel.setVisible(false);
+			this.apolloOptionsPanel.setVisible(false);
+			this.diyOptionsPanel.setVisible(false);
+			this.polyOptionsPanel.setVisible(false);
+			this.formulaArea.setVisible(false);
+			this.buStart.setEnabled(true);
 		} else {
 			this.rotLabel.setVisible(false);
 			this.rotateCombo.setVisible(false);
 			this.fannyOptionsPanel.setVisible(false);
+			this.sierpinskiTPanel.setVisible(false);
 			this.juliaOptionsPanel.setVisible(false);
 			this.mandOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(false);
@@ -1410,6 +1459,29 @@ class SierpinskiComboPanel extends JPanel {
 		default:
 			this.formulaArea.append("<br/>ComplexConstant == "+c.toString()+"<br/>");
 			break;
+		}
+	}
+	
+	private void doSetSierpinskiTFillInnerCommand(boolean fillInner) {
+		this.sierpinskiFillInnerT = fillInner;
+	}
+	
+	private ActionListener sierpTDirRbListener() {
+		return new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JRadioButton button = (JRadioButton) e.getSource();
+				doSierpTDirChoice();
+			}
+		};
+	}
+
+	private void doSierpTDirChoice() {
+		if (this.sierpTUpRb.isSelected()) {
+			this.sierpTDir = "UP";
+		} else {
+			this.sierpTDir = "DOWN";
 		}
 	}
 
@@ -1911,7 +1983,9 @@ class SierpinskiComboPanel extends JPanel {
 			ff = new FannyTriangles(length, ratio);
 		} else if (choice.equals(SIERPINSKI_TRIANGLES)) {
 			/*this.doReset();*/
-			ff = new SierpinskiTriangle();
+			boolean fillInner = this.sierpinskiFillInnerT;
+			String dirSierpT = this.sierpTDir;
+			ff = new SierpinskiTriangle( dirSierpT,fillInner);
 		} else if (choice.equals(SIERPINSKI_SQUARES)) {
 			/*this.doReset();*/
 			ff = new SierpinskiSquare();
@@ -2819,7 +2893,8 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaRb.addActionListener(diyFractChoiceRbListener());
 		this.diyApolloRb.addActionListener(diyFractChoiceRbListener());
 		
-		this.setupFannyListeners();		
+		this.setupFannyListeners();	
+		this.setupSierpisnkiTListeners();
 		this.setupApolloListeners();		
 		this.setupJuliaListeners();		
 		this.setupMandelbrotListeners();
@@ -3491,6 +3566,22 @@ class SierpinskiComboPanel extends JPanel {
 		this.apolloColrPRb.addActionListener(colorChoiceRbListener());
 		this.apolloColrCRb.addActionListener(colorChoiceRbListener());
 		
+	}
+	
+	private void setupSierpisnkiTListeners(){
+		this.sierpinskiTFillInnerCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetSierpinskiTFillInnerCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetSierpinskiTFillInnerCommand(false);
+				}
+			}
+        });
+		
+		this.sierpTUpRb.addActionListener(this.sierpTDirRbListener());
+		this.sierpTDnRb.addActionListener(this.sierpTDirRbListener());
 	}
 
 	private void setupFannyListeners() {

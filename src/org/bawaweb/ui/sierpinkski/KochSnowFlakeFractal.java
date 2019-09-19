@@ -22,9 +22,17 @@ import javax.swing.SwingUtilities;
  */
 public class KochSnowFlakeFractal extends FractalBase {
 	private static final long serialVersionUID = 123326543L;
+	
+	private boolean fillCircumTriangles=true;
 
 	public KochSnowFlakeFractal() {
 		super();
+	}
+	
+
+	public KochSnowFlakeFractal(boolean fillOuters) {
+		this();
+		this.setFillCircumTriangles(fillOuters);
 	}
 
 	private Image createKochSnowFractal(Graphics2D g) {
@@ -41,6 +49,9 @@ public class KochSnowFlakeFractal extends FractalBase {
 		theLines.add(l2);
 		theLines.add(l3);
 
+/*System.out.println("Start___Line1 "+ l1);
+System.out.println("Start___Line2 "+ l2);
+System.out.println("Start___Line3 "+ l3+"\n\n");*/
 		drawKochSnowFractal(g, depth, theLines);
 		return bufferedImage;
 	}
@@ -56,6 +67,7 @@ public class KochSnowFlakeFractal extends FractalBase {
 			return;
 		}
 
+
 		// deleted lines
 		List<Line> delLines = new ArrayList<Line>();
 		// new added lines
@@ -67,9 +79,42 @@ public class KochSnowFlakeFractal extends FractalBase {
 			addedLines.addAll(newLines);
 			delLines.add(aLine);		//	delete itself
 		}
+		/*
+		System.out.println("d=="+d+" and depth=="+depth+" addedLines.size()=="+addedLines.size()+" delLines.size()=="+delLines.size()+" lines.size()=="+lines.size());
+		for (int i = 0; i < addedLines.size(); i++) {
+			System.out.println("Line "+i+":  "+addedLines.get(i));
+		}
+		
+		if (this.isFillCircumTriangles()) {
+			Color fillColor = Color.blue;//.brighter().brighter().brighter();
+			for (int i = 0; i < addedLines.size() - 1; i+=2) {
+				Line l1 = addedLines.get(i);
+				Line l2 = addedLines.get(i + 1);
+
+				if (i%2==0) {
+					fillTriangle(g, new Point((int) l1.x, (int) l1.y), new Point((int) l1.getX2(), (int) l1.getY2()),
+							new Point((int) l2.xgetX2(), (int) l2.ygetY2()), fillColor);
+				}
+			}
+		}*/
 
 		lines.addAll(addedLines);
 		lines.removeAll(delLines);
+		
+
+//		if (this.isFillCircumTriangles()) {
+//			Color fillColor = Color.yellow.brighter().brighter().brighter();
+//			for (int i = 0; i < addedLines.size() - 1; i+=2) {
+//				Line l1 = addedLines.get(i);
+//				Line l2 = addedLines.get(i + 1);
+//
+//				fillTriangle(g, 
+//						new Point((int) l1.x, (int) l1.y), 
+//						new Point((int) l2.x/*l1.getX2()*/, (int) l2.y/*l1.getY2()*/),
+//						new Point((int) l2.getX2(), (int) l2.getY2()), 
+//						fillColor);
+//			}
+//		}
 
 		drawKochSnowFractal(g, d - 1, lines);
 	}
@@ -81,9 +126,9 @@ public class KochSnowFlakeFractal extends FractalBase {
 	 * 
 	 * input-line		________________________
 	 * will
-	 * then						/\
-	 * become 				   /  \
-	 * 4 lines			______/    \______	
+	 * then						   /\
+	 * become 				  ll3 /  \ll2
+	 * 4 lines			___ll4___/    \____ll1__	
 	 */
 	private List<Line> create4NewLines(Line aLine) {
 		double x_l1 = aLine.x;
@@ -129,9 +174,10 @@ public class KochSnowFlakeFractal extends FractalBase {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				final KochSnowFlakeFractal frame = new KochSnowFlakeFractal();
+				final KochSnowFlakeFractal frame = new KochSnowFlakeFractal(true);
 				frame.setTitle(frame.getFractalShapeTitle());
 				frame.setSize(WIDTH, HEIGHT);
+				frame.setRunning(true);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setResizable(false);
 				frame.setVisible(true);
@@ -141,55 +187,56 @@ public class KochSnowFlakeFractal extends FractalBase {
 			}
 		});
 	}
-	
-	
-	//http://www.cplusplus.com/articles/iE86b7Xj/
-		class Line {
-			private double x, y, length, angle;
 
-			/**
-			 * @param x	-	x-coordinate of	start point
-			 * @param y	-	y-coordinate of start point
-			 * @param length	-	length of line
-			 * @param angle	-	line angle
-			 */
-			public Line(double x, double y, double length, double angle) {
-				super();
-				this.x = x;
-				this.y = y;
-				this.length = length;
-				this.angle = angle;
-			}
-
-			// Getting the second x coordinate based on the angle and length
-			public double getX2() {
-				return x + Math.cos(angle * (Math.PI / 180.0)) * length;
-			}
-
-			// Getting the second y coordinate based on the angle and length
-			public double getY2() {
-				return y + Math.sin(angle * (Math.PI / 180.0)) * length;
-			}
-
-			public void draw(Graphics g) {
-				g.drawLine((int) x, (int) y, (int) getX2(), (int) getY2());
-			}
-			
-			public void drawLine(Graphics2D g, Point p1, Point p2) {
-				g.drawLine(p1.x, p1.y, p2.x, p2.y);
-			}
-			
-			
-			public Point thirdPt(Point pLeft, Point pRight) {
-				return new Point((int) (pLeft.x + (pRight.x - pLeft.x) / 3), (int) (pLeft.y + (pRight.y - pLeft.y) / 3));
-			}
-			
-			public Point twoThirdPt(Point pLeft, Point pRight) {
-				return new Point((int) (pLeft.x + (pRight.x - pLeft.x) * 2 / 3), (int) (pLeft.y + (pRight.y - pLeft.y) * 2 / 3));
-			}			
-
-		}
-
+//	
+///*******************************************************	
+//	//http://www.cplusplus.com/articles/iE86b7Xj/
+//		class Line {
+//			private double x, y, length, angle;
+//
+//			/**
+//			 * @param x	-	x-coordinate of	start point
+//			 * @param y	-	y-coordinate of start point
+//			 * @param length	-	length of line
+//			 * @param angle	-	line angle
+//			 */
+//			public Line(double x, double y, double length, double angle) {
+//				super();
+//				this.x = x;
+//				this.y = y;
+//				this.length = length;
+//				this.angle = angle;
+//			}
+//
+//			// Getting the second x coordinate based on the angle and length
+//			public double getX2() {
+//				return x + Math.cos(angle * (Math.PI / 180.0)) * length;
+//			}
+//
+//			// Getting the second y coordinate based on the angle and length
+//			public double getY2() {
+//				return y + Math.sin(angle * (Math.PI / 180.0)) * length;
+//			}
+//
+//			public void draw(Graphics g) {
+//				g.drawLine((int) x, (int) y, (int) getX2(), (int) getY2());
+//			}
+//			
+//			public void drawLine(Graphics2D g, Point p1, Point p2) {
+//				g.drawLine(p1.x, p1.y, p2.x, p2.y);
+//			}
+//			
+//			
+//			public Point thirdPt(Point pLeft, Point pRight) {
+//				return new Point((int) (pLeft.x + (pRight.x - pLeft.x) / 3), (int) (pLeft.y + (pRight.y - pLeft.y) / 3));
+//			}
+//			
+//			public Point twoThirdPt(Point pLeft, Point pRight) {
+//				return new Point((int) (pLeft.x + (pRight.x - pLeft.x) * 2 / 3), (int) (pLeft.y + (pRight.y - pLeft.y) * 2 / 3));
+//			}			
+//
+//		}
+//***************************************************/
 
 	@Override
 	public void createFractalShape(Graphics2D g) {
@@ -200,6 +247,16 @@ public class KochSnowFlakeFractal extends FractalBase {
 	@Override
 	protected String getFractalShapeTitle() {
 		return "Bawaz _ Koch_Snow_Flake";
+	}
+
+
+	public boolean isFillCircumTriangles() {
+		return fillCircumTriangles;
+	}
+
+
+	public void setFillCircumTriangles(boolean fillCircumTriangles) {
+		this.fillCircumTriangles = fillCircumTriangles;
 	}
 
 
