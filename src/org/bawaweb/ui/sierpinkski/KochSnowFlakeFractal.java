@@ -105,11 +105,6 @@ System.out.println("Start___Line3 " + l3 + "\n\n");*/
 			delLines.add(aLine);		//	delete itself
 		}
 		
-//		System.out.println(/*"d=="+d+*/" and depth=="+depth+" addedLines.size()=="+addedLines.size()+" delLines.size()=="+delLines.size()+" lines.size()=="+lines.size());
-//		for (int i = 0; i < addedLines.size(); i++) {
-//			System.out.println("Line "+i+":  "+addedLines.get(i));
-//		}
-	/*	List<Point[]> triangles = this.getFilledCircumTriangles();*/
 		if (this.isFillCircumTriangles()) {
 
 			if (triangles == null) {
@@ -122,7 +117,7 @@ System.out.println("Start___Line3 " + l3 + "\n\n");*/
 			}
 
 			Color fillColor = Color.blue.brighter().brighter().brighter();
-			Color fillColor2 = !this.isMixColors() ? fillColor : Color.yellow.brighter().brighter().brighter();
+			Color fillColor2 = !this.isMixColors() ? fillColor : Color.green.brighter().brighter().brighter();
 
 			for (int i = 0; i < addedLines.size() - 1; i += 4) {
 				Line l1 = addedLines.get(i);
@@ -150,9 +145,6 @@ System.out.println("Start___Line3 " + l3 + "\n\n");*/
 				triangles.add(t2);
 				
 				this.setFilledCircumTriangles(triangles);
-
-				// if(depth>=2){try{Thread.sleep(30000);}catch(InterruptedException
-				// e){}}
 
 			}
 		}
