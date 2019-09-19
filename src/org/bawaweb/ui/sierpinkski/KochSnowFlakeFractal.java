@@ -22,8 +22,11 @@ import javax.swing.SwingUtilities;
  */
 public class KochSnowFlakeFractal extends FractalBase {
 	private static final long serialVersionUID = 123326543L;
-	
-	private boolean fillCircumTriangles=true;
+
+	private List<Point[]> filledCircumTriangles = null;
+
+	private boolean isFillCircumTriangles = true;
+	private boolean isMixColors = true;
 
 	public KochSnowFlakeFractal() {
 		super();
@@ -36,13 +39,28 @@ public class KochSnowFlakeFractal extends FractalBase {
 	}
 
 	private Image createKochSnowFractal(Graphics2D g) {
-		Line l1 = new Line(getWidth() - 100, 150, getWidth() - 200, 180.0);
-		Line l2 = new Line(100, 150, getWidth() - 200, 60.0);
-		Line l3 = new Line(getWidth() - 100, 150, getWidth() - 200, 120.0);
+		Line l1 = new Line(getWidth() - 50, 200, getWidth() - 150, 180.0);
+		Line l2 = new Line(100, 200, getWidth() - 150, 60.0);
+		Line l3 = new Line(getWidth() - 50, 200, getWidth() - 150, 120.0);
 			//	for angle re-orientation
 		l3.x += Math.cos(l3.angle * (Math.PI / 180.0)) * l3.length;
 		l3.y += Math.sin(l3.angle * (Math.PI / 180.0)) * l3.length;
 		l3.angle -= 180.0;
+		
+		
+		/**
+		 * 					<<----	l1	------ ^
+		 * 					\				  ^
+		 * 					 \				 /
+		 * 					l2\				/
+		 * 					   \		   /l3
+		 * 						\		  /
+		 * 						 \		 /
+		 * 						  \		/
+		 * 						   \   /
+		 * 							\ /
+		 * 						   	 V
+		 * */
 
 		List<Line> theLines = new ArrayList<Line>();
 		theLines.add(l1);
@@ -51,13 +69,14 @@ public class KochSnowFlakeFractal extends FractalBase {
 
 /*System.out.println("Start___Line1 "+ l1);
 System.out.println("Start___Line2 "+ l2);
-System.out.println("Start___Line3 "+ l3+"\n\n");*/
-		drawKochSnowFractal(g, depth, theLines);
+System.out.println("Start___Line3 " + l3 + "\n\n");*/
+
+		drawKochSnowFractal(g, depth, theLines, this.getFilledCircumTriangles());
 		return bufferedImage;
 	}
 
 
-	private void drawKochSnowFractal(Graphics2D g, int d, List<Line> lines) {
+	private void drawKochSnowFractal(Graphics2D g, int d, List<Line> lines, List<Point[]> trngles) {
 		g.setColor(Color.red);
 		if (d == 0) {
 			g.setStroke(new BasicStroke(1));
@@ -67,7 +86,13 @@ System.out.println("Start___Line3 "+ l3+"\n\n");*/
 			return;
 		}
 
+		generateKochSnowFractal(g, lines, trngles);
 
+		drawKochSnowFractal(g, d - 1, lines, trngles);
+	}
+
+
+	private void generateKochSnowFractal(Graphics2D g, List<Line> lines, List<Point[]> triangles) {
 		// deleted lines
 		List<Line> delLines = new ArrayList<Line>();
 		// new added lines
@@ -79,44 +104,61 @@ System.out.println("Start___Line3 "+ l3+"\n\n");*/
 			addedLines.addAll(newLines);
 			delLines.add(aLine);		//	delete itself
 		}
-		/*
-		System.out.println("d=="+d+" and depth=="+depth+" addedLines.size()=="+addedLines.size()+" delLines.size()=="+delLines.size()+" lines.size()=="+lines.size());
-		for (int i = 0; i < addedLines.size(); i++) {
-			System.out.println("Line "+i+":  "+addedLines.get(i));
-		}
 		
+//		System.out.println(/*"d=="+d+*/" and depth=="+depth+" addedLines.size()=="+addedLines.size()+" delLines.size()=="+delLines.size()+" lines.size()=="+lines.size());
+//		for (int i = 0; i < addedLines.size(); i++) {
+//			System.out.println("Line "+i+":  "+addedLines.get(i));
+//		}
+	/*	List<Point[]> triangles = this.getFilledCircumTriangles();*/
 		if (this.isFillCircumTriangles()) {
-			Color fillColor = Color.blue;//.brighter().brighter().brighter();
-			for (int i = 0; i < addedLines.size() - 1; i+=2) {
-				Line l1 = addedLines.get(i);
-				Line l2 = addedLines.get(i + 1);
 
-				if (i%2==0) {
-					fillTriangle(g, new Point((int) l1.x, (int) l1.y), new Point((int) l1.getX2(), (int) l1.getY2()),
-							new Point((int) l2.xgetX2(), (int) l2.ygetY2()), fillColor);
+			if (triangles == null) {
+				triangles = new ArrayList<Point[]>();
+			} else {
+				for (int i = 0; i < triangles.size(); i++) {
+					Point[] trianglePoints = triangles.get(i);
+					this.deleteTriangle(g, trianglePoints[0], trianglePoints[1], trianglePoints[2]);
 				}
 			}
-		}*/
+
+			Color fillColor = Color.blue.brighter().brighter().brighter();
+			Color fillColor2 = !this.isMixColors() ? fillColor : Color.yellow.brighter().brighter().brighter();
+
+			for (int i = 0; i < addedLines.size() - 1; i += 4) {
+				Line l1 = addedLines.get(i);
+				Line l2 = addedLines.get(i + 1);
+				Line l3 = addedLines.get(i + 2);
+				Line l4 = addedLines.get(i + 3);
+
+				final Point p11 = new Point((int) l1.x, (int) l1.y);
+				final Point p12 = new Point((int) l1.getX2(), (int) l1.getY2());
+				final Point p13 = new Point((int) l2.getX2(), (int) l2.getY2());
+
+				fillTriangle(g, p11, p12, p13, fillColor);
+
+				Point[] t1 = new Point[] { p11, p12, p13 };
+
+				final Point p21 = new Point((int) l3.x, (int) l3.y);
+				final Point p22 = new Point((int) l3.getX2(), (int) l3.getY2());
+				final Point p23 = new Point((int) l4.getX2(), (int) l4.getY2());
+
+				fillTriangle(g, p21, p22, p23, fillColor2);
+
+				Point[] t2 = new Point[] { p21, p22, p23 };
+
+				triangles.add(t1);
+				triangles.add(t2);
+				
+				this.setFilledCircumTriangles(triangles);
+
+				// if(depth>=2){try{Thread.sleep(30000);}catch(InterruptedException
+				// e){}}
+
+			}
+		}
 
 		lines.addAll(addedLines);
 		lines.removeAll(delLines);
-		
-
-//		if (this.isFillCircumTriangles()) {
-//			Color fillColor = Color.yellow.brighter().brighter().brighter();
-//			for (int i = 0; i < addedLines.size() - 1; i+=2) {
-//				Line l1 = addedLines.get(i);
-//				Line l2 = addedLines.get(i + 1);
-//
-//				fillTriangle(g, 
-//						new Point((int) l1.x, (int) l1.y), 
-//						new Point((int) l2.x/*l1.getX2()*/, (int) l2.y/*l1.getY2()*/),
-//						new Point((int) l2.getX2(), (int) l2.getY2()), 
-//						fillColor);
-//			}
-//		}
-
-		drawKochSnowFractal(g, d - 1, lines);
 	}
 	
 	/**
@@ -124,11 +166,11 @@ System.out.println("Start___Line3 "+ l3+"\n\n");*/
 	 * @param aLine	--	the line to create 4 lines from
 	 * @return the list of lines created
 	 * 
-	 * input-line		________________________
+	 * input-line		__________aLine______________
 	 * will
-	 * then						   /\
-	 * become 				  ll3 /  \ll2
-	 * 4 lines			___ll4___/    \____ll1__	
+	 * then						          /\
+	 * become 				         ll3 /  \ll2
+	 * 4 lines			(end)_____ll4___/    \____ll1____	(start)
 	 */
 	private List<Line> create4NewLines(Line aLine) {
 		double x_l1 = aLine.x;
@@ -163,9 +205,9 @@ System.out.println("Start___Line3 "+ l3+"\n\n");*/
 		
 		List<Line> newLines=new ArrayList<Line>();
 		newLines.add(ll1);				
-		newLines.add(ll2);				
-		newLines.add(ll3);				
-		newLines.add(ll4);
+		newLines.add(ll3);					
+		newLines.add(ll4);			
+		newLines.add(ll2);
 		
 		return newLines;
 	}
@@ -251,13 +293,30 @@ System.out.println("Start___Line3 "+ l3+"\n\n");*/
 
 
 	public boolean isFillCircumTriangles() {
-		return fillCircumTriangles;
+		return isFillCircumTriangles;
 	}
 
 
 	public void setFillCircumTriangles(boolean fillCircumTriangles) {
-		this.fillCircumTriangles = fillCircumTriangles;
+		this.isFillCircumTriangles = fillCircumTriangles;
 	}
 
+	private List<Point[]> getFilledCircumTriangles() {
+		return this.filledCircumTriangles;
+	}
+
+	public void setFilledCircumTriangles(List<Point[]> fctriangles) {
+		this.filledCircumTriangles = fctriangles;
+	}
+
+
+	public boolean isMixColors() {
+		return isMixColors;
+	}
+
+
+	public void setMixColors(boolean isMixColors) {
+		this.isMixColors = isMixColors;
+	}
 
 }

@@ -522,6 +522,13 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		g.fill(myPath);
 	}
 	
+	protected void deleteTriangle(Graphics2D g, Point p1, Point p2, Point p3) {
+		Path2D tPath = getTrianglePath(p1, p2, p3);
+		g.setPaint(this.getBGColor());
+		g.draw(tPath);
+		g.fill(tPath);
+	}
+	
 	protected void drawTriangle(Graphics2D g, Point p1, Point p2, Point p3, Color color) {
 		Path2D myPath = getTrianglePath(p1, p2, p3);
 
@@ -853,7 +860,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		@Override
 		public String toString(){
 			String lineInfo="";
-			lineInfo+="("+this.x+","+this.y+") to ("+this.getX2()+","+this.getY2()+")  angle="+this.angle;
+			lineInfo+="("+(int)this.x+","+(int)this.y+") to ("+(int)this.getX2()+","+(int)this.getY2()+")  angle="+this.angle;
 			return lineInfo;
 			
 		}
