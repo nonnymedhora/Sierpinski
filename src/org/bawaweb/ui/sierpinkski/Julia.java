@@ -37,13 +37,13 @@ public class Julia extends FractalBase {
 	private double complexConst;		//	either this	
 	private ComplexNumber complex; 		// or this
 	private boolean useDiff = false;
-	private boolean isComplexNumConst=false;
+	private boolean isComplexNumConst = false;
 	
 	public final ComplexNumber C1 = new ComplexNumber(-0.74543,0.11301);	//c=-0.74543+0.11301*i
 	public final ComplexNumber C2 = new ComplexNumber(-0.75,0.11);			//c= -0.75+0.11*i
 	public final ComplexNumber C3 = new ComplexNumber(-0.1,0.651);			//c=-0.1+0.651*i
 	
-	private boolean isConstFuncApplied;
+	private boolean isConstFuncApplied = false;
 
 	public Julia() {
 		super();
@@ -203,7 +203,7 @@ public class Julia extends FractalBase {
 	}
 
 	public boolean isComplexNumConst() {
-		return isComplexNumConst;
+		return this.isComplexNumConst;
 	}
 
 	public void setComplexNumConst(boolean isComplexNumConst) {
@@ -449,52 +449,58 @@ System.out.println("this.complex==="+this.complex);	*/
 		}
 		
 		String func2Apply = this.useFuncConst;
-		switch (func2Apply) {
-			case "Sine"	:
-				cConst = cConst.sine();	//z0.sin();
-					break;
-			case "Cosine" :
-				cConst = cConst.cosine();	//z0.cos();
-					break;
-			case "Tan" :
-				cConst = cConst.tangent();	//z0.tan();
-					break;
-			case "ArcSine"	:
-				cConst = cConst.inverseSine();	//z0.sin();
-					break;
-			case "ArcCosine" :
-				cConst = cConst.inverseCosine();	//z0.cos();
-					break;
-			case "ArcTan" :
-				cConst = cConst.inverseTangent();	//z0.tan();
-					break;
-			
-			case "Square"	:
-				cConst = cConst.power(2);	//z0.sin();
-					break;
-			case "Cube" :
-				cConst = cConst.power(3);	//z0.cos();
-					break;
-			case "Exponent" :
-				cConst = cConst.exp();	//z0.tan();
-					break;
-			case "Root"	:
-				cConst = cConst.sqroot();	//z0.sin();
-					break;
-			case "CubeRoot" :
-				cConst = cConst.curoot();	//z0.cos();
-					break;
-			case "Log" :
-				cConst = cConst.ln();	//z0.tan();
-					break;
-					
-			case "None" :
+		if (!this.isConstFuncApplied) {
+			switch (func2Apply) {
+			case "Sine":
+				cConst = cConst.sine(); //z0.sin();
+				break;
+			case "Cosine":
+				cConst = cConst.cosine(); //z0.cos();
+				break;
+			case "Tan":
+				cConst = cConst.tangent(); //z0.tan();
+				break;
+			case "ArcSine":
+				cConst = cConst.inverseSine(); //z0.sin();
+				break;
+			case "ArcCosine":
+				cConst = cConst.inverseCosine(); //z0.cos();
+				break;
+			case "ArcTan":
+				cConst = cConst.inverseTangent(); //z0.tan();
+				break;
+			case "Square":
+				cConst = cConst.power(2); //z0.sin();
+				break;
+			case "Cube":
+				cConst = cConst.power(3); //z0.cos();
+				break;
+			case "Exponent":
+				cConst = cConst.exp(); //z0.tan();
+				break;
+			case "Root":
+				cConst = cConst.sqroot(); //z0.sin();
+				break;
+			case "CubeRoot":
+				cConst = cConst.curoot(); //z0.cos();
+				break;
+			case "Log":
+				cConst = cConst.ln(); //z0.tan();
+				break;
+
+			case "None":
 				cConst = cConst;
-					break;
+				break;
 			default:
 				this.complex = cConst;
 				break;
-		}//ends-switch
+			}//ends-switch
+			
+			if(!this.isComplexNumConst()){
+				this.complex=cConst;
+				this.isConstFuncApplied=true;
+			}
+		}
 		return cConst;
 	}
 	/* (non-Javadoc)
