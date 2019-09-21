@@ -42,6 +42,8 @@ public class Julia extends FractalBase {
 	public final ComplexNumber C1 = new ComplexNumber(-0.74543,0.11301);	//c=-0.74543+0.11301*i
 	public final ComplexNumber C2 = new ComplexNumber(-0.75,0.11);			//c= -0.75+0.11*i
 	public final ComplexNumber C3 = new ComplexNumber(-0.1,0.651);			//c=-0.1+0.651*i
+	
+	private boolean isConstFuncApplied;
 
 	public Julia() {
 		super();
@@ -98,6 +100,7 @@ public class Julia extends FractalBase {
 	}
 	public Julia(int mul, String comp, double bd, boolean uDiff) {
 		this(mul,comp,uDiff);
+		this.setComplexNumConst(true);
 		this.setBound(bd);
 	}
 
@@ -123,10 +126,12 @@ public class Julia extends FractalBase {
 		default:
 			this.complex = C1;
 		}
+		this.setComplexNumConst(true);
 	}
 
 	public Julia(int m, double con, double bd, boolean uDiff) {
 		this(m,con,uDiff);
+		this.setComplexNumConst(true);
 		this.setBound(bd);
 	}
 
@@ -134,21 +139,25 @@ public class Julia extends FractalBase {
 		this();
 		this.power = m;
 		this.useDiff = uDiff;
-		this.isComplexNumConst=keepConst;
+		this.setComplexNumConst(keepConst);
 		if(keepConst){
 			this.complex=null;
 		}
 	}
 
 	public Julia(int m, boolean uDiff, double bd, boolean keepConst) {
-		this(m,uDiff,keepConst);
+		this(m, uDiff, keepConst);
+		this.setComplexNumConst(keepConst);
+		if (keepConst) {
+			this.complex = null;
+		}
 		this.setBound(bd);
 	}
 
 	public Julia(int m, boolean uDiff, double bd, double realVal, double imgVal) {
 		this(m,uDiff,realVal,imgVal);
 		this.setBound(bd);
-		this.isComplexNumConst=false;
+		this.setComplexNumConst(false);
 	}
 
 	/**
@@ -193,6 +202,14 @@ public class Julia extends FractalBase {
 		this.useDiff = useDiff;
 	}
 
+	public boolean isComplexNumConst() {
+		return isComplexNumConst;
+	}
+
+	public void setComplexNumConst(boolean isComplexNumConst) {
+		this.isComplexNumConst = isComplexNumConst;
+	}
+
 	/* (non-Javadoc)
 	 * @see org.bawaweb.ui.sierpinkski.FractalBase#createFractalShape(java.awt.Graphics2D)
 	 */
@@ -223,7 +240,7 @@ System.out.println("this.complex==="+this.complex);	*/
 				double y0 = yc - size / 2 + size * col / n;
 				ComplexNumber z0 = new ComplexNumber(x0, y0);
 				/*z0 = this.computeComplexConstant(func2Apply, z0);*/
-				if (isComplexNumConst || this.complex == null) {
+				if (isComplexNumConst && this.complex == null) {
 					this.complex = z0;
 				/*	
 //					switch (func2Apply) {
@@ -373,50 +390,53 @@ System.out.println("this.complex==="+this.complex);	*/
 		}
 		
 		String func2Apply = this.useFuncConst;
-		switch (func2Apply) {
-			case "Sine"	:
-				cConst = cConst.sine();	//z0.sin();
+		if (!this.isConstFuncApplied) {
+			switch (func2Apply) {
+				case "Sine":
+					cConst = cConst.sine(); //z0.sin();
 					break;
-			case "Cosine" :
-				cConst = cConst.cosine();	//z0.cos();
+				case "Cosine":
+					cConst = cConst.cosine(); //z0.cos();
 					break;
-			case "Tan" :
-				cConst = cConst.tangent();	//z0.tan();
+				case "Tan":
+					cConst = cConst.tangent(); //z0.tan();
 					break;
-			case "ArcSine"	:
-				cConst = cConst.inverseSine();	//z0.sin();
+				case "ArcSine":
+					cConst = cConst.inverseSine(); //z0.sin();
 					break;
-			case "ArcCosine" :
-				cConst = cConst.inverseCosine();	//z0.cos();
+				case "ArcCosine":
+					cConst = cConst.inverseCosine(); //z0.cos();
 					break;
-			case "ArcTan" :
-				cConst = cConst.inverseTangent();	//z0.tan();
-					break;			
-			case "Square"	:
-				cConst = cConst.power(2);	//z0.sin();
+				case "ArcTan":
+					cConst = cConst.inverseTangent(); //z0.tan();
 					break;
-			case "Cube" :
-				cConst = cConst.power(3);	//z0.cos();
+				case "Square":
+					cConst = cConst.power(2); //z0.sin();
 					break;
-			case "Exponent" :
-				cConst = cConst.exp();	//z0.tan();
+				case "Cube":
+					cConst = cConst.power(3); //z0.cos();
 					break;
-			case "Root"	:
-				cConst = cConst.sqroot();	//z0.sin();
+				case "Exponent":
+					cConst = cConst.exp(); //z0.tan();
 					break;
-			case "CubeRoot" :
-				cConst = cConst.curoot();	//z0.cos();
+				case "Root":
+					cConst = cConst.sqroot(); //z0.sin();
 					break;
-			case "Log" :
-				cConst = cConst.ln();	//z0.tan();
-					break;					
-			case "None" :
-				cConst = cConst;
+				case "CubeRoot":
+					cConst = cConst.curoot(); //z0.cos();
 					break;
-			default:
-				this.complex = cConst;
-				break;
-		}//ends-switch
+				case "Log":
+					cConst = cConst.ln(); //z0.tan();
+					break;
+				case "None":
+					cConst = cConst;
+					break;
+				default:
+					this.complex = cConst;
+					break;
+			}//ends-switch
+			this.isConstFuncApplied=true;
+		}
 		return cConst;
 	}
 

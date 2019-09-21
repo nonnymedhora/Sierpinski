@@ -22,6 +22,8 @@ public class PolyFract extends FractalBase {
 	private boolean useDiff = false;
 	private boolean isComplexNumConst;
 	private ComplexNumber compConst;
+
+	private boolean isConstFuncApplied = false;
 	
 	public PolyFract() {
 		super();
@@ -77,7 +79,6 @@ System.out.println("this.compConst == null---->"+(this.compConst == null));
 System.out.println("(BEFOR)this.compConst == "+this.compConst);
 System.out.println("type---->"+(type));	*/
 		
-		String func2Apply = this.useFuncConst;
 		
 		for (int row = 0; row < n; row++) {
 			for (int col = 0; col < n; col++) {
@@ -99,75 +100,80 @@ System.out.println("type---->"+(type));	*/
 					case "Single":
 						zx = new ComplexNumber(x0, y0);
 						zy = new ComplexNumber(0.0, 0.0);
+						break;
 					case "Duplicate":
 						zx = zy = new ComplexNumber(x0, y0);
 						break;
 					case "Exponent"	:
 						zx = new ComplexNumber(x0, 0.0).exp();
 						zy = new ComplexNumber(y0, 0.0).exp();
+						break;
 					case	"Power"	:
 						zx = new ComplexNumber(x0, y0).power((int)x0);
 						zy = new ComplexNumber(y0, x0).power((int)y0);
+						break;
 					case	"Default"	:
 						zx = new ComplexNumber(x0, 0.0);
 						zy = new ComplexNumber(y0, 0.0);
+						break;
 					default:
 						zx = new ComplexNumber(x0, 0.0);
 						zy = new ComplexNumber(y0, 0.0);
 						break;
 				}
 				
-				if (this.isComplexNumConst || this.compConst == null) {
+				if (this.isComplexNumConst && this.compConst == null) {
 					this.compConst = zx.plus(zy);
 				}
-						
-				switch (func2Apply) {
-					case "Sine"	:
-							this.compConst = this.compConst.sine();	//z0.sin();
+				
+				String func2Apply = this.useFuncConst;
+				if (!this.isConstFuncApplied) {
+					switch (func2Apply) {
+						case "Sine"	:
+								this.compConst = this.compConst.sine();	//z0.sin();
+								break;
+						case "Cosine" :
+								this.compConst = this.compConst.cosine();	//z0.cos();
+								break;
+						case "Tan" :
+								this.compConst = this.compConst.tangent();	//z0.tan();
+								break;
+						case "ArcSine"	:
+							this.compConst = this.compConst.inverseSine();	//z0.sin();
 							break;
-					case "Cosine" :
-							this.compConst = this.compConst.cosine();	//z0.cos();
-							break;
-					case "Tan" :
-							this.compConst = this.compConst.tangent();	//z0.tan();
-							break;
-					case "ArcSine"	:
-						this.compConst = this.compConst.inverseSine();	//z0.sin();
-						break;
-					case "ArcCosine" :
-							this.compConst = this.compConst.inverseCosine();	//z0.cos();
-							break;
-					case "ArcTan" :
-							this.compConst = this.compConst.inverseTangent();	//z0.tan();
-							break;
-
-							
-					case "Square"	:
-						this.compConst = this.compConst.power(2);	//z0.sin();
-							break;
-					case "Cube" :
-						this.compConst = this.compConst.power(3);	//z0.cos();
-							break;
-					case "Exponent" :
-						this.compConst = this.compConst.exp();	//z0.tan();
-							break;
-					case "Root"	:
-						this.compConst = this.compConst.sqroot();	//z0.sin();
-							break;
-					case "CubeRoot" :
-						this.compConst = this.compConst.curoot();	//z0.cos();
-							break;
-					case "Log" :
-						this.compConst = this.compConst.ln();	//z0.tan();
-							break;	
-					case "None" :
+						case "ArcCosine" :
+								this.compConst = this.compConst.inverseCosine();	//z0.cos();
+								break;
+						case "ArcTan" :
+								this.compConst = this.compConst.inverseTangent();	//z0.tan();
+								break;									
+						case "Square"	:
+							this.compConst = this.compConst.power(2);	//z0.sin();
+								break;
+						case "Cube" :
+							this.compConst = this.compConst.power(3);	//z0.cos();
+								break;
+						case "Exponent" :
+							this.compConst = this.compConst.exp();	//z0.tan();
+								break;
+						case "Root"	:
+							this.compConst = this.compConst.sqroot();	//z0.sin();
+								break;
+						case "CubeRoot" :
+							this.compConst = this.compConst.curoot();	//z0.cos();
+								break;
+						case "Log" :
+							this.compConst = this.compConst.ln();	//z0.tan();
+								break;	
+						case "None" :
+								this.compConst = zx.plus(zy);
+								break;
+						default:
 							this.compConst = zx.plus(zy);
 							break;
-					default:
-						this.compConst = zx.plus(zy);
-						break;
+					}
+					this.isConstFuncApplied=true;
 				}
-				
 				
 				
 
