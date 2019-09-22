@@ -9,6 +9,8 @@ import java.awt.Graphics2D;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
+
 
 /**
  * @author Navroz
@@ -22,7 +24,7 @@ public class Mandelbrot extends FractalBase {
 	private boolean useDiff = false;
 //	private int size;		//0-599 4 ltr
 	
-	private boolean isComplexNumConst;
+	private boolean isComplexNumConst = false;
 	private ComplexNumber complex;// = new ComplexNumber(-0.75, 0.11);
 	private boolean isConstFuncApplied=false;
 	
@@ -146,57 +148,129 @@ public class Mandelbrot extends FractalBase {
 	}
 
 	private ComplexNumber computeComplexConstant(String func2Apply, ComplexNumber z0) {
-		if (isComplexNumConst && this.complex == null) {
+		ComplexNumber cConst;
+
+		if (this.isComplexNumConst || this.complex == null) {
+			cConst = z0;
 			this.complex = z0;
+		} else {
+			cConst = this.complex;
 		}
+
 		if (!this.isConstFuncApplied) {
 			switch (func2Apply) {
-				case "Sine":
-					this.complex = /*z0*/this.complex.sine(); //z0.sin();
-					break;
-				case "Cosine":
-					this.complex = /*z0*/this.complex.cosine(); //z0.cos();
-					break;
-				case "Tan":
-					this.complex = /*z0*/this.complex.tangent(); //z0.tan();
-					break;
-				case "ArcSine":
-					this.complex = /*z0*/this.complex.inverseSine(); //z0.sin();
-					break;
-				case "ArcCosine":
-					this.complex = /*z0*/this.complex.inverseCosine(); //z0.cos();
-					break;
-				case "ArcTan":
-					this.complex = /*z0*/this.complex.inverseTangent(); //z0.tan();
-					break;
-				case "Square":
-					this.complex = /*z0*/this.complex.power(2); //z0.sin();
-					break;
-				case "Cube":
-					this.complex = /*z0*/this.complex.power(3); //z0.cos();
-					break;
-				case "Exponent":
-					this.complex = /*z0*/this.complex.exp(); //z0.tan();
-					break;
-				case "Root":
-					this.complex = /*z0*/this.complex.sqroot(); //z0.sin();
-					break;
-				case "CubeRoot":
-					this.complex = /*z0*/this.complex.curoot(); //z0.cos();
-					break;
-				case "Log":
-					this.complex = /*z0*/this.complex.ln(); //z0.tan();
-					break;
-				case "None":
-					this.complex = /*z0*/this.complex;
-					break;
-				default:
-					this.complex = /*z0*/this.complex;
-					break;
+			case "Sine":
+				cConst = cConst.sine(); //z0.sin();
+				break;
+			case "Cosine":
+				cConst = cConst.cosine(); //z0.cos();
+				break;
+			case "Tan":
+				cConst = cConst.tangent(); //z0.tan();
+				break;
+			case "ArcSine":
+				cConst = cConst.inverseSine(); //z0.sin();
+				break;
+			case "ArcCosine":
+				cConst = cConst.inverseCosine(); //z0.cos();
+				break;
+			case "ArcTan":
+				cConst = cConst.inverseTangent(); //z0.tan();
+				break;
+			case "Square":
+				cConst = cConst.power(2); //z0.sin();
+				break;
+			case "Cube":
+				cConst = cConst.power(3); //z0.cos();
+				break;
+			case "Exponent":
+				cConst = cConst.exp(); //z0.tan();
+				break;
+			case "Root":
+				cConst = cConst.sqroot(); //z0.sin();
+				break;
+			case "CubeRoot":
+				cConst = cConst.curoot(); //z0.cos();
+				break;
+			case "Log":
+				cConst = cConst.ln(); //z0.tan();
+				break;
+
+			case "None":
+				cConst = cConst;
+				break;
+			default:
+				this.complex = cConst;
+				break;
+			}//ends-switch
+
+			if (!this.isComplexNumConst) {
+				this.complex = cConst;
+				this.isConstFuncApplied = true;
 			}
-			this.isConstFuncApplied=true;
 		}
-		return this.complex;
+		
+		return cConst;
+		////////////////////////////
+//		
+//		if (isComplexNumConst && this.complex == null) {
+//			this.complex = z0;
+//		}
+//		
+//		
+//		if (!this.isConstFuncApplied) {
+//			switch (func2Apply) {
+//				case "Sine":
+//					this.complex = /*z0*/this.complex.sine(); //z0.sin();
+//					break;
+//				case "Cosine":
+//					this.complex = /*z0*/this.complex.cosine(); //z0.cos();
+//					break;
+//				case "Tan":
+//					this.complex = /*z0*/this.complex.tangent(); //z0.tan();
+//					break;
+//				case "ArcSine":
+//					this.complex = /*z0*/this.complex.inverseSine(); //z0.sin();
+//					break;
+//				case "ArcCosine":
+//					this.complex = /*z0*/this.complex.inverseCosine(); //z0.cos();
+//					break;
+//				case "ArcTan":
+//					this.complex = /*z0*/this.complex.inverseTangent(); //z0.tan();
+//					break;
+//				case "Square":
+//					this.complex = /*z0*/this.complex.power(2); //z0.sin();
+//					break;
+//				case "Cube":
+//					this.complex = /*z0*/this.complex.power(3); //z0.cos();
+//					break;
+//				case "Exponent":
+//					this.complex = /*z0*/this.complex.exp(); //z0.tan();
+//					break;
+//				case "Root":
+//					this.complex = /*z0*/this.complex.sqroot(); //z0.sin();
+//					break;
+//				case "CubeRoot":
+//					this.complex = /*z0*/this.complex.curoot(); //z0.cos();
+//					break;
+//				case "Log":
+//					this.complex = /*z0*/this.complex.ln(); //z0.tan();
+//					break;
+//				case "None":
+//					this.complex = /*z0*/this.complex;
+//					break;
+//				default:
+//					this.complex = /*z0*/this.complex;
+//					break;
+//			}
+//			
+//			if(!this.isComplexNumConst){
+//				this.complex=cConst;
+//				this.isConstFuncApplied=true;
+//			}
+//		}
+//		return this.complex;
+		/////////////////////////////////////////
 	}
 
 	

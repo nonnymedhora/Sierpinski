@@ -59,13 +59,13 @@ class SierpinskiComboPanel extends JPanel {
 	private static final Integer[] EXPONENTS = new Integer[] { -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	private static final Integer[] MAX_ITERATIONS = new Integer[] { 10, 50, 100, 200, 225, 255, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 2000, 3000, 5000, 7500, 10000 };
 	private static final Integer[] AREA_SIZES = new Integer[] { 10, 50, 100, 200, 225, 255, 500, 512, 599, 800 };
-	private static final Double[] CENTER_XY = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 };
+	private static final Double[] CENTER_XY = new Double[] { -5.0, -4.5, -4.0, -3.5, -3.0, -2.5, -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0 };
 	private static final Double[] SCALE_SIZES = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
 	private static final String[] POLY_RCMT_TYPES = new String[] { "Reverse", "Exchange", "Single", "Duplicate", "Exponent", "Power", "Default" };
 	private static final Integer[] FANNY_RATIOS = new Integer[] { 1, 2, 3, 4, 5, 6, 7 };
 	private static final Integer[] FANNY_SIZE_OPTIONS = new Integer[] { 50, 60, 70, 80, 90, 100, 120, 150, 170, 200, 250, 300, 350 };
-	private static final Integer[] APOLLO_MULTS = new Integer[]{2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
-	private static final Integer[] APOLLO_CURVES = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
+	private static final Integer[] APOLLO_MULTS = new Integer[]{ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
+	private static final Integer[] APOLLO_CURVES = new Integer[]{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 };
 	
 	// for Julia
 	private static final String J1 = "P[2] C[0.279]";	//f(z) = z^2 + 0.279
@@ -2394,7 +2394,7 @@ class SierpinskiComboPanel extends JPanel {
 			double polyImgVal = Double.parseDouble(this.polyImgTf.getText());
 			this.formulaArea.append("<br/>Constant = " + polyRealVal + " + (" + polyImgVal + " * i)</font>");
 			
-			ff = new PolyFract(this.polyPower, this.polyUseDiff, this.polyBound, this.keepConst, polyRealVal, polyImgVal);
+			ff = new PolyFract(this.polyPower, this.polyUseDiff, this.polyBound,/* this.keepConst,*/ polyRealVal, polyImgVal);
 		}
 		
 		ff.setUseColorPalette(useCP);

@@ -20,7 +20,7 @@ public class PolyFract extends FractalBase {
 
 	private static final long serialVersionUID = 14565L;
 	private boolean useDiff = false;
-	private boolean isComplexNumConst;
+	private boolean isComplexNumConst = false;
 	private ComplexNumber compConst;
 
 	private boolean isConstFuncApplied = false;
@@ -45,13 +45,15 @@ public class PolyFract extends FractalBase {
 		this.setComplexNumConst(complexNumIsConst);
 	}
 
-	public PolyFract(int pow, boolean uD, double bd, boolean complexNumIsConst, double realVal,
+	public PolyFract(int pow, boolean uD, double bd,/* boolean complexNumIsConst,*/ double realVal,
 			double imgVal) {
-		this(pow, uD, bd, complexNumIsConst);
-
-		if (!complexNumIsConst) {
+		this(pow, uD, bd);//, complexNumIsConst);
+		/*if (!complexNumIsConst) {*/
 			this.compConst = new ComplexNumber(realVal, imgVal);
-		}
+		/*} else {
+			this.compConst = null;
+		}*/
+			this.setComplexNumConst(false);
 	}
 
 	/* (non-Javadoc)
@@ -122,7 +124,7 @@ System.out.println("type---->"+(type));	*/
 						break;
 				}
 				
-				if (this.isComplexNumConst && this.compConst == null) {
+				if (this.isComplexNumConst || this.compConst == null) {
 					this.compConst = zx.plus(zy);
 				}
 				
@@ -171,8 +173,11 @@ System.out.println("type---->"+(type));	*/
 						default:
 							this.compConst = zx.plus(zy);
 							break;
+					}// ends switch
+					
+					if (!this.isComplexNumConst()) {
+						this.isConstFuncApplied = true;
 					}
-					this.isConstFuncApplied=true;
 				}
 				
 				
