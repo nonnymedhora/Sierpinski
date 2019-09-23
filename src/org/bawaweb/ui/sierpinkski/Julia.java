@@ -42,6 +42,10 @@ public class Julia extends FractalBase {
 	public final ComplexNumber C1 = new ComplexNumber(-0.74543,0.11301);	//c=-0.74543+0.11301*i
 	public final ComplexNumber C2 = new ComplexNumber(-0.75,0.11);			//c= -0.75+0.11*i
 	public final ComplexNumber C3 = new ComplexNumber(-0.1,0.651);			//c=-0.1+0.651*i
+
+	//for dealing with C1-C3
+	private boolean preStringComplexConstConstruct = false;
+	//wiil remove above l8r - and make all uniform
 	
 	private boolean isConstFuncApplied = false;
 
@@ -127,6 +131,7 @@ public class Julia extends FractalBase {
 			this.complex = C1;
 		}
 		this.setComplexNumConst(true);
+		this.setPreStringComplexConstConstruct(true);
 	}
 
 	public Julia(int m, double con, double bd, boolean uDiff) {
@@ -210,6 +215,14 @@ public class Julia extends FractalBase {
 		this.isComplexNumConst = isComplexNumConst;
 	}
 
+	public boolean isPreStringComplexConstConstruct() {
+		return this.preStringComplexConstConstruct;
+	}
+
+	public void setPreStringComplexConstConstruct(boolean preStringCC) {
+		this.preStringComplexConstConstruct = preStringCC;
+	}
+
 	/* (non-Javadoc)
 	 * @see org.bawaweb.ui.sierpinkski.FractalBase#createFractalShape(java.awt.Graphics2D)
 	 */
@@ -241,9 +254,11 @@ public class Julia extends FractalBase {
 				double y0 = yc - size / 2 + size * col / n;
 				ComplexNumber z0 = new ComplexNumber(x0, y0);
 
-				if (isComplexNumConst || this.complex == null) {
-					this.complex = z0;
-				}				
+				/*if (isComplexNumConst || this.complex == null) {
+					if (!this.preStringComplexConstConstruct) {
+						this.complex = z0;
+					}
+				}*/				
 				int colorRGB;
 				if (diff) {
 					colorRGB = this.julia(z0, max, bd);
@@ -304,7 +319,11 @@ public class Julia extends FractalBase {
 		ComplexNumber cConst;
 		
 		if (isComplexNumConst || this.complex == null) {
-			cConst = new ComplexNumber(this.complexConst, 0);
+			if (!preStringComplexConstConstruct) {
+				cConst = new ComplexNumber(this.complexConst, 0);
+			}else{
+				cConst=this.complex;
+			}
 		} else {
 			cConst = this.complex;
 		}
@@ -379,8 +398,10 @@ public class Julia extends FractalBase {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				final FractalBase frame = new Julia(2,0.279);	//(3,0.4);//(2,0.279);	//f(z) = z2 + 0.279
-//				final Julia frame = new Julia(2,true,-0.4,0.59); //new Julia(2,false,-1.29904,-0.75); //new Julia(2,0.279,true/*false*/);//Julia(2,"C3",true);//
+//				final FractalBase frame = new Julia(2,0.279);	//(3,0.4);//(2,0.279);	//f(z) = z2 + 0.279
+//				final FractalBase frame = new Julia(2,true,-0.4,0.59); //new Julia(2,false,-1.29904,-0.75); //new Julia(2,0.279,true/*false*/);
+				//
+				final FractalBase frame = new Julia(2,"C3",true);//
 //				frame.setUseFuncConst("Log");
 				/*frame.setPower(2);
 				frame.setComplex(frame.c1);*/
