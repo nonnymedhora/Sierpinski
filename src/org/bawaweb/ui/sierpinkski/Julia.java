@@ -303,12 +303,12 @@ public class Julia extends FractalBase {
 	private ComplexNumber computeComplexConstant() {
 		ComplexNumber cConst;
 		
-		if (this.complex == null) {
+		if (isComplexNumConst || this.complex == null) {
 			cConst = new ComplexNumber(this.complexConst, 0);
 		} else {
 			cConst = this.complex;
 		}
-		
+
 		String func2Apply = this.useFuncConst;
 		if (!this.isConstFuncApplied) {
 			switch (func2Apply) {
@@ -379,14 +379,14 @@ public class Julia extends FractalBase {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-//				final FractalBase frame = new Julia(2,0.279);	//(3,0.4);//(2,0.279);	//f(z) = z2 + 0.279
-				final Julia frame = new Julia(2,true,-0.4,0.59); //new Julia(2,false,-1.29904,-0.75); //new Julia(2,0.279,true/*false*/);//Julia(2,"C3",true);//
-				frame.setUseFuncConst("Log");
+				final FractalBase frame = new Julia(2,0.279);	//(3,0.4);//(2,0.279);	//f(z) = z2 + 0.279
+//				final Julia frame = new Julia(2,true,-0.4,0.59); //new Julia(2,false,-1.29904,-0.75); //new Julia(2,0.279,true/*false*/);//Julia(2,"C3",true);//
+//				frame.setUseFuncConst("Log");
 				/*frame.setPower(2);
 				frame.setComplex(frame.c1);*/
 //				frame.depth = 5;
 				frame.setTitle(frame.getFractalShapeTitle());
-				frame.setSize(frame.WIDTH, frame.HEIGHT);
+				frame.setSize(FractalBase.WIDTH, FractalBase.HEIGHT);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setResizable(false);
 				frame.setVisible(true);
