@@ -48,7 +48,7 @@ public class Julia extends FractalBase {
 	//wiil remove above l8r - and make all uniform
 	
 	private boolean isConstFuncApplied = false;
-
+	
 	public Julia() {
 		super();
 	}
@@ -252,7 +252,14 @@ public class Julia extends FractalBase {
 			for (int col = 0; col < n; col++) {
 				double x0 = xc - size / 2 + size * row / n;
 				double y0 = yc - size / 2 + size * col / n;
-				ComplexNumber z0 = new ComplexNumber(x0, y0);
+				ComplexNumber z0;
+				if (FractalBase.isFatou()) {
+					z0 = this.getFatouValue(x0, y0);
+				} else if (FractalBase.isZSq()) {
+					z0 = this.getZSqValue(x0, y0);
+				} else {
+					z0 = new ComplexNumber(x0, y0);
+				}
 
 				/*if (isComplexNumConst || this.complex == null) {
 					if (!this.preStringComplexConstConstruct) {
@@ -402,6 +409,7 @@ public class Julia extends FractalBase {
 //				final FractalBase frame = new Julia(2,true,-0.4,0.59); //new Julia(2,false,-1.29904,-0.75); //new Julia(2,0.279,true/*false*/);
 				//
 				final FractalBase frame = new Julia(2,"C3",true);//
+				
 //				frame.setUseFuncConst("Log");
 				/*frame.setPower(2);
 				frame.setComplex(frame.c1);*/
@@ -469,8 +477,17 @@ Julia set for fc, c = −0.8i
 *
 *
 *
-*
-*
+==================================================
+Using DEM/J
+Images of Julia sets for fc(z) = z*z + c
+
+c=-0.74543+0.11301*i
+c= -0.75+0.11*i
+c=-0.1+0.651*i
+
+Julia set drawn by distance estimation, 
+the iteration is of the form 
+1-z^2+(z^5/(2 + 4z))+c
 *
 *
 *

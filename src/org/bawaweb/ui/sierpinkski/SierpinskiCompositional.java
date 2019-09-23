@@ -117,9 +117,9 @@ class SierpinskiComboPanel extends JPanel {
 	private final JCheckBox sierpinskiTFillInnerCb = new JCheckBox("FillInnerTriangles", true);
 	private boolean sierpinskiFillInnerT = false;
 	
-	protected JRadioButton sierpTUpRb = new JRadioButton("UP",false);
-	protected JRadioButton sierpTDnRb = new JRadioButton("DOWN",true);	
-	protected ButtonGroup sierpTBg = new ButtonGroup();
+	protected JRadioButton 	sierpTUpRb 	= new JRadioButton("UP",false);
+	protected JRadioButton 	sierpTDnRb 	= new JRadioButton("DOWN",true);	
+	protected ButtonGroup 	sierpTBg 	= new ButtonGroup();
 	private String 			sierpTDir = "UP";
 	
 	// for KochSnowFlakeFractal
@@ -149,11 +149,11 @@ class SierpinskiComboPanel extends JPanel {
 	private final JComboBox<Double> juliaYCCombos = new JComboBox<Double>(juliaYCOptions);
 	private final Double[] juliaScaleSizeOptions = SCALE_SIZES;
 	private final JComboBox<Double> juliaScaleSizeCombos = new JComboBox<Double>(juliaScaleSizeOptions);
-
-	/*protected JRadioButton juliaColrPRb = new JRadioButton("Use Color Palette",false);
-	protected JRadioButton juliaColrCRb = new JRadioButton("Compute Color",true);
 	
-	protected ButtonGroup juliaColrBg = new ButtonGroup();*/
+	private ButtonGroup juliaFieldLinesBG = new ButtonGroup();
+	private JRadioButton juliaFieldNoneRB = new JRadioButton("None", true);
+	private JRadioButton juliaFieldFatouRB = new JRadioButton("Fatou", false);
+	private JRadioButton juliaFieldZSqRB = new JRadioButton("Z-Squared", false);
 	
 
 	// for Mandelbrot
@@ -338,6 +338,13 @@ class SierpinskiComboPanel extends JPanel {
 	private final Integer[] diyJuliaPowerOptions = EXPONENTS;
 	private final JComboBox<Integer> diyJuliaPowerCombos = new JComboBox<Integer>(diyJuliaPowerOptions);
 	private final JCheckBox diyJuliaUseDiffCb = new JCheckBox("UseDifferencesOnly",true);
+	
+
+	private ButtonGroup diyJuliaFieldLinesBG = new ButtonGroup();
+	private JRadioButton diyJuliaFieldNoneRB = new JRadioButton("None", true);
+	private JRadioButton diyJuliaFieldFatouRB = new JRadioButton("Fatou", false);
+	private JRadioButton diyJuliaFieldZSqRB = new JRadioButton("Z-Squared", false);
+	
 	private JTextField diyJuliaRealTf = new JTextField(5);
 	private JTextField diyJuliaImgTf = new JTextField(5);
 
@@ -434,6 +441,9 @@ class SierpinskiComboPanel extends JPanel {
 	
 	/////////
 	private boolean keepConst = true;
+	private boolean applyFatou = false;
+	private	boolean	applyZSq	=	false;
+	
 	////////
 	
 	
@@ -483,6 +493,8 @@ class SierpinskiComboPanel extends JPanel {
 	private JButton buSave = new JButton("Save");
 	
 	private Thread fbf;
+
+	private String fieldLines = "None";
 	
 	public SierpinskiComboPanel() {
 		super();
@@ -793,6 +805,15 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaPanel.add(this.diyJuliaPowerCombos);
 		this.diyJuliaPanel.add(this.diyJuliaUseDiffCb);
 		
+		this.diyJuliaFieldLinesBG.add(diyJuliaFieldNoneRB);
+		this.diyJuliaFieldLinesBG.add(diyJuliaFieldFatouRB);
+		this.diyJuliaFieldLinesBG.add(diyJuliaFieldZSqRB);
+
+		this.diyJuliaPanel.add(this.diyJuliaFieldNoneRB);
+		this.diyJuliaPanel.add(this.diyJuliaFieldFatouRB);
+		this.diyJuliaPanel.add(this.diyJuliaFieldZSqRB);
+
+		
 		this.diyJuliaConstBg.add(this.diyJuliaKeepConstRb);
 		this.diyJuliaConstBg.add(this.diyJuliaCreateConstRb);
 		
@@ -945,6 +966,16 @@ class SierpinskiComboPanel extends JPanel {
 		this.juliaOptionsPanel.add(new JLabel("Power-Constant:"));
 		this.juliaOptionsPanel.add(this.juliaCombos);		
 		this.juliaOptionsPanel.add(this.juliaUseDiffCb);
+		
+		this.juliaFieldLinesBG.add(this.juliaFieldNoneRB);
+		this.juliaFieldLinesBG.add(this.juliaFieldFatouRB);
+		this.juliaFieldLinesBG.add(this.juliaFieldZSqRB);
+		
+		this.juliaOptionsPanel.add(this.juliaFieldNoneRB);
+		this.juliaOptionsPanel.add(this.juliaFieldFatouRB);
+		this.juliaOptionsPanel.add(this.juliaFieldZSqRB);
+
+		
 		this.juliaOptionsPanel.add(new JLabel("Max Iterations:"));
 		this.juliaOptionsPanel.add(this.juliaMaxIterCombos);	
 		this.juliaOptionsPanel.add(new  JLabel("Area: "));
@@ -1407,17 +1438,22 @@ class SierpinskiComboPanel extends JPanel {
 		if (!(this.juliaSelection.equals("J7") || this.juliaSelection.equals("J8")
 				|| this.juliaSelection.equals("J9"))) {
 			
-			this.formulaArea.setText("<font color='blue'>Julia Set:<br/><br/>f(z) = z ^ " + this.power + " + " + this.compConst);
+			this.formulaArea.setText("<font color='blue'>Julia Set:<br/><br/>f(z) = z ^ " + this.power + " + " + this.compConst+"<br/>");
 			
 		} else {
 			if(this.juliaSelection.equals("J7")){
-				this.formulaArea.setText("<font color='blue'>Julia Set:<br/><br/>f(z) = z ^ " + this.power + " + (-0.74543 + 0.11301 * i)");
+				this.formulaArea.setText("<font color='blue'>Julia Set:<br/><br/>f(z) = z ^ " + this.power + " + (-0.74543 + 0.11301 * i)<br/>");
 			}else if(this.juliaSelection.equals("J8")){
-				this.formulaArea.setText("<font color='blue'>Julia Set:<br/><br/>f(z) = z ^ " + this.power + " + (-0.75 + 0.11 * i)");
+				this.formulaArea.setText("<font color='blue'>Julia Set:<br/><br/>f(z) = z ^ " + this.power + " + (-0.75 + 0.11 * i)<br/>");
 			}else if(this.juliaSelection.equals("J9")){
-				this.formulaArea.setText("<font color='blue'>Julia Set:<br/><br/>f(z) = z ^ " + this.power + " + (-0.1 + 0.651 * i)");
+				this.formulaArea.setText("<font color='blue'>Julia Set:<br/><br/>f(z) = z ^ " + this.power + " + (-0.1 + 0.651 * i)<br/>");
 			}
-			
+		}
+		
+		if(this.applyFatou){
+			this.formulaArea.setText("<br/><font color='green'>Fatou Field Lines:<br/>f(z) = (1 - (z^3/6)) / ((z - (z^2/2)) ^ 2) + C</font><br/>");
+		}else if(this.applyZSq){
+			this.formulaArea.append("<br/><font color='green'>ZSquared Field Lines:<br/><br/>f(z) = (z ^ 2) + C</font><br/>");
 		}
 	}
 	
@@ -1708,21 +1744,21 @@ class SierpinskiComboPanel extends JPanel {
 				this.addJuliaUseDiffInfo();
 				break;	
 			case J7: //  J7 = "P[2] C1[-0.74543+0.11301*i]";
-				this.power = 2;
+				this.power = 2;				this.compConst=0.0;
 				this.complex = "C1";
 				this.juliaSelection="J7";
 				this.addJuliaFormulaInfo();
 				this.addJuliaUseDiffInfo();
 				break;	
 			case J8: //  J8 = "P[2] C2";//[-0.75+0.11*i]";
-				this.power = 2;
+				this.power = 2;				this.compConst=0.0;
 				this.complex = "C2";
 				this.juliaSelection="J8";
 				this.addJuliaFormulaInfo();
 				this.addJuliaUseDiffInfo();
 				break;
 			case J9: //  J9 = "P[2] C3";//[-0.1+0.651*i]";
-				this.power = 2;
+				this.power = 2;				this.compConst=0.0;
 				this.complex = "C3";
 				this.juliaSelection="J9";
 				this.addJuliaFormulaInfo();
@@ -1988,6 +2024,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setVisible(true);
 		this.doDiyJuliaChoicesCheck();
 	}
+	
 
 	private void doSelectDiyJuliaXCCombosCommand(Double x) {
 		this.diyJuliaXC = x;
@@ -2197,9 +2234,22 @@ class SierpinskiComboPanel extends JPanel {
 		double diyJYc = this.diyJuliaYC;
 		double diyJScale = this.diyJuliaScaleSize;
 		
+
+
+		String diyJApplyField = this.fieldLines;
+		boolean diyJApplyFatou = this.applyFatou;
+		boolean diyJApplyZSq = this.applyZSq;
+		
 		this.formulaArea.setVisible(true);
 		this.formulaArea.setText("");
-		this.formulaArea.setText("<font color='blue'>(DIY)Julia Set:<br/><br/>f(z) = z ^ " + diyJuliaP + " + C");
+		this.formulaArea.setText("<font color='blue'>(DIY)Julia Set:<br/><br/>f(z) = z ^ " + diyJuliaP + " + C<br/>");
+		
+		if (diyJApplyFatou) {
+			this.formulaArea.append("<br/><font color='green'>Fatou Field Lines:<br/><br/>f(z) = (1 - (z^3/6)) / ((z - (z^2/2)) ^ 2) + C</font><br/>");
+		} else if (diyJApplyZSq) {
+			this.formulaArea.append("<br/><font color='green'>ZSquared Field Lines:<br/><br/>f(z) = (z ^ 2) + C</font><br/>");
+		}
+		
 		this.addDiyJuliaUseDiffInfo();
 
 		boolean diyJKConst = this.keepConst;
@@ -2216,6 +2266,13 @@ class SierpinskiComboPanel extends JPanel {
 		ff.setUseColorPalette(useCP);
 		ff.setUseFuncConst(func);
 		ff.setRotation(rot);
+		if (!diyJApplyField.equals("None")) {
+			if (diyJApplyFatou) {
+				FractalBase.setFatou(diyJApplyFatou);
+			} else if (diyJApplyZSq) {
+				FractalBase.setZSq(diyJApplyZSq);
+			}
+		}
 		FractalBase.setMaxIter(diyJuliaMaxIt);
 		FractalBase.setAreaSize(diyJuliaLoopLt);
 		FractalBase.setxC(diyJXc);
@@ -2285,6 +2342,10 @@ class SierpinskiComboPanel extends JPanel {
 		double jXc = this.juliaXC;
 		double jYc = this.juliaYC;
 		double jScale = this.juliaScaleSize;
+		
+		String jApplyField = this.fieldLines;
+		boolean jApplyFatou = this.applyFatou;
+		boolean jApplyZSq = this.applyZSq;
 
 		boolean useCP = this.colrPRb.isSelected();
 		
@@ -2307,6 +2368,13 @@ class SierpinskiComboPanel extends JPanel {
 		ff.setUseColorPalette(useCP);
 		ff.setUseFuncConst(func);
 		ff.setRotation(rot);
+		if (!jApplyField.equals("None")) {
+			if (jApplyFatou) {
+				FractalBase.setFatou(jApplyFatou);
+			} else if (jApplyZSq) {
+				FractalBase.setZSq(jApplyZSq);
+			}
+		}
 		FractalBase.setxC(jXc);
 		FractalBase.setxC(jYc);
 		FractalBase.setScaleSize(jScale);
@@ -3113,7 +3181,23 @@ class SierpinskiComboPanel extends JPanel {
 					doSetDiyJuliaUseDiffCommand(false);
 				}
 			}
-        });
+        });/*
+		this.diyJuliaApplyFatouCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetDiyJuliaApplyFatouCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetDiyJuliaApplyFatouCommand(false);
+				}
+			}
+        });*/
+		
+
+		
+		this.diyJuliaFieldNoneRB.addActionListener(this.fieldLinesRBListener());
+		this.diyJuliaFieldFatouRB.addActionListener(this.fieldLinesRBListener());
+		this.diyJuliaFieldZSqRB.addActionListener(this.fieldLinesRBListener());
 		
 		this.diyJuliaKeepConstRb.addActionListener(this.keepConstRbListener());
 		this.diyJuliaCreateConstRb.addActionListener(this.keepConstRbListener());
@@ -3490,6 +3574,21 @@ class SierpinskiComboPanel extends JPanel {
 			}
         });
 		
+		this.juliaFieldNoneRB.addActionListener(this.fieldLinesRBListener());
+		this.juliaFieldFatouRB.addActionListener(this.fieldLinesRBListener());
+		this.juliaFieldZSqRB.addActionListener(this.fieldLinesRBListener());
+		
+		/*this.juliaApplyFatouCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetJuliaApplyFatouCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetJuliaUseDiffCommand(false);
+				}
+			}
+        });*/
+		
 		this.juliaMaxIterCombos.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
 			@Override
@@ -3645,13 +3744,42 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private ActionListener colorChoiceRbListener() {
 		return new ActionListener() {
-			@SuppressWarnings("unchecked")
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				doFractalColorChoice();			
 			}
 		};
 	}
+	
+	private ActionListener fieldLinesRBListener() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doApplyFieldLinesChoice();			
+			}
+		};
+	}
+	
+	private void doApplyFieldLinesChoice() {
+		if (this.juliaFieldFatouRB.isSelected() || this.diyJuliaFieldFatouRB.isSelected()) {
+			this.fieldLines = "Fatou";
+			this.applyFatou = true;
+			this.applyZSq = false;
+		} else if (this.juliaFieldZSqRB.isSelected() || this.diyJuliaFieldZSqRB.isSelected()) {
+			this.fieldLines = "ZSq";
+			this.applyFatou = false;
+			this.applyZSq = true;
+		} else if (this.juliaFieldNoneRB.isSelected() || this.diyJuliaFieldNoneRB.isSelected()) {
+			this.fieldLines = "None";
+			this.applyFatou = false;
+			this.applyZSq = false;
+		} else {
+			this.fieldLines = "None";
+			this.applyFatou = false;
+			this.applyZSq = false;
+		}
+	}
+	
 
 	private ActionListener funcCalcRbListener() {
 		return new ActionListener() {

@@ -750,6 +750,51 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		this.useFuncConst = useFuncConst;
 	}
 
+//https://en.wikipedia.org/wiki/Julia_set#Field_lines
+	private static boolean isFatou = false;	//todo	-	rename to getFieldLines??
+	public static boolean isFatou() {
+		return isFatou;
+	}
+
+	public static void setFatou(boolean isFat) {
+		isFatou = isFat;
+	}
+
+	protected ComplexNumber getFatouValue(double x0, double y0) {
+		ComplexNumber z0;
+		z0 = new ComplexNumber(x0, y0);
+		final ComplexNumber one = new ComplexNumber(1.0, 0.0);
+		final ComplexNumber six = new ComplexNumber(6.0, 0.0);
+		final ComplexNumber two = new ComplexNumber(2.0, 0.0);
+		
+	
+		final ComplexNumber numerator = (one.minus(z0.power(3).divides(six)));
+		final ComplexNumber denom = ((z0.minus(z0.power(2).divides(two)))).power(2);
+		z0 = (numerator.divides(denom));
+		return z0;
+	}
+	
+	/////////////////////////
+	private static boolean isZSq = false;	//todo	-	rename to getFieldLines??
+	public static boolean isZSq() {
+		return isZSq;
+	}
+
+	public static void setZSq(boolean iszsq) {
+		isZSq = iszsq;
+	}
+	
+
+	protected ComplexNumber getZSqValue(double x0, double y0) {
+		ComplexNumber z0;
+		z0 = new ComplexNumber(x0, y0);
+		return z0.power(2);
+	}
+
+	//endshttps://en.wikipedia.org/wiki/Julia_set#Field_lines
+	
+	
+	
 	class Line {
 		/*private*/ double x, y, length, angle;
 		
