@@ -438,7 +438,7 @@ public class Julia extends FractalBase {
 
 
 /*//http://paulbourke.net/fractals/juliaset/
-
+/
 c = 0 + 0.8i
 c = 0.37 + 0.1i
 c = 0.355 + 0.355i
@@ -452,4 +452,29 @@ c = -0.54 + 0.54i
 c = -0.4 + -0.59i
 c = 0.355534 - 0.337292i
 /
+/*
+
+*https://en.wikipedia.org/wiki/Julia_set
+*
+*
+Julia set for fc, c = 0.285 + 0i
+Julia set for fc, c = 0.285 + 0.01i
+Julia set for fc, c = 0.45 + 0.1428i
+Julia set for fc, c = −0.70176 − 0.3842i
+Julia set for fc, c = −0.835 − 0.2321i
+Julia set for fc, c = −0.8 + 0.156i
+Julia set for fc, c = −0.7269 + 0.1889i
+Julia set for fc, c = −0.8i
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
 */
