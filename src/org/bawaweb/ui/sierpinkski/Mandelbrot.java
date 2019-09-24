@@ -131,17 +131,43 @@ public class Mandelbrot extends FractalBase {
 				double y0 = yc - size / 2 + size * col / n;
 				ComplexNumber z0 = new ComplexNumber(x0, y0);
 				z0 = this.computeComplexConstant(func2Apply, z0);
+				
 
-				int colorRGB;
+				if (this.isUseBlackWhite()) {
+					int bOrW;
+					if (diff) {
+						bOrW = this.mand(z0, max, this.power, this.complex, bd);
+						if (bOrW != max) {
+							bOrW = 0;
+						} else {
+							bOrW = COLORMAXRGB;
+						}
+					} else {
+						int res = this.mand(z0, max, this.power, this.complex, bd);
+						bOrW = max - res;
+						if (bOrW != res) {
+							bOrW = 0;
+						} else {
+							bOrW = COLORMAXRGB;
+						}
 
-				if (diff) {
-					colorRGB = mand(z0, max, this.power, this.complex, bd);
+					}
+					
+					setPixel(row, n - 1 - col, bOrW);
+
 				} else {
-					colorRGB = max - mand(z0, max, this.power, this.complex,bd);
-				}
-				Color color = this.getPixelDisplayColor(row, col, colorRGB, diff);
 
-				setPixel(row, n - 1 - col, color.getRGB());
+					int colorRGB;
+	
+					if (diff) {
+						colorRGB = mand(z0, max, this.power, this.complex, bd);
+					} else {
+						colorRGB = max - mand(z0, max, this.power, this.complex,bd);
+					}
+					Color color = this.getPixelDisplayColor(row, col, colorRGB, diff);
+	
+					setPixel(row, n - 1 - col, color.getRGB());
+				}
 
 			}
 		}
@@ -290,6 +316,8 @@ public class Mandelbrot extends FractalBase {
 			public void run() {
 				final FractalBase frame = new Mandelbrot(2,2,true);//96);//,2);//,true);//(2,3,false);
 //				frame.depth = 5;
+/*				frame.setUseColorPalette(false);
+				frame.setUseBlackWhite(true);*/
 				frame.setTitle(frame.getFractalShapeTitle());
 				frame.setSize(FractalBase.WIDTH, FractalBase.HEIGHT);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

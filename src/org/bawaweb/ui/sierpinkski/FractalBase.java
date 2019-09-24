@@ -368,7 +368,9 @@ public abstract class FractalBase extends JFrame implements Runnable {
 					} else {
 						color = ColorPalette[ColorPalette.length - iter - 1];
 					}
-				} else {
+				}/* else if(this.useBlackWhite){
+					
+				} */else {
 
 					final int start = colStart[iter];
 					final int end = COLORMAXRGB - start;
@@ -603,11 +605,20 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	}
 
 	protected boolean useColorPalette = false;
-	protected boolean useComputeColor = !this.isUseColorPalette();
+	protected boolean useBlackWhite = false;
+	protected boolean useComputeColor = !(this.isUseColorPalette() || this.isUseBlackWhite());
 	protected double bound = 2.0;
 
+	public boolean isUseBlackWhite() {
+		return this.useBlackWhite/*=true*/;
+	}
+
+	public void setUseBlackWhite(boolean blackWhite) {
+		this.useBlackWhite = blackWhite;
+	}
+
 	public boolean isUseColorPalette() {
-		return this.useColorPalette;
+		return this.useColorPalette/*=false*/;
 	}
 
 	public void setUseColorPalette(boolean useCPalette) {

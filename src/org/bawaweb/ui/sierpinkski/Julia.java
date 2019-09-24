@@ -257,7 +257,7 @@ public class Julia extends FractalBase {
 					z0 = this.getFatouValue(x0, y0);
 				} else if (this.isZSq()) {
 					z0 = this.getZSqValue(x0, y0);
-				}  else if (this.isClassicJulia()) {
+				} else if (this.isClassicJulia()) {
 					z0 = this.getClassicJulia(x0, y0);
 				} else {
 					z0 = new ComplexNumber(x0, y0);
@@ -267,16 +267,42 @@ public class Julia extends FractalBase {
 					if (!this.preStringComplexConstConstruct) {
 						this.complex = z0;
 					}
-				}*/				
-				int colorRGB;
-				if (diff) {
-					colorRGB = this.julia(z0, max, bd);
+				}*/			
+				
+				if (this.isUseBlackWhite()) {
+					int bOrW;
+					if (diff) {
+						bOrW = this.julia(z0, max, bd);
+						if (bOrW != max) {
+							bOrW = 0;
+						} else {
+							bOrW = COLORMAXRGB;
+						}
+					} else {
+						int res = this.julia(z0, max, bd);
+						bOrW = max - res;
+						if (bOrW != res) {
+							bOrW = 0;
+						} else {
+							bOrW = COLORMAXRGB;
+						}
+
+					}
+					
+					setPixel(row, n - 1 - col, bOrW);
+
 				} else {
-					colorRGB = max - this.julia(z0, max, bd);
+				
+					int colorRGB;
+					if (diff) {
+						colorRGB = this.julia(z0, max, bd);
+					} else {
+						colorRGB = max - this.julia(z0, max, bd);
+					}
+					Color color;
+					color = getPixelDisplayColor(row, col, colorRGB, diff);
+					setPixel(row, n - 1 - col, color.getRGB());
 				}
-				Color color;
-				color = getPixelDisplayColor(row, col, colorRGB, diff);
-				setPixel(row, n - 1 - col, color.getRGB());
 			}
 		}
 	}
@@ -411,7 +437,8 @@ public class Julia extends FractalBase {
 //				final FractalBase frame = new Julia(2,true,-0.4,0.59); //new Julia(2,false,-1.29904,-0.75); //new Julia(2,0.279,true/*false*/);
 				//
 				final FractalBase frame = new Julia(2,"C3",true);//
-				
+				frame.setUseColorPalette(false);
+				frame.setUseBlackWhite(true);
 //				frame.setUseFuncConst("Log");
 				/*frame.setPower(2);
 				frame.setComplex(frame.c1);*/

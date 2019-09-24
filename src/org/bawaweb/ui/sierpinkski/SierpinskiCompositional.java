@@ -117,8 +117,8 @@ class SierpinskiComboPanel extends JPanel {
 	private final JCheckBox sierpinskiTFillInnerCb = new JCheckBox("FillInnerTriangles", true);
 	private boolean sierpinskiFillInnerT = false;
 	
-	protected JRadioButton 	sierpTUpRb 	= new JRadioButton("UP",false);
-	protected JRadioButton 	sierpTDnRb 	= new JRadioButton("DOWN",true);	
+	protected JRadioButton 	sierpTUpRb 	= new JRadioButton("UP", false);
+	protected JRadioButton 	sierpTDnRb 	= new JRadioButton("DOWN", true);	
 	protected ButtonGroup 	sierpTBg 	= new ButtonGroup();
 	private String 			sierpTDir = "UP";
 	
@@ -150,11 +150,11 @@ class SierpinskiComboPanel extends JPanel {
 	private final Double[] juliaScaleSizeOptions = SCALE_SIZES;
 	private final JComboBox<Double> juliaScaleSizeCombos = new JComboBox<Double>(juliaScaleSizeOptions);
 	
-	private ButtonGroup juliaFieldLinesBG = new ButtonGroup();
-	private JRadioButton juliaFieldNoneRB = new JRadioButton("None", true);
-	private JRadioButton juliaFieldFatouRB = new JRadioButton("Fatou", false);
-	private JRadioButton juliaFieldZSqRB = new JRadioButton("Z-Squared", false);
-	private JRadioButton juliaFieldClassicRB = new JRadioButton("ClassicJ", false);
+	private ButtonGroup  juliaFieldLinesBG 		= new ButtonGroup();
+	private JRadioButton juliaFieldNoneRB 		= new JRadioButton("None", true);
+	private JRadioButton juliaFieldFatouRB 		= new JRadioButton("Fatou", false);
+	private JRadioButton juliaFieldZSqRB 		= new JRadioButton("Z-Squared", false);
+	private JRadioButton juliaFieldClassicRB 	= new JRadioButton("ClassicJ", false);
 	
 
 	// for Mandelbrot
@@ -315,10 +315,10 @@ class SierpinskiComboPanel extends JPanel {
 	private final Double[] diyMandScaleSizeOptions = SCALE_SIZES;
 	private final JComboBox<Double> diyMandScaleSizeCombos = new JComboBox<Double>(diyMandScaleSizeOptions);
 	
-	protected JRadioButton diyMandColrPRb = new JRadioButton("Use Color Palette",false);
+	/*protected JRadioButton diyMandColrPRb = new JRadioButton("Use Color Palette",false);
 	protected JRadioButton diyMandColrCRb = new JRadioButton("Compute Color",true);
 	
-	protected ButtonGroup diyMandColrBg = new ButtonGroup();
+	protected ButtonGroup diyMandColrBg = new ButtonGroup();*/
 	
 	//diy Julia options
 	protected int diyJuliaPower;
@@ -371,10 +371,10 @@ class SierpinskiComboPanel extends JPanel {
 	private final Double[] diyJuliaScaleSizeOptions = SCALE_SIZES;
 	private final JComboBox<Double> diyJuliaScaleSizeCombos = new JComboBox<Double>(diyJuliaScaleSizeOptions);
 	
-	protected JRadioButton diyJuliaColrPRb = new JRadioButton("Use Color Palette",false);
+	/*protected JRadioButton diyJuliaColrPRb = new JRadioButton("Use Color Palette",false);
 	protected JRadioButton diyJuliaColrCRb = new JRadioButton("Compute Color",true);
 	
-	protected ButtonGroup diyJuliaColrBg = new ButtonGroup();
+	protected ButtonGroup diyJuliaColrBg = new ButtonGroup();*/
 	
 	//diy Apollo Options
 	protected int diyApolloC1;
@@ -393,10 +393,10 @@ class SierpinskiComboPanel extends JPanel {
 	private final Integer[] diyApolloMultOptions = APOLLO_MULTS;
 	private final JComboBox<Integer> diyApolloMultCombos = new JComboBox<Integer>(diyApolloMultOptions);
 	
-	protected JRadioButton diyApolloColrPRb = new JRadioButton("Use Color Palette",false);
+	/*protected JRadioButton diyApolloColrPRb = new JRadioButton("Use Color Palette",false);
 	protected JRadioButton diyApolloColrCRb = new JRadioButton("Compute Color",true);
 	
-	protected ButtonGroup diyApolloColrBg = new ButtonGroup();
+	protected ButtonGroup diyApolloColrBg = new ButtonGroup();*/
 	
 	
 	//POLY
@@ -457,6 +457,7 @@ class SierpinskiComboPanel extends JPanel {
 	
 	@SuppressWarnings("unused")
 	private boolean useColorPalette = false;
+	private boolean useBlackAndWhite = false;
 	
 	private double rotation = 0.0;
 	
@@ -464,8 +465,9 @@ class SierpinskiComboPanel extends JPanel {
 	private Vector<Double> rotOptions = new Vector<Double>();
 	protected JComboBox<Double> rotateCombo ;
 	
-	protected JRadioButton colrPRb = new JRadioButton("Use Color Palette",false);
-	protected JRadioButton colrCRb = new JRadioButton("Compute Color",true);
+	protected JRadioButton colrPRb = new JRadioButton("Use Color Palette", false);
+	protected JRadioButton colrCRb = new JRadioButton("Compute Color", true);
+	protected JRadioButton colrBwRb = new JRadioButton("Black_&_White", false);
 	
 	protected ButtonGroup colrBg = new ButtonGroup();	
 	
@@ -650,18 +652,23 @@ class SierpinskiComboPanel extends JPanel {
 	private void createColorChoiceRBs() {
 		this.colrBg.add(this.colrPRb);
 		this.colrBg.add(this.colrCRb);
+		this.colrBg.add(this.colrBwRb);
 		
 		this.colrPRb.setActionCommand("ColorPalette");
 		this.colrCRb.setActionCommand("ComputeColor");
+		this.colrBwRb.setActionCommand("BlackWhite");
 
 		this.colrPRb.setName("ColorPalette");
 		this.colrCRb.setName("ComputeColor");
+		this.colrBwRb.setName("BlackWhite");
 
 		this.add(this.colrPRb);
 		this.add(this.colrCRb);
+		this.add(this.colrBwRb);
 		
 		this.colrPRb.setVisible(false);
 		this.colrCRb.setVisible(false);
+		this.colrBwRb.setVisible(false);
 		
 	}
 
@@ -679,6 +686,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.rotateCombo.setVisible(true);
 		this.colrPRb.setVisible(true);
 		this.colrCRb.setVisible(true);
+		this.colrBwRb.setVisible(true);
 
 		
 		this.noFuncRb.setVisible(true);
@@ -771,6 +779,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.rotateCombo.setVisible(false);
 		this.colrPRb.setVisible(true);
 		this.colrCRb.setVisible(true);
+		this.colrBwRb.setVisible(false);
 		this.diyApolloPanel.add(new JLabel("C1"));
 		this.diyApolloPanel.add(this.diyApolloC1Combos);
 		this.diyApolloPanel.add(new JLabel("C2"));
@@ -785,6 +794,7 @@ class SierpinskiComboPanel extends JPanel {
 	private void createDiyJuliaPanel() {
 		this.colrPRb.setVisible(true);
 		this.colrCRb.setVisible(true);
+		this.colrBwRb.setVisible(true);
 		this.noFuncRb.setVisible(true);
 		this.sineRb.setVisible(true);
 		this.cosineRb.setVisible(true);
@@ -854,6 +864,7 @@ class SierpinskiComboPanel extends JPanel {
 	private void createDiyMandelbrotPanel() {
 		this.colrPRb.setVisible(true);
 		this.colrCRb.setVisible(true);
+		this.colrBwRb.setVisible(true);
 		this.noFuncRb.setVisible(true);
 		this.sineRb.setVisible(true);
 		this.cosineRb.setVisible(true);
@@ -913,6 +924,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.rotateCombo.setVisible(true);
 		this.colrPRb.setVisible(true);
 		this.colrCRb.setVisible(true);
+		this.colrBwRb.setVisible(true);
 		this.noFuncRb.setVisible(true);
 		this.sineRb.setVisible(true);
 		this.cosineRb.setVisible(true);
@@ -954,6 +966,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.rotateCombo.setVisible(true);
 		this.colrPRb.setVisible(true);
 		this.colrCRb.setVisible(true);
+		this.colrBwRb.setVisible(true);
 		this.noFuncRb.setVisible(true);
 		this.sineRb.setVisible(true);
 		this.cosineRb.setVisible(true);
@@ -1008,6 +1021,7 @@ class SierpinskiComboPanel extends JPanel {
 		}
 		this.colrPRb.setVisible(true);
 		this.colrCRb.setVisible(true);
+		this.colrBwRb.setVisible(false);
 		this.apolloOptionsPanel.add(new JLabel("CurvatureOptions:"));
 		this.apolloOptionsPanel.add(this.curvCombos);
 		
@@ -1035,6 +1049,7 @@ class SierpinskiComboPanel extends JPanel {
 		}
 		this.colrPRb.setVisible(false);
 		this.colrCRb.setVisible(false);
+		this.colrBwRb.setVisible(false);
 		this.fannyOptionsPanel.add(new JLabel("Dimension Size:"));
 		this.fannyOptionsPanel.add(this.sideCombos);
 
@@ -2159,12 +2174,6 @@ class SierpinskiComboPanel extends JPanel {
 		double[] cChoices = this.getCurvChoice();
 		double mXt = this.getMultiplier();
 
-		boolean useCP = this.colrPRb.isSelected();
-		
-		/*String func = this.constFuncChoice;
-		
-		double rot = this.getRotation();*/
-		
 		FractalBase ff = null;
 		
 		if (choice.equals(FANNY_CIRCLE)) {
@@ -2179,6 +2188,7 @@ class SierpinskiComboPanel extends JPanel {
 			ff = new SierpinskiSquare();
 		} else if (choice.equals(APOLLONIAN_CIRCLES)) {
 			ff = new ApollonianCircles(cChoices, mXt);
+			boolean useCP = this.colrPRb.isSelected();
 			ff.setUseColorPalette(useCP);
 		} else if (choice.equals(SAMPLE)) {
 			ff = new FractalBaseSample();
@@ -2232,6 +2242,7 @@ class SierpinskiComboPanel extends JPanel {
 		FractalBase ff;
 		//diyJulia
 		boolean useCP = this.colrPRb.isSelected();
+		boolean useBw = this.colrBwRb.isSelected();
 		String func = this.constFuncChoice;
 		double rot = this.getRotation();
 		int diyJuliaLoopLt = this.juliaSize;
@@ -2277,18 +2288,39 @@ class SierpinskiComboPanel extends JPanel {
 			ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJuliaRealVal, diyJuliaImgVal);
 		}
 		
-		ff.setUseColorPalette(useCP);
+		if (useCP) {
+			ff.setUseColorPalette(useCP);
+		} else {
+			if (useBw) {
+				ff.setUseBlackWhite(useBw);
+			} else {
+				ff.setUseColorPalette(useCP);
+			}
+		}
 		ff.setUseFuncConst(func);
 		ff.setRotation(rot);
+		
 		if (!diyJApplyField.equals("None")) {
 			if (diyJApplyFatou) {
 				ff.setFatou(diyJApplyFatou);
+				ff.setZSq(false);
+				ff.setClassicJulia(false);
 			} else if (diyJApplyZSq) {
 				ff.setZSq(diyJApplyZSq);
+				ff.setFatou(false);
+				ff.setClassicJulia(false);
 			} else if (diyJApplyClassic) {
 				ff.setClassicJulia(diyJApplyClassic);
+				ff.setFatou(false);
+				ff.setZSq(false);
 			}
+		} else {
+			ff.setFatou(false);
+			ff.setZSq(false);
+			ff.setClassicJulia(false);
+
 		}
+		
 		FractalBase.setMaxIter(diyJuliaMaxIt);
 		FractalBase.setAreaSize(diyJuliaLoopLt);
 		FractalBase.setxC(diyJXc);
@@ -2304,6 +2336,7 @@ class SierpinskiComboPanel extends JPanel {
 		// for diy mandelbrot
 
 		boolean useCP = this.colrPRb.isSelected();
+		boolean useBw = this.colrBwRb.isSelected();
 		String func = this.constFuncChoice;
 
 		double rot = this.getRotation();
@@ -2333,7 +2366,15 @@ class SierpinskiComboPanel extends JPanel {
 			ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD,diyMandB, diyMRealVal, diyMImgVal);
 		}
 		
-		ff.setUseColorPalette(useCP);
+		if (useCP) {
+			ff.setUseColorPalette(useCP);
+		} else {
+			if (useBw) {
+				ff.setUseBlackWhite(useBw);
+			} else {
+				ff.setUseColorPalette(useCP);
+			}
+		}
 		ff.setUseFuncConst(func);
 		ff.setRotation(rot);
 		FractalBase.setMaxIter(diyMaxIt);
@@ -2365,6 +2406,7 @@ class SierpinskiComboPanel extends JPanel {
 		boolean jApplyClassic = this.applyClassicJulia;
 
 		boolean useCP = this.colrPRb.isSelected();
+		boolean useBw = this.colrBwRb.isSelected();
 		
 		String func = this.constFuncChoice;
 		
@@ -2382,18 +2424,39 @@ class SierpinskiComboPanel extends JPanel {
 			ff = new Julia(pow, comp, jBound, jUseD);
 		}
 		
-		ff.setUseColorPalette(useCP);
+		if (useCP) {
+			ff.setUseColorPalette(useCP);
+		} else {
+			if (useBw) {
+				ff.setUseBlackWhite(useBw);
+			} else {
+				ff.setUseColorPalette(useCP);
+			}
+		}
 		ff.setUseFuncConst(func);
 		ff.setRotation(rot);
+		
 		if (!jApplyField.equals("None")) {
 			if (jApplyFatou) {
 				ff.setFatou(jApplyFatou);
+				ff.setZSq(false);
+				ff.setClassicJulia(false);
 			} else if (jApplyZSq) {
 				ff.setZSq(jApplyZSq);
+				ff.setFatou(false);
+				ff.setClassicJulia(false);
 			} else if (jApplyClassic) {
 				ff.setClassicJulia(jApplyClassic);
+				ff.setFatou(false);
+				ff.setZSq(false);
 			}
+		} else {
+			ff.setFatou(false);
+			ff.setZSq(false);
+			ff.setClassicJulia(false);
+
 		}
+		
 		FractalBase.setxC(jXc);
 		FractalBase.setxC(jYc);
 		FractalBase.setScaleSize(jScale);
@@ -2414,7 +2477,8 @@ class SierpinskiComboPanel extends JPanel {
 		double mXc = this.mandXC;
 		double mYc = this.mandYC;
 		double mScale = this.mandScaleSize;
-		boolean useCP = this.colrPRb.isSelected();		
+		boolean useCP = this.colrPRb.isSelected();
+		boolean useBw = this.colrBwRb.isSelected();		
 		String func = this.constFuncChoice;	
 		double rot = this.getRotation();
 		
@@ -2425,7 +2489,16 @@ class SierpinskiComboPanel extends JPanel {
 		this.addMandelbrotUseDiffInfo();
 
 		ff = new Mandelbrot(mag, exp, mUseD, mBound, true);
-		ff.setUseColorPalette(useCP);
+		if (useCP) {
+			ff.setUseColorPalette(useCP);
+		} else {
+			if (useBw) {
+				ff.setUseBlackWhite(useBw);
+			} else {
+				ff.setUseColorPalette(useCP);
+			}
+		}
+		ff.setUseBlackWhite(useBw);
 		ff.setUseFuncConst(func);
 		ff.setRotation(rot);
 		FractalBase.setxC(mXc);
@@ -2441,6 +2514,7 @@ class SierpinskiComboPanel extends JPanel {
 	private FractalBase startPoly() {
 
 		boolean useCP = this.colrPRb.isSelected();
+		boolean useBw = this.colrBwRb.isSelected();	
 		String func = this.constFuncChoice;
 		double rot = this.getRotation();
 		
@@ -2484,7 +2558,15 @@ class SierpinskiComboPanel extends JPanel {
 			ff = new PolyFract(this.polyPower, this.polyUseDiff, this.polyBound,/* this.keepConst,*/ polyRealVal, polyImgVal);
 		}
 		
-		ff.setUseColorPalette(useCP);
+		if (useCP) {
+			ff.setUseColorPalette(useCP);
+		} else {
+			if (useBw) {
+				ff.setUseBlackWhite(useBw);
+			} else {
+				ff.setUseColorPalette(useCP);
+			}
+		}
 		ff.setUseFuncConst(func);
 		ff.setRotation(rot);
 		ff.setRowColMixType(this.polyType);
@@ -2659,9 +2741,11 @@ class SierpinskiComboPanel extends JPanel {
 				
 			case 	POLY:
 				if (this.colrPRb.isSelected()) {
-					baseInfo += "ColorPalette, "+eol;
-				} else {
-					baseInfo += "ColorComputed, "+eol;
+					baseInfo += "ColorPalette, " + eol;
+				} else if (this.colrCRb.isSelected()) {
+					baseInfo += "ColorComputed, " + eol;
+				} else if (this.colrBwRb.isSelected()) {
+					baseInfo += "BlackWhite, " + eol;
 				}
 				baseInfo += "Power: " + this.polyPower + ", ";
 				if (this.polyUseDiff) {
@@ -2713,8 +2797,10 @@ class SierpinskiComboPanel extends JPanel {
 			case	MANDELBROT	:
 				if (this.colrPRb.isSelected()) {
 					baseInfo += "ColorPalette, " + eol;
-				} else {
+				} else if (this.colrCRb.isSelected()) {
 					baseInfo += "ColorComputed, " + eol;
+				} else if (this.colrBwRb.isSelected()) {
+					baseInfo += "BlackWhite, " + eol;
 				}
 				baseInfo += "ImageMagnification: " + this.magnification + eol;
 				baseInfo += "Power: " + this.exponent + ", ";
@@ -2759,9 +2845,11 @@ class SierpinskiComboPanel extends JPanel {
 				
 			case	JULIA	:	
 				if (this.colrPRb.isSelected()) {
-					baseInfo += "ColorPalette, "+eol;
-				} else {
-					baseInfo += "ColorComputed, "+eol;
+					baseInfo += "ColorPalette, " + eol;
+				} else if (this.colrCRb.isSelected()) {
+					baseInfo += "ColorComputed, " + eol;
+				} else if (this.colrBwRb.isSelected()) {
+					baseInfo += "BlackWhite, " + eol;
 				}
 				baseInfo += "Power: " + this.polyPower + ", ";
 				if (this.getJUseDiff()) {
@@ -2807,8 +2895,10 @@ class SierpinskiComboPanel extends JPanel {
 				baseInfo += MANDELBROT + eol;
 				if (this.colrPRb.isSelected()) {
 					baseInfo += "ColorPalette, " + eol;
-				} else {
+				} else if (this.colrCRb.isSelected()) {
 					baseInfo += "ColorComputed, " + eol;
+				} else if (this.colrBwRb.isSelected()) {
+					baseInfo += "BlackWhite, " + eol;
 				}
 				baseInfo += "ImageMagnification: " + this.diyMandMagnification + eol;
 				baseInfo += "Power: " + this.diyMandExponent + ", ";
@@ -2861,8 +2951,10 @@ class SierpinskiComboPanel extends JPanel {
 				baseInfo += JULIA + eol;
 				if (this.colrPRb.isSelected()) {
 					baseInfo += "ColorPalette, " + eol;
-				} else {
+				} else if (this.colrCRb.isSelected()) {
 					baseInfo += "ColorComputed, " + eol;
+				} else if (this.colrBwRb.isSelected()) {
+					baseInfo += "BlackWhite, " + eol;
 				}
 				baseInfo += "Power: " + this.diyJuliaPower + ", ";
 				if (this.getDiyJuliaUseDiff()) {
@@ -3061,6 +3153,7 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.colrPRb.addActionListener(this.colorChoiceRbListener());
 		this.colrCRb.addActionListener(this.colorChoiceRbListener());
+		this.colrBwRb.addActionListener(this.colorChoiceRbListener());
 		
 		
 		this.noFuncRb.addActionListener(this.funcCalcRbListener());
@@ -3172,9 +3265,9 @@ class SierpinskiComboPanel extends JPanel {
 				doSelectDiyApolloMultCombosCommand(diyApolloMultComboOption);				
 			}});
 		
-		this.diyApolloColrPRb.addActionListener(colorChoiceRbListener());
+		/*this.diyApolloColrPRb.addActionListener(colorChoiceRbListener());
 		this.diyApolloColrCRb.addActionListener(colorChoiceRbListener());
-		
+		*/
 		//////////////	ends	apollo-duy	/////////////////
 	}
 
@@ -3277,8 +3370,8 @@ class SierpinskiComboPanel extends JPanel {
 				doSelectDiyJuliaScaleSizeCombosCommand(diyJuliaScaleSizeComboOption);				
 			}});
 		
-		this.diyJuliaColrPRb.addActionListener(colorChoiceRbListener());
-		this.diyJuliaColrCRb.addActionListener(colorChoiceRbListener());
+		/*this.diyJuliaColrPRb.addActionListener(colorChoiceRbListener());
+		this.diyJuliaColrCRb.addActionListener(colorChoiceRbListener());*/
 	}
 
 	private void setupDIYMandelbrotListeners() {
@@ -3372,8 +3465,8 @@ class SierpinskiComboPanel extends JPanel {
 				doSelectDiyMandScaleSizeCombosCommand(diyMandScaleSizeComboOption);				
 			}});
 		
-		this.diyMandColrPRb.addActionListener(colorChoiceRbListener());
-		this.diyMandColrCRb.addActionListener(colorChoiceRbListener());
+		/*this.diyMandColrPRb.addActionListener(colorChoiceRbListener());
+		this.diyMandColrCRb.addActionListener(colorChoiceRbListener());*/
 	}
 	
 	private void setupPolyListeners() {
@@ -3786,27 +3879,27 @@ class SierpinskiComboPanel extends JPanel {
 			this.fieldLines = "Fatou";
 			this.applyFatou = true;
 			this.applyZSq = false;
-			this.applyClassicJulia=false;
+			this.applyClassicJulia = false;
 		} else if (this.juliaFieldZSqRB.isSelected() || this.diyJuliaFieldZSqRB.isSelected()) {
 			this.fieldLines = "ZSq";
 			this.applyFatou = false;
 			this.applyZSq = true;
-			this.applyClassicJulia=false;
+			this.applyClassicJulia = false;
 		} else if (this.juliaFieldClassicRB.isSelected() || this.diyJuliaFieldClassicRB.isSelected()) {
 			this.fieldLines = "ClassicJulia";
 			this.applyFatou = false;
 			this.applyZSq = false;
-			this.applyClassicJulia=true;
+			this.applyClassicJulia = true;
 		} else if (this.juliaFieldNoneRB.isSelected() || this.diyJuliaFieldNoneRB.isSelected()) {
 			this.fieldLines = "None";
 			this.applyFatou = false;
 			this.applyZSq = false;
-			this.applyClassicJulia=false;
+			this.applyClassicJulia = false;
 		} else {
 			this.fieldLines = "None";
 			this.applyFatou = false;
 			this.applyZSq = false;
-			this.applyClassicJulia=false;
+			this.applyClassicJulia = false;
 		}
 	}
 	
@@ -3821,10 +3914,15 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private void doFractalColorChoice() {
-		if ((this.colrCRb.isSelected()||this.colrCRb.isSelected())) {
+		if (this.colrCRb.isSelected()) {
 			this.setUseColorPalette(true);
-		} else if ((this.colrCRb.isSelected()||this.colrCRb.isSelected())) {
+			this.setUseBlackAndWhite(false);
+		} else if (this.colrCRb.isSelected()) {
 			this.setUseColorPalette(false);
+			this.setUseBlackAndWhite(false);
+		} else if (this.colrBwRb.isSelected()) {
+			this.setUseColorPalette(false);
+			this.setUseBlackAndWhite(true);
 		} 
 	}
 	
@@ -3858,6 +3956,10 @@ class SierpinskiComboPanel extends JPanel {
 
 	private void setUseColorPalette(boolean b) {
 		this.useColorPalette = b;
+	}
+
+	private void setUseBlackAndWhite(boolean b) {
+		this.useBlackAndWhite = b;
 	}
 	
 	public double getRotation() {
