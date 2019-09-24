@@ -751,60 +751,105 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	}
 
 //https://en.wikipedia.org/wiki/Julia_set#Field_lines
-	private static boolean isFatou = false;	//todo	-	rename to getFieldLines??
-	public static boolean isFatou() {
+	private boolean isFatou = false;	//todo	-	rename to getFieldLines??
+	public boolean isFatou() {
 		return isFatou;
 	}
 
-	public static void setFatou(boolean isFat) {
+	public void setFatou(boolean isFat) {
 		isFatou = isFat;
 	}
+	
+	protected ComplexNumber getFatouValue(ComplexNumber z) {
+		double x = z.real();
+		double y = z.imaginary();
+		return this.getFatouValue(x,y);
+	}
 
-	protected ComplexNumber getFatouValue(double x0, double y0) {
-		ComplexNumber z0;
-		z0 = new ComplexNumber(x0, y0);
+	protected ComplexNumber getFatouValue(double x, double y) {
+		ComplexNumber z = new ComplexNumber(x, y);
 		final ComplexNumber one = new ComplexNumber(1.0, 0.0);
 		final ComplexNumber six = new ComplexNumber(6.0, 0.0);
 		final ComplexNumber two = new ComplexNumber(2.0, 0.0);
 		
 	
-		final ComplexNumber numerator = (one.minus(z0.power(3).divides(six)));
-		final ComplexNumber denom = ((z0.minus(z0.power(2).divides(two)))).power(2);
-		z0 = (numerator.divides(denom));
-		return z0;
+		final ComplexNumber numerator = (one.minus(z.power(3).divides(six)));
+		final ComplexNumber denom = ((z.minus(z.power(2).divides(two)))).power(2);
+		z = ( numerator.divides(denom) );
+		return z;
 	}
 	
 	/////////////////////////
-	private static boolean isZSq = false;	//todo	-	rename to getFieldLines??
-	public static boolean isZSq() {
+	//	z=z^2+c
+	////////////////////////
+	private boolean isZSq = false;	//todo	-	rename to getFieldLines??
+	public boolean isZSq() {
 		return isZSq;
 	}
 
-	public static void setZSq(boolean iszsq) {
+	public void setZSq(boolean iszsq) {
 		isZSq = iszsq;
 	}
 	
 
-	protected ComplexNumber getZSqValue(double x0, double y0) {
-		ComplexNumber z0;
-		z0 = new ComplexNumber(x0, y0);
-		return z0.power(2);
+	protected ComplexNumber getZSqValue(ComplexNumber z) {
+		double x = z.real();
+		double y = z.imaginary();
+		return this.getZSqValue(x,y);
 	}
 
+	protected ComplexNumber getZSqValue(double x, double y) {
+		return new ComplexNumber(x, y).power(2);
+	}
+	///////////
 	//endshttps://en.wikipedia.org/wiki/Julia_set#Field_lines
 	
 	
+
+	//http://paulbourke.net/fractals/juliaset/
+	/*	Julia was  interested  in  the
+	 * 	iterative properties of a more general expression, 	 * 
+	 * 	namely 
+	 * 
+	 * z^4 + z^3/(z-1) + z^2/(z^3 + 4*z^2 + 5) + c*/
+	private boolean isClassicJulia=false;
+	public boolean isClassicJulia() {
+		return isClassicJulia;
+	}
+
+	public void setClassicJulia(boolean isClassicJulia) {
+		this.isClassicJulia = isClassicJulia;
+	}
+	protected ComplexNumber getClassicJulia(ComplexNumber z) {
+		double x = z.real();
+		double y = z.imaginary();
+		return this.getClassicJulia(x,y);
+	}
+	
+	protected ComplexNumber getClassicJulia(double x, double y) {
+		ComplexNumber z = new ComplexNumber(x, y);
+		final ComplexNumber one = new ComplexNumber(1.0, 0.0);
+		final ComplexNumber four = new ComplexNumber(4.0, 0.0);
+		final ComplexNumber five = new ComplexNumber(5.0, 0.0);
+
+		final ComplexNumber first = z.power(4);
+		final ComplexNumber second = (z.power(3)).divides(z.minus(one));
+		final ComplexNumber third = (z.power(2)).divides((z.power(3)).plus(four.times(z.power(2))).plus(five));
+
+		z = first.plus(second).plus(third);
+		return z;
+	}
 	
 	class Line {
-		/*private*/ double x, y, length, angle;
-		
-		public Line(Point p1,Point p2){
+		double x, y, length, angle;
+
+		public Line(Point p1, Point p2) {
 			super();
-			this.x=p1.x;
-			this.y=p1.y;
-			
-			this.length=this.length(p1,p2);
-			this.angle=this.angle(p1,p2);
+			this.x = p1.x;
+			this.y = p1.y;
+
+			this.length = this.length(p1, p2);
+			this.angle = this.angle(p1, p2);
 		}
 
 		/**
@@ -1102,7 +1147,6 @@ public abstract class FractalBase extends JFrame implements Runnable {
 				}
 				return powered;
 			} else if (power < 0) {
-				int iter = 1;
 				final ComplexNumber a = this;
 				ComplexNumber powered = a.reciprocal();
 				int powAbs = Math.abs(power);
@@ -1111,7 +1155,8 @@ public abstract class FractalBase extends JFrame implements Runnable {
 				}
 				return powered;
 
-			}
+			}	
+			//power==0
 			return new ComplexNumber(1.0,0.0);	//	^0==1
 		}
 

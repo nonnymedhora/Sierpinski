@@ -253,10 +253,12 @@ public class Julia extends FractalBase {
 				double x0 = xc - size / 2 + size * row / n;
 				double y0 = yc - size / 2 + size * col / n;
 				ComplexNumber z0;
-				if (FractalBase.isFatou()) {
+				if (this.isFatou()) {
 					z0 = this.getFatouValue(x0, y0);
-				} else if (FractalBase.isZSq()) {
+				} else if (this.isZSq()) {
 					z0 = this.getZSqValue(x0, y0);
+				}  else if (this.isClassicJulia()) {
+					z0 = this.getClassicJulia(x0, y0);
 				} else {
 					z0 = new ComplexNumber(x0, y0);
 				}
@@ -459,6 +461,7 @@ c = 0.355 + 0.355i
 c = -0.54 + 0.54i
 c = -0.4 + -0.59i
 c = 0.355534 - 0.337292i
+x=-0.202420806884766,	y=0.3957333577474
 /
 /*
 
