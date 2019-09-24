@@ -84,8 +84,15 @@ System.out.println("type---->"+(type));	*/
 		
 		for (int row = 0; row < n; row++) {
 			for (int col = 0; col < n; col++) {
-				double x0 = xc - size / 2 + size * row / n;
-				double y0 = yc - size / 2 + size * col / n;
+				double x0;
+				double y0;
+				if (!this.isReversePixelCalculation()) {
+					x0 = xc - size / 2 + size * row / n;
+					y0 = yc - size / 2 + size * col / n;
+				} else {
+					x0 = xc - size / 2 + size * col / n;
+					y0 = yc - size / 2 + size * row / n;
+				}
 				
 				ComplexNumber zx = null;
 				ComplexNumber zy = null;
@@ -181,18 +188,42 @@ System.out.println("type---->"+(type));	*/
 				}
 				
 				
+				if (this.isUseBlackWhite()) {
+					int bOrW;
+					if (diff) {
+						bOrW = this.polyFract(zx,zy, max, this.power, this.compConst, bd);
+						if (bOrW != max) {
+							bOrW = 0;
+						} else {
+							bOrW = COLORMAXRGB;
+						}
+					} else {
+						int res = this.polyFract(zx,zy, max, this.power, this.compConst, bd);
+						bOrW = max - res;
+						if (bOrW != res) {
+							bOrW = 0;
+						} else {
+							bOrW = COLORMAXRGB;
+						}
 
-				int colorRGB;
+					}
+					
+					setPixel(row, n - 1 - col, bOrW);
 
-				if (diff) {
-					colorRGB = polyFract(zx, zy, max, pow, this.compConst, bd);
 				} else {
-					colorRGB = max - polyFract(zx, zy,max, pow, this.compConst,bd);
-				}
-				
-				Color color = this.getPixelDisplayColor(row, col, colorRGB, diff);
 
-				setPixel(row, n - 1 - col, color.getRGB());
+					int colorRGB;
+	
+					if (diff) {
+						colorRGB = polyFract(zx, zy, max, pow, this.compConst, bd);
+					} else {
+						colorRGB = max - polyFract(zx, zy,max, pow, this.compConst,bd);
+					}
+					
+					Color color = this.getPixelDisplayColor(row, col, colorRGB, diff);
+	
+					setPixel(row, n - 1 - col, color.getRGB());
+				}
 
 			}
 		}

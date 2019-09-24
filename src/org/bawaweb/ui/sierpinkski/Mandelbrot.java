@@ -129,9 +129,15 @@ public class Mandelbrot extends FractalBase {
 			for (int col = 0; col < n; col++) {
 				double x0 = xc - size / 2 + size * row / n;
 				double y0 = yc - size / 2 + size * col / n;
-				ComplexNumber z0 = new ComplexNumber(x0, y0);
-				z0 = this.computeComplexConstant(func2Apply, z0);
 				
+				ComplexNumber z0;
+				if (!this.isReversePixelCalculation()) {
+					z0 = new ComplexNumber(x0, y0);
+				} else {
+					z0 = new ComplexNumber(y0, x0);
+				}
+				
+				z0 = this.computeComplexConstant(func2Apply, z0);				
 
 				if (this.isUseBlackWhite()) {
 					int bOrW;

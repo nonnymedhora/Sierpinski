@@ -487,6 +487,9 @@ class SierpinskiComboPanel extends JPanel {
 	
 	protected ButtonGroup constFnBg = new ButtonGroup();	
 	private String constFuncChoice = "None";
+
+	private JCheckBox invertPixelsCb = new JCheckBox("Invert Pixel Calculation", false);
+	private boolean invertPixelCalculation = false;
 	
 	private final JCheckBox magnifyCb = new JCheckBox("Magnify",false);
 	private boolean doMagnify = false;
@@ -531,6 +534,8 @@ class SierpinskiComboPanel extends JPanel {
 		this.rotateCombo.setVisible(false);
 		this.add(this.rotLabel);
 		this.add(this.rotateCombo);
+		
+		this.add(invertPixelsCb);
 
 		this.buStart.setEnabled(false);
 		this.add(this.buStart);
@@ -1472,6 +1477,13 @@ class SierpinskiComboPanel extends JPanel {
 			}
 		}
 		
+		boolean invertPix = this.invertPixelCalculation;
+		if (invertPix) {
+			this.formulaArea.append("<br/><font color='red'>Pixel Calculation reversed  z = y + i*x + C</font><br/>");
+		} else {
+			this.formulaArea.append("<br/><font color='red'>Pixel Calculation reversed  z = y + i*x + C</font><br/>");
+		}
+		
 		if(this.applyFatou){
 			this.formulaArea.setText("<br/><font color='green'>Fatou Field Lines:<br/>f(z) = (1 - (z^3/6)) / ((z - (z^2/2)) ^ 2) + C</font><br/>");
 		}else if(this.applyZSq){
@@ -2264,6 +2276,15 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setVisible(true);
 		this.formulaArea.setText("");
 		this.formulaArea.setText("<font color='blue'>(DIY)Julia Set:<br/>");//<br/>f(z) = z ^ " + diyJuliaP + " + C<br/>");
+
+		boolean invertPix = this.invertPixelCalculation;
+		if (invertPix) {
+			this.formulaArea.append("<br/><font color='red'>Pixel Calculation reversed  z = y + i*x + C</font><br/>");
+		} else {
+			this.formulaArea.append("<br/><font color='red'>Pixel Calculation reversed  z = y + i*x + C</font><br/>");
+		}
+		
+		
 		
 		if (diyJApplyFatou) {
 			this.formulaArea.append("<br/><font color='green'>Fatou Field Lines:<br/><br/>f(z) = (1 - (z^3/6)) / ((z - (z^2/2)) ^ 2) + C</font><br/>");
@@ -2287,6 +2308,8 @@ class SierpinskiComboPanel extends JPanel {
 			this.formulaArea.append("<br/>Constant = " + diyJuliaRealVal + " + (" + diyJuliaImgVal + " * i)</font>");
 			ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJuliaRealVal, diyJuliaImgVal);
 		}
+		
+		ff.setReversePixelCalculation(invertPix);
 		
 		if (useCP) {
 			ff.setUseColorPalette(useCP);
@@ -2354,6 +2377,14 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setVisible(true);
 		this.formulaArea.setText("");
 		this.formulaArea.setText("<font color='blue'>(DIY)Mandelbrot Set:<br/><br/>f(z) = z ^ " + diyMandExp + " + C");
+		
+		boolean invertPix = this.invertPixelCalculation;
+		if (invertPix) {
+			this.formulaArea.append("<br/><font color='red'>Pixel Calculation reversed  z = y + i*x + C</font><br/>");
+		} else {
+			this.formulaArea.append("<br/><font color='red'>Pixel Calculation reversed  z = y + i*x + C</font><br/>");
+		}
+		
 		this.addDiyMandelbrotUseDiffInfo();
 		
 		if (diyMKConst) {
@@ -2365,6 +2396,8 @@ class SierpinskiComboPanel extends JPanel {
 			this.formulaArea.append("<br/>Constant = " + diyMRealVal + " + (" + diyMImgVal + " * i)</font>");
 			ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD,diyMandB, diyMRealVal, diyMImgVal);
 		}
+		
+		ff.setReversePixelCalculation(invertPix);
 		
 		if (useCP) {
 			ff.setUseColorPalette(useCP);
@@ -2423,6 +2456,9 @@ class SierpinskiComboPanel extends JPanel {
 		} else {
 			ff = new Julia(pow, comp, jBound, jUseD);
 		}
+		
+		boolean invertPix = this.invertPixelCalculation;
+		ff.setReversePixelCalculation(invertPix);
 		
 		if (useCP) {
 			ff.setUseColorPalette(useCP);
@@ -2486,9 +2522,20 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setVisible(true);
 		this.formulaArea.setText("");
 		this.formulaArea.setText("<font color='blue'>Mandelbrot Set:<br/><br/>f(z) = z ^ " + exp + " + C");
+		
+		boolean invertPix = this.invertPixelCalculation;
+		if (invertPix) {
+			this.formulaArea.append("<br/><font color='red'>Pixel Calculation reversed  z = y + i*x + C</font><br/>");
+		} else {
+			this.formulaArea.append("<br/><font color='red'>Pixel Calculation reversed  z = y + i*x + C</font><br/>");
+		}
+		
 		this.addMandelbrotUseDiffInfo();
 
 		ff = new Mandelbrot(mag, exp, mUseD, mBound, true);
+
+		ff.setReversePixelCalculation(invertPix);
+		
 		if (useCP) {
 			ff.setUseColorPalette(useCP);
 		} else {
@@ -2517,12 +2564,19 @@ class SierpinskiComboPanel extends JPanel {
 		boolean useBw = this.colrBwRb.isSelected();	
 		String func = this.constFuncChoice;
 		double rot = this.getRotation();
+		boolean invertPix = this.invertPixelCalculation;
 		
 		FractalBase ff;
 		this.formulaArea.setVisible(true);
 		this.formulaArea.setText("");
-		this.formulaArea.setText("<font color='blue'>Poynomial Set:<br/><br/>f(z) = (x ^ " + this.polyPower + " + y ^ " + this.polyPower + ") + C"+
-				"<br/>  x = Row + 0 * i , y = 0 + Column * i");
+		this.formulaArea.setText("<font color='blue'>Poynomial Set:<br/>");//
+		this.formulaArea.setText("<br/>f(z) = (x ^ " + this.polyPower + " + y ^ " + this.polyPower + ") + C");
+		
+		if (!invertPix) {
+			this.formulaArea.append("<br/>  x = Row + 0 * i , y = 0 + Column * i<br/>");
+		}else{
+			this.formulaArea.append("<br/>  x = Column + 0 * i , y = 0 + Row * i<br/>");
+		}
 		
 		if (this.polyType.equals("Reverse")) {
 			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, y)<br/>");
@@ -2557,6 +2611,8 @@ class SierpinskiComboPanel extends JPanel {
 			
 			ff = new PolyFract(this.polyPower, this.polyUseDiff, this.polyBound,/* this.keepConst,*/ polyRealVal, polyImgVal);
 		}
+		
+		ff.setReversePixelCalculation(invertPix);
 		
 		if (useCP) {
 			ff.setUseColorPalette(useCP);
@@ -3170,6 +3226,19 @@ class SierpinskiComboPanel extends JPanel {
 		this.rootRb.addActionListener(this.funcCalcRbListener());
 		/*this.cuRootRb.addActionListener(this.funcCalcRbListener());*/
 		this.lnRb.addActionListener(this.funcCalcRbListener());
+		
+		this.invertPixelsCb.setActionCommand("InvertPixels");
+		this.invertPixelsCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetInvertPixelsCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetInvertPixelsCommand(false);
+				}
+			}
+        });
+		
 		
 		this.magnifyCb.setActionCommand("Magnify");
 		this.magnifyCb.addItemListener(new ItemListener() {
@@ -3969,6 +4038,12 @@ class SierpinskiComboPanel extends JPanel {
 	public void setRotation(double rot) {
 		this.rotation = rot;
 	}
+	
+	private void doSetInvertPixelsCommand(boolean invert) {
+		this.invertPixelCalculation = invert;
+	}
+	
+	
 
 	private void doMagnify(boolean mag) {
 		this.doMagnify=mag;

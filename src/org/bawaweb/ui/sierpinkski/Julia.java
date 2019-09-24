@@ -252,6 +252,13 @@ public class Julia extends FractalBase {
 			for (int col = 0; col < n; col++) {
 				double x0 = xc - size / 2 + size * row / n;
 				double y0 = yc - size / 2 + size * col / n;
+				
+				if (this.isReversePixelCalculation()) {
+					double tmp = x0;
+					x0 = y0;
+					y0 = tmp;
+				}
+				
 				ComplexNumber z0;
 				if (this.isFatou()) {
 					z0 = this.getFatouValue(x0, y0);
