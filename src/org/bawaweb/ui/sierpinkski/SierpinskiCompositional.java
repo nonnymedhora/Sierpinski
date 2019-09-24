@@ -467,7 +467,7 @@ class SierpinskiComboPanel extends JPanel {
 	
 	protected JRadioButton colrPRb = new JRadioButton("Use Color Palette", false);
 	protected JRadioButton colrCRb = new JRadioButton("Compute Color", true);
-	protected JRadioButton colrBwRb = new JRadioButton("Black_&_White", false);
+	protected JRadioButton colrBwRb = new JRadioButton("BlackWhite", false);
 	
 	protected ButtonGroup colrBg = new ButtonGroup();	
 	
@@ -523,7 +523,7 @@ class SierpinskiComboPanel extends JPanel {
 
 		// creates-color-choice-options
 		this.createColorChoiceRBs();
-		
+//		System.out.println("colrbwbrbisvisble="+this.colrBwRb.isVisible());
 		// creates-rototation-choice-options -- does not add
 		this.createRotationCombo();
 		
@@ -667,13 +667,13 @@ class SierpinskiComboPanel extends JPanel {
 		this.colrCRb.setName("ComputeColor");
 		this.colrBwRb.setName("BlackWhite");
 
+		this.add(this.colrBwRb);
 		this.add(this.colrPRb);
 		this.add(this.colrCRb);
-		this.add(this.colrBwRb);
 		
-		this.colrPRb.setVisible(false);
-		this.colrCRb.setVisible(false);
-		this.colrBwRb.setVisible(false);
+		this.colrPRb.setVisible(true);
+		this.colrCRb.setVisible(true);
+		this.colrBwRb.setVisible(true);
 		
 	}
 
@@ -1066,6 +1066,10 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private void createKochSnowFlakePanel(){
+		this.colrPRb.setVisible(false);
+		this.colrCRb.setVisible(false);
+		this.colrBwRb.setVisible(false);
+		
 		this.kochSnowFlakePanel.add(this.kochFillExternalCb);
 		this.kochSnowFlakePanel.add(this.kochMixColorsCb);
 		this.kochSnowFlakePanel.add(this.kochSpreadOuterCb);
@@ -1075,6 +1079,10 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private void createSierpinskiTPanel() {
+		this.colrPRb.setVisible(false);
+		this.colrCRb.setVisible(false);
+		this.colrBwRb.setVisible(false);
+		
 		this.sierpinskiTPanel.add(this.sierpinskiTFillInnerCb);
 		
 		this.sierpTBg.add(this.sierpTUpRb);
