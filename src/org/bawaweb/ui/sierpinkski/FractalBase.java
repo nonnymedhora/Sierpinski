@@ -79,6 +79,15 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	
 	protected boolean running = false;
 
+	protected boolean useColorPalette = false;
+	protected boolean useBlackWhite = false;
+	protected boolean useComputeColor = !(this.isUseColorPalette() || this.isUseBlackWhite());
+	
+	protected double  bound = 2.0;
+	
+	protected boolean reversePixelCalculation = false;
+
+
 	/** Constructor: an instance */
 	public FractalBase() {
 		super();
@@ -603,12 +612,6 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	public void setRunning(boolean run) {
 		this.running = run;
 	}
-
-	protected boolean useColorPalette = false;
-	protected boolean useBlackWhite = false;
-	protected boolean useComputeColor = !(this.isUseColorPalette() || this.isUseBlackWhite());
-	protected double bound = 2.0;
-
 	public boolean isUseBlackWhite() {
 		return this.useBlackWhite/*=true*/;
 	}
@@ -851,6 +854,14 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		return z;
 	}
 	
+	public boolean isReversePixelCalculation() {
+		return this.reversePixelCalculation;
+	}
+
+	public void setReversePixelCalculation(boolean reverse) {
+		this.reversePixelCalculation = reverse;
+	}
+
 	class Line {
 		double x, y, length, angle;
 
