@@ -29,6 +29,8 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
@@ -55,7 +57,8 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private static final long serialVersionUID = 156478L;
 	
-	private static final Double[] BOUNDARIES = new Double[] { -5.0, -4.5, -4.0, -3.5, -3.0, -2.5, -2.0, -1.5, -1.0, 0.0, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private static final Double[] BOUNDARIES = getBoundaryOptions();
+
 	private static final Integer[] EXPONENTS = new Integer[] { -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	private static final Integer[] MAX_ITERATIONS = new Integer[] { 10, 50, 100, 200, 225, 255, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 2000, 3000, 5000, 7500, 10000 };
 	private static final Integer[] AREA_SIZES = new Integer[] { 10, 50, 100, 200, 225, 255, 500, 512, 599, 800 };
@@ -684,6 +687,23 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.rotateCombo=new JComboBox<Double>(this.rotOptions);
 		this.rotateCombo.setVisible(false);
+	}
+	
+
+	private static Double[] getBoundaryOptions() {
+		final double start = -100.0;
+		final double end = 100.0;
+		double tempVal = start;
+		Vector<Double> theBdVec = new Vector<Double>();
+		while(tempVal<=end){
+			theBdVec.add(tempVal);
+			tempVal+=0.5;
+		}
+		Double[] bdArr = new Double[theBdVec.size()];
+		for(int i = 0; i < theBdVec.size();i++){
+			bdArr[i]=theBdVec.get(i);
+		}
+		return bdArr;
 	}
 	
 	private void createPolyPanel() {
