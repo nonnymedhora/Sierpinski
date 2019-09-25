@@ -85,6 +85,9 @@ class SierpinskiComboPanel extends JPanel {
 	private static final String J8 = "P[2] C2";//[-0.75+0.11*i]";	//f(z) = z^2 + ....
 	private static final String J9 = "P[2] C3";//[-0.1+0.651*i]";	//f(z) = z^2 + ...
 	
+	private static final String J10 = "P[2] CPI1R06i";//[pi/2*(1.0 + 0.6i)]";	//f(z) = z^2 + ...
+	private static final String J11 = "P[2] CPI1R04i";//[pi/2*(1.0 + 0.4i)]";	//f(z) = z^2 + ...
+	
 	
 	//	for	ApollonianCircles
 	// curvature & multiplier options for @see ApollonianCircles
@@ -139,7 +142,7 @@ class SierpinskiComboPanel extends JPanel {
 	private boolean kochSpreadOuter = false;
 	
 	// for Julia
-	private final String[] juliaOptions = new String[] { J1, J2, J3, J4, J5, J6, J7, J8, J9 };
+	private final String[] juliaOptions = new String[] { J1, J2, J3, J4, J5, J6, J7, J8, J9, J10, J11};
 	private final JComboBox<String> juliaCombos = new JComboBox<String>(juliaOptions);
 	private final JCheckBox juliaUseDiffCb = new JCheckBox("UseDifferencesOnly", true);
 	private final Integer[] juliaMaxIterOptions = MAX_ITERATIONS;
@@ -1679,9 +1682,9 @@ class SierpinskiComboPanel extends JPanel {
 	}
 
 	private void addJuliaFormulaInfo() {
-		if (!(this.juliaSelection.equals("J7") || this.juliaSelection.equals("J8")
-				|| this.juliaSelection.equals("J9"))) {
-			
+		if (! (this.juliaSelection.equals("J7") || this.juliaSelection.equals("J8")
+				|| this.juliaSelection.equals("J9")|| this.juliaSelection.equals("J10")|| this.juliaSelection.equals("J11")) )
+		{
 			this.formulaArea.setText("<font color='blue'>Julia Set:<br/><br/>f(z) = z <sup>" + this.power + "</sup> + " + this.compConst+"<br/>");
 			
 		} else {
@@ -1691,6 +1694,10 @@ class SierpinskiComboPanel extends JPanel {
 				this.formulaArea.setText("<font color='blue'>Julia Set:<br/><br/>f(z) = z <sup>" + this.power + "</sup> + (-0.75 + 0.11 * i)<br/>");
 			}else if(this.juliaSelection.equals("J9")){
 				this.formulaArea.setText("<font color='blue'>Julia Set:<br/><br/>f(z) = z <sup>" + this.power + "</sup> + (-0.1 + 0.651 * i)<br/>");
+			}else if(this.juliaSelection.equals("J10")){
+				this.formulaArea.setText("<font color='blue'>Julia Set:<br/><br/>f(z) = z <sup>" + this.power + "</sup> + ( pi/2 * (1.0 + 0.6 * i) )<br/>");
+			}else if(this.juliaSelection.equals("J11")){
+				this.formulaArea.setText("<font color='blue'>Julia Set:<br/><br/>f(z) = z <sup>" + this.power + "</sup> + ( pi/2 * (1.0 + 0.4 * i) )<br/>");
 			}
 		}
 		
@@ -2036,6 +2043,20 @@ class SierpinskiComboPanel extends JPanel {
 				this.power = 2;				this.compConst=0.0;
 				this.complex = "C3";
 				this.juliaSelection="J9";
+				this.addJuliaFormulaInfo();
+				this.addJuliaUseDiffInfo();
+				break;
+			case J10: //J10 = "P[2] CPI1R06i";//[pi/2*(1.0 + 0.6i)]";	//f(z) = z^2 + ...
+				this.power = 2;				this.compConst=0.0;
+				this.complex = "M1";
+				this.juliaSelection="J10";
+				this.addJuliaFormulaInfo();
+				this.addJuliaUseDiffInfo();
+				break;
+			case J11: //  J9 = "P[2] C3";//[-0.1+0.651*i]";
+				this.power = 2;				this.compConst=0.0;
+				this.complex = "M2";
+				this.juliaSelection="J11";
 				this.addJuliaFormulaInfo();
 				this.addJuliaUseDiffInfo();
 				break;
