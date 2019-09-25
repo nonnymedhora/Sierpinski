@@ -242,6 +242,7 @@ public class Julia extends FractalBase {
 		double bd = this.getBound();
 		
 		String func2Apply = this.useFuncConst;
+		String pxFunc2Apply = this.useFuncPixel;
 //		System.out.println("this.complexConst===" + this.complexConst);
 //		System.out.println("this.complex==null  " + (this.complex == null));
 //		System.out.println("this.isComplexNumConst  --  " + this.isComplexNumConst);
@@ -259,15 +260,17 @@ public class Julia extends FractalBase {
 					y0 = tmp;
 				}
 				
-				ComplexNumber z0;
+				ComplexNumber z0 = new ComplexNumber(x0,y0);
+				z0=computePixel(pxFunc2Apply,z0);
+				
 				if (this.isFatou()) {
-					z0 = this.getFatouValue(x0, y0);
+					z0 = this.getFatouValue(z0);
 				} else if (this.isZSq()) {
-					z0 = this.getZSqValue(x0, y0);
+					z0 = this.getZSqValue(z0);
 				} else if (this.isClassicJulia()) {
-					z0 = this.getClassicJulia(x0, y0);
+					z0 = this.getClassicJulia(z0);
 				} else {
-					z0 = new ComplexNumber(x0, y0);
+					z0 = z0;//new ComplexNumber(x0, y0);
 				}
 
 				/*if (isComplexNumConst || this.complex == null) {
@@ -425,6 +428,58 @@ public class Julia extends FractalBase {
 		}
 		return cConst;
 	}
+	
+	
+	private ComplexNumber computePixel(String fun, ComplexNumber z0) {
+		switch (fun) {
+			case "Sine":
+				z0 = z0.sine(); // z0.sin();
+				break;
+			case "Cosine":
+				z0 = z0.cosine(); // z0.cos();
+				break;
+			case "Tan":
+				z0 = z0.tangent(); // z0.tan();
+				break;
+			case "ArcSine":
+				z0 = z0.inverseSine(); // z0.sin();
+				break;
+			case "ArcCosine":
+				z0 = z0.inverseCosine(); // z0.cos();
+				break;
+			case "ArcTan":
+				z0 = z0.inverseTangent(); // z0.tan();
+				break;
+			case "Square":
+				z0 = z0.power(2); // z0.sin();
+				break;
+			case "Cube":
+				z0 = z0.power(3); // z0.cos();
+				break;
+			case "Exponent":
+				z0 = z0.exp(); // z0.tan();
+				break;
+			case "Root":
+				z0 = z0.sqroot(); // z0.sin();
+				break;
+			case "CubeRoot":
+				z0 = z0.curoot(); // z0.cos();
+				break;
+			case "Log":
+				z0 = z0.ln(); // z0.tan();
+				break;
+	
+			case "None":
+				z0 = z0;
+				break;
+			default:
+				z0 = z0;
+				break;
+		}// ends-switch
+
+		return z0;
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.bawaweb.ui.sierpinkski.FractalBase#getFractalShapeTitle()
 	 */

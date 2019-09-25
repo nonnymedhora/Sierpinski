@@ -474,6 +474,7 @@ class SierpinskiComboPanel extends JPanel {
 	
 	protected ButtonGroup colrBg = new ButtonGroup();	
 	
+	// for Constants
 	protected JRadioButton noFuncRb 	= new JRadioButton("None",true);
 	protected JRadioButton sineRb 		= new JRadioButton("sine",false);
 	protected JRadioButton cosineRb 	= new JRadioButton("cosine",false);
@@ -490,9 +491,31 @@ class SierpinskiComboPanel extends JPanel {
 	
 	protected ButtonGroup constFnBg = new ButtonGroup();	
 	private String constFuncChoice = "None";
+	
+	
 
+	
+	// for pixels
 	private JCheckBox invertPixelsCb = new JCheckBox("Invert Pixel Calculation", false);
 	private boolean invertPixelCalculation = false;
+	
+	protected JRadioButton pxNoFuncRb 	= new JRadioButton("None",true);
+	protected JRadioButton pxSineRb 	= new JRadioButton("sine",false);
+	protected JRadioButton pxCosineRb 	= new JRadioButton("cosine",false);
+	protected JRadioButton pxTanRb 		= new JRadioButton("tan",false);	
+	protected JRadioButton pxArcSineRb 	= new JRadioButton("arcsine",false);
+	protected JRadioButton pxArcCosineRb = new JRadioButton("arccosine",false);
+	protected JRadioButton pxArcTanRb 	= new JRadioButton("arctan",false);		
+	protected JRadioButton pxSqRb 		= new JRadioButton("square",false);	
+	protected JRadioButton pxCuRb 		= new JRadioButton("cube",false);
+	protected JRadioButton pxExpRb 		= new JRadioButton("exponent(e)",false);
+	protected JRadioButton pxRootRb 	= new JRadioButton("root",false);
+	/*protected JRadioButton cuRootRb = new JRadioButton("cube-root",false);*/
+	protected JRadioButton pxLnRb 		= new JRadioButton("log(e)",false);	
+	
+	protected ButtonGroup pxFnBg = new ButtonGroup();	
+	private String pxFuncChoice = "None";
+	
 	
 	private final JCheckBox magnifyCb = new JCheckBox("Magnify",false);
 	private boolean doMagnify = false;
@@ -539,6 +562,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(this.rotateCombo);
 		
 		this.add(invertPixelsCb);
+		this.createPixelFunctionsRBs();
 
 		this.buStart.setEnabled(false);
 		this.add(this.buStart);
@@ -580,6 +604,7 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private void createConstantFunctionsRBs(){
+		this.add(new JLabel("Constant Functions:"));
 		this.constFnBg.add(this.noFuncRb);
 		this.constFnBg.add(this.sineRb);
 		this.constFnBg.add(this.cosineRb);
@@ -656,8 +681,82 @@ class SierpinskiComboPanel extends JPanel {
 		/*this.cuRootRb.setVisible(false);*/
 		this.lnRb.setVisible(false);
 	}
+	
+	private void createPixelFunctionsRBs() {
+		this.add(new JLabel("Pixel Functions:"));
+		this.pxFnBg.add(this.pxNoFuncRb);
+		this.pxFnBg.add(this.pxSineRb);
+		this.pxFnBg.add(this.pxCosineRb);
+		this.pxFnBg.add(this.pxTanRb);
+		this.pxFnBg.add(this.pxArcSineRb);
+		this.pxFnBg.add(this.pxArcCosineRb);
+		this.pxFnBg.add(this.pxArcTanRb);
+
+		this.pxFnBg.add(this.sqRb);
+		this.pxFnBg.add(this.cuRb);
+		this.pxFnBg.add(this.expRb);
+		this.pxFnBg.add(this.rootRb);
+		this.pxFnBg.add(this.lnRb);
+
+		this.pxNoFuncRb.setActionCommand("NoCalc");
+		this.pxSineRb.setActionCommand("SineCalc");
+		this.pxCosineRb.setActionCommand("CosineCalc");
+		this.pxTanRb.setActionCommand("TanCalc");
+		this.pxArcSineRb.setActionCommand("ArcSineCalc");
+		this.pxArcCosineRb.setActionCommand("ArcCosineCalc");
+		this.pxArcTanRb.setActionCommand("ArcTanCalc");
+
+		this.pxSqRb.setActionCommand("SquareCalc");
+		this.pxCuRb.setActionCommand("CubeCalc");
+		this.pxExpRb.setActionCommand("ExponentCalc");
+		this.pxRootRb.setActionCommand("RootCalc");
+		this.pxLnRb.setActionCommand("LogCalc");
+
+		this.pxNoFuncRb.setName("None");
+		this.pxSineRb.setName("Sine");
+		this.pxCosineRb.setName("Cosine");
+		this.pxTanRb.setName("Tan");
+		this.pxArcSineRb.setName("ArcSine");
+		this.pxArcCosineRb.setName("ArcCosine");
+		this.pxArcTanRb.setName("ArcTan");
+
+		this.pxSqRb.setName("Square");
+		this.pxCuRb.setName("Cube");
+		this.pxExpRb.setName("Exponent");
+		this.pxRootRb.setName("Root");
+		this.pxLnRb.setName("Log");
+
+		this.add(this.pxNoFuncRb);
+		this.add(this.pxSineRb);
+		this.add(this.pxCosineRb);
+		this.add(this.pxTanRb);
+		this.add(this.pxArcSineRb);
+		this.add(this.pxArcCosineRb);
+		this.add(this.pxArcTanRb);
+
+		this.add(this.pxSqRb);
+		this.add(this.pxCuRb);
+		this.add(this.pxExpRb);
+		this.add(this.pxRootRb);
+		this.add(this.pxLnRb);
+
+		this.pxNoFuncRb.setVisible(false);
+		this.pxSineRb.setVisible(false);
+		this.pxCosineRb.setVisible(false);
+		this.pxTanRb.setVisible(false);
+		this.pxArcSineRb.setVisible(false);
+		this.pxArcCosineRb.setVisible(false);
+		this.pxArcTanRb.setVisible(false);
+
+		this.pxSqRb.setVisible(false);
+		this.pxCuRb.setVisible(false);
+		this.pxExpRb.setVisible(false);
+		this.pxRootRb.setVisible(false);
+		this.pxLnRb.setVisible(false);
+	}
 
 	private void createColorChoiceRBs() {
+		this.add(new JLabel("Choose Color:"));
 		this.colrBg.add(this.colrPRb);
 		this.colrBg.add(this.colrCRb);
 		this.colrBg.add(this.colrBwRb);
@@ -712,7 +811,6 @@ class SierpinskiComboPanel extends JPanel {
 		this.colrPRb.setVisible(true);
 		this.colrCRb.setVisible(true);
 		this.colrBwRb.setVisible(true);
-
 		
 		this.noFuncRb.setVisible(true);
 		this.sineRb.setVisible(true);
@@ -728,6 +826,22 @@ class SierpinskiComboPanel extends JPanel {
 		this.rootRb.setVisible(true);
 		/*this.cuRootRb.setVisible(true);*/
 		this.lnRb.setVisible(true);
+		
+
+
+		this.pxNoFuncRb.setVisible(true);
+		this.pxSineRb.setVisible(true);
+		this.pxCosineRb.setVisible(true);
+		this.pxTanRb.setVisible(true);
+		this.pxArcSineRb.setVisible(true);
+		this.pxArcCosineRb.setVisible(true);
+		this.pxArcTanRb.setVisible(true);
+
+		this.pxSqRb.setVisible(true);
+		this.pxCuRb.setVisible(true);
+		this.pxExpRb.setVisible(true);
+		this.pxRootRb.setVisible(true);
+		this.pxLnRb.setVisible(true);
 		
 		this.polyOptionsPanel.add(new JLabel("Exponent(X):"));
 		this.polyOptionsPanel.add(this.polyExpCombos);		
@@ -839,6 +953,22 @@ class SierpinskiComboPanel extends JPanel {
 		this.rotLabel.setVisible(true);
 		this.rotateCombo.setVisible(true);
 		
+
+
+		this.pxNoFuncRb.setVisible(true);
+		this.pxSineRb.setVisible(true);
+		this.pxCosineRb.setVisible(true);
+		this.pxTanRb.setVisible(true);
+		this.pxArcSineRb.setVisible(true);
+		this.pxArcCosineRb.setVisible(true);
+		this.pxArcTanRb.setVisible(true);
+
+		this.pxSqRb.setVisible(true);
+		this.pxCuRb.setVisible(true);
+		this.pxExpRb.setVisible(true);
+		this.pxRootRb.setVisible(true);
+		this.pxLnRb.setVisible(true);
+		
 		this.diyJuliaPanel.add(new JLabel("Power:"));
 		this.diyJuliaPanel.add(this.diyJuliaPowerCombos);
 		this.diyJuliaPanel.add(this.diyJuliaUseDiffCb);
@@ -906,6 +1036,23 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.rotLabel.setVisible(true);
 		this.rotateCombo.setVisible(true);
+		
+
+
+		this.pxNoFuncRb.setVisible(true);
+		this.pxSineRb.setVisible(true);
+		this.pxCosineRb.setVisible(true);
+		this.pxTanRb.setVisible(true);
+		this.pxArcSineRb.setVisible(true);
+		this.pxArcCosineRb.setVisible(true);
+		this.pxArcTanRb.setVisible(true);
+
+		this.pxSqRb.setVisible(true);
+		this.pxCuRb.setVisible(true);
+		this.pxExpRb.setVisible(true);
+		this.pxRootRb.setVisible(true);
+		this.pxLnRb.setVisible(true);
+		
 		this.diyMandPanel.add(new JLabel("Magnification:"));
 		this.diyMandPanel.add(this.diyMandMagCombos);
 		this.diyMandPanel.add(new JLabel("Exponent:"));
@@ -964,6 +1111,22 @@ class SierpinskiComboPanel extends JPanel {
 		/*this.cuRootRb.setVisible(true);*/
 		this.lnRb.setVisible(true);
 		
+
+
+		this.pxNoFuncRb.setVisible(true);
+		this.pxSineRb.setVisible(true);
+		this.pxCosineRb.setVisible(true);
+		this.pxTanRb.setVisible(true);
+		this.pxArcSineRb.setVisible(true);
+		this.pxArcCosineRb.setVisible(true);
+		this.pxArcTanRb.setVisible(true);
+
+		this.pxSqRb.setVisible(true);
+		this.pxCuRb.setVisible(true);
+		this.pxExpRb.setVisible(true);
+		this.pxRootRb.setVisible(true);
+		this.pxLnRb.setVisible(true);
+		
 		this.mandOptionsPanel.add(new JLabel("Magnification(M):"));
 		this.mandOptionsPanel.add(this.mandCombos);
 		this.mandOptionsPanel.add(new JLabel("Exponent(X):"));
@@ -1005,6 +1168,22 @@ class SierpinskiComboPanel extends JPanel {
 		this.rootRb.setVisible(true);
 		/*this.cuRootRb.setVisible(true);*/
 		this.lnRb.setVisible(true);
+		
+
+
+		this.pxNoFuncRb.setVisible(true);
+		this.pxSineRb.setVisible(true);
+		this.pxCosineRb.setVisible(true);
+		this.pxTanRb.setVisible(true);
+		this.pxArcSineRb.setVisible(true);
+		this.pxArcCosineRb.setVisible(true);
+		this.pxArcTanRb.setVisible(true);
+
+		this.pxSqRb.setVisible(true);
+		this.pxCuRb.setVisible(true);
+		this.pxExpRb.setVisible(true);
+		this.pxRootRb.setVisible(true);
+		this.pxLnRb.setVisible(true);
 		
 		this.juliaOptionsPanel.add(new JLabel("Power-Constant:"));
 		this.juliaOptionsPanel.add(this.juliaCombos);		
@@ -2284,6 +2463,7 @@ class SierpinskiComboPanel extends JPanel {
 		boolean useCP = this.colrPRb.isSelected();
 		boolean useBw = this.colrBwRb.isSelected();
 		String func = this.constFuncChoice;
+		String pxFunc = this.pxFuncChoice;
 		double rot = this.getRotation();
 		int diyJuliaLoopLt = this.juliaSize;
 		int diyJuliaP = this.getDiyJuliaPower();
@@ -2349,6 +2529,7 @@ class SierpinskiComboPanel extends JPanel {
 			}
 		}
 		ff.setUseFuncConst(func);
+		ff.setUseFuncPixel(pxFunc);
 		ff.setRotation(rot);
 		
 		if (!diyJApplyField.equals("None")) {
@@ -2389,6 +2570,7 @@ class SierpinskiComboPanel extends JPanel {
 		boolean useCP = this.colrPRb.isSelected();
 		boolean useBw = this.colrBwRb.isSelected();
 		String func = this.constFuncChoice;
+		String pxFunc = this.pxFuncChoice;
 
 		double rot = this.getRotation();
 		int diyMandLoopLt = this.mandSize;
@@ -2437,6 +2619,7 @@ class SierpinskiComboPanel extends JPanel {
 			}
 		}
 		ff.setUseFuncConst(func);
+		ff.setUseFuncPixel(pxFunc);
 		ff.setRotation(rot);
 		FractalBase.setMaxIter(diyMaxIt);
 		FractalBase.setAreaSize(diyMandLoopLt);
@@ -2470,6 +2653,7 @@ class SierpinskiComboPanel extends JPanel {
 		boolean useBw = this.colrBwRb.isSelected();
 		
 		String func = this.constFuncChoice;
+		String pxFunc = this.pxFuncChoice;
 		
 		double rot = this.getRotation();
 		FractalBase ff;
@@ -2498,6 +2682,7 @@ class SierpinskiComboPanel extends JPanel {
 			}
 		}
 		ff.setUseFuncConst(func);
+		ff.setUseFuncPixel(pxFunc);
 		ff.setRotation(rot);
 		
 		if (!jApplyField.equals("None")) {
@@ -2544,6 +2729,7 @@ class SierpinskiComboPanel extends JPanel {
 		boolean useCP = this.colrPRb.isSelected();
 		boolean useBw = this.colrBwRb.isSelected();		
 		String func = this.constFuncChoice;	
+		String pxFunc = this.pxFuncChoice;
 		double rot = this.getRotation();
 		
 		FractalBase ff;
@@ -2575,6 +2761,7 @@ class SierpinskiComboPanel extends JPanel {
 		}
 		ff.setUseBlackWhite(useBw);
 		ff.setUseFuncConst(func);
+		ff.setUseFuncPixel(pxFunc);
 		ff.setRotation(rot);
 		FractalBase.setxC(mXc);
 		FractalBase.setxC(mYc);
@@ -2591,6 +2778,7 @@ class SierpinskiComboPanel extends JPanel {
 		boolean useCP = this.colrPRb.isSelected();
 		boolean useBw = this.colrBwRb.isSelected();	
 		String func = this.constFuncChoice;
+		String pxFunc = this.pxFuncChoice;
 		double rot = this.getRotation();
 		boolean invertPix = this.invertPixelCalculation;
 		
@@ -2652,6 +2840,7 @@ class SierpinskiComboPanel extends JPanel {
 			}
 		}
 		ff.setUseFuncConst(func);
+		ff.setUseFuncPixel(pxFunc);
 		ff.setRotation(rot);
 		ff.setRowColMixType(this.polyType);
 		FractalBase.setxC(this.polyXC);
@@ -3267,6 +3456,23 @@ class SierpinskiComboPanel extends JPanel {
 			}
         });
 		
+		
+
+		
+		this.pxNoFuncRb.addActionListener(this.pxFuncCalcRbListener());
+		this.pxSineRb.addActionListener(this.pxFuncCalcRbListener());
+		this.pxCosineRb.addActionListener(this.pxFuncCalcRbListener());
+		this.pxTanRb.addActionListener(this.pxFuncCalcRbListener());
+		this.pxArcSineRb.addActionListener(this.pxFuncCalcRbListener());
+		this.pxArcCosineRb.addActionListener(this.pxFuncCalcRbListener());
+		this.pxArcTanRb.addActionListener(this.pxFuncCalcRbListener());
+
+		this.pxSqRb.addActionListener(this.pxFuncCalcRbListener());
+		this.pxCuRb.addActionListener(this.pxFuncCalcRbListener());
+		this.pxExpRb.addActionListener(this.pxFuncCalcRbListener());
+		this.pxRootRb.addActionListener(this.pxFuncCalcRbListener());
+		/*this.cuRootRb.addActionListener(this.pxFuncCalcRbListener());*/
+		this.pxLnRb.addActionListener(this.pxFuncCalcRbListener());
 		
 		this.magnifyCb.setActionCommand("Magnify");
 		this.magnifyCb.addItemListener(new ItemListener() {
@@ -4010,6 +4216,15 @@ class SierpinskiComboPanel extends JPanel {
 		};
 	}
 	
+	private ActionListener pxFuncCalcRbListener() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doPxFunctionalSelectionChoice();
+			}
+		};
+	}
+	
 	private void doFractalColorChoice() {
 		if (this.colrCRb.isSelected()) {
 			this.setUseColorPalette(true);
@@ -4048,6 +4263,34 @@ class SierpinskiComboPanel extends JPanel {
 			this.setConstFuncChoice("Root");
 		} else if (this.lnRb.isSelected()) {
 			this.setConstFuncChoice("Log");
+		}
+	}
+	
+	private void doPxFunctionalSelectionChoice() {
+		if (this.pxNoFuncRb.isSelected()) {
+			this.setPxFuncChoice("None");
+		} else if (this.pxSineRb.isSelected()) {
+			this.setPxFuncChoice("Sine");
+		} else if (this.pxCosineRb.isSelected()) {
+			this.setPxFuncChoice("Cosine");
+		} else if (this.pxTanRb.isSelected()) {
+			this.setPxFuncChoice("Tan");
+		} else if (this.pxArcSineRb.isSelected()) {
+			this.setPxFuncChoice("ArcSine");
+		} else if (this.pxArcCosineRb.isSelected()) {
+			this.setPxFuncChoice("ArcCosine");
+		} else if (this.pxArcTanRb.isSelected()) {
+			this.setPxFuncChoice("ArcTan");
+		} else if (this.pxSqRb.isSelected()) {
+			this.setPxFuncChoice("Square");
+		} else if (this.pxCuRb.isSelected()) {
+			this.setPxFuncChoice("Cube");
+		} else if (this.pxExpRb.isSelected()) {
+			this.setPxFuncChoice("Exponent");
+		} else if (this.pxRootRb.isSelected()) {
+			this.setPxFuncChoice("Root");
+		} else if (this.pxLnRb.isSelected()) {
+			this.setPxFuncChoice("Log");
 		}
 	}
 
@@ -4360,6 +4603,14 @@ class SierpinskiComboPanel extends JPanel {
 
 	public void setConstFuncChoice(String cFuncChoice) {
 		this.constFuncChoice = cFuncChoice;
+	}
+
+	public String getPxFuncChoice() {
+		return pxFuncChoice;
+	}
+
+	public void setPxFuncChoice(String pxFuncChoice) {
+		this.pxFuncChoice = pxFuncChoice;
 	}
 	
 }

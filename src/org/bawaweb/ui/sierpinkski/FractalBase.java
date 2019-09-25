@@ -75,6 +75,9 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	protected String rowColMixType = "Reverse";
 	protected int power;
 	
+	protected String useFuncPixel	=	"None";
+	
+	//////	applied on the constant
 	protected String useFuncConst = "None";	//	others are "Sine", "Cosine", "Tangent", etc
 	
 	protected boolean running = false;
@@ -764,7 +767,15 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		this.useFuncConst = useFuncConst;
 	}
 
-//https://en.wikipedia.org/wiki/Julia_set#Field_lines
+public String getUseFuncPixel() {
+		return useFuncPixel;
+	}
+
+	public void setUseFuncPixel(String useFuncPixel) {
+		this.useFuncPixel = useFuncPixel;
+	}
+
+	//https://en.wikipedia.org/wiki/Julia_set#Field_lines
 	private boolean isFatou = false;	//todo	-	rename to getFieldLines??
 	public boolean isFatou() {
 		return isFatou;

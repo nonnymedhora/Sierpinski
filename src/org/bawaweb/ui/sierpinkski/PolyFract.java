@@ -131,6 +131,66 @@ System.out.println("type---->"+(type));	*/
 						break;
 				}
 				
+				String pxFunc2Apply = this.useFuncPixel;
+				switch (pxFunc2Apply) {
+					case "Sine"	:
+							zx = zx.sine();
+							zy = zy.sine();
+							break;
+					case "Cosine" :
+							zx = zx.cosine();
+							zy = zy.cosine();
+							break;
+					case "Tan" :
+							zx = zx.tan();
+							zy = zy.tan();
+							break;
+					case "ArcSine"	:
+							zx = zx.inverseSine();
+							zy = zy.inverseSine();
+						break;
+					case "ArcCosine" :
+							zx = zx.inverseCosine();
+							zy = zy.inverseCosine();
+							break;
+					case "ArcTan" :
+						zx = zx.inverseTangent();
+						zy = zy.inverseTangent();
+							break;									
+					case "Square"	:
+						zx = zx.power(2);
+						zy = zy.power(2);
+							break;
+					case "Cube" :
+						zx = zx.power(3);
+						zy = zy.power(3);
+							break;
+					case "Exponent" :
+						zx = zx.exp();
+						zy = zy.exp();
+							break;
+					case "Root"	:
+						zx = zx.sqroot();
+						zy = zy.sqroot();
+							break;
+					case "CubeRoot" :
+						zx = zx.curoot();
+						zy = zy.curoot();
+							break;
+					case "Log" :
+						zx = zx.ln();
+						zy = zy.ln();
+							break;	
+					case "None" :
+						zx = zx;
+						zy = zy;
+							break;
+					default:
+						zx = zx;
+						zy = zy;
+						break;
+			}// ends switch
+				
 				if (this.isComplexNumConst || this.compConst == null) {
 					this.compConst = zx.plus(zy);
 				}

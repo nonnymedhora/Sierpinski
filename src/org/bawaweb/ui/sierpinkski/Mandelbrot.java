@@ -28,6 +28,7 @@ public class Mandelbrot extends FractalBase {
 	private ComplexNumber complex;// = new ComplexNumber(-0.75, 0.11);
 	private boolean isConstFuncApplied=false;
 	
+	
 	public Mandelbrot() {
 		super();
 		this.mag = 2;
@@ -122,6 +123,7 @@ public class Mandelbrot extends FractalBase {
 //		System.out.println("in__Mandelbrot__createMandelbrot (isComplexNumConst || this.complex == null) = "+(isComplexNumConst || this.complex == null));		
 
 		String func2Apply = this.useFuncConst;
+		String pxFunc2Apply = this.useFuncPixel;
 
 		int n = getAreaSize();//599;//512;	(0-599)
 		//System.out.println("here with depth " + depth);
@@ -137,7 +139,10 @@ public class Mandelbrot extends FractalBase {
 					z0 = new ComplexNumber(y0, x0);
 				}
 				
-				z0 = this.computeComplexConstant(func2Apply, z0);				
+				
+				z0 = this.computePixel(pxFunc2Apply, z0);
+				z0 = this.computeComplexConstant(func2Apply, z0);	
+				
 
 				if (this.isUseBlackWhite()) {
 					int bOrW;
@@ -178,6 +183,61 @@ public class Mandelbrot extends FractalBase {
 			}
 		}
 	}
+	
+	
+	private ComplexNumber computePixel(String fun, ComplexNumber z0) {
+		switch (fun) {
+			case "Sine":
+				z0 = z0.sine(); // z0.sin();
+				break;
+			case "Cosine":
+				z0 = z0.cosine(); // z0.cos();
+				break;
+			case "Tan":
+				z0 = z0.tangent(); // z0.tan();
+				break;
+			case "ArcSine":
+				z0 = z0.inverseSine(); // z0.sin();
+				break;
+			case "ArcCosine":
+				z0 = z0.inverseCosine(); // z0.cos();
+				break;
+			case "ArcTan":
+				z0 = z0.inverseTangent(); // z0.tan();
+				break;
+			case "Square":
+				z0 = z0.power(2); // z0.sin();
+				break;
+			case "Cube":
+				z0 = z0.power(3); // z0.cos();
+				break;
+			case "Exponent":
+				z0 = z0.exp(); // z0.tan();
+				break;
+			case "Root":
+				z0 = z0.sqroot(); // z0.sin();
+				break;
+			case "CubeRoot":
+				z0 = z0.curoot(); // z0.cos();
+				break;
+			case "Log":
+				z0 = z0.ln(); // z0.tan();
+				break;
+	
+			case "None":
+				z0 = z0;
+				break;
+			default:
+				z0 = z0;
+				break;
+		}// ends-switch
+
+		return z0;
+	}
+
+	
+	
+	
 
 	private ComplexNumber computeComplexConstant(String func2Apply, ComplexNumber z0) {
 		ComplexNumber cConst;
