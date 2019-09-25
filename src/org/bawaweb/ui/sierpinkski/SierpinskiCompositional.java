@@ -478,19 +478,19 @@ class SierpinskiComboPanel extends JPanel {
 	protected ButtonGroup colrBg = new ButtonGroup();	
 	
 	// for Constants
-	protected JRadioButton noFuncRb 	= new JRadioButton("None",true);
-	protected JRadioButton sineRb 		= new JRadioButton("sine",false);
-	protected JRadioButton cosineRb 	= new JRadioButton("cosine",false);
-	protected JRadioButton tanRb 		= new JRadioButton("tan",false);	
-	protected JRadioButton arcSineRb 	= new JRadioButton("arcsine",false);
-	protected JRadioButton arcCosineRb 	= new JRadioButton("arccosine",false);
-	protected JRadioButton arcTanRb 	= new JRadioButton("arctan",false);		
-	protected JRadioButton sqRb 		= new JRadioButton("square",false);	
-	protected JRadioButton cuRb 		= new JRadioButton("cube",false);
-	protected JRadioButton expRb 		= new JRadioButton("exponent(e)",false);
-	protected JRadioButton rootRb 		= new JRadioButton("root",false);
+	protected JRadioButton constNoFuncRb 	= new JRadioButton("None",true);
+	protected JRadioButton constSineRb 		= new JRadioButton("sine",false);
+	protected JRadioButton constCosineRb 	= new JRadioButton("cosine",false);
+	protected JRadioButton constTanRb 		= new JRadioButton("tan",false);	
+	protected JRadioButton constArcSineRb 	= new JRadioButton("arcsine",false);
+	protected JRadioButton constArcCosineRb 	= new JRadioButton("arccosine",false);
+	protected JRadioButton constArcTanRb 	= new JRadioButton("arctan",false);		
+	protected JRadioButton constSqRb 		= new JRadioButton("square",false);	
+	protected JRadioButton constCuRb 		= new JRadioButton("cube",false);
+	protected JRadioButton constExpRb 		= new JRadioButton("exponent(e)",false);
+	protected JRadioButton constRootRb 		= new JRadioButton("root",false);
 	/*protected JRadioButton cuRootRb = new JRadioButton("cube-root",false);*/
-	protected JRadioButton lnRb 		= new JRadioButton("log(e)",false);	
+	protected JRadioButton constLnRb 		= new JRadioButton("log(e)",false);	
 	
 	protected ButtonGroup constFnBg = new ButtonGroup();	
 	private String constFuncChoice = "None";
@@ -568,8 +568,10 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(this.rotateCombo);
 		
 		this.add(this.invertPixelsCb);
+		
 		this.add(new JLabel("Pixel-Constant Operation:"));
 		this.add(this.pxConstOprnCombo);
+		
 		this.createPixelFunctionsRBs();
 
 		this.buStart.setEnabled(false);
@@ -612,86 +614,86 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private void createConstantFunctionsRBs(){
-		this.add(new JLabel("Constant Functions:"));
-		this.constFnBg.add(this.noFuncRb);
-		this.constFnBg.add(this.sineRb);
-		this.constFnBg.add(this.cosineRb);
-		this.constFnBg.add(this.tanRb);
-		this.constFnBg.add(this.arcSineRb);
-		this.constFnBg.add(this.arcCosineRb);
-		this.constFnBg.add(this.arcTanRb);
+		this.add(new JLabel("Constant (C) Functions:"));
+		this.constFnBg.add(this.constNoFuncRb);
+		this.constFnBg.add(this.constSineRb);
+		this.constFnBg.add(this.constCosineRb);
+		this.constFnBg.add(this.constTanRb);
+		this.constFnBg.add(this.constArcSineRb);
+		this.constFnBg.add(this.constArcCosineRb);
+		this.constFnBg.add(this.constArcTanRb);
 		
-		this.constFnBg.add(this.sqRb);
-		this.constFnBg.add(this.cuRb);
-		this.constFnBg.add(this.expRb);
-		this.constFnBg.add(this.rootRb);
+		this.constFnBg.add(this.constSqRb);
+		this.constFnBg.add(this.constCuRb);
+		this.constFnBg.add(this.constExpRb);
+		this.constFnBg.add(this.constRootRb);
 		/*this.constFnBg.add(this.cuRootRb);*/
-		this.constFnBg.add(this.lnRb);
+		this.constFnBg.add(this.constLnRb);
 		
-		this.noFuncRb.setActionCommand("NoCalc");
-		this.sineRb.setActionCommand("SineCalc");
-		this.cosineRb.setActionCommand("CosineCalc");
-		this.tanRb.setActionCommand("TanCalc");
-		this.arcSineRb.setActionCommand("ArcSineCalc");
-		this.arcCosineRb.setActionCommand("ArcCosineCalc");
-		this.arcTanRb.setActionCommand("ArcTanCalc");
+		this.constNoFuncRb.setActionCommand("NoCalc");
+		this.constSineRb.setActionCommand("SineCalc");
+		this.constCosineRb.setActionCommand("CosineCalc");
+		this.constTanRb.setActionCommand("TanCalc");
+		this.constArcSineRb.setActionCommand("ArcSineCalc");
+		this.constArcCosineRb.setActionCommand("ArcCosineCalc");
+		this.constArcTanRb.setActionCommand("ArcTanCalc");
 
-		this.sqRb.setActionCommand("SquareCalc");
-		this.cuRb.setActionCommand("CubeCalc");
-		this.expRb.setActionCommand("ExponentCalc");
-		this.rootRb.setActionCommand("RootCalc");
+		this.constSqRb.setActionCommand("SquareCalc");
+		this.constCuRb.setActionCommand("CubeCalc");
+		this.constExpRb.setActionCommand("ExponentCalc");
+		this.constRootRb.setActionCommand("RootCalc");
 		/*this.cuRootRb.setActionCommand("CubeRootCalc");*/
-		this.lnRb.setActionCommand("LogCalc");
+		this.constLnRb.setActionCommand("LogCalc");
 		
-		this.noFuncRb.setName("None");
-		this.sineRb.setName("Sine");
-		this.cosineRb.setName("Cosine");
-		this.tanRb.setName("Tan");
-		this.arcSineRb.setName("ArcSine");
-		this.arcCosineRb.setName("ArcCosine");
-		this.arcTanRb.setName("ArcTan");
+		this.constNoFuncRb.setName("None");
+		this.constSineRb.setName("Sine");
+		this.constCosineRb.setName("Cosine");
+		this.constTanRb.setName("Tan");
+		this.constArcSineRb.setName("ArcSine");
+		this.constArcCosineRb.setName("ArcCosine");
+		this.constArcTanRb.setName("ArcTan");
 		
 
-		this.sqRb.setName("Square");
-		this.cuRb.setName("Cube");
-		this.expRb.setName("Exponent");
-		this.rootRb.setName("Root");
+		this.constSqRb.setName("Square");
+		this.constCuRb.setName("Cube");
+		this.constExpRb.setName("Exponent");
+		this.constRootRb.setName("Root");
 		/*this.cuRootRb.setName("CubeRoot");*/
-		this.lnRb.setName("Log");
+		this.constLnRb.setName("Log");
 		
-		this.add(this.noFuncRb);
-		this.add(this.sineRb);
-		this.add(this.cosineRb);
-		this.add(this.tanRb);
-		this.add(this.arcSineRb);
-		this.add(this.arcCosineRb);
-		this.add(this.arcTanRb);
+		this.add(this.constNoFuncRb);
+		this.add(this.constSineRb);
+		this.add(this.constCosineRb);
+		this.add(this.constTanRb);
+		this.add(this.constArcSineRb);
+		this.add(this.constArcCosineRb);
+		this.add(this.constArcTanRb);
 
-		this.add(this.sqRb);
-		this.add(this.cuRb);
-		this.add(this.expRb);
-		this.add(this.rootRb);
+		this.add(this.constSqRb);
+		this.add(this.constCuRb);
+		this.add(this.constExpRb);
+		this.add(this.constRootRb);
 		/*this.add(this.cuRootRb);*/
-		this.add(this.lnRb);
+		this.add(this.constLnRb);
 		
-		this.noFuncRb.setVisible(false);
-		this.sineRb.setVisible(false);
-		this.cosineRb.setVisible(false);
-		this.tanRb.setVisible(false);
-		this.arcSineRb.setVisible(false);
-		this.arcCosineRb.setVisible(false);
-		this.arcTanRb.setVisible(false);
+		this.constNoFuncRb.setVisible(false);
+		this.constSineRb.setVisible(false);
+		this.constCosineRb.setVisible(false);
+		this.constTanRb.setVisible(false);
+		this.constArcSineRb.setVisible(false);
+		this.constArcCosineRb.setVisible(false);
+		this.constArcTanRb.setVisible(false);
 
-		this.sqRb.setVisible(false);
-		this.cuRb.setVisible(false);
-		this.expRb.setVisible(false);
-		this.rootRb.setVisible(false);
+		this.constSqRb.setVisible(false);
+		this.constCuRb.setVisible(false);
+		this.constExpRb.setVisible(false);
+		this.constRootRb.setVisible(false);
 		/*this.cuRootRb.setVisible(false);*/
-		this.lnRb.setVisible(false);
+		this.constLnRb.setVisible(false);
 	}
 	
 	private void createPixelFunctionsRBs() {
-		this.add(new JLabel("Pixel Functions:"));
+		this.add(new JLabel("Pixel z(x,y) Functions:"));
 		this.pxFnBg.add(this.pxNoFuncRb);
 		this.pxFnBg.add(this.pxSineRb);
 		this.pxFnBg.add(this.pxCosineRb);
@@ -700,11 +702,11 @@ class SierpinskiComboPanel extends JPanel {
 		this.pxFnBg.add(this.pxArcCosineRb);
 		this.pxFnBg.add(this.pxArcTanRb);
 
-		this.pxFnBg.add(this.sqRb);
-		this.pxFnBg.add(this.cuRb);
-		this.pxFnBg.add(this.expRb);
-		this.pxFnBg.add(this.rootRb);
-		this.pxFnBg.add(this.lnRb);
+		this.pxFnBg.add(this.pxSqRb);
+		this.pxFnBg.add(this.pxCuRb);
+		this.pxFnBg.add(this.pxExpRb);
+		this.pxFnBg.add(this.pxRootRb);
+		this.pxFnBg.add(this.pxLnRb);
 
 		this.pxNoFuncRb.setActionCommand("NoCalc");
 		this.pxSineRb.setActionCommand("SineCalc");
@@ -820,20 +822,20 @@ class SierpinskiComboPanel extends JPanel {
 		this.colrCRb.setVisible(true);
 		this.colrBwRb.setVisible(true);
 		
-		this.noFuncRb.setVisible(true);
-		this.sineRb.setVisible(true);
-		this.cosineRb.setVisible(true);
-		this.tanRb.setVisible(true);
-		this.arcSineRb.setVisible(true);
-		this.arcCosineRb.setVisible(true);
-		this.arcTanRb.setVisible(true);
+		this.constNoFuncRb.setVisible(true);
+		this.constSineRb.setVisible(true);
+		this.constCosineRb.setVisible(true);
+		this.constTanRb.setVisible(true);
+		this.constArcSineRb.setVisible(true);
+		this.constArcCosineRb.setVisible(true);
+		this.constArcTanRb.setVisible(true);
 
-		this.sqRb.setVisible(true);
-		this.cuRb.setVisible(true);
-		this.expRb.setVisible(true);
-		this.rootRb.setVisible(true);
+		this.constSqRb.setVisible(true);
+		this.constCuRb.setVisible(true);
+		this.constExpRb.setVisible(true);
+		this.constRootRb.setVisible(true);
 		/*this.cuRootRb.setVisible(true);*/
-		this.lnRb.setVisible(true);
+		this.constLnRb.setVisible(true);
 		
 
 
@@ -942,21 +944,21 @@ class SierpinskiComboPanel extends JPanel {
 		this.colrPRb.setVisible(true);
 		this.colrCRb.setVisible(true);
 		this.colrBwRb.setVisible(true);
-		this.noFuncRb.setVisible(true);
-		this.sineRb.setVisible(true);
-		this.cosineRb.setVisible(true);
-		this.tanRb.setVisible(true);
-		this.arcSineRb.setVisible(true);
-		this.arcCosineRb.setVisible(true);
-		this.arcTanRb.setVisible(true);
+		this.constNoFuncRb.setVisible(true);
+		this.constSineRb.setVisible(true);
+		this.constCosineRb.setVisible(true);
+		this.constTanRb.setVisible(true);
+		this.constArcSineRb.setVisible(true);
+		this.constArcCosineRb.setVisible(true);
+		this.constArcTanRb.setVisible(true);
 		this.rotLabel.setVisible(true);
 		this.rotateCombo.setVisible(true);
-		this.sqRb.setVisible(true);
-		this.cuRb.setVisible(true);
-		this.expRb.setVisible(true);
-		this.rootRb.setVisible(true);
+		this.constSqRb.setVisible(true);
+		this.constCuRb.setVisible(true);
+		this.constExpRb.setVisible(true);
+		this.constRootRb.setVisible(true);
 		/*this.cuRootRb.setVisible(true);*/
-		this.lnRb.setVisible(true);
+		this.constLnRb.setVisible(true);
 		
 		this.rotLabel.setVisible(true);
 		this.rotateCombo.setVisible(true);
@@ -1028,19 +1030,19 @@ class SierpinskiComboPanel extends JPanel {
 		this.colrPRb.setVisible(true);
 		this.colrCRb.setVisible(true);
 		this.colrBwRb.setVisible(true);
-		this.noFuncRb.setVisible(true);
-		this.sineRb.setVisible(true);
-		this.cosineRb.setVisible(true);
-		this.tanRb.setVisible(true);
-		this.arcSineRb.setVisible(true);
-		this.arcCosineRb.setVisible(true);
-		this.arcTanRb.setVisible(true);
-		this.sqRb.setVisible(true);
-		this.cuRb.setVisible(true);
-		this.expRb.setVisible(true);
-		this.rootRb.setVisible(true);
+		this.constNoFuncRb.setVisible(true);
+		this.constSineRb.setVisible(true);
+		this.constCosineRb.setVisible(true);
+		this.constTanRb.setVisible(true);
+		this.constArcSineRb.setVisible(true);
+		this.constArcCosineRb.setVisible(true);
+		this.constArcTanRb.setVisible(true);
+		this.constSqRb.setVisible(true);
+		this.constCuRb.setVisible(true);
+		this.constExpRb.setVisible(true);
+		this.constRootRb.setVisible(true);
 		/*this.cuRootRb.setVisible(true);*/
-		this.lnRb.setVisible(true);
+		this.constLnRb.setVisible(true);
 		
 		this.rotLabel.setVisible(true);
 		this.rotateCombo.setVisible(true);
@@ -1105,19 +1107,19 @@ class SierpinskiComboPanel extends JPanel {
 		this.colrPRb.setVisible(true);
 		this.colrCRb.setVisible(true);
 		this.colrBwRb.setVisible(true);
-		this.noFuncRb.setVisible(true);
-		this.sineRb.setVisible(true);
-		this.cosineRb.setVisible(true);
-		this.tanRb.setVisible(true);
-		this.arcSineRb.setVisible(true);
-		this.arcCosineRb.setVisible(true);
-		this.arcTanRb.setVisible(true);
-		this.sqRb.setVisible(true);
-		this.cuRb.setVisible(true);
-		this.expRb.setVisible(true);
-		this.rootRb.setVisible(true);
+		this.constNoFuncRb.setVisible(true);
+		this.constSineRb.setVisible(true);
+		this.constCosineRb.setVisible(true);
+		this.constTanRb.setVisible(true);
+		this.constArcSineRb.setVisible(true);
+		this.constArcCosineRb.setVisible(true);
+		this.constArcTanRb.setVisible(true);
+		this.constSqRb.setVisible(true);
+		this.constCuRb.setVisible(true);
+		this.constExpRb.setVisible(true);
+		this.constRootRb.setVisible(true);
 		/*this.cuRootRb.setVisible(true);*/
-		this.lnRb.setVisible(true);
+		this.constLnRb.setVisible(true);
 		
 
 
@@ -1163,19 +1165,19 @@ class SierpinskiComboPanel extends JPanel {
 		this.colrPRb.setVisible(true);
 		this.colrCRb.setVisible(true);
 		this.colrBwRb.setVisible(true);
-		this.noFuncRb.setVisible(true);
-		this.sineRb.setVisible(true);
-		this.cosineRb.setVisible(true);
-		this.tanRb.setVisible(true);
-		this.arcSineRb.setVisible(true);
-		this.arcCosineRb.setVisible(true);
-		this.arcTanRb.setVisible(true);
-		this.sqRb.setVisible(true);
-		this.cuRb.setVisible(true);
-		this.expRb.setVisible(true);
-		this.rootRb.setVisible(true);
+		this.constNoFuncRb.setVisible(true);
+		this.constSineRb.setVisible(true);
+		this.constCosineRb.setVisible(true);
+		this.constTanRb.setVisible(true);
+		this.constArcSineRb.setVisible(true);
+		this.constArcCosineRb.setVisible(true);
+		this.constArcTanRb.setVisible(true);
+		this.constSqRb.setVisible(true);
+		this.constCuRb.setVisible(true);
+		this.constExpRb.setVisible(true);
+		this.constRootRb.setVisible(true);
 		/*this.cuRootRb.setVisible(true);*/
-		this.lnRb.setVisible(true);
+		this.constLnRb.setVisible(true);
 		
 
 
@@ -1680,33 +1682,55 @@ class SierpinskiComboPanel extends JPanel {
 		if (!(this.juliaSelection.equals("J7") || this.juliaSelection.equals("J8")
 				|| this.juliaSelection.equals("J9"))) {
 			
-			this.formulaArea.setText("<font color='blue'>Julia Set:<br/><br/>f(z) = z ^ " + this.power + " + " + this.compConst+"<br/>");
+			this.formulaArea.setText("<font color='blue'>Julia Set:<br/><br/>f(z) = z <sup>" + this.power + "</sup> + " + this.compConst+"<br/>");
 			
 		} else {
 			if(this.juliaSelection.equals("J7")){
-				this.formulaArea.setText("<font color='blue'>Julia Set:<br/><br/>f(z) = z ^ " + this.power + " + (-0.74543 + 0.11301 * i)<br/>");
+				this.formulaArea.setText("<font color='blue'>Julia Set:<br/><br/>f(z) = z <sup>" + this.power + "</sup> + (-0.74543 + 0.11301 * i)<br/>");
 			}else if(this.juliaSelection.equals("J8")){
-				this.formulaArea.setText("<font color='blue'>Julia Set:<br/><br/>f(z) = z ^ " + this.power + " + (-0.75 + 0.11 * i)<br/>");
+				this.formulaArea.setText("<font color='blue'>Julia Set:<br/><br/>f(z) = z <sup>" + this.power + "</sup> + (-0.75 + 0.11 * i)<br/>");
 			}else if(this.juliaSelection.equals("J9")){
-				this.formulaArea.setText("<font color='blue'>Julia Set:<br/><br/>f(z) = z ^ " + this.power + " + (-0.1 + 0.651 * i)<br/>");
+				this.formulaArea.setText("<font color='blue'>Julia Set:<br/><br/>f(z) = z <sup>" + this.power + "</sup> + (-0.1 + 0.651 * i)<br/>");
 			}
 		}
 		
-		boolean invertPix = this.invertPixelCalculation;
-		if (invertPix) {
-			this.formulaArea.append("<br/><font color='red'>Pixel Calculation reversed  z = y + i*x + C</font><br/>");
-		} else {
-			this.formulaArea.append("<br/><font color='red'>Pixel Calculation reversed  z = y + i*x + C</font><br/>");
+		this.addInvertPixelCalcInfo();
+
+		this.addPixelConstantOperationInfo();
+		
+		this.addPixelFuncInfo(this.pxFuncChoice);
+		
+		if (this.applyFatou) {
+			this.formulaArea.setText(
+					"<br/><font color='green'>Fatou Field Lines:<br/>f(z) = (1 - (z<sup>3</sup>/6)) / ((z - (z<sup>2</sup>/2)) <sup>2</sup>)");
+		} else if (this.applyZSq) {
+			this.formulaArea.append("<br/><font color='green'>ZSquared Field Lines:<br/><br/>f(z) = (z <sup>2</sup>)");
+		} else if (this.applyClassicJulia) {
+			this.formulaArea.append(
+					"<br/><font color='green'>Classic Julia:<br/><br/>f(z) = z<sup>4</sup> + ((z<sup>3</sup>)/(z-1)) + ((z<sup>2</sup>)/(z<sup>3</sup> + 4*z<sup>2</sup> + 5))");
 		}
 		
-		if(this.applyFatou){
-			this.formulaArea.setText("<br/><font color='green'>Fatou Field Lines:<br/>f(z) = (1 - (z^3/6)) / ((z - (z^2/2)) ^ 2) + C</font><br/>");
-		}else if(this.applyZSq){
-			this.formulaArea.append("<br/><font color='green'>ZSquared Field Lines:<br/><br/>f(z) = (z ^ 2) + C</font><br/>");
-		}else if(this.applyClassicJulia){
-			this.formulaArea.append("<br/><font color='green'>Classic Julia:<br/><br/>f(z) = z^4 + ((z^3)/(z-1)) + ((z^2)/(z^3 + 4*z^2 + 5))  + C</font><br/>");
+		switch(this.pxConstOprnChoice){
+			case	"Plus"	:	
+				this.formulaArea.append(" + C</font><br/>");
+				break;
+			case	"Minus"	:	
+				this.formulaArea.append(" - C</font><br/>");
+				break;
+			case	"Multiply"	:	
+				this.formulaArea.append(" * C</font><br/>");
+				break;
+			case	"Divide"	:	
+				this.formulaArea.append(" / C</font><br/>");
+				break;
+			default:
+				this.formulaArea.append(" + C</font><br/>");
+				break;			
+		
 		}
 	}
+
+	
 	
 	private void addDiyJuliaUseDiffInfo() {
 		if (this.diyJuliaUseDiff || this.diyJuliaUseDiffCb.isSelected()) {
@@ -1840,23 +1864,23 @@ class SierpinskiComboPanel extends JPanel {
 		case	"Square":
 			if (!isComplexConst) {
 				//			System.out.println("SQUARE-<br/>ComplexConstant == "+c.power(2).toString()+"<br/>");
-				this.formulaArea.append("<br/>(ComplexConstant)squared or C ^ 2 == " + c.power(2).toString() + "<br/>");
+				this.formulaArea.append("<br/>(ComplexConstant)squared or C <sup>2</sup> == " + c.power(2).toString() + "<br/>");
 			} else {
-				this.formulaArea.append("<br/>Complex Constant = ( z ^ 2 )");
+				this.formulaArea.append("<br/>Complex Constant = ( z <sup>2</sup> )");
 			}
 			break;
 		case	"Cube":
 			if (!isComplexConst) {
-				this.formulaArea.append("<br/>(ComplexConstant)cubed or C ^ 3 == " + c.power(3).toString() + "<br/>");
+				this.formulaArea.append("<br/>(ComplexConstant)cubed or C <sup>3</sup> == " + c.power(3).toString() + "<br/>");
 			} else {
-				this.formulaArea.append("<br/>Complex Constant = ( z ^ 3 )");
+				this.formulaArea.append("<br/>Complex Constant = ( z <sup>3</sup> )");
 			}
 			break;
 		case	"Exponent":
 			if (!isComplexConst) {
-				this.formulaArea.append("<br/>exponent(ComplexConstant) or e ^ C == " + c.exp().toString() + "<br/>");
+				this.formulaArea.append("<br/>exponent(ComplexConstant) or e <sup>C</sup> == " + c.exp().toString() + "<br/>");
 			} else {
-				this.formulaArea.append("<br/>Complex Constant = ( e ^ z )");
+				this.formulaArea.append("<br/>Complex Constant = ( e <sup>z</sup> )");
 			}
 			break;
 		case	"Root":
@@ -2044,7 +2068,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setVisible(true);
 		if (this.magnification != 0 && this.exponent != 0) {
 			this.buStart.setEnabled(true);
-			this.formulaArea.setText("Mandelbrot Set:<br/><br/>f(z) = z ^ " + this.exponent + " + C");
+			this.formulaArea.setText("Mandelbrot Set:<br/><br/>f(z) = z <sup>" + this.exponent + "</sup> + C");
 			if (this.mUseDiff || this.mandUseDiffCb.isSelected()) {
 				this.formulaArea
 						.append("<br/><br/>Calculated inverted colors based on differences in pixel values from origin");
@@ -2066,7 +2090,7 @@ class SierpinskiComboPanel extends JPanel {
 			) {
 			
 			this.buStart.setEnabled(true);
-			String formula = "Mandelbrot Set:<br/><br/>f(z) = z ^ " + this.diyMandExponent + " + C";
+			String formula = "Mandelbrot Set:<br/><br/>f(z) = z <sup>" + this.diyMandExponent + "</sup> + C";
 			if (!this.keepConst) {
 				formula += "<br/>  C = " + Double.parseDouble(this.diyMandRealTf.getText()) + " + ("
 						+ Double.parseDouble(this.diyMandImgTf.getText()) + ")";
@@ -2089,7 +2113,7 @@ class SierpinskiComboPanel extends JPanel {
 						&& (this.diyJuliaImgTf.getText().length() > 0) && !this.keepConst)
 				|| this.keepConst) {
 			this.buStart.setEnabled(true);
-			String formula = "Julia Set:<br/><br/>f(z) = z ^ " + this.diyJuliaPower + " + C";
+			String formula = "Julia Set:<br/><br/>f(z) = z <sup>" + this.diyJuliaPower + "</sup> + C";
 			if (!this.keepConst) {
 				formula += "<br/>  C = " + Double.parseDouble(this.diyJuliaRealTf.getText()) + " + ("
 						+ Double.parseDouble(this.diyJuliaImgTf.getText()) + ")";
@@ -2193,7 +2217,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setVisible(true);
 		if (this.polyPower != 0) {
 			this.buStart.setEnabled(true);
-			this.formulaArea.setText("Poynomial Set:<br/><br/>nf(z) = (x ^ " + this.polyPower + " + y ^ " + this.polyPower + ") + C"+
+			this.formulaArea.setText("Poynomial Set:<br/><br/>nf(z) = (x <sup>" + this.polyPower + "</sup> + y <sup>" + this.polyPower + "</sup>) + C"+
 					"<br/>  x = Row + 0 * i , y = 0 + Column * i");
 			if (this.polyUseDiff || this.polyUseDiffCb.isSelected()) {
 				this.formulaArea
@@ -2492,25 +2516,43 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.formulaArea.setVisible(true);
 		this.formulaArea.setText("");
-		this.formulaArea.setText("<font color='blue'>(DIY)Julia Set:<br/>");//<br/>f(z) = z ^ " + diyJuliaP + " + C<br/>");
+		this.formulaArea.setText("<font color='blue'>(DIY)Julia Set:<br/>");
 
-		boolean invertPix = this.invertPixelCalculation;
-		if (invertPix) {
-			this.formulaArea.append("<br/><font color='red'>Pixel Calculation reversed  z = y + i*x + C</font><br/>");
-		} else {
-			this.formulaArea.append("<br/><font color='red'>Pixel Calculation reversed  z = y + i*x + C</font><br/>");
-		}
+		this.addInvertPixelCalcInfo();
+		this.addPixelConstantOperationInfo();
+
+		this.addPixelFuncInfo(pxFunc);
 		
 		
 		
 		if (diyJApplyFatou) {
-			this.formulaArea.append("<br/><font color='green'>Fatou Field Lines:<br/><br/>f(z) = (1 - (z^3/6)) / ((z - (z^2/2)) ^ 2) + C</font><br/>");
+			this.formulaArea.append("<br/><font color='green'>Fatou Field Lines:<br/><br/>f(z) = (1 - (z<sup>3</sup>/6)) / ((z - (z<sup>2</sup>/2)) <sup>2</sup>)");// + C</font><br/>");			
 		} else if (diyJApplyZSq) {
-			this.formulaArea.append("<br/><font color='green'>ZSquared Field Lines:<br/><br/>f(z) = (z ^ 2) ^ " + diyJuliaP + " + C</font><br/>");
+			this.formulaArea.append("<br/><font color='green'>ZSquared Field Lines:<br/><br/>f(z) = (z <sup>2</sup>) <sup> " + diyJuliaP+"</sup>");// + " + C</font><br/>");
 		} else if (diyJApplyClassic) {
-			this.formulaArea.append("<br/><font color='green'>Classic Julia:<br/><br/>f(z) = z^4 + z^3/(z-1) + z^2/(z^3 + 4*z^2 + 5)  + C</font><br/>");
+			this.formulaArea.append("<br/><font color='green'>Classic Julia:<br/><br/>f(z) = z<sup>4</sup> + z<sup>3</sup>/(z-1) + z<sup>2</sup>/(z<sup>3</sup> + 4*z<sup>2</sup> + 5)");//  + C</font><br/>");
 		} else {
-			this.formulaArea.append("<br/><font color='green'>f(z) = z ^ " + diyJuliaP + " + C</font><br/>");
+			this.formulaArea.append("<br/><font color='green'>f(z) = z <sup>" + diyJuliaP+"</sup>");// + " + C</font><br/>");
+		}
+		
+		switch(this.pxConstOprnChoice){
+			case	"Plus"	:	// + C</font><br/>");
+				this.formulaArea.append(" + C</font><br/>");
+				break;
+			case	"Minus"	:	
+				this.formulaArea.append(" - C</font><br/>");
+				break;
+			case	"Multiply"	:	
+				this.formulaArea.append(" * C</font><br/>");
+				break;
+			case	"Divide"	:	
+				this.formulaArea.append(" / C</font><br/>");
+				break;
+			default:
+				this.formulaArea.append(" + C</font><br/>");
+				break;
+			
+		
 		}
 		
 		this.addDiyJuliaUseDiffInfo();
@@ -2526,7 +2568,7 @@ class SierpinskiComboPanel extends JPanel {
 			ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJuliaRealVal, diyJuliaImgVal);
 		}
 		
-		ff.setReversePixelCalculation(invertPix);
+		ff.setReversePixelCalculation(this.invertPixelCalculation);
 		
 		if (useCP) {
 			ff.setUseColorPalette(useCP);
@@ -2573,6 +2615,68 @@ class SierpinskiComboPanel extends JPanel {
 		this.addJuliaConstInfo(ff);
 		return ff;
 	}
+	
+	private void addPixelConstantOperationInfo(){
+		
+//		 PIX_CONST_OPRNS = new String[]{"Plus","Minus","Multiply","Divide","Power"};
+		switch(this.pxConstOprnChoice){
+			case	"Plus"	:	
+				this.formulaArea.append("<br/><font color='blue'>Pixel Constant Operation "+
+						this.pxConstOprnChoice+
+						"<br/>   f(Z) = z + C</font><br/>");
+				break;
+			case	"Minus"	:	
+				this.formulaArea.append("<br/><font color='blue'>Pixel Constant Operation "+
+						this.pxConstOprnChoice+
+						"<br/>   f(Z) = z - C</font><br/>");
+				break;
+			case	"Multiply"	:	
+				this.formulaArea.append("<br/><font color='blue'>Pixel Constant Operation "+
+						this.pxConstOprnChoice+
+						"<br/>   f(Z) = z * C</font><br/>");
+				break;
+			case	"Divide"	:	
+				this.formulaArea.append("<br/><font color='blue'>Pixel Constant Operation "+
+						this.pxConstOprnChoice+
+						"<br/>   f(Z) = z / C</font><br/>");
+				break;
+			default:
+				this.formulaArea.append("<br/><font color='blue'>Pixel Constant Operation "+
+						this.pxConstOprnChoice+
+						"<br/>   f(Z) = z + C</font><br/>");
+				break;
+			
+		
+		}
+		
+	}
+	
+	private void addInvertPixelCalcInfo() {
+		boolean invertPix = this.invertPixelCalculation;
+		if (invertPix) {
+			this.formulaArea.append("<br/><font color='red'>Pixel Calculation reversed  z = y + i*x + C</font><br/>");
+		} else {
+			this.formulaArea.append("<br/><font color='red'>Pixel Calculation z = x + i*y + C</font><br/>");
+		}
+	}
+
+	private void addPixelFuncInfo(String pxFunc) {
+		switch(pxFunc){
+			case	"Sine":			this.formulaArea.append("<br/><font color='black'><b>z = sin(Z)</font></b><br/>");break;
+			case	"Cosine":		this.formulaArea.append("<br/><font color='black'><b>z = cos(Z)</font></b><br/>");break;
+			case	"Tan":			this.formulaArea.append("<br/><font color='black'><b>z = tan(Z)</font></b><br/>");break;
+			case	"ArcSine":		this.formulaArea.append("<br/><font color='black'><b>z = arcsin(Z)</font></b><br/>");break;
+			case	"ArcCosine":	this.formulaArea.append("<br/><font color='black'><b>z = arccos(Z)</font></b><br/>");break;
+			case	"ArcTan":		this.formulaArea.append("<br/><font color='black'><b>z = arctan(Z)</font></b><br/>");break;
+			case	"Square":		this.formulaArea.append("<br/><font color='black'><b>z = (Z <sup>2</sup>)</font></b><br/>");break;
+			case	"Cube":			this.formulaArea.append("<br/><font color='black'><b>z = (Z <sup>3</sup>)</font></b><br/>");break;
+			case	"Exponent":		this.formulaArea.append("<br/><font color='black'><b>z = e<sup>(Z)</sup></font></b><br/>");break;
+			case	"Root":			this.formulaArea.append("<br/><font color='black'><b>z = root(Z)</font></b><br/>");break;
+			case	"Log(e)":		this.formulaArea.append("<br/><font color='black'><b>z = log(Z)</font></b><br/>");break;
+			default	:				this.formulaArea.append("<br/>");//<font color='black'><b>z = sin(Z)</font></b><br/>");break;
+			
+		}
+	}
 
 	private FractalBase createDIYMandelbrot() {
 		FractalBase ff;
@@ -2599,14 +2703,12 @@ class SierpinskiComboPanel extends JPanel {
 
 		this.formulaArea.setVisible(true);
 		this.formulaArea.setText("");
-		this.formulaArea.setText("<font color='blue'>(DIY)Mandelbrot Set:<br/><br/>f(z) = z ^ " + diyMandExp + " + C");
+		this.formulaArea.setText("<font color='blue'>(DIY)Mandelbrot Set:<br/><br/>f(z) = z <sup>" + diyMandExp + "</sup> + C");
 		
-		boolean invertPix = this.invertPixelCalculation;
-		if (invertPix) {
-			this.formulaArea.append("<br/><font color='red'>Pixel Calculation reversed  z = y + i*x + C</font><br/>");
-		} else {
-			this.formulaArea.append("<br/><font color='red'>Pixel Calculation reversed  z = y + i*x + C</font><br/>");
-		}
+		this.addInvertPixelCalcInfo();
+
+		this.addPixelConstantOperationInfo();
+		this.addPixelFuncInfo(pxFunc);
 		
 		this.addDiyMandelbrotUseDiffInfo();
 		
@@ -2622,7 +2724,7 @@ class SierpinskiComboPanel extends JPanel {
 		
 		
 		ff.setPxConstOperation(pxConstOp);
-		ff.setReversePixelCalculation(invertPix);
+		ff.setReversePixelCalculation(this.invertPixelCalculation);
 		
 		if (useCP) {
 			ff.setUseColorPalette(useCP);
@@ -2754,14 +2856,21 @@ class SierpinskiComboPanel extends JPanel {
 		FractalBase ff;
 		this.formulaArea.setVisible(true);
 		this.formulaArea.setText("");
-		this.formulaArea.setText("<font color='blue'>Mandelbrot Set:<br/><br/>f(z) = z ^ " + exp + " + C");
 		
-		boolean invertPix = this.invertPixelCalculation;
-		if (invertPix) {
-			this.formulaArea.append("<br/><font color='red'>Pixel Calculation reversed  z = y + i*x + C</font><br/>");
-		} else {
-			this.formulaArea.append("<br/><font color='red'>Pixel Calculation reversed  z = y + i*x + C</font><br/>");
+		if (pxConstOp.equals("Plus")) {
+			this.formulaArea.setText("<font color='blue'>Mandelbrot Set:<br/><br/>f(z) = z <sup>" + exp + "</sup> + C");
+		} else if (pxConstOp.equals("Minus")) {
+			this.formulaArea.setText("<font color='blue'>Mandelbrot Set:<br/><br/>f(z) = z <sup>" + exp + "</sup> - C");
+		} else if (pxConstOp.equals("Multiply")) {
+			this.formulaArea.setText("<font color='blue'>Mandelbrot Set:<br/><br/>f(z) = z  <sup>" + exp + "</sup> * C");
+		} else if (pxConstOp.equals("Divide")) {
+			this.formulaArea.setText("<font color='blue'>Mandelbrot Set:<br/><br/>f(z) = z  <sup>" + exp + "</sup> / C");
 		}
+		
+		this.addInvertPixelCalcInfo();
+
+		this.addPixelConstantOperationInfo();
+		this.addPixelFuncInfo(pxFunc);
 		
 		this.addMandelbrotUseDiffInfo();
 
@@ -2769,7 +2878,7 @@ class SierpinskiComboPanel extends JPanel {
 		
 		ff.setPxConstOperation(pxConstOp);
 
-		ff.setReversePixelCalculation(invertPix);
+		ff.setReversePixelCalculation(this.invertPixelCalculation);
 		
 		if (useCP) {
 			ff.setUseColorPalette(useCP);
@@ -2808,13 +2917,28 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setVisible(true);
 		this.formulaArea.setText("");
 		this.formulaArea.setText("<font color='blue'>Poynomial Set:<br/>");//
-		this.formulaArea.setText("<br/>f(z) = (x ^ " + this.polyPower + " + y ^ " + this.polyPower + ") + C");
-		
+		if (pxConstOp.equals("Plus")) {
+			this.formulaArea.append("<br/>f(z) = (x <sup>" + this.polyPower + "</sup> + y <sup>" + this.polyPower + "</sup>) + C");
+		} else if (pxConstOp.equals("Multiply")) {
+			this.formulaArea.append("<br/>f(z) = (x <sup>" + this.polyPower + "</sup> + y <sup>" + this.polyPower + "</sup>) * C");
+		} else if (pxConstOp.equals("Minus")) {
+			this.formulaArea.append("<br/>f(z) = (x <sup>" + this.polyPower + "</sup> + y <sup>" + this.polyPower + "</sup>) - C");
+		} else if (pxConstOp.equals("Divide")) {
+			this.formulaArea.append("<br/>f(z) = (x <sup>" + this.polyPower + "</sup> + y <sup>" + this.polyPower + "</sup>) / C");
+		}/* else if (pxConstOp.equals("Power")) {
+			this.formulaArea.setText("<br/>f(z) = (x ^ " + this.polyPower + " + y ^ " + this.polyPower + ") ^ C");
+		} */
+			
+			
+			
+			
 		if (!invertPix) {
 			this.formulaArea.append("<br/>  x = Row + 0 * i , y = 0 + Column * i<br/>");
 		}else{
 			this.formulaArea.append("<br/>  x = Column + 0 * i , y = 0 + Row * i<br/>");
 		}
+		
+		this.addPixelFuncInfo(pxFunc);
 		
 		if (this.polyType.equals("Reverse")) {
 			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, y)<br/>");
@@ -3055,30 +3179,30 @@ class SierpinskiComboPanel extends JPanel {
 					baseInfo += "Real Value = " + Double.parseDouble(this.polyRealTf.getText()) + "," + eol;
 					baseInfo += "Imaginary Value = " + Double.parseDouble(this.polyImgTf.getText()) + eol;
 				}
-				if (!(this.constFuncChoice.equals("None") || this.noFuncRb.isSelected())) {
-					if (this.sineRb.isSelected()) {
+				if (!(this.constFuncChoice.equals("None") || this.constNoFuncRb.isSelected())) {
+					if (this.constSineRb.isSelected()) {
 						baseInfo += "Sine of Constant	sine(C)" + eol;
-					} else if (this.cosineRb.isSelected()) {
+					} else if (this.constCosineRb.isSelected()) {
 						baseInfo += "Cosine of Constant		cos(C)" + eol;
-					} else if (this.tanRb.isSelected()) {
+					} else if (this.constTanRb.isSelected()) {
 						baseInfo += "Tan of Constant	tan(C)" + eol;
-					} else if (this.arcSineRb.isSelected()) {
+					} else if (this.constArcSineRb.isSelected()) {
 						baseInfo += "ArcSine of Constant	arcsin(C)" + eol;
-					} else if (this.arcCosineRb.isSelected()) {
+					} else if (this.constArcCosineRb.isSelected()) {
 						baseInfo += "ArcCosine of Constant	arccos(C)" + eol;
-					} else if (this.arcTanRb.isSelected()) {
+					} else if (this.constArcTanRb.isSelected()) {
 						baseInfo += "ArcTan of Constant		arctan(C)" + eol;
-					} else if (this.sqRb.isSelected()) {
-						baseInfo += "Square of Constant		(C ^ 2)" + eol;
-					} else if (this.cuRb.isSelected()) {
-						baseInfo += "Cube of Constant		(C ^ 3)" + eol;
-					} else if (this.expRb.isSelected()) {
-						baseInfo += "Exponent of Constant	(e ^ C)" + eol;
-					} else if (this.rootRb.isSelected()) {
-						baseInfo += "Square Root of Constant	(C ^ (1/2))" + eol;
-					} else if (this.arcTanRb.isSelected()) {
-						baseInfo += "Cube Root of Constant		(C ^ (1/3))" + eol;
-					} else if (this.lnRb.isSelected()) {
+					} else if (this.constSqRb.isSelected()) {
+						baseInfo += "Square of Constant		(C <sup>2</sup>)" + eol;
+					} else if (this.constCuRb.isSelected()) {
+						baseInfo += "Cube of Constant		(C <sup>3</sup>)" + eol;
+					} else if (this.constExpRb.isSelected()) {
+						baseInfo += "Exponent of Constant	(e <sup>C</sup>)" + eol;
+					} else if (this.constRootRb.isSelected()) {
+						baseInfo += "Square Root of Constant	(C <sup>(1/2)</sup>)" + eol;
+					} else if (this.constArcTanRb.isSelected()) {
+						baseInfo += "Cube Root of Constant		(C <sup>(1/3)</sup>)" + eol;
+					} else if (this.constLnRb.isSelected()) {
 						baseInfo += "Log(e) of Constant		Ln(C)" + eol;
 					}
 				}
@@ -3105,30 +3229,30 @@ class SierpinskiComboPanel extends JPanel {
 					baseInfo += "Ud, ";
 				}
 				baseInfo += "Boundary: " + this.mandBound + eol;
-				if (!(this.constFuncChoice.equals("None") || this.noFuncRb.isSelected())) {
-					if (this.sineRb.isSelected()) {
+				if (!(this.constFuncChoice.equals("None") || this.constNoFuncRb.isSelected())) {
+					if (this.constSineRb.isSelected()) {
 						baseInfo += "Sine of Constant" + eol;
-					} else if (this.cosineRb.isSelected()) {
+					} else if (this.constCosineRb.isSelected()) {
 						baseInfo += "Cosine of Constant" + eol;
-					} else if (this.tanRb.isSelected()) {
+					} else if (this.constTanRb.isSelected()) {
 						baseInfo += "Tan of Constant" + eol;
-					} else if (this.arcSineRb.isSelected()) {
+					} else if (this.constArcSineRb.isSelected()) {
 						baseInfo += "ArcSine of Constant" + eol;
-					} else if (this.arcCosineRb.isSelected()) {
+					} else if (this.constArcCosineRb.isSelected()) {
 						baseInfo += "ArcCosine of Constant" + eol;
-					} else if (this.arcTanRb.isSelected()) {
+					} else if (this.constArcTanRb.isSelected()) {
 						baseInfo += "ArcTan of Constant" + eol;
-					} else if (this.sqRb.isSelected()) {
-						baseInfo += "Square of Constant		(C ^ 2)" + eol;
-					} else if (this.cuRb.isSelected()) {
-						baseInfo += "Cube of Constant		(C ^ 3)" + eol;
-					} else if (this.expRb.isSelected()) {
-						baseInfo += "Exponent of Constant	(e ^ C)" + eol;
-					} else if (this.rootRb.isSelected()) {
-						baseInfo += "Square Root of Constant	(C ^ (1/2))" + eol;
-					} else if (this.arcTanRb.isSelected()) {
-						baseInfo += "Cube Root of Constant		(C ^ (1/3))" + eol;
-					} else if (this.lnRb.isSelected()) {
+					} else if (this.constSqRb.isSelected()) {
+						baseInfo += "Square of Constant		(C <sup>2</sup>)" + eol;
+					} else if (this.constCuRb.isSelected()) {
+						baseInfo += "Cube of Constant		(C <sup>3</sup>)" + eol;
+					} else if (this.constExpRb.isSelected()) {
+						baseInfo += "Exponent of Constant	(e <sup>C</sup>)" + eol;
+					} else if (this.constRootRb.isSelected()) {
+						baseInfo += "Square Root of Constant	(C <sup>(1/2)</sup>)" + eol;
+					} else if (this.constArcTanRb.isSelected()) {
+						baseInfo += "Cube Root of Constant		(C <sup>(1/3)</sup>)" + eol;
+					} else if (this.constLnRb.isSelected()) {
 						baseInfo += "Log(e) of Constant		Ln(C)" + eol;
 					}
 				}
@@ -3153,30 +3277,30 @@ class SierpinskiComboPanel extends JPanel {
 					baseInfo += "Ud, ";
 				}
 				baseInfo += "Boundary: " + this.juliaBound + eol;
-				if (!(this.constFuncChoice.equals("None") || this.noFuncRb.isSelected())) {
-					if (this.sineRb.isSelected()) {
+				if (!(this.constFuncChoice.equals("None") || this.constNoFuncRb.isSelected())) {
+					if (this.constSineRb.isSelected()) {
 						baseInfo += "Sine of Constant" + eol;
-					} else if (this.cosineRb.isSelected()) {
+					} else if (this.constCosineRb.isSelected()) {
 						baseInfo += "Cosine of Constant" + eol;
-					} else if (this.tanRb.isSelected()) {
+					} else if (this.constTanRb.isSelected()) {
 						baseInfo += "Tan of Constant" + eol;
-					} else if (this.arcSineRb.isSelected()) {
+					} else if (this.constArcSineRb.isSelected()) {
 						baseInfo += "ArcSine of Constant" + eol;
-					} else if (this.arcCosineRb.isSelected()) {
+					} else if (this.constArcCosineRb.isSelected()) {
 						baseInfo += "ArcCosine of Constant" + eol;
-					} else if (this.arcTanRb.isSelected()) {
+					} else if (this.constArcTanRb.isSelected()) {
 						baseInfo += "ArcTan of Constant" + eol;
-					} else if (this.sqRb.isSelected()) {
-						baseInfo += "Square of Constant		(C ^ 2)" + eol;
-					} else if (this.cuRb.isSelected()) {
-						baseInfo += "Cube of Constant		(C ^ 3)" + eol;
-					} else if (this.expRb.isSelected()) {
-						baseInfo += "Exponent of Constant	(e ^ C)" + eol;
-					} else if (this.rootRb.isSelected()) {
-						baseInfo += "Square Root of Constant	(C ^ (1/2))" + eol;
-					} else if (this.arcTanRb.isSelected()) {
-						baseInfo += "Cube Root of Constant		(C ^ (1/3))" + eol;
-					} else if (this.lnRb.isSelected()) {
+					} else if (this.constSqRb.isSelected()) {
+						baseInfo += "Square of Constant		(C <sup>2</sup>)" + eol;
+					} else if (this.constCuRb.isSelected()) {
+						baseInfo += "Cube of Constant		(C <sup>3</sup>)" + eol;
+					} else if (this.constExpRb.isSelected()) {
+						baseInfo += "Exponent of Constant	(e <sup>C</sup>)" + eol;
+					} else if (this.constRootRb.isSelected()) {
+						baseInfo += "Square Root of Constant	(C <sup>(1/2)</sup>)" + eol;
+					} else if (this.constArcTanRb.isSelected()) {
+						baseInfo += "Cube Root of Constant		(C <sup>(1/3)</sup>)" + eol;
+					} else if (this.constLnRb.isSelected()) {
 						baseInfo += "Log(e) of Constant		Ln(C)" + eol;
 					}
 				}
@@ -3209,30 +3333,30 @@ class SierpinskiComboPanel extends JPanel {
 					baseInfo += "Real Value = " + Double.parseDouble(this.diyMandRealTf.getText()) + ","+eol;
 					baseInfo += "Imaginary Value = " + Double.parseDouble(this.diyMandImgTf.getText()) + eol;
 				}
-				if (!(this.constFuncChoice.equals("None") || this.noFuncRb.isSelected())) {
-					if (this.sineRb.isSelected()) {
+				if (!(this.constFuncChoice.equals("None") || this.constNoFuncRb.isSelected())) {
+					if (this.constSineRb.isSelected()) {
 						baseInfo += "Sine of Constant" + eol;
-					} else if (this.cosineRb.isSelected()) {
+					} else if (this.constCosineRb.isSelected()) {
 						baseInfo += "Cosine of Constant" + eol;
-					} else if (this.tanRb.isSelected()) {
+					} else if (this.constTanRb.isSelected()) {
 						baseInfo += "Tan of Constant" + eol;
-					} else if (this.arcSineRb.isSelected()) {
+					} else if (this.constArcSineRb.isSelected()) {
 						baseInfo += "ArcSine of Constant" + eol;
-					} else if (this.arcCosineRb.isSelected()) {
+					} else if (this.constArcCosineRb.isSelected()) {
 						baseInfo += "ArcCosine of Constant" + eol;
-					} else if (this.arcTanRb.isSelected()) {
+					} else if (this.constArcTanRb.isSelected()) {
 						baseInfo += "ArcTan of Constant" + eol;
-					} else if (this.sqRb.isSelected()) {
-						baseInfo += "Square of Constant		(C ^ 2)" + eol;
-					} else if (this.cuRb.isSelected()) {
-						baseInfo += "Cube of Constant		(C ^ 3)" + eol;
-					} else if (this.expRb.isSelected()) {
-						baseInfo += "Exponent of Constant	(e ^ C)" + eol;
-					} else if (this.rootRb.isSelected()) {
-						baseInfo += "Square Root of Constant	(C ^ (1/2))" + eol;
-					} else if (this.arcTanRb.isSelected()) {
-						baseInfo += "Cube Root of Constant		(C ^ (1/3))" + eol;
-					} else if (this.lnRb.isSelected()) {
+					} else if (this.constSqRb.isSelected()) {
+						baseInfo += "Square of Constant		(C <sup>2</sup>)" + eol;
+					} else if (this.constCuRb.isSelected()) {
+						baseInfo += "Cube of Constant		(C <sup>3</sup>)" + eol;
+					} else if (this.constExpRb.isSelected()) {
+						baseInfo += "Exponent of Constant	(e <sup>C</sup>)" + eol;
+					} else if (this.constRootRb.isSelected()) {
+						baseInfo += "Square Root of Constant	(C <sup>(1/2)</sup>)" + eol;
+					} else if (this.constArcTanRb.isSelected()) {
+						baseInfo += "Cube Root of Constant		(C <sup>(1/3)</sup>)" + eol;
+					} else if (this.constLnRb.isSelected()) {
 						baseInfo += "Log(e) of Constant		Ln(C)" + eol;
 					}
 				}
@@ -3264,28 +3388,30 @@ class SierpinskiComboPanel extends JPanel {
 					baseInfo += "Real Value = " + Double.parseDouble(this.diyJuliaRealTf.getText()) + "," + eol;
 					baseInfo += "Imaginary Value = " + Double.parseDouble(this.diyJuliaImgTf.getText()) + eol;
 				}
-				if (!(this.constFuncChoice.equals("None") || this.noFuncRb.isSelected())) {
-					if (this.sineRb.isSelected()) {
+				if (!(this.constFuncChoice.equals("None") || this.constNoFuncRb.isSelected())) {
+					if (this.constSineRb.isSelected()) {
 						baseInfo += "Sine of Constant" + eol;
-					} else if (this.cosineRb.isSelected()) {
+					} else if (this.constCosineRb.isSelected()) {
 						baseInfo += "Cosine of Constant" + eol;
-					} else if (this.tanRb.isSelected()) {
+					} else if (this.constTanRb.isSelected()) {
 						baseInfo += "Tan of Constant" + eol;
-					} else if (this.arcSineRb.isSelected()) {
+					} else if (this.constArcSineRb.isSelected()) {
 						baseInfo += "ArcSine of Constant" + eol;
-					} else if (this.arcCosineRb.isSelected()) {
+					} else if (this.constArcCosineRb.isSelected()) {
 						baseInfo += "ArcCosine of Constant" + eol;
-					} else if (this.arcTanRb.isSelected()) {
+					} else if (this.constArcTanRb.isSelected()) {
 						baseInfo += "ArcTan of Constant" + eol;
-					} else if (this.sqRb.isSelected()) {
-						baseInfo += "Square of Constant		(C ^ 2)" + eol;
-					} else if (this.cuRb.isSelected()) {
-						baseInfo += "Cube of Constant		(C ^ 3)" + eol;
-					} else if (this.expRb.isSelected()) {
-						baseInfo += "Exponent of Constant	(e ^ C)" + eol;
-					} else if (this.rootRb.isSelected()) {
-						baseInfo += "Square Root of Constant	(C ^ (1/2))" + eol;
-					} else if (this.lnRb.isSelected()) {
+					} else if (this.constSqRb.isSelected()) {
+						baseInfo += "Square of Constant		(C <sup>2</sup>)" + eol;
+					} else if (this.constCuRb.isSelected()) {
+						baseInfo += "Cube of Constant		(C <sup>3</sup>)" + eol;
+					} else if (this.constExpRb.isSelected()) {
+						baseInfo += "Exponent of Constant	(e <sup>C</sup>)" + eol;
+					} else if (this.constRootRb.isSelected()) {
+						baseInfo += "Square Root of Constant	(C <sup>(1/2)</sup>)" + eol;
+					} else if (this.constArcTanRb.isSelected()) {
+						baseInfo += "Cube Root of Constant		(C <sup>(1/3)</sup>)" + eol;
+					} else if (this.constLnRb.isSelected()) {
 						baseInfo += "Log(e) of Constant		Ln(C)" + eol;
 					}
 				}
@@ -3453,20 +3579,20 @@ class SierpinskiComboPanel extends JPanel {
 		this.colrBwRb.addActionListener(this.colorChoiceRbListener());
 		
 		
-		this.noFuncRb.addActionListener(this.funcCalcRbListener());
-		this.sineRb.addActionListener(this.funcCalcRbListener());
-		this.cosineRb.addActionListener(this.funcCalcRbListener());
-		this.tanRb.addActionListener(this.funcCalcRbListener());
-		this.arcSineRb.addActionListener(this.funcCalcRbListener());
-		this.arcCosineRb.addActionListener(this.funcCalcRbListener());
-		this.arcTanRb.addActionListener(this.funcCalcRbListener());
+		this.constNoFuncRb.addActionListener(this.constFuncCalcRbListener());
+		this.constSineRb.addActionListener(this.constFuncCalcRbListener());
+		this.constCosineRb.addActionListener(this.constFuncCalcRbListener());
+		this.constTanRb.addActionListener(this.constFuncCalcRbListener());
+		this.constArcSineRb.addActionListener(this.constFuncCalcRbListener());
+		this.constArcCosineRb.addActionListener(this.constFuncCalcRbListener());
+		this.constArcTanRb.addActionListener(this.constFuncCalcRbListener());
 
-		this.sqRb.addActionListener(this.funcCalcRbListener());
-		this.cuRb.addActionListener(this.funcCalcRbListener());
-		this.expRb.addActionListener(this.funcCalcRbListener());
-		this.rootRb.addActionListener(this.funcCalcRbListener());
+		this.constSqRb.addActionListener(this.constFuncCalcRbListener());
+		this.constCuRb.addActionListener(this.constFuncCalcRbListener());
+		this.constExpRb.addActionListener(this.constFuncCalcRbListener());
+		this.constRootRb.addActionListener(this.constFuncCalcRbListener());
 		/*this.cuRootRb.addActionListener(this.funcCalcRbListener());*/
-		this.lnRb.addActionListener(this.funcCalcRbListener());
+		this.constLnRb.addActionListener(this.constFuncCalcRbListener());
 		
 		this.invertPixelsCb.setActionCommand("InvertPixels");
 		this.invertPixelsCb.addItemListener(new ItemListener() {
@@ -4237,7 +4363,7 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 
-	private ActionListener funcCalcRbListener() {
+	private ActionListener constFuncCalcRbListener() {
 		return new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -4273,29 +4399,29 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private void doConstFunctionalSelectionChoice() {
-		if (this.noFuncRb.isSelected()) {
+		if (this.constNoFuncRb.isSelected()) {
 			this.setConstFuncChoice("None");
-		} else if (this.sineRb.isSelected()) {
+		} else if (this.constSineRb.isSelected()) {
 			this.setConstFuncChoice("Sine");
-		} else if (this.cosineRb.isSelected()) {
+		} else if (this.constCosineRb.isSelected()) {
 			this.setConstFuncChoice("Cosine");
-		} else if (this.tanRb.isSelected()) {
+		} else if (this.constTanRb.isSelected()) {
 			this.setConstFuncChoice("Tan");
-		} else if (this.arcSineRb.isSelected()) {
+		} else if (this.constArcSineRb.isSelected()) {
 			this.setConstFuncChoice("ArcSine");
-		} else if (this.arcCosineRb.isSelected()) {
+		} else if (this.constArcCosineRb.isSelected()) {
 			this.setConstFuncChoice("ArcCosine");
-		} else if (this.arcTanRb.isSelected()) {
+		} else if (this.constArcTanRb.isSelected()) {
 			this.setConstFuncChoice("ArcTan");
-		} else if (this.sqRb.isSelected()) {
+		} else if (this.constSqRb.isSelected()) {
 			this.setConstFuncChoice("Square");
-		} else if (this.cuRb.isSelected()) {
+		} else if (this.constCuRb.isSelected()) {
 			this.setConstFuncChoice("Cube");
-		} else if (this.expRb.isSelected()) {
+		} else if (this.constExpRb.isSelected()) {
 			this.setConstFuncChoice("Exponent");
-		} else if (this.rootRb.isSelected()) {
+		} else if (this.constRootRb.isSelected()) {
 			this.setConstFuncChoice("Root");
-		} else if (this.lnRb.isSelected()) {
+		} else if (this.constLnRb.isSelected()) {
 			this.setConstFuncChoice("Log");
 		}
 	}

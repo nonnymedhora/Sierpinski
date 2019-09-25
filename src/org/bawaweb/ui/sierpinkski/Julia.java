@@ -43,6 +43,11 @@ public class Julia extends FractalBase {
 	public final ComplexNumber C2 = new ComplexNumber(-0.75,0.11);			//c= -0.75+0.11*i
 	public final ComplexNumber C3 = new ComplexNumber(-0.1,0.651);			//c=-0.1+0.651*i
 
+	public final ComplexNumber M1 = new ComplexNumber((Math.PI/2),(Math.PI/2)*(0.6));			//[pi/2*(1.0 + 0.6i)]";	//f(z) = z^2 + ...
+	public final ComplexNumber M2 = new ComplexNumber((Math.PI/2),(Math.PI/2)*(0.4));			//[pi/2*(1.0 + 0.4i)]";	//f(z) = z^2 + ...
+	
+	
+
 	//for dealing with C1-C3
 	private boolean preStringComplexConstConstruct = false;
 	//wiil remove above l8r - and make all uniform
@@ -126,6 +131,12 @@ public class Julia extends FractalBase {
 			break;
 		case "C3":
 			this.complex = C3;
+			break;
+		case "M1":
+			this.complex = M1;
+			break;
+		case "M2":
+			this.complex = M2;
 			break;
 		default:
 			this.complex = C1;
