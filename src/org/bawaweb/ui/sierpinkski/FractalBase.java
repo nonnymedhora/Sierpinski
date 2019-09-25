@@ -75,6 +75,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	protected String rowColMixType = "Reverse";
 	protected int power;
 	
+	protected String pxConstOperation = "Plus";	// z + C	others are "Multiply","Divide","Subtract"
 	protected String useFuncPixel	=	"None";
 	
 	//////	applied on the constant
@@ -759,20 +760,28 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		this.bound = bod;
 	}
 
+	public String getPxConstOperation() {
+		return this.pxConstOperation;
+	}
+
+	public void setPxConstOperation(String pxConstOprn) {
+		this.pxConstOperation = pxConstOprn;
+	}
+
 	public String getUseFuncConst() {
 		return this.useFuncConst;
 	}
 
-	public void setUseFuncConst(String useFuncConst) {
-		this.useFuncConst = useFuncConst;
+	public void setUseFuncConst(String ufc) {
+		this.useFuncConst = ufc;
 	}
 
-public String getUseFuncPixel() {
-		return useFuncPixel;
+	public String getUseFuncPixel() {
+		return this.useFuncPixel;
 	}
 
-	public void setUseFuncPixel(String useFuncPixel) {
-		this.useFuncPixel = useFuncPixel;
+	public void setUseFuncPixel(String ufp) {
+		this.useFuncPixel = ufp;
 	}
 
 	//https://en.wikipedia.org/wiki/Julia_set#Field_lines

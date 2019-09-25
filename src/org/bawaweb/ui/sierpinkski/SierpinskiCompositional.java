@@ -70,6 +70,9 @@ class SierpinskiComboPanel extends JPanel {
 	private static final Integer[] APOLLO_MULTS = new Integer[]{ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
 	private static final Integer[] APOLLO_CURVES = new Integer[]{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 };
 	
+	//	for	z+C, z-C, z*C, z/C, z^C
+	private static final String[] PIX_CONST_OPRNS = new String[]{"Plus","Minus","Multiply","Divide","Power"};
+	
 	// for Julia
 	private static final String J1 = "P[2] C[0.279]";	//f(z) = z^2 + 0.279
 	private static final String J2 = "P[3] C[0.4]";		//f(z) = z^3 + 0.400
@@ -515,6 +518,9 @@ class SierpinskiComboPanel extends JPanel {
 	
 	protected ButtonGroup pxFnBg = new ButtonGroup();	
 	private String pxFuncChoice = "None";
+
+	private JComboBox<String> pxConstOprnCombo = new JComboBox<String>(PIX_CONST_OPRNS);
+	private String pxConstOprnChoice = "Plus";
 	
 	
 	private final JCheckBox magnifyCb = new JCheckBox("Magnify",false);
@@ -561,7 +567,9 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(this.rotLabel);
 		this.add(this.rotateCombo);
 		
-		this.add(invertPixelsCb);
+		this.add(this.invertPixelsCb);
+		this.add(new JLabel("Pixel-Constant Operation:"));
+		this.add(this.pxConstOprnCombo);
 		this.createPixelFunctionsRBs();
 
 		this.buStart.setEnabled(false);
@@ -2462,6 +2470,7 @@ class SierpinskiComboPanel extends JPanel {
 		//diyJulia
 		boolean useCP = this.colrPRb.isSelected();
 		boolean useBw = this.colrBwRb.isSelected();
+		String pxConstOp = this.pxConstOprnChoice;
 		String func = this.constFuncChoice;
 		String pxFunc = this.pxFuncChoice;
 		double rot = this.getRotation();
@@ -2528,6 +2537,8 @@ class SierpinskiComboPanel extends JPanel {
 				ff.setUseColorPalette(useCP);
 			}
 		}
+		
+		ff.setPxConstOperation(pxConstOp);
 		ff.setUseFuncConst(func);
 		ff.setUseFuncPixel(pxFunc);
 		ff.setRotation(rot);
@@ -2569,6 +2580,8 @@ class SierpinskiComboPanel extends JPanel {
 
 		boolean useCP = this.colrPRb.isSelected();
 		boolean useBw = this.colrBwRb.isSelected();
+
+		String pxConstOp = this.pxConstOprnChoice;
 		String func = this.constFuncChoice;
 		String pxFunc = this.pxFuncChoice;
 
@@ -2607,6 +2620,8 @@ class SierpinskiComboPanel extends JPanel {
 			ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD,diyMandB, diyMRealVal, diyMImgVal);
 		}
 		
+		
+		ff.setPxConstOperation(pxConstOp);
 		ff.setReversePixelCalculation(invertPix);
 		
 		if (useCP) {
@@ -2652,6 +2667,7 @@ class SierpinskiComboPanel extends JPanel {
 		boolean useCP = this.colrPRb.isSelected();
 		boolean useBw = this.colrBwRb.isSelected();
 		
+		String pxConstOp = this.pxConstOprnChoice;
 		String func = this.constFuncChoice;
 		String pxFunc = this.pxFuncChoice;
 		
@@ -2668,6 +2684,8 @@ class SierpinskiComboPanel extends JPanel {
 		} else {
 			ff = new Julia(pow, comp, jBound, jUseD);
 		}
+		
+		ff.setPxConstOperation(pxConstOp);
 		
 		boolean invertPix = this.invertPixelCalculation;
 		ff.setReversePixelCalculation(invertPix);
@@ -2728,6 +2746,7 @@ class SierpinskiComboPanel extends JPanel {
 		double mScale = this.mandScaleSize;
 		boolean useCP = this.colrPRb.isSelected();
 		boolean useBw = this.colrBwRb.isSelected();		
+		String pxConstOp = this.pxConstOprnChoice;
 		String func = this.constFuncChoice;	
 		String pxFunc = this.pxFuncChoice;
 		double rot = this.getRotation();
@@ -2747,6 +2766,8 @@ class SierpinskiComboPanel extends JPanel {
 		this.addMandelbrotUseDiffInfo();
 
 		ff = new Mandelbrot(mag, exp, mUseD, mBound, true);
+		
+		ff.setPxConstOperation(pxConstOp);
 
 		ff.setReversePixelCalculation(invertPix);
 		
@@ -2777,6 +2798,7 @@ class SierpinskiComboPanel extends JPanel {
 
 		boolean useCP = this.colrPRb.isSelected();
 		boolean useBw = this.colrBwRb.isSelected();	
+		String pxConstOp = this.pxConstOprnChoice;
 		String func = this.constFuncChoice;
 		String pxFunc = this.pxFuncChoice;
 		double rot = this.getRotation();
@@ -2827,6 +2849,8 @@ class SierpinskiComboPanel extends JPanel {
 			
 			ff = new PolyFract(this.polyPower, this.polyUseDiff, this.polyBound,/* this.keepConst,*/ polyRealVal, polyImgVal);
 		}
+		
+		ff.setPxConstOperation(pxConstOp);
 		
 		ff.setReversePixelCalculation(invertPix);
 		
@@ -3456,9 +3480,6 @@ class SierpinskiComboPanel extends JPanel {
 			}
         });
 		
-		
-
-		
 		this.pxNoFuncRb.addActionListener(this.pxFuncCalcRbListener());
 		this.pxSineRb.addActionListener(this.pxFuncCalcRbListener());
 		this.pxCosineRb.addActionListener(this.pxFuncCalcRbListener());
@@ -3473,6 +3494,15 @@ class SierpinskiComboPanel extends JPanel {
 		this.pxRootRb.addActionListener(this.pxFuncCalcRbListener());
 		/*this.cuRootRb.addActionListener(this.pxFuncCalcRbListener());*/
 		this.pxLnRb.addActionListener(this.pxFuncCalcRbListener());
+		
+		this.pxConstOprnCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<String> cb = (JComboBox<String>)e.getSource();
+		        String comboOption = (String)cb.getSelectedItem();
+				doSelectPxConstOprnCommand(comboOption);				
+			}});
 		
 		this.magnifyCb.setActionCommand("Magnify");
 		this.magnifyCb.addItemListener(new ItemListener() {
@@ -4238,6 +4268,10 @@ class SierpinskiComboPanel extends JPanel {
 		} 
 	}
 	
+	private void doSelectPxConstOprnCommand(String option){
+		this.pxConstOprnChoice=option;
+	}
+	
 	private void doConstFunctionalSelectionChoice() {
 		if (this.noFuncRb.isSelected()) {
 			this.setConstFuncChoice("None");
@@ -4609,8 +4643,16 @@ class SierpinskiComboPanel extends JPanel {
 		return pxFuncChoice;
 	}
 
-	public void setPxFuncChoice(String pxFuncChoice) {
-		this.pxFuncChoice = pxFuncChoice;
+	public void setPxFuncChoice(String fun) {
+		this.pxFuncChoice = fun;
+	}
+
+	public String getPxConstOprn() {
+		return this.pxConstOprnChoice;
+	}
+
+	public void setPxConstOprn(String pxCOprn) {
+		this.pxConstOprnChoice = pxCOprn;
 	}
 	
 }

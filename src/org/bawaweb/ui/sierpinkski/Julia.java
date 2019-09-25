@@ -327,7 +327,18 @@ public class Julia extends FractalBase {
 			if (z.abs() > bd) {
 				return t;
 			}
-			z = z.power(this.power).plus(complexConstant);
+			
+			if (this.pxConstOperation.equals("Plus")) {
+				z = z.power(this.power).plus(complexConstant);
+			} else if (this.pxConstOperation.equals("Minus")) {
+				z = z.power(this.power).minus(complexConstant);
+			} else if (this.pxConstOperation.equals("Multiply")) {
+				z = z.power(this.power).times(complexConstant);
+			} else if (this.pxConstOperation.equals("Divide")) {
+				z = z.power(this.power).divides(complexConstant);
+			}/* else if (this.pxConstOperation.equals("Power")) {
+				z = z.power(this.power).power(complexConstant);
+			}*/
 		}
 			
 		/*	============	Field lines - Fatou Domain	======================

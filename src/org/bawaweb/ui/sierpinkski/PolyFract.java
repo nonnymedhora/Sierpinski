@@ -295,13 +295,70 @@ System.out.println("type---->"+(type));	*/
 							double boundary) {
 		ComplexNumber z11 = z1.power(this.power).plus(constant);
 		ComplexNumber z22 = z2.power(this.power).plus(constant);
-		ComplexNumber zz = z11.plus(z22).plus(constant);
+		
+		ComplexNumber zz;
+		switch (this.pxConstOperation) {
+			case "Plus":
+				zz = z11.plus(z22).plus(constant);
+				break;
+			case "Minus":
+				zz = z11.plus(z22).minus(constant);
+				break;
+			case "Multiply":
+				zz = z11.plus(z22).times(constant);
+				break;
+			case "Divide":
+				zz = z11.plus(z22).divides(constant);
+				break;
+			default:
+				zz = z11.plus(z22).plus(constant);
+				break;
+		}
+
 		for (int t = 0; t < maxIter; t++) {
-			if (zz.abs() > boundary)
+			
+			if (zz.abs() > boundary){
 				return t;
+			}
+			
 			z11 = z11.power(this.power).plus(constant);
 			z22 = z22.power(this.power).plus(constant);
-			zz = z11.plus(z22).plus(constant);
+			
+			switch (this.pxConstOperation) {
+				case "Plus":
+					zz = z11.plus(z22).plus(constant);
+					break;
+				case "Minus":
+					zz = z11.plus(z22).minus(constant);
+					break;
+				case "Multiply":
+					zz = z11.plus(z22).times(constant);
+					break;
+				case "Divide":
+					zz = z11.plus(z22).divides(constant);
+					break;
+				default:
+					zz = z11.plus(z22).plus(constant);
+					break;
+			}
+			
+			
+//			if (this.pxConstOperation.equals("Plus")) {
+//				z11 = z11.power(this.power).plus(constant);
+//				z22 = z22.power(this.power).plus(constant);
+//			} else if (this.pxConstOperation.equals("Minus")) {
+//				z11 = z11.power(this.power).minus(constant);
+//				z22 = z22.power(this.power).minus(constant);
+//			} else if (this.pxConstOperation.equals("Multiply")) {
+//				z11 = z11.power(this.power).times(constant);
+//				z22 = z22.power(this.power).times(constant);
+//			} else if (this.pxConstOperation.equals("Divide")) {
+//				z11 = z11.power(this.power).divides(constant);
+//				z22 = z22.power(this.power).divides(constant);
+//			}/* else if (this.pxConstOperation.equals("Power")) {
+//				z = z.power(pwr).power(constant);
+//			}*/
+			
 		}
 		return maxIter;
 	}

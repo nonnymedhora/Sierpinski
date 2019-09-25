@@ -371,7 +371,18 @@ public class Mandelbrot extends FractalBase {
 		for (int t = 0; t < maxIterations; t++) {
 			if (z.abs() > bd)
 				return t;
-			z = z.power(pwr).plus(constant);
+
+			if (this.pxConstOperation.equals("Plus")) {
+				z = z.power(pwr).plus(constant);
+			} else if (this.pxConstOperation.equals("Minus")) {
+				z = z.power(pwr).minus(constant);
+			} else if (this.pxConstOperation.equals("Multiply")) {
+				z = z.power(pwr).times(constant);
+			} else if (this.pxConstOperation.equals("Divide")) {
+				z = z.power(pwr).divides(constant);
+			}/* else if (this.pxConstOperation.equals("Power")) {
+				z = z.power(pwr).power(constant);
+			}*/
 		}
 		return maxIterations;
 	}
