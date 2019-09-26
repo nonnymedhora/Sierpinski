@@ -57,6 +57,9 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private static final long serialVersionUID = 156478L;
 	
+
+	private static final String eol = "<br/>";
+	
 	private static final Double[] BOUNDARIES = getBoundaryOptions();
 	
 	private static final String[] COLOR_OPTIONS = new String[]{"BlackWhite","ColorPalette","ComputeColor","Random"};
@@ -3184,7 +3187,6 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private String getImgBaseInfo() {
-		String eol = "<br/>";
 		
 		String choice = this.getComboChoice();
 		String baseInfo = "<html><font color='red'>"+choice + " {";
@@ -3252,33 +3254,8 @@ class SierpinskiComboPanel extends JPanel {
 					baseInfo += "Real Value = " + Double.parseDouble(this.polyRealTf.getText()) + "," + eol;
 					baseInfo += "Imaginary Value = " + Double.parseDouble(this.polyImgTf.getText()) + eol;
 				}
-				if (!(this.constFuncChoice.equals("None"))) {// || this.constNoFuncRb.isSelected())*/) {
-					if (this.constFuncChoice.equals("sine")) { //if (this.constSineRb.isSelected()) {
-						baseInfo += "Sine of Constant	sine(C)" + eol;
-					} else if (this.constFuncChoice.equals("cosine")) { //if (this.constCosineRb.isSelected()) {
-						baseInfo += "Cosine of Constant		cos(C)" + eol;
-					} else if (this.constFuncChoice.equals("tan")) { //if (this.constTanRb.isSelected()) {
-						baseInfo += "Tan of Constant	tan(C)" + eol;
-					} else if (this.constFuncChoice.equals("arcsine")) { //if (this.constArcSineRb.isSelected()) {
-						baseInfo += "ArcSine of Constant	arcsin(C)" + eol;
-					} if (this.constFuncChoice.equals("arccosine")) { //else if (this.constArcCosineRb.isSelected()) {
-						baseInfo += "ArcCosine of Constant	arccos(C)" + eol;
-					} else if (this.constFuncChoice.equals("arctan")) { //if (this.constArcTanRb.isSelected()) {
-						baseInfo += "ArcTan of Constant		arctan(C)" + eol;
-					} else if (this.constFuncChoice.equals("square")) { //if (this.constSqRb.isSelected()) {
-						baseInfo += "Square of Constant		(C <sup>2</sup>)" + eol;
-					} else if (this.constFuncChoice.equals("cube")) { //if (this.constCuRb.isSelected()) {
-						baseInfo += "Cube of Constant		(C <sup>3</sup>)" + eol;
-					} else if (this.constFuncChoice.equals("exponent(e)")) { //if (this.constExpRb.isSelected()) {
-						baseInfo += "Exponent of Constant	(e <sup>C</sup>)" + eol;
-					} else if (this.constFuncChoice.equals("root")) { //if (this.constRootRb.isSelected()) {
-						baseInfo += "Square Root of Constant	(C <sup>(1/2)</sup>)" + eol;
-					} else if (this.constFuncChoice.equals("cube-root")) { //if (this.constArcTanRb.isSelected()) {
-						baseInfo += "Cube Root of Constant		(C <sup>(1/3)</sup>)" + eol;
-					} else if (this.constFuncChoice.equals("log(e)")) { //if (this.constLnRb.isSelected()) {
-						baseInfo += "Log(e) of Constant		Ln(C)" + eol;
-					}
-				}
+				baseInfo = addConstFuncInfo(baseInfo);
+				
 				baseInfo += "Rotation: " + this.getRotation() + eol;
 				baseInfo += "Row-Column Mix-Type: " + this.polyType + eol;
 				baseInfo += "Center: P(x,y): (" + this.polyXC + ", " + this.polyYC + ")" + eol;
@@ -3303,33 +3280,36 @@ class SierpinskiComboPanel extends JPanel {
 					baseInfo += "Ud, ";
 				}
 				baseInfo += "Boundary: " + this.mandBound + eol;
-				if (!(this.constFuncChoice.equals("None")/* || this.constNoFuncRb.isSelected()*/)) {
-					if (this.constFuncChoice.equals("sine")) {	// (this.constSineRb.isSelected()) {
-						baseInfo += "Sine of Constant" + eol;
-					} else if (this.constFuncChoice.equals("cosine")) {	// if (this.constCosineRb.isSelected()) {
-						baseInfo += "Cosine of Constant" + eol;
-					} else if (this.constFuncChoice.equals("tan")) {	// if (this.constTanRb.isSelected()) {
-						baseInfo += "Tan of Constant" + eol;
-					} else if (this.constFuncChoice.equals("arcsine")) {	// if (this.constArcSineRb.isSelected()) {
-						baseInfo += "ArcSine of Constant" + eol;
-					} else if (this.constFuncChoice.equals("arccosine")) {	// if (this.constArcCosineRb.isSelected()) {
-						baseInfo += "ArcCosine of Constant" + eol;
-					} else if (this.constFuncChoice.equals("arctan")) {	// if (this.constArcTanRb.isSelected()) {
-						baseInfo += "ArcTan of Constant" + eol;
-					} else if (this.constFuncChoice.equals("square")) {	// if (this.constSqRb.isSelected()) {
-						baseInfo += "Square of Constant		(C <sup>2</sup>)" + eol;
-					} else if (this.constFuncChoice.equals("cube")) {	// if (this.constCuRb.isSelected()) {
-						baseInfo += "Cube of Constant		(C <sup>3</sup>)" + eol;
-					} else if (this.constFuncChoice.equals("exponent(e)")) {	// if (this.constExpRb.isSelected()) {
-						baseInfo += "Exponent of Constant	(e <sup>C</sup>)" + eol;
-					} else if (this.constFuncChoice.equals("root")) {	// if (this.constRootRb.isSelected()) {
-						baseInfo += "Square Root of Constant	(C <sup>(1/2)</sup>)" + eol;
-					} else if (this.constFuncChoice.equals("cube-root")) {	// if (this.constArcTanRb.isSelected()) {
-						baseInfo += "Cube Root of Constant		(C <sup>(1/3)</sup>)" + eol;
-					} else if (this.constFuncChoice.equals("log(e)")) {	// if (this.constLnRb.isSelected()) {
-						baseInfo += "Log(e) of Constant		Ln(C)" + eol;
-					}
-				}
+
+				baseInfo = addConstFuncInfo(baseInfo);
+				
+//				if (!(this.constFuncChoice.equals("None")/* || this.constNoFuncRb.isSelected()*/)) {
+//					if (this.constFuncChoice.equals("sine")) {	// (this.constSineRb.isSelected()) {
+//						baseInfo += "Sine of Constant" + eol;
+//					} else if (this.constFuncChoice.equals("cosine")) {	// if (this.constCosineRb.isSelected()) {
+//						baseInfo += "Cosine of Constant" + eol;
+//					} else if (this.constFuncChoice.equals("tan")) {	// if (this.constTanRb.isSelected()) {
+//						baseInfo += "Tan of Constant" + eol;
+//					} else if (this.constFuncChoice.equals("arcsine")) {	// if (this.constArcSineRb.isSelected()) {
+//						baseInfo += "ArcSine of Constant" + eol;
+//					} else if (this.constFuncChoice.equals("arccosine")) {	// if (this.constArcCosineRb.isSelected()) {
+//						baseInfo += "ArcCosine of Constant" + eol;
+//					} else if (this.constFuncChoice.equals("arctan")) {	// if (this.constArcTanRb.isSelected()) {
+//						baseInfo += "ArcTan of Constant" + eol;
+//					} else if (this.constFuncChoice.equals("square")) {	// if (this.constSqRb.isSelected()) {
+//						baseInfo += "Square of Constant		(C <sup>2</sup>)" + eol;
+//					} else if (this.constFuncChoice.equals("cube")) {	// if (this.constCuRb.isSelected()) {
+//						baseInfo += "Cube of Constant		(C <sup>3</sup>)" + eol;
+//					} else if (this.constFuncChoice.equals("exponent(e)")) {	// if (this.constExpRb.isSelected()) {
+//						baseInfo += "Exponent of Constant	(e <sup>C</sup>)" + eol;
+//					} else if (this.constFuncChoice.equals("root")) {	// if (this.constRootRb.isSelected()) {
+//						baseInfo += "Square Root of Constant	(C <sup>(1/2)</sup>)" + eol;
+//					} else if (this.constFuncChoice.equals("cube-root")) {	// if (this.constArcTanRb.isSelected()) {
+//						baseInfo += "Cube Root of Constant		(C <sup>(1/3)</sup>)" + eol;
+//					} else if (this.constFuncChoice.equals("log(e)")) {	// if (this.constLnRb.isSelected()) {
+//						baseInfo += "Log(e) of Constant		Ln(C)" + eol;
+//					}
+//				}
 				baseInfo += "Rotation: " + this.getRotation() + eol;
 				baseInfo += "Center: P(x,y): (" + this.mandXC + ", " + this.mandYC + ")" + eol;
 				baseInfo += "Maximum Iterations: " + this.mandMaxIter + eol;
@@ -3352,33 +3332,36 @@ class SierpinskiComboPanel extends JPanel {
 					baseInfo += "Ud, ";
 				}
 				baseInfo += "Boundary: " + this.juliaBound + eol;
-				if (!(this.constFuncChoice.equals("None") /*|| this.constNoFuncRb.isSelected()*/)) {
-					if (this.constFuncChoice.equals("sine")) {	// if (this.constSineRb.isSelected()) {
-						baseInfo += "Sine of Constant" + eol;
-					} else if (this.constFuncChoice.equals("cosine")) {	// if (this.constCosineRb.isSelected()) {
-						baseInfo += "Cosine of Constant" + eol;
-					} else if (this.constFuncChoice.equals("tan")) {	// if (this.constTanRb.isSelected()) {
-						baseInfo += "Tan of Constant" + eol;
-					} else if (this.constFuncChoice.equals("arcsine")) {	// if (this.constArcSineRb.isSelected()) {
-						baseInfo += "ArcSine of Constant" + eol;
-					} else if (this.constFuncChoice.equals("arccosine")) {	// if (this.constArcCosineRb.isSelected()) {
-						baseInfo += "ArcCosine of Constant" + eol;
-					} else if (this.constFuncChoice.equals("arctan")) {	// if (this.constArcTanRb.isSelected()) {
-						baseInfo += "ArcTan of Constant" + eol;
-					} else if (this.constFuncChoice.equals("square")) {	// if (this.constSqRb.isSelected()) {
-						baseInfo += "Square of Constant		(C <sup>2</sup>)" + eol;
-					} else if (this.constFuncChoice.equals("cube")) {	// if (this.constCuRb.isSelected()) {
-						baseInfo += "Cube of Constant		(C <sup>3</sup>)" + eol;
-					} else if (this.constFuncChoice.equals("exponent(e)")) {	// if (this.constExpRb.isSelected()) {
-						baseInfo += "Exponent of Constant	(e <sup>C</sup>)" + eol;
-					} else if (this.constFuncChoice.equals("root")) {	// if (this.constRootRb.isSelected()) {
-						baseInfo += "Square Root of Constant	(C <sup>(1/2)</sup>)" + eol;
-					} else if (this.constFuncChoice.equals("cube-root")) {	// if (this.constArcTanRb.isSelected()) {
-						baseInfo += "Cube Root of Constant		(C <sup>(1/3)</sup>)" + eol;
-					} else if (this.constFuncChoice.equals("log(e)")) {	// if (this.constLnRb.isSelected()) {
-						baseInfo += "Log(e) of Constant		Ln(C)" + eol;
-					}
-				}
+
+				baseInfo = addConstFuncInfo(baseInfo);
+				
+//				if (!(this.constFuncChoice.equals("None") /*|| this.constNoFuncRb.isSelected()*/)) {
+//					if (this.constFuncChoice.equals("sine")) {	// if (this.constSineRb.isSelected()) {
+//						baseInfo += "Sine of Constant" + eol;
+//					} else if (this.constFuncChoice.equals("cosine")) {	// if (this.constCosineRb.isSelected()) {
+//						baseInfo += "Cosine of Constant" + eol;
+//					} else if (this.constFuncChoice.equals("tan")) {	// if (this.constTanRb.isSelected()) {
+//						baseInfo += "Tan of Constant" + eol;
+//					} else if (this.constFuncChoice.equals("arcsine")) {	// if (this.constArcSineRb.isSelected()) {
+//						baseInfo += "ArcSine of Constant" + eol;
+//					} else if (this.constFuncChoice.equals("arccosine")) {	// if (this.constArcCosineRb.isSelected()) {
+//						baseInfo += "ArcCosine of Constant" + eol;
+//					} else if (this.constFuncChoice.equals("arctan")) {	// if (this.constArcTanRb.isSelected()) {
+//						baseInfo += "ArcTan of Constant" + eol;
+//					} else if (this.constFuncChoice.equals("square")) {	// if (this.constSqRb.isSelected()) {
+//						baseInfo += "Square of Constant		(C <sup>2</sup>)" + eol;
+//					} else if (this.constFuncChoice.equals("cube")) {	// if (this.constCuRb.isSelected()) {
+//						baseInfo += "Cube of Constant		(C <sup>3</sup>)" + eol;
+//					} else if (this.constFuncChoice.equals("exponent(e)")) {	// if (this.constExpRb.isSelected()) {
+//						baseInfo += "Exponent of Constant	(e <sup>C</sup>)" + eol;
+//					} else if (this.constFuncChoice.equals("root")) {	// if (this.constRootRb.isSelected()) {
+//						baseInfo += "Square Root of Constant	(C <sup>(1/2)</sup>)" + eol;
+//					} else if (this.constFuncChoice.equals("cube-root")) {	// if (this.constArcTanRb.isSelected()) {
+//						baseInfo += "Cube Root of Constant		(C <sup>(1/3)</sup>)" + eol;
+//					} else if (this.constFuncChoice.equals("log(e)")) {	// if (this.constLnRb.isSelected()) {
+//						baseInfo += "Log(e) of Constant		Ln(C)" + eol;
+//					}
+//				}
 				baseInfo += "Rotation: " + this.getRotation() + eol;
 				baseInfo += "Center: P(x,y): (" + this.juliaXC + ", " + this.juliaYC + ")" + eol;
 				baseInfo += "Maximum Iterations: " + this.juliaMaxIter + eol;
@@ -3409,33 +3392,36 @@ class SierpinskiComboPanel extends JPanel {
 					baseInfo += "Real Value = " + Double.parseDouble(this.diyMandRealTf.getText()) + ","+eol;
 					baseInfo += "Imaginary Value = " + Double.parseDouble(this.diyMandImgTf.getText()) + eol;
 				}
-				if (!(this.constFuncChoice.equals("None") /*|| this.constNoFuncRb.isSelected()*/)) {
-					if (this.constFuncChoice.equals("sine")) {	// if (this.constSineRb.isSelected()) {
-						baseInfo += "Sine of Constant" + eol;
-					} else if (this.constFuncChoice.equals("cosine")) {	// if (this.constCosineRb.isSelected()) {
-						baseInfo += "Cosine of Constant" + eol;
-					} else if (this.constFuncChoice.equals("tan")) {	// if (this.constTanRb.isSelected()) {
-						baseInfo += "Tan of Constant" + eol;
-					} else if (this.constFuncChoice.equals("arcsine")) {	// if (this.constArcSineRb.isSelected()) {
-						baseInfo += "ArcSine of Constant" + eol;
-					} else if (this.constFuncChoice.equals("arccosine")) {	// if (this.constArcCosineRb.isSelected()) {
-						baseInfo += "ArcCosine of Constant" + eol;
-					} else if (this.constFuncChoice.equals("arctan")) {	// if (this.constArcTanRb.isSelected()) {
-						baseInfo += "ArcTan of Constant" + eol;
-					} else if (this.constFuncChoice.equals("square")) {	// if (this.constSqRb.isSelected()) {
-						baseInfo += "Square of Constant		(C <sup>2</sup>)" + eol;
-					} else if (this.constFuncChoice.equals("cube")) {	// if (this.constCuRb.isSelected()) {
-						baseInfo += "Cube of Constant		(C <sup>3</sup>)" + eol;
-					} else if (this.constFuncChoice.equals("exponent(e)")) {	// if (this.constExpRb.isSelected()) {
-						baseInfo += "Exponent of Constant	(e <sup>C</sup>)" + eol;
-					} else if (this.constFuncChoice.equals("root")) {	// if (this.constRootRb.isSelected()) {
-						baseInfo += "Square Root of Constant	(C <sup>(1/2)</sup>)" + eol;
-					} else if (this.constFuncChoice.equals("cube-root")) {	// if (this.constArcTanRb.isSelected()) {
-						baseInfo += "Cube Root of Constant		(C <sup>(1/3)</sup>)" + eol;
-					} else if (this.constFuncChoice.equals("log(e)")) {	// if (this.constLnRb.isSelected()) {
-						baseInfo += "Log(e) of Constant		Ln(C)" + eol;
-					}
-				}
+				
+				baseInfo = addConstFuncInfo(baseInfo);
+				
+//				if (!(this.constFuncChoice.equals("None") /*|| this.constNoFuncRb.isSelected()*/)) {
+//					if (this.constFuncChoice.equals("sine")) {	// if (this.constSineRb.isSelected()) {
+//						baseInfo += "Sine of Constant" + eol;
+//					} else if (this.constFuncChoice.equals("cosine")) {	// if (this.constCosineRb.isSelected()) {
+//						baseInfo += "Cosine of Constant" + eol;
+//					} else if (this.constFuncChoice.equals("tan")) {	// if (this.constTanRb.isSelected()) {
+//						baseInfo += "Tan of Constant" + eol;
+//					} else if (this.constFuncChoice.equals("arcsine")) {	// if (this.constArcSineRb.isSelected()) {
+//						baseInfo += "ArcSine of Constant" + eol;
+//					} else if (this.constFuncChoice.equals("arccosine")) {	// if (this.constArcCosineRb.isSelected()) {
+//						baseInfo += "ArcCosine of Constant" + eol;
+//					} else if (this.constFuncChoice.equals("arctan")) {	// if (this.constArcTanRb.isSelected()) {
+//						baseInfo += "ArcTan of Constant" + eol;
+//					} else if (this.constFuncChoice.equals("square")) {	// if (this.constSqRb.isSelected()) {
+//						baseInfo += "Square of Constant		(C <sup>2</sup>)" + eol;
+//					} else if (this.constFuncChoice.equals("cube")) {	// if (this.constCuRb.isSelected()) {
+//						baseInfo += "Cube of Constant		(C <sup>3</sup>)" + eol;
+//					} else if (this.constFuncChoice.equals("exponent(e)")) {	// if (this.constExpRb.isSelected()) {
+//						baseInfo += "Exponent of Constant	(e <sup>C</sup>)" + eol;
+//					} else if (this.constFuncChoice.equals("root")) {	// if (this.constRootRb.isSelected()) {
+//						baseInfo += "Square Root of Constant	(C <sup>(1/2)</sup>)" + eol;
+//					} else if (this.constFuncChoice.equals("cube-root")) {	// if (this.constArcTanRb.isSelected()) {
+//						baseInfo += "Cube Root of Constant		(C <sup>(1/3)</sup>)" + eol;
+//					} else if (this.constFuncChoice.equals("log(e)")) {	// if (this.constLnRb.isSelected()) {
+//						baseInfo += "Log(e) of Constant		Ln(C)" + eol;
+//					}
+//				}
 				/*if (!(this.constFuncChoice.equals("None") || this.constNoFuncRb.isSelected())) {
 					if (this.constSineRb.isSelected()) {
 						baseInfo += "Sine of Constant" + eol;
@@ -3492,33 +3478,36 @@ class SierpinskiComboPanel extends JPanel {
 					baseInfo += "Real Value = " + Double.parseDouble(this.diyJuliaRealTf.getText()) + "," + eol;
 					baseInfo += "Imaginary Value = " + Double.parseDouble(this.diyJuliaImgTf.getText()) + eol;
 				}
-				if (!(this.constFuncChoice.equals("None") /*|| this.constNoFuncRb.isSelected()*/)) {
-					if (this.constFuncChoice.equals("sine")) {	// if (this.constSineRb.isSelected()) {
-						baseInfo += "Sine of Constant" + eol;
-					} else if (this.constFuncChoice.equals("cosine")) {	// if (this.constCosineRb.isSelected()) {
-						baseInfo += "Cosine of Constant" + eol;
-					} else if (this.constFuncChoice.equals("tan")) {	// if (this.constTanRb.isSelected()) {
-						baseInfo += "Tan of Constant" + eol;
-					} else if (this.constFuncChoice.equals("arcsine")) {	// if (this.constArcSineRb.isSelected()) {
-						baseInfo += "ArcSine of Constant" + eol;
-					} else if (this.constFuncChoice.equals("arccosine")) {	// if (this.constArcCosineRb.isSelected()) {
-						baseInfo += "ArcCosine of Constant" + eol;
-					} else if (this.constFuncChoice.equals("arctan")) {	// if (this.constArcTanRb.isSelected()) {
-						baseInfo += "ArcTan of Constant" + eol;
-					} else if (this.constFuncChoice.equals("square")) {	// if (this.constSqRb.isSelected()) {
-						baseInfo += "Square of Constant		(C <sup>2</sup>)" + eol;
-					} else if (this.constFuncChoice.equals("cube")) {	// if (this.constCuRb.isSelected()) {
-						baseInfo += "Cube of Constant		(C <sup>3</sup>)" + eol;
-					} else if (this.constFuncChoice.equals("exponent(e)")) {	// if (this.constExpRb.isSelected()) {
-						baseInfo += "Exponent of Constant	(e <sup>C</sup>)" + eol;
-					} else if (this.constFuncChoice.equals("root")) {	// if (this.constRootRb.isSelected()) {
-						baseInfo += "Square Root of Constant	(C <sup>(1/2)</sup>)" + eol;
-					} else if (this.constFuncChoice.equals("cube-root")) {	// if (this.constArcTanRb.isSelected()) {
-						baseInfo += "Cube Root of Constant		(C <sup>(1/3)</sup>)" + eol;
-					} else if (this.constFuncChoice.equals("log(e)")) {	// if (this.constLnRb.isSelected()) {
-						baseInfo += "Log(e) of Constant		Ln(C)" + eol;
-					}
-				}
+
+				baseInfo = addConstFuncInfo(baseInfo);
+				
+//				if (!(this.constFuncChoice.equals("None") /*|| this.constNoFuncRb.isSelected()*/)) {
+//					if (this.constFuncChoice.equals("sine")) {	// if (this.constSineRb.isSelected()) {
+//						baseInfo += "Sine of Constant" + eol;
+//					} else if (this.constFuncChoice.equals("cosine")) {	// if (this.constCosineRb.isSelected()) {
+//						baseInfo += "Cosine of Constant" + eol;
+//					} else if (this.constFuncChoice.equals("tan")) {	// if (this.constTanRb.isSelected()) {
+//						baseInfo += "Tan of Constant" + eol;
+//					} else if (this.constFuncChoice.equals("arcsine")) {	// if (this.constArcSineRb.isSelected()) {
+//						baseInfo += "ArcSine of Constant" + eol;
+//					} else if (this.constFuncChoice.equals("arccosine")) {	// if (this.constArcCosineRb.isSelected()) {
+//						baseInfo += "ArcCosine of Constant" + eol;
+//					} else if (this.constFuncChoice.equals("arctan")) {	// if (this.constArcTanRb.isSelected()) {
+//						baseInfo += "ArcTan of Constant" + eol;
+//					} else if (this.constFuncChoice.equals("square")) {	// if (this.constSqRb.isSelected()) {
+//						baseInfo += "Square of Constant		(C <sup>2</sup>)" + eol;
+//					} else if (this.constFuncChoice.equals("cube")) {	// if (this.constCuRb.isSelected()) {
+//						baseInfo += "Cube of Constant		(C <sup>3</sup>)" + eol;
+//					} else if (this.constFuncChoice.equals("exponent(e)")) {	// if (this.constExpRb.isSelected()) {
+//						baseInfo += "Exponent of Constant	(e <sup>C</sup>)" + eol;
+//					} else if (this.constFuncChoice.equals("root")) {	// if (this.constRootRb.isSelected()) {
+//						baseInfo += "Square Root of Constant	(C <sup>(1/2)</sup>)" + eol;
+//					} else if (this.constFuncChoice.equals("cube-root")) {	// if (this.constArcTanRb.isSelected()) {
+//						baseInfo += "Cube Root of Constant		(C <sup>(1/3)</sup>)" + eol;
+//					} else if (this.constFuncChoice.equals("log(e)")) {	// if (this.constLnRb.isSelected()) {
+//						baseInfo += "Log(e) of Constant		Ln(C)" + eol;
+//					}
+//				}
 				/*if (!(this.constFuncChoice.equals("None") || this.constNoFuncRb.isSelected())) {
 					if (this.constSineRb.isSelected()) {
 						baseInfo += "Sine of Constant" + eol;
@@ -3570,6 +3559,37 @@ class SierpinskiComboPanel extends JPanel {
 		}
 		
 		return baseInfo+"</font></html>";		
+	}
+
+	private String addConstFuncInfo(String baseInfo) {
+		if (!(this.constFuncChoice.equals("None"))) {// || this.constNoFuncRb.isSelected())*/) {
+			if (this.constFuncChoice.equals("sine")) { //if (this.constSineRb.isSelected()) {
+				baseInfo += "Sine of Constant	sine(C)" + eol;
+			} else if (this.constFuncChoice.equals("cosine")) { //if (this.constCosineRb.isSelected()) {
+				baseInfo += "Cosine of Constant		cos(C)" + eol;
+			} else if (this.constFuncChoice.equals("tan")) { //if (this.constTanRb.isSelected()) {
+				baseInfo += "Tan of Constant	tan(C)" + eol;
+			} else if (this.constFuncChoice.equals("arcsine")) { //if (this.constArcSineRb.isSelected()) {
+				baseInfo += "ArcSine of Constant	arcsin(C)" + eol;
+			} if (this.constFuncChoice.equals("arccosine")) { //else if (this.constArcCosineRb.isSelected()) {
+				baseInfo += "ArcCosine of Constant	arccos(C)" + eol;
+			} else if (this.constFuncChoice.equals("arctan")) { //if (this.constArcTanRb.isSelected()) {
+				baseInfo += "ArcTan of Constant		arctan(C)" + eol;
+			} else if (this.constFuncChoice.equals("square")) { //if (this.constSqRb.isSelected()) {
+				baseInfo += "Square of Constant		(C <sup>2</sup>)" + eol;
+			} else if (this.constFuncChoice.equals("cube")) { //if (this.constCuRb.isSelected()) {
+				baseInfo += "Cube of Constant		(C <sup>3</sup>)" + eol;
+			} else if (this.constFuncChoice.equals("exponent(e)")) { //if (this.constExpRb.isSelected()) {
+				baseInfo += "Exponent of Constant	(e <sup>C</sup>)" + eol;
+			} else if (this.constFuncChoice.equals("root")) { //if (this.constRootRb.isSelected()) {
+				baseInfo += "Square Root of Constant	(C <sup>(1/2)</sup>)" + eol;
+			} else if (this.constFuncChoice.equals("cube-root")) { //if (this.constArcTanRb.isSelected()) {
+				baseInfo += "Cube Root of Constant		(C <sup>(1/3)</sup>)" + eol;
+			} else if (this.constFuncChoice.equals("log(e)")) { //if (this.constLnRb.isSelected()) {
+				baseInfo += "Log(e) of Constant		Ln(C)" + eol;
+			}
+		}
+		return baseInfo;
 	}
 	
 	private String getExtraInfo() {
