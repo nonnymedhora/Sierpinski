@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -21,6 +22,8 @@ import javax.swing.SwingUtilities;
  */
 public class ApollonianCircles extends FractalBase {
 	
+	private static final long serialVersionUID = 134L;
+
 	public static final Color TRANSPARENT = new Color(0f, 0f, 0f, 0f);
 	
 	private double[] curvatures;
@@ -28,6 +31,7 @@ public class ApollonianCircles extends FractalBase {
 
 	public ApollonianCircles() {
 		super();
+//		this.setImage(new BufferedImage(WIDTH, HEIGHT-OFFSET, BufferedImage.TYPE_INT_RGB));
 		this.setSize(WIDTH,HEIGHT);
 	}
 	
@@ -100,9 +104,22 @@ public class ApollonianCircles extends FractalBase {
 					(int) (e.getRadius() * scaleMult), /*colors[e.getIteration()]*/TRANSPARENT);
 	
 		}
+		/*g.setColor(Color.red);
+		g.drawString("Iterations:= " + (colors.length - 1) + 
+					" NumCircles:= " + elements.size(), OFFSET * 2, HEIGHT - OFFSET * 5 + 10);*/
+//		this.addApollonianInfo(g, colors, elements);
 
-		createApollonianCircles(g, colors, c, m, dpth - 1);
+		this.createApollonianCircles(g, colors, c, m, dpth - 1);
 
+	}
+
+	private void addApollonianInfo(Graphics2D g, Color[] colors, final ArrayList<Element> elements) {
+		g.setColor(Color.BLACK);
+		g.fillRect(OFFSET * 2, HEIGHT - OFFSET * 5 + 10, 150, 20);
+		g.setColor(Color.red);
+		g.drawString("Iterations:= " + (colors.length - 1) + 
+					" NumCircles:= " + elements.size(), OFFSET * 2, HEIGHT - OFFSET * 5 + 10);
+						//0,0);//OFFSET * 2, HEIGHT - OFFSET);
 	}
 	
 	private static double[] getXY(double r1, double r2, double r3) {
@@ -192,6 +209,7 @@ public class ApollonianCircles extends FractalBase {
 				final FractalBase frame = ff;
 				frame.setTitle(ff.getFractalShapeTitle());
 				frame.setSize(FractalBase.WIDTH, FractalBase.HEIGHT);
+				frame.setRunning(true);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setResizable(false);
 				frame.setVisible(true);
