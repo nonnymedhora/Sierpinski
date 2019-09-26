@@ -133,58 +133,58 @@ System.out.println("type---->"+(type));	*/
 				
 				String pxFunc2Apply = this.useFuncPixel;
 				switch (pxFunc2Apply) {
-					case "Sine"	:
-							zx = zx.sine();
-							zy = zy.sine();
-							break;
-					case "Cosine" :
-							zx = zx.cosine();
-							zy = zy.cosine();
-							break;
-					case "Tan" :
-							zx = zx.tan();
-							zy = zy.tan();
-							break;
-					case "ArcSine"	:
-							zx = zx.inverseSine();
-							zy = zy.inverseSine();
+					case "sine"	:
+						zx = zx.sine();
+						zy = zy.sine();
 						break;
-					case "ArcCosine" :
-							zx = zx.inverseCosine();
-							zy = zy.inverseCosine();
-							break;
-					case "ArcTan" :
+					case "cosine" :
+						zx = zx.cosine();
+						zy = zy.cosine();
+						break;
+					case "tan" :
+						zx = zx.tan();
+						zy = zy.tan();
+						break;
+					case "arcsine"	:
+						zx = zx.inverseSine();
+						zy = zy.inverseSine();
+						break;
+					case "arccosine" :
+						zx = zx.inverseCosine();
+						zy = zy.inverseCosine();
+						break;
+					case "arctan" :
 						zx = zx.inverseTangent();
 						zy = zy.inverseTangent();
-							break;									
-					case "Square"	:
+						break;									
+					case "square"	:
 						zx = zx.power(2);
 						zy = zy.power(2);
-							break;
-					case "Cube" :
+						break;
+					case "cube" :
 						zx = zx.power(3);
 						zy = zy.power(3);
-							break;
-					case "Exponent" :
+						break;
+					case "exponent(e)" :
 						zx = zx.exp();
 						zy = zy.exp();
-							break;
-					case "Root"	:
+						break;
+					case "root"	:
 						zx = zx.sqroot();
 						zy = zy.sqroot();
-							break;
-					case "CubeRoot" :
+						break;
+					case "cube-root" :
 						zx = zx.curoot();
 						zy = zy.curoot();
-							break;
-					case "Log" :
+						break;
+					case "log(e)" :
 						zx = zx.ln();
 						zy = zy.ln();
-							break;	
+						break;	
 					case "None" :
 						zx = zx;
 						zy = zy;
-							break;
+						break;
 					default:
 						zx = zx;
 						zy = zy;
@@ -198,45 +198,45 @@ System.out.println("type---->"+(type));	*/
 				String func2Apply = this.useFuncConst;
 				if (!this.isConstFuncApplied) {
 					switch (func2Apply) {
-						case "Sine"	:
-								this.compConst = this.compConst.sine();	//z0.sin();
-								break;
-						case "Cosine" :
-								this.compConst = this.compConst.cosine();	//z0.cos();
-								break;
-						case "Tan" :
-								this.compConst = this.compConst.tangent();	//z0.tan();
-								break;
-						case "ArcSine"	:
+						case "sine"	:
+							this.compConst = this.compConst.sine();	//z0.sin();
+							break;
+						case "cosine" :
+							this.compConst = this.compConst.cosine();	//z0.cos();
+							break;
+						case "tan" :
+							this.compConst = this.compConst.tangent();	//z0.tan();
+							break;
+						case "arcsine"	:
 							this.compConst = this.compConst.inverseSine();	//z0.sin();
 							break;
-						case "ArcCosine" :
-								this.compConst = this.compConst.inverseCosine();	//z0.cos();
-								break;
-						case "ArcTan" :
-								this.compConst = this.compConst.inverseTangent();	//z0.tan();
-								break;									
-						case "Square"	:
+						case "arccosine" :
+							this.compConst = this.compConst.inverseCosine();	//z0.cos();
+							break;
+						case "arctan" :
+							this.compConst = this.compConst.inverseTangent();	//z0.tan();
+							break;									
+						case "square"	:
 							this.compConst = this.compConst.power(2);	//z0.sin();
-								break;
-						case "Cube" :
+							break;
+						case "cube" :
 							this.compConst = this.compConst.power(3);	//z0.cos();
-								break;
-						case "Exponent" :
+							break;
+						case "exponent(e)" :
 							this.compConst = this.compConst.exp();	//z0.tan();
-								break;
-						case "Root"	:
+							break;
+						case "root"	:
 							this.compConst = this.compConst.sqroot();	//z0.sin();
-								break;
-						case "CubeRoot" :
+							break;
+						case "cube-root" :
 							this.compConst = this.compConst.curoot();	//z0.cos();
-								break;
-						case "Log" :
+							break;
+						case "log(e)" :
 							this.compConst = this.compConst.ln();	//z0.tan();
-								break;	
+							break;	
 						case "None" :
-								this.compConst = zx.plus(zy);
-								break;
+							this.compConst = zx.plus(zy);
+							break;
 						default:
 							this.compConst = zx.plus(zy);
 							break;

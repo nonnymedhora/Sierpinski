@@ -187,40 +187,40 @@ public class Mandelbrot extends FractalBase {
 	
 	private ComplexNumber computePixel(String fun, ComplexNumber z0) {
 		switch (fun) {
-			case "Sine":
+			case "sine":
 				z0 = z0.sine(); // z0.sin();
 				break;
-			case "Cosine":
+			case "coosine":
 				z0 = z0.cosine(); // z0.cos();
 				break;
-			case "Tan":
+			case "tan":
 				z0 = z0.tangent(); // z0.tan();
 				break;
-			case "ArcSine":
+			case "arcsine":
 				z0 = z0.inverseSine(); // z0.sin();
 				break;
-			case "ArcCosine":
+			case "arccosine":
 				z0 = z0.inverseCosine(); // z0.cos();
 				break;
-			case "ArcTan":
+			case "arctan":
 				z0 = z0.inverseTangent(); // z0.tan();
 				break;
-			case "Square":
+			case "square":
 				z0 = z0.power(2); // z0.sin();
 				break;
-			case "Cube":
+			case "cube":
 				z0 = z0.power(3); // z0.cos();
 				break;
-			case "Exponent":
+			case "exponent(e)":
 				z0 = z0.exp(); // z0.tan();
 				break;
-			case "Root":
+			case "root":
 				z0 = z0.sqroot(); // z0.sin();
 				break;
-			case "CubeRoot":
+			case "cube-root":
 				z0 = z0.curoot(); // z0.cos();
 				break;
-			case "Log":
+			case "log(e)":
 				z0 = z0.ln(); // z0.tan();
 				break;
 	
@@ -251,40 +251,40 @@ public class Mandelbrot extends FractalBase {
 
 		if (!this.isConstFuncApplied) {
 			switch (func2Apply) {
-			case "Sine":
+			case "sine":
 				cConst = cConst.sine(); //z0.sin();
 				break;
-			case "Cosine":
+			case "cosine":
 				cConst = cConst.cosine(); //z0.cos();
 				break;
-			case "Tan":
+			case "tan":
 				cConst = cConst.tangent(); //z0.tan();
 				break;
-			case "ArcSine":
+			case "arcsine":
 				cConst = cConst.inverseSine(); //z0.sin();
 				break;
-			case "ArcCosine":
+			case "arccosine":
 				cConst = cConst.inverseCosine(); //z0.cos();
 				break;
-			case "ArcTan":
+			case "arctan":
 				cConst = cConst.inverseTangent(); //z0.tan();
 				break;
-			case "Square":
+			case "square":
 				cConst = cConst.power(2); //z0.sin();
 				break;
-			case "Cube":
+			case "cube":
 				cConst = cConst.power(3); //z0.cos();
 				break;
-			case "Exponent":
+			case "exponent(e)":
 				cConst = cConst.exp(); //z0.tan();
 				break;
-			case "Root":
+			case "root":
 				cConst = cConst.sqroot(); //z0.sin();
 				break;
-			case "CubeRoot":
+			case "cube-root":
 				cConst = cConst.curoot(); //z0.cos();
 				break;
-			case "Log":
+			case "log(e)":
 				cConst = cConst.ln(); //z0.tan();
 				break;
 

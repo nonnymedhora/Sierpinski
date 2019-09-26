@@ -123,23 +123,24 @@ public class Julia extends FractalBase {
 		this();
 		this.power = mul;
 		switch (comp) {
-		case "C1":
-			this.complex = C1;
-			break;
-		case "C2":
-			this.complex = C2;
-			break;
-		case "C3":
-			this.complex = C3;
-			break;
-		case "M1":
-			this.complex = M1;
-			break;
-		case "M2":
-			this.complex = M2;
-			break;
-		default:
-			this.complex = C1;
+			case "C1":
+				this.complex = C1;
+				break;
+			case "C2":
+				this.complex = C2;
+				break;
+			case "C3":
+				this.complex = C3;
+				break;
+			case "M1":
+				this.complex = M1;
+				break;
+			case "M2":
+				this.complex = M2;
+				break;
+			default:
+				this.complex = C1;
+				break;
 		}
 		this.setComplexNumConst(true);
 		this.setPreStringComplexConstConstruct(true);
@@ -272,7 +273,7 @@ public class Julia extends FractalBase {
 				}
 				
 				ComplexNumber z0 = new ComplexNumber(x0,y0);
-				z0=computePixel(pxFunc2Apply,z0);
+				z0 = this.computePixel(pxFunc2Apply, z0);
 				
 				if (this.isFatou()) {
 					z0 = this.getFatouValue(z0);
@@ -398,40 +399,40 @@ public class Julia extends FractalBase {
 		String func2Apply = this.useFuncConst;
 		if (!this.isConstFuncApplied) {
 			switch (func2Apply) {
-			case "Sine":
+			case "sine":
 				cConst = cConst.sine(); //z0.sin();
 				break;
-			case "Cosine":
+			case "cosine":
 				cConst = cConst.cosine(); //z0.cos();
 				break;
-			case "Tan":
+			case "tan":
 				cConst = cConst.tangent(); //z0.tan();
 				break;
-			case "ArcSine":
+			case "arcsine":
 				cConst = cConst.inverseSine(); //z0.sin();
 				break;
-			case "ArcCosine":
+			case "arccosine":
 				cConst = cConst.inverseCosine(); //z0.cos();
 				break;
-			case "ArcTan":
+			case "arctan":
 				cConst = cConst.inverseTangent(); //z0.tan();
 				break;
-			case "Square":
+			case "square":
 				cConst = cConst.power(2); //z0.sin();
 				break;
-			case "Cube":
+			case "cube":
 				cConst = cConst.power(3); //z0.cos();
 				break;
-			case "Exponent":
+			case "exponent(e)":
 				cConst = cConst.exp(); //z0.tan();
 				break;
-			case "Root":
+			case "root":
 				cConst = cConst.sqroot(); //z0.sin();
 				break;
-			case "CubeRoot":
+			case "cube-root":
 				cConst = cConst.curoot(); //z0.cos();
 				break;
-			case "Log":
+			case "log(e)":
 				cConst = cConst.ln(); //z0.tan();
 				break;
 
@@ -454,40 +455,40 @@ public class Julia extends FractalBase {
 	
 	private ComplexNumber computePixel(String fun, ComplexNumber z0) {
 		switch (fun) {
-			case "Sine":
+			case "sine":
 				z0 = z0.sine(); // z0.sin();
 				break;
-			case "Cosine":
+			case "cosine":
 				z0 = z0.cosine(); // z0.cos();
 				break;
-			case "Tan":
+			case "tan":
 				z0 = z0.tangent(); // z0.tan();
 				break;
-			case "ArcSine":
+			case "arcsine":
 				z0 = z0.inverseSine(); // z0.sin();
 				break;
-			case "ArcCosine":
+			case "arccosine":
 				z0 = z0.inverseCosine(); // z0.cos();
 				break;
-			case "ArcTan":
+			case "arctan":
 				z0 = z0.inverseTangent(); // z0.tan();
 				break;
-			case "Square":
+			case "square":
 				z0 = z0.power(2); // z0.sin();
 				break;
-			case "Cube":
+			case "cube":
 				z0 = z0.power(3); // z0.cos();
 				break;
-			case "Exponent":
+			case "exponent(e)":
 				z0 = z0.exp(); // z0.tan();
 				break;
-			case "Root":
+			case "root":
 				z0 = z0.sqroot(); // z0.sin();
 				break;
-			case "CubeRoot":
+			case "cube-root":
 				z0 = z0.curoot(); // z0.cos();
 				break;
-			case "Log":
+			case "log(e)":
 				z0 = z0.ln(); // z0.tan();
 				break;
 	
