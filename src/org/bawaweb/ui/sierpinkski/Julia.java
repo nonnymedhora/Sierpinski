@@ -272,7 +272,16 @@ public class Julia extends FractalBase {
 					y0 = tmp;
 				}
 				
-				ComplexNumber z0 = new ComplexNumber(x0,y0);
+				//ComplexNumber z0 = new ComplexNumber(x0,y0);
+				ComplexNumber z0;
+				if (!this.isReversePixelCalculation()) {
+					z0 = new ComplexNumber(x0, y0);
+					z0 = this.getPixelComplexValue(x0, y0);					
+				} else {
+					z0 = new ComplexNumber(y0, x0);
+					z0 = this.getPixelComplexValue(y0, x0);
+				}
+				
 				z0 = this.computePixel(pxFunc2Apply, z0);
 				
 				if (this.isFatou()) {
@@ -417,6 +426,12 @@ public class Julia extends FractalBase {
 			case "arctan":
 				cConst = cConst.inverseTangent(); //z0.tan();
 				break;
+			case "reciprocal":
+				cConst = cConst.reciprocal(); //z0.tan();
+				break;
+			case "reciprocalSquare":
+				cConst = (cConst.reciprocal()).power(2); //z0.tan();
+				break;
 			case "square":
 				cConst = cConst.power(2); //z0.sin();
 				break;
@@ -472,6 +487,12 @@ public class Julia extends FractalBase {
 				break;
 			case "arctan":
 				z0 = z0.inverseTangent(); // z0.tan();
+				break;
+			case "reciprocal":
+				z0 = z0.reciprocal(); // z0.sin();
+				break;
+			case "reciprocalSquare":
+				z0 = (z0.reciprocal()).power(2); // z0.sin();
 				break;
 			case "square":
 				z0 = z0.power(2); // z0.sin();

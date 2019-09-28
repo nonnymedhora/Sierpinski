@@ -76,6 +76,28 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	protected int power;
 	
 	protected String pxConstOperation = "Plus";	// z + C	others are "Multiply","Divide","Subtract"
+		
+	protected String pxXTransformation="None";	
+	protected String pxYTransformation="None";
+	//	others are 
+	//		"Absolute"		x=|x|,y=|y|
+	//		"Reciprocal"	x=1/x,y=1/y
+	//		"Square"		x=x^2,y=y^2
+	//		"Root"			x=sqrt(x),y=sqrt(y)
+	//		Exponent		e^x,e^y
+	//		"sine"			sin(x),sin(y)
+	//		"cosine"		cos(x),cos(y)
+	//		"tan"			tan(x),tan(y)
+	
+	
+	protected String pixXYOperation = "Plus";	
+	// x=x,y=y
+	//others are "Multiply",	z=x*(iy)
+	//	"Divide",				z=x/(iy)
+	//	"Minus"					z=x-(iy)
+	//	"Power"					z=x^(iy)
+	
+	
 	protected String useFuncPixel	=	"None";
 	
 	//////	applied on the constant
@@ -359,6 +381,129 @@ public abstract class FractalBase extends JFrame implements Runnable {
 
 	protected abstract String getFractalShapeTitle();
 	
+	
+	protected ComplexNumber getPixelComplexValue(double x, double y) {
+		x = this.applyPixelXPointTransformation(x);
+		y = this.applyPixelYPointTransformation(y);
+		
+		return this.applyIntraPixelOperation(x,y);
+		
+	}
+	
+	//protected String pxConstOperation = "Plus";	// z + C	others are "Multiply","Divide","Subtract"	
+	private ComplexNumber applyIntraPixelOperation(double x, double y) {
+		ComplexNumber z = null;
+		switch(this.getPixXYOperation()){
+		case	"Plus":		z = new ComplexNumber(x,y);	break;
+		case	"Minus":	z = new ComplexNumber(x,y*-1.0);	break;
+		case	"Multiply":	z = new ComplexNumber(x,0.0).times(new	ComplexNumber(0.0,y));	break;
+		case	"Divide":	z = new ComplexNumber(x,0.0).divides(new	ComplexNumber(0.0,y));	break;
+		case	"Power":	z = new ComplexNumber(x,0.0).power((int)y);	break;
+		default:	z = new ComplexNumber(x,y);	break;	
+		}
+		return z;
+	}
+
+	private double applyPixelXPointTransformation(double pix) {
+		switch (this.getPxXTransformation()) {
+			case "none":
+				break;
+			case "absolute":
+				pix = Math.abs(pix);
+				break;
+			case "absoluteSquare":
+				pix = Math.pow(Math.abs(pix),2);
+				break;
+			case "reciprocal":
+				pix = 1.0/(pix);
+				break;
+			case "reciprocalSquare":
+				pix = Math.pow((1.0/(pix)),2);
+				break;
+			case "square":
+				pix = Math.pow(pix, 2);
+				break;
+			case "cube":
+				pix = Math.pow(pix, 3);
+				break;
+			case "root":
+				pix = Math.sqrt(pix);
+				break;
+			case "exponent":
+				pix = Math.exp(pix);
+				break;	
+			case "log(10)":
+				pix = Math.log10(pix);
+				break;
+			case "log(e)":
+				pix = Math.log(pix);
+				break;
+			case "sine":
+				pix = Math.sin(pix);
+				break;
+			case "cosine":
+				pix = Math.cos(pix);
+				break;
+			case "tangent":
+				pix = Math.tan(pix);
+				break;
+			case "arcsine":
+				pix = Math.asin(pix);
+				break;
+			case "arccosine":
+				pix = Math.acos(pix);
+				break;
+			case "arctangent":
+				pix = Math.atan(pix);
+				break;
+			default:
+				break;
+			}
+		return pix;
+	}
+
+	private double applyPixelYPointTransformation(double pix) {
+		switch (this.getPxYTransformation()) {
+			case "none":
+				break;
+			case "absolute":
+				pix = Math.abs(pix);
+				break;
+			case "reciprocal":
+				pix = 1.0/(pix);
+				break;
+			case "square":
+				pix = Math.pow(pix, 2);
+				break;
+			case "root":
+				pix = Math.sqrt(pix);
+				break;
+			case "exponent":
+				pix = Math.exp(pix);
+				break;	
+			case "log(10)":
+				pix = Math.log10(pix);
+				break;
+			case "log(e)":
+				pix = Math.log(pix);
+				break;
+			case "sine":
+				pix = Math.sin(pix);
+				break;
+			case "cosine":
+				pix = Math.cos(pix);
+				break;
+			case "tangent":
+				pix = Math.tan(pix);
+				break;
+			default:
+				break;
+			}
+		return pix;
+	}
+	
+	
+
 	protected void setPixel(int col, int row, int rgbColor) {
 		validateColumnIndex(col);
 		validateRowIndex(row);
@@ -760,12 +905,28 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		this.bound = bod;
 	}
 
-	public String getPxConstOperation() {
-		return this.pxConstOperation;
+	public String getPxXTransformation() {
+		return this.pxXTransformation;
 	}
 
-	public void setPxConstOperation(String pxConstOprn) {
-		this.pxConstOperation = pxConstOprn;
+	public void setPxXTransformation(String transform) {
+		this.pxXTransformation = transform;
+	}
+
+	public String getPxYTransformation() {
+		return this.pxYTransformation;
+	}
+
+	public void setPxYTransformation(String transform) {
+		this.pxYTransformation = transform;
+	}
+
+	public String getPixXYOperation() {
+		return this.pixXYOperation;
+	}
+
+	public void setPixXYOperation(String operation) {
+		this.pixXYOperation = operation;
 	}
 
 	public String getUseFuncConst() {
@@ -1287,6 +1448,9 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		public Object getResult(Formula f) {
 			return null;
 		}
+	}
+	public void setPxConstOperation(String pxConstOp) {
+		this.pxConstOperation=pxConstOp;		
 	}
 	
 }

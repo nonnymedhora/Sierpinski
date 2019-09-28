@@ -135,8 +135,10 @@ public class Mandelbrot extends FractalBase {
 				ComplexNumber z0;
 				if (!this.isReversePixelCalculation()) {
 					z0 = new ComplexNumber(x0, y0);
+					z0 = this.getPixelComplexValue(x0, y0);					
 				} else {
 					z0 = new ComplexNumber(y0, x0);
+					z0 = this.getPixelComplexValue(y0, x0);
 				}
 				
 				
@@ -205,6 +207,12 @@ public class Mandelbrot extends FractalBase {
 			case "arctan":
 				z0 = z0.inverseTangent(); // z0.tan();
 				break;
+			case "reiprocal":
+				z0 = z0.reciprocal(); // z0.sin();
+				break;
+			case "reciprocalSquare":
+				z0 = (z0.reciprocal()).power(2); // z0.sin();
+				break;
 			case "square":
 				z0 = z0.power(2); // z0.sin();
 				break;
@@ -268,6 +276,12 @@ public class Mandelbrot extends FractalBase {
 				break;
 			case "arctan":
 				cConst = cConst.inverseTangent(); //z0.tan();
+				break;
+			case "reciprocal":
+				cConst = cConst.reciprocal(); //1/z0;
+				break;
+			case "reciprocalSquare":
+				cConst = (cConst.reciprocal()).power(2); //(1/z)^2;
 				break;
 			case "square":
 				cConst = cConst.power(2); //z0.sin();
@@ -395,6 +409,11 @@ public class Mandelbrot extends FractalBase {
 //				frame.depth = 5;
 /*				frame.setUseColorPalette(false);
 				frame.setUseBlackWhite(true);*/
+				frame.setPxXTransformation("absolute");
+				frame.setPxYTransformation("absolute");
+
+				frame.setPixXYOperation("Plus");
+				
 				frame.setTitle(frame.getFractalShapeTitle());
 				frame.setSize(FractalBase.WIDTH, FractalBase.HEIGHT);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

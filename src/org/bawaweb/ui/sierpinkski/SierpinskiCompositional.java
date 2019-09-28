@@ -54,16 +54,17 @@ import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
  */
 
 class SierpinskiComboPanel extends JPanel {
-	
 	private static final long serialVersionUID = 156478L;
-	
-
 	private static final String eol = "<br/>";
 	
+	private static final String[] OPERATIONS = new String[]{"Plus","Minus","Multiply","Divide","Power"};
+
 	private static final Double[] BOUNDARIES = getBoundaryOptions();
 	
-	private static final String[] COLOR_OPTIONS = new String[]{"BlackWhite","ColorPalette","ComputeColor","Random"};
-	private static final String[] FUNCTION_OPTIONS = {"None","sine","cosine","tan","arcsine","arccosine","arctan","square","cube","exponent(e)","root",/*"cube-root",*/"log(e)"};	
+	private static final String[] COLOR_OPTIONS = new String[]{"BlackWhite","ColorPalette","ComputeColor"/*,"Random"*/};
+	private static final String[] FUNCTION_OPTIONS = {"None","sine","cosine","tan","arcsine","arccosine","arctan","reciprocal", "reciprocalSquare","square","cube","exponent(e)","root",/*"cube-root",*/"log(e)"};
+	private static final String[] PIX_TRANSFORM_OPTIONS = {"none", "absolute", "absoluteSquare","reciprocal", "reciprocalSquare", "square", "cube","root", "exponent", "log(10)", "log(e)", "sine", "cosine", "tangent", "arcsine", "arccosine", "arctangent"};
+	
 	private static final Integer[] EXPONENTS = new Integer[] { -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	private static final Integer[] MAX_ITERATIONS = new Integer[] { 10, 50, 100, 200, 225, 255, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 2000, 3000, 5000, 7500, 10000 };
 	private static final Integer[] AREA_SIZES = new Integer[] { 10, 50, 100, 200, 225, 255, 500, 512, 599, 800 };
@@ -76,7 +77,8 @@ class SierpinskiComboPanel extends JPanel {
 	private static final Integer[] APOLLO_CURVES = new Integer[]{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 };
 	
 	//	for	z+C, z-C, z*C, z/C, z^C
-	private static final String[] PIX_CONST_OPRNS = new String[]{"Plus","Minus","Multiply","Divide","Power"};
+	private static final String[] PIX_CONST_OPRNS = OPERATIONS;
+	private static final String[] PIX_INTRA_OPRNS = OPERATIONS;
 	
 	// for Julia
 	private static final String J1 = "P[2] C[0.279]";	//f(z) = z^2 + 0.279
@@ -446,9 +448,21 @@ class SierpinskiComboPanel extends JPanel {
 	private Vector<Double> rotOptions = new Vector<Double>();
 	protected JComboBox<Double> rotateCombo ;
 	
-	private JComboBox<String> colorChoiceCombo = new JComboBox<String>(COLOR_OPTIONS);
-	
+	private JComboBox<String> colorChoiceCombo = new JComboBox<String>(COLOR_OPTIONS);	
 	private String colorChoice = "BlackWhite";
+	
+	//for complexNumber z	= xtranformed operation ytrasnform
+	private JComboBox<String>	pxXTransformCombo = new JComboBox<String>(PIX_TRANSFORM_OPTIONS);
+	private JComboBox<String>	pxYTransformCombo = new JComboBox<String>(PIX_TRANSFORM_OPTIONS);
+	
+	private String pixXTransform = "none";
+	private String pixYTransform = "none";
+
+//	Pix_XY_Operation
+	private JComboBox<String>	intraPixOperationCombo = new JComboBox<String>(PIX_INTRA_OPRNS);
+	private String pixIntraXYOperation = "Plus";
+	
+	/////////////////////	z=tx(x)..operation...ty(y)
 	
 	// for Constants
 	private JComboBox<String> constFuncCombo = new JComboBox<String>(FUNCTION_OPTIONS);	
@@ -498,25 +512,36 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(new JLabel("Choose Color:"));
 		this.add(this.colorChoiceCombo);
 		
-		// creates-rototation-choice-options -- does not add
-		this.createRotationCombo();
+		this.add(new JLabel("PixelTransformation:  X"));
+		this.add(this.pxXTransformCombo);
+		this.add(new JLabel(",  Y"));
+		this.add(this.pxYTransformCombo);
+		
+		this.add(new JLabel("Intra Pixel Operation:"));
+		this.add(this.intraPixOperationCombo);
+		
+		this.add(this.invertPixelsCb);
+		
+		this.add(new JLabel("Pixel z(x,y) Functions:"));
+		this.add(this.pxFuncCombo);
 		
 		// creates-functional-choices-for-constants
 		this.add(new JLabel("Constant (C) Functions:"));
 		this.add(this.constFuncCombo);
+		
+		this.add(new JLabel("Pixel-Constant Operation:"));
+		this.add(this.pxConstOprnCombo);
+		
+		// creates-rototation-choice-options -- does not add
+		this.createRotationCombo();
 
 		this.rotLabel.setVisible(false);
 		this.rotateCombo.setVisible(false);
 		this.add(this.rotLabel);
 		this.add(this.rotateCombo);
-		
-		this.add(this.invertPixelsCb);
-		
-		this.add(new JLabel("Pixel-Constant Operation:"));
-		this.add(this.pxConstOprnCombo);
-		
-		this.add(new JLabel("Pixel z(x,y) Functions:"));
-		this.add(pxFuncCombo);
+
+		this.formulaArea.setVisible(false);
+		this.add(this.formulaArea);
 
 		this.buStart.setEnabled(false);
 		this.add(this.buStart);
@@ -525,9 +550,6 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(this.buSave);
 		this.buClose.setEnabled(false);
 		this.add(this.buClose);
-
-		this.formulaArea.setVisible(false);
-		this.add(this.formulaArea);
 
 	}
 
@@ -1307,6 +1329,8 @@ class SierpinskiComboPanel extends JPanel {
 			}
 		}
 		
+		this.addXtrYtrXYInfroInfo(this.pixXTransform,this.pixYTransform,this.pixIntraXYOperation);
+		
 		this.addInvertPixelCalcInfo();
 
 		this.addPixelConstantOperationInfo();
@@ -1474,6 +1498,20 @@ class SierpinskiComboPanel extends JPanel {
 				this.formulaArea.append("<br/>Complex Constant = arctan(z)");
 			}
 			break;
+			case	"reciprocal":
+				if (!isComplexConst) {
+					this.formulaArea.append("<br/>(1 / ComplexConstant) == " + c.reciprocal().toString() + "<br/>");
+				} else {
+					this.formulaArea.append("<br/>Complex Constant = (1/z)");
+				}
+				break;
+			case	"reciprocalSquare":
+				if (!isComplexConst) {
+					this.formulaArea.append("<br/>(1 / ComplexConstant) <sup>2</sup> == " + (c.reciprocal()).power(2).toString() + "<br/>");
+				} else {
+					this.formulaArea.append("<br/>Complex Constant = (1 / ComplexConstant) <sup>2</sup>");
+				}
+				break;
 		case	"square":
 			if (!isComplexConst) {
 				//			System.out.println("SQUARE-<br/>ComplexConstant == "+c.power(2).toString()+"<br/>");
@@ -2118,6 +2156,131 @@ class SierpinskiComboPanel extends JPanel {
 		return ff;
 	}
 
+	
+	private void addPixelConstantOperationInfo() {		
+//		 PIX_CONST_OPRNS = new String[]{"Plus","Minus","Multiply","Divide","Power"};
+		switch(this.pxConstOprnChoice){
+			case	"Plus"	:	
+				this.formulaArea.append("<br/><font color='blue'>Pixel Constant Operation "+
+						this.pxConstOprnChoice+
+						"<br/>   f(Z) = z + C</font><br/>");
+				break;
+			case	"Minus"	:	
+				this.formulaArea.append("<br/><font color='blue'>Pixel Constant Operation "+
+						this.pxConstOprnChoice+
+						"<br/>   f(Z) = z - C</font><br/>");
+				break;
+			case	"Multiply"	:	
+				this.formulaArea.append("<br/><font color='blue'>Pixel Constant Operation "+
+						this.pxConstOprnChoice+
+						"<br/>   f(Z) = z * C</font><br/>");
+				break;
+			case	"Divide"	:	
+				this.formulaArea.append("<br/><font color='blue'>Pixel Constant Operation "+
+						this.pxConstOprnChoice+
+						"<br/>   f(Z) = z / C</font><br/>");
+				break;
+			default:
+				this.formulaArea.append("<br/><font color='blue'>Pixel Constant Operation "+
+						this.pxConstOprnChoice+
+						"<br/>   f(Z) = z + C</font><br/>");
+				break;
+		}
+		
+	}
+	
+	//String[] PIX_TRANSFORM_OPTIONS = {"none", "absolute", "reciprocal", "square", "root", "exponent", "log(10)", "log(e)", 
+	//"sine", "cosine", "tangent", "arcsine", "arccosine", "arctangent"};
+	
+	
+	private void addXtrYtrXYInfroInfo(String xTrans, String yTrans, String xyOp) {
+		String xVal = "x";
+		String yVal = "y";
+		String opVal = " + ";
+		
+//	case "none": this.formulaArea.append(eol+"<font color='black'>x = x</font>"+eol); break;
+		switch( xTrans ) {
+			case "none": break;
+			case "absolute": 	xVal =" | "+xVal+" | "; break;
+			case "absoluteSquare": 	xVal =" | "+xVal+" | <sup>2</sup> "; break;
+			case "reciprocal": 	xVal =" 1 / "+xVal+" "; break;
+			case "reciprocalSquare": 	xVal =" (1 / "+xVal+") <sup>2</sup>  "; break;
+			case "square": 		xVal = " "+xVal+" <sup>2</sup> "; break;
+			case "cube": 		xVal = " "+xVal+" <sup>3</sup> "; break;
+			case "root": 		xVal = " sqrt( "+xVal+" ) "; break;
+			case "exponent": 	xVal = " e <sup>"+xVal+"</sup> "; break;
+			case "log(10)": 	xVal = " log <sub>10</sub>( "+xVal+" ) "; break;
+			case "log(e)": 		xVal = " log <sub>e</sub>( "+xVal+" ) "; break;
+			case "sine": 		xVal = " sin( "+xVal+" ) "; break;
+			case "cosine": 		xVal = " cos( "+xVal+" ) "; break;			
+			case "tangent": 	xVal = " tan( "+xVal+" ) "; break;
+			case "arcsine": 	xVal = " asin( "+xVal+" ) "; break;
+			case "arccosine": 	xVal = " acos( "+xVal+" ) "; break;
+			case "arctangent": 	xVal = " atan2( "+xVal+" ) "; break;
+			
+			default:  break;
+		}
+		
+		switch( yTrans ) {
+			case "none": break;
+			case "absolute": 	yVal =" | "+yVal+" | i "; break;
+			case "absoluteSquare": 	yVal =" | "+yVal+" | <sup>2</sup> i "; break;
+			case "reciprocal": 	yVal =" (1 / "+yVal+") i "; break;
+			case "reciprocalSquare": 	yVal =" (1 / "+yVal+") <sup>2</sup> i "; break;
+			case "square": 		yVal = " "+yVal+" <sup>2</sup> i "; break;
+			case "cube": 		yVal = " "+yVal+" <sup>3</sup> i "; break;
+			case "root": 		yVal = " sqrt( "+yVal+" ) i "; break;
+			case "exponent": 	yVal = " e <sup>"+yVal+"</sup> i "; break;
+			case "log(10)": 	yVal = " log <sub>10</sub>( "+yVal+" ) i "; break;
+			case "log(e)": 		yVal = " log <sub>e</sub>( "+yVal+" ) i "; break;
+			case "sine": 		yVal = " sin( "+yVal+" ) i "; break;
+			case "cosine": 		yVal = " cos( "+yVal+" ) i "; break;			
+			case "tangent": 	yVal = " tan( "+yVal+" ) i "; break;
+			case "arcsine": 	yVal = " asin( "+yVal+" ) i "; break;
+			case "arccosine": 	yVal = " acos( "+yVal+" ) i "; break;
+			case "arctangent": 	yVal = " atan2( "+yVal+" ) i "; break;
+			
+			default:  break;
+		}
+		//String[] OPERATIONS = new String[]{"Plus","Minus","Multiply","Divide","Power"};
+		switch( xyOp ) {
+			case "Plus":	break;
+			case "Minus":		opVal = " - "; break;
+			case "Multiply":	opVal = " * "; break;
+			case "Divide":		opVal = " / "; break;
+			case "Power":		opVal = " ^ "; yVal="<sup> "+yVal+"</sup> ";break;
+		}
+			
+		this.formulaArea.append(eol+"<font color='black'>z = "+xVal+" "+opVal+" "+yVal+"</font>"+eol);	
+	}
+	
+	private void addInvertPixelCalcInfo() {
+		boolean invertPix = this.invertPixelCalculation;
+		if (invertPix) {
+			this.formulaArea.append(eol+"<font color='red'>Pixel Calculation reversed  z = y + i*x + C</font>"+eol);
+		} else {
+			this.formulaArea.append(eol+"<font color='red'>Pixel Calculation z = x + i*y + C</font>"+eol);
+		}
+	}
+
+	private void addPixelFuncInfo(String pxFunc) {
+		switch(pxFunc){
+			case	"sine":				this.formulaArea.append("<br/><font color='black'><b>z = sin(Z)</font></b><br/>");break;
+			case	"cosine":			this.formulaArea.append("<br/><font color='black'><b>z = cos(Z)</font></b><br/>");break;
+			case	"tan":				this.formulaArea.append("<br/><font color='black'><b>z = tan(Z)</font></b><br/>");break;
+			case	"arcsine":			this.formulaArea.append("<br/><font color='black'><b>z = arcsin(Z)</font></b><br/>");break;
+			case	"arccosine":		this.formulaArea.append("<br/><font color='black'><b>z = arccos(Z)</font></b><br/>");break;
+			case	"arctan":			this.formulaArea.append("<br/><font color='black'><b>z = arctan(Z)</font></b><br/>");break;
+			case	"reciprocal":		this.formulaArea.append("<br/><font color='black'><b>z = (1 /Z)</font></b><br/>");break;
+			case	"reciprocalSquare":	this.formulaArea.append("<br/><font color='black'><b>z = (1 /Z) <sup>2</sup></font></b><br/>");break;
+			case	"square":			this.formulaArea.append("<br/><font color='black'><b>z = (Z <sup>2</sup>)</font></b><br/>");break;
+			case	"cube":				this.formulaArea.append("<br/><font color='black'><b>z = (Z <sup>3</sup>)</font></b><br/>");break;
+			case	"exponent(e)":		this.formulaArea.append("<br/><font color='black'><b>z = e<sup>(Z)</sup></font></b><br/>");break;
+			case	"root":				this.formulaArea.append("<br/><font color='black'><b>z = root(Z)</font></b><br/>");break;
+			case	"log(e)":			this.formulaArea.append("<br/><font color='black'><b>z = log(Z)</font></b><br/>");break;
+			default	:					this.formulaArea.append("<br/>");break;			
+		}
+	}
 	private FractalBase createDIYJulia() {
 		FractalBase ff;
 		//diyJulia
@@ -2145,7 +2308,9 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setVisible(true);
 		this.formulaArea.setText("");
 		this.formulaArea.setText("<font color='blue'>(DIY)Julia Set:<br/>");
-
+		
+		this.addXtrYtrXYInfroInfo(this.pixXTransform,this.pixYTransform,this.pixIntraXYOperation);
+		
 		this.addInvertPixelCalcInfo();
 		this.addPixelConstantOperationInfo();
 
@@ -2191,6 +2356,12 @@ class SierpinskiComboPanel extends JPanel {
 			this.formulaArea.append("<br/>Constant = " + diyJuliaRealVal + " + (" + diyJuliaImgVal + " * i)</font>");
 			ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJuliaRealVal, diyJuliaImgVal);
 		}
+		
+		
+		ff.setPxXTransformation(this.pixXTransform);
+		ff.setPxYTransformation(this.pixYTransform);
+		ff.setPixXYOperation(this.pixIntraXYOperation);
+		
 		
 		ff.setReversePixelCalculation(this.invertPixelCalculation);
 		
@@ -2240,64 +2411,6 @@ class SierpinskiComboPanel extends JPanel {
 		return ff;
 	}
 	
-	private void addPixelConstantOperationInfo() {		
-//		 PIX_CONST_OPRNS = new String[]{"Plus","Minus","Multiply","Divide","Power"};
-		switch(this.pxConstOprnChoice){
-			case	"Plus"	:	
-				this.formulaArea.append("<br/><font color='blue'>Pixel Constant Operation "+
-						this.pxConstOprnChoice+
-						"<br/>   f(Z) = z + C</font><br/>");
-				break;
-			case	"Minus"	:	
-				this.formulaArea.append("<br/><font color='blue'>Pixel Constant Operation "+
-						this.pxConstOprnChoice+
-						"<br/>   f(Z) = z - C</font><br/>");
-				break;
-			case	"Multiply"	:	
-				this.formulaArea.append("<br/><font color='blue'>Pixel Constant Operation "+
-						this.pxConstOprnChoice+
-						"<br/>   f(Z) = z * C</font><br/>");
-				break;
-			case	"Divide"	:	
-				this.formulaArea.append("<br/><font color='blue'>Pixel Constant Operation "+
-						this.pxConstOprnChoice+
-						"<br/>   f(Z) = z / C</font><br/>");
-				break;
-			default:
-				this.formulaArea.append("<br/><font color='blue'>Pixel Constant Operation "+
-						this.pxConstOprnChoice+
-						"<br/>   f(Z) = z + C</font><br/>");
-				break;
-		}
-		
-	}
-	
-	private void addInvertPixelCalcInfo() {
-		boolean invertPix = this.invertPixelCalculation;
-		if (invertPix) {
-			this.formulaArea.append("<br/><font color='red'>Pixel Calculation reversed  z = y + i*x + C</font><br/>");
-		} else {
-			this.formulaArea.append("<br/><font color='red'>Pixel Calculation z = x + i*y + C</font><br/>");
-		}
-	}
-
-	private void addPixelFuncInfo(String pxFunc) {
-		switch(pxFunc){
-			case	"sine":			this.formulaArea.append("<br/><font color='black'><b>z = sin(Z)</font></b><br/>");break;
-			case	"cosine":		this.formulaArea.append("<br/><font color='black'><b>z = cos(Z)</font></b><br/>");break;
-			case	"tan":			this.formulaArea.append("<br/><font color='black'><b>z = tan(Z)</font></b><br/>");break;
-			case	"arcsine":		this.formulaArea.append("<br/><font color='black'><b>z = arcsin(Z)</font></b><br/>");break;
-			case	"ArcCosine":	this.formulaArea.append("<br/><font color='black'><b>z = arccos(Z)</font></b><br/>");break;
-			case	"arctan":		this.formulaArea.append("<br/><font color='black'><b>z = arctan(Z)</font></b><br/>");break;
-			case	"square":		this.formulaArea.append("<br/><font color='black'><b>z = (Z <sup>2</sup>)</font></b><br/>");break;
-			case	"Cube":			this.formulaArea.append("<br/><font color='black'><b>z = (Z <sup>3</sup>)</font></b><br/>");break;
-			case	"exponent(e)":	this.formulaArea.append("<br/><font color='black'><b>z = e<sup>(Z)</sup></font></b><br/>");break;
-			case	"root":			this.formulaArea.append("<br/><font color='black'><b>z = root(Z)</font></b><br/>");break;
-			case	"log(e)":		this.formulaArea.append("<br/><font color='black'><b>z = log(Z)</font></b><br/>");break;
-			default	:				this.formulaArea.append("<br/>");break;			
-		}
-	}
-
 	private FractalBase createDIYMandelbrot() {
 		FractalBase ff;
 		// for diy mandelbrot
@@ -2325,6 +2438,8 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setText("");
 		this.formulaArea.setText("<font color='blue'>(DIY)Mandelbrot Set:<br/><br/>f(z) = z <sup>" + diyMandExp + "</sup> + C");
 		
+		this.addXtrYtrXYInfroInfo(this.pixXTransform,this.pixYTransform,this.pixIntraXYOperation);
+		
 		this.addInvertPixelCalcInfo();
 
 		this.addPixelConstantOperationInfo();
@@ -2341,7 +2456,9 @@ class SierpinskiComboPanel extends JPanel {
 			this.formulaArea.append("<br/>Constant = " + diyMRealVal + " + (" + diyMImgVal + " * i)</font>");
 			ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD,diyMandB, diyMRealVal, diyMImgVal);
 		}
-		
+		ff.setPxXTransformation(this.pixXTransform);
+		ff.setPxYTransformation(this.pixYTransform);
+		ff.setPixXYOperation(this.pixIntraXYOperation);
 		
 		ff.setPxConstOperation(pxConstOp);
 		ff.setReversePixelCalculation(this.invertPixelCalculation);
@@ -2393,6 +2510,10 @@ class SierpinskiComboPanel extends JPanel {
 		String func = this.constFuncChoice;
 		String pxFunc = this.pxFuncChoice;
 		
+		String pxXTrans = this.pixXTransform;
+		String pxYTrans = this.pixYTransform;
+		String pxIntraOp = this.pixIntraXYOperation;
+		
 		double rot = this.getRotation();
 		FractalBase ff;
 		this.formulaArea.setVisible(true);
@@ -2406,6 +2527,10 @@ class SierpinskiComboPanel extends JPanel {
 		} else {
 			ff = new Julia(pow, comp, jBound, jUseD);
 		}
+
+		ff.setPxXTransformation(this.pixXTransform);
+		ff.setPxYTransformation(this.pixYTransform);
+		ff.setPixXYOperation(this.pixIntraXYOperation);
 		
 		ff.setPxConstOperation(pxConstOp);
 		
@@ -2468,6 +2593,10 @@ class SierpinskiComboPanel extends JPanel {
 		double mScale = this.mandScaleSize;
 		boolean useCP = this.colorChoice.equals("ColorPalette");
 		boolean useBw = this.colorChoice.equals("BlackWhite");	
+		
+		String pxXTrans = this.pixXTransform;
+		String pxYTrans = this.pixYTransform;
+		String pxIntraOp = this.pixIntraXYOperation;
 			
 		String pxConstOp = this.pxConstOprnChoice;
 		String func = this.constFuncChoice;	
@@ -2488,6 +2617,8 @@ class SierpinskiComboPanel extends JPanel {
 			this.formulaArea.setText("<font color='blue'>Mandelbrot Set:<br/><br/>f(z) = z  <sup>" + exp + "</sup> / C");
 		}
 		
+		this.addXtrYtrXYInfroInfo(pxXTrans,pxYTrans,pxIntraOp);
+		
 		this.addInvertPixelCalcInfo();
 
 		this.addPixelConstantOperationInfo();
@@ -2496,6 +2627,10 @@ class SierpinskiComboPanel extends JPanel {
 		this.addMandelbrotUseDiffInfo();
 
 		ff = new Mandelbrot(mag, exp, mUseD, mBound, true);
+
+		ff.setPxXTransformation(this.pixXTransform);
+		ff.setPxYTransformation(this.pixYTransform);
+		ff.setPixXYOperation(this.pixIntraXYOperation);
 		
 		ff.setPxConstOperation(pxConstOp);
 
@@ -2527,6 +2662,11 @@ class SierpinskiComboPanel extends JPanel {
 	private FractalBase startPoly() {
 		boolean useCP = this.colorChoice.equals("ColorPalette");
 		boolean useBw = this.colorChoice.equals("BlackWhite");	
+
+		/*String pxXTrans = this.pixXTransform;
+		String pxYTrans = this.pixYTransform;
+		String pxIntraOp = this.pixIntraXYOperation;*/
+		
 		String pxConstOp = this.pxConstOprnChoice;
 		String func = this.constFuncChoice;
 		String pxFunc = this.pxFuncChoice;
@@ -2590,6 +2730,10 @@ class SierpinskiComboPanel extends JPanel {
 			
 			ff = new PolyFract(this.polyPower, this.polyUseDiff, this.polyBound, polyRealVal, polyImgVal);
 		}
+
+		ff.setPxXTransformation(this.pixXTransform);
+		ff.setPxYTransformation(this.pixYTransform);
+		ff.setPixXYOperation(this.pixIntraXYOperation);
 		
 		ff.setPxConstOperation(pxConstOp);
 		
@@ -3077,7 +3221,38 @@ class SierpinskiComboPanel extends JPanel {
 		//DIY-Listeners
 		this.setupDIYMandelbrotListeners();
 		this.setupDIYJuliaListeners();		
-		this.setupDIYApolloListeners();		
+		this.setupDIYApolloListeners();	
+		
+		
+		this.pxXTransformCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<String> cb = (JComboBox<String>) e.getSource();
+				String comboOption = (String) cb.getSelectedItem();
+				doSelectPixXTransformComboChoice(comboOption);
+			}
+		});
+		
+		this.pxYTransformCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<String> cb = (JComboBox<String>) e.getSource();
+				String comboOption = (String) cb.getSelectedItem();
+				doSelectPixYTransformComboChoice(comboOption);
+			}
+		});
+		
+		this.intraPixOperationCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<String> cb = (JComboBox<String>) e.getSource();
+				String comboOption = (String) cb.getSelectedItem();
+				doSelectIntraPxOperationComboChoice(comboOption);
+			}
+		});
 		
 		this.constFuncCombo.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
@@ -3805,6 +3980,18 @@ class SierpinskiComboPanel extends JPanel {
 		this.colorChoice = choice;
 	}
 	
+	private void doSelectPixXTransformComboChoice(String transform){
+		this.pixXTransform = transform;
+	}
+	
+	private void doSelectPixYTransformComboChoice(String transform){
+		this.pixYTransform = transform;
+	}
+	
+	private void doSelectIntraPxOperationComboChoice(String operation){
+		this.pixIntraXYOperation = operation;
+	}
+	
 	private void doSelectPxConstOprnCommand(String option){
 		this.pxConstOprnChoice = option;
 	}
@@ -4132,6 +4319,30 @@ class SierpinskiComboPanel extends JPanel {
 
 	public void setPxConstOprn(String pxCOprn) {
 		this.pxConstOprnChoice = pxCOprn;
+	}
+
+	public String getPixXTransform() {
+		return this.pixXTransform;
+	}
+
+	public void setPixXTransform(String transform) {
+		this.pixXTransform = transform;
+	}
+
+	public String getPixYTransform() {
+		return pixYTransform;
+	}
+
+	public void setPixYTransform(String pxYTransform) {
+		this.pixYTransform = pxYTransform;
+	}
+
+	public String getPixIntraXYOperation() {
+		return this.pixIntraXYOperation;
+	}
+
+	public void setPixIntraXYOperation(String operation) {
+		this.pixIntraXYOperation = operation;
 	}
 	
 }
