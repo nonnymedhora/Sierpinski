@@ -247,8 +247,13 @@ class SierpinskiComboPanel extends JPanel {
 	private JTextArea formulaArea = new JTextArea(5,20);
 	
 	private final JButton buStart = new JButton("Start |>");
+	
+	private final JButton buSavePxStart = new JButton("SavePxStart |>");
+	
 	private final JButton buPause = new JButton("Pause ||");
 	private final JButton buClose = new JButton("CLOSEImage");
+
+	private boolean savePixelInfo2File = false;
 	
 	// for running sub-implementation of FractalBase
 	protected String comboChoice;
@@ -590,7 +595,10 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(this.formulaArea);
 
 		this.buStart.setEnabled(false);
-		this.add(this.buStart);
+		this.add(this.buStart);		
+
+		this.buSavePxStart.setEnabled(false);
+		this.add(this.buSavePxStart);
 		// this.add(this.buPause);
 		this.add(this.buPrint);
 		
@@ -1194,8 +1202,10 @@ class SierpinskiComboPanel extends JPanel {
 
 			if (this.curvChoices == null || this.mult == 0) {
 				this.buStart.setEnabled(false);
+				this.buSavePxStart.setEnabled(false);
 			} else {
 				this.buStart.setEnabled(true);
+				this.buSavePxStart.setEnabled(true);
 			}
 		} else if (this.comboChoice.equals(FANNY_CIRCLE) || this.comboChoice.equals(FANNY_TRIANGLES)) {
 			this.rotLabel.setVisible(false);
@@ -1211,8 +1221,10 @@ class SierpinskiComboPanel extends JPanel {
 			this.formulaArea.setVisible(false);
 			if (this.sideChoice == 0 || this.ratioChoice == 0) {
 				this.buStart.setEnabled(false);
+				this.buSavePxStart.setEnabled(false);
 			} else {
 				this.buStart.setEnabled(true);
+				this.buSavePxStart.setEnabled(true);
 			}
 		} else if (this.comboChoice.equals(JULIA)) {
 			this.rotLabel.setVisible(true);
@@ -1229,8 +1241,10 @@ class SierpinskiComboPanel extends JPanel {
 			this.formulaArea.setText("");
 			if (this.power == 0 && (this.compConst == 0.0 || this.complex == null)) {
 				this.buStart.setEnabled(false);
+				this.buSavePxStart.setEnabled(false);
 			} else {
 				this.buStart.setEnabled(true);
+				this.buSavePxStart.setEnabled(true);
 			}
 		} else if (this.comboChoice.equals(MANDELBROT)) {
 			this.rotLabel.setVisible(true);
@@ -1326,6 +1340,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.sideChoice = sideOption;
 		if (this.ratioChoice != 0) {
 			this.buStart.setEnabled(true);
+			this.buSavePxStart.setEnabled(true);
 		}
 	}
 
@@ -1333,6 +1348,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.ratioChoice = ratioOption;
 		if (this.sideChoice != 0) {
 			this.buStart.setEnabled(true);
+			this.buSavePxStart.setEnabled(true);
 		}
 	}
 	
@@ -1375,18 +1391,21 @@ class SierpinskiComboPanel extends JPanel {
 				break;
 		}
 		this.buStart.setEnabled(true);
+		this.buSavePxStart.setEnabled(true);
 	}	
 	
 	private void doJuliaChoicesCheck() {
 		this.formulaArea.setVisible(true);
 		if (this.power != 0 && (this.compConst != 0.0 || this.complex!=null)) {
 			this.buStart.setEnabled(true);
+			this.buSavePxStart.setEnabled(true);
 			
 			addJuliaFormulaInfo();
 			
 			addJuliaUseDiffInfo();
 		} else {
 			this.buStart.setEnabled(false);
+			this.buSavePxStart.setEnabled(false);
 		}
 	}
 
@@ -1834,6 +1853,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setVisible(true);
 
 		this.buStart.setEnabled(true);
+		this.buSavePxStart.setEnabled(true);
 	}
 	
 	private void doSelectMandMaxIterCombosCommand(Integer maxIt) {
@@ -1849,6 +1869,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setVisible(true);
 		if (this.magnification != 0 && this.exponent != 0) {
 			this.buStart.setEnabled(true);
+			this.buSavePxStart.setEnabled(true);
 			this.formulaArea.setText("Mandelbrot Set:<br/><br/>f(z) = z <sup>" + this.exponent + "</sup> + C");
 			if (this.mUseDiff || this.mandUseDiffCb.isSelected()) {
 				this.formulaArea
@@ -1858,6 +1879,7 @@ class SierpinskiComboPanel extends JPanel {
 			}
 		} else {
 			this.buStart.setEnabled(false);
+			this.buSavePxStart.setEnabled(false);
 		}
 	}
 	
@@ -1871,6 +1893,7 @@ class SierpinskiComboPanel extends JPanel {
 			) {
 			
 			this.buStart.setEnabled(true);
+			this.buSavePxStart.setEnabled(true);
 			String formula = "Mandelbrot Set:<br/><br/>f(z) = z <sup>" + this.diyMandExponent + "</sup> + C";
 			if (!this.keepConst) {
 				formula += "<br/>  C = " + Double.parseDouble(this.diyMandRealTf.getText()) + " + ("
@@ -1884,6 +1907,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.formulaArea.setText(formula);
 		} else {
 			this.buStart.setEnabled(false);
+			this.buSavePxStart.setEnabled(false);
 		}
 	}
 	
@@ -1894,6 +1918,7 @@ class SierpinskiComboPanel extends JPanel {
 						&& (this.diyJuliaImgTf.getText().length() > 0) && !this.keepConst)
 				|| this.keepConst) {
 			this.buStart.setEnabled(true);
+			this.buSavePxStart.setEnabled(true);
 			String formula = "Julia Set:<br/><br/>f(z) = z <sup>" + this.diyJuliaPower + "</sup> + C";
 			if (!this.keepConst) {
 				formula += "<br/>  C = " + Double.parseDouble(this.diyJuliaRealTf.getText()) + " + ("
@@ -1908,14 +1933,17 @@ class SierpinskiComboPanel extends JPanel {
 			this.formulaArea.setText(formula);
 		} else {
 			this.buStart.setEnabled(false);
+			this.buSavePxStart.setEnabled(false);
 		}
 	}
 	
 	private void doDiyApolloChoicesCheck() {
 		if (this.diyApolloC1 != 0 && this.diyApolloC2 != 0 && this.diyApolloC3 != 0 && this.diyApolloMult != 0) {
 			this.buStart.setEnabled(true);
+			this.buSavePxStart.setEnabled(true);
 		} else {
 			this.buStart.setEnabled(false);
+			this.buSavePxStart.setEnabled(false);
 		}
 	}
 	
@@ -1998,6 +2026,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setVisible(true);
 		if (this.polyPower != 0) {
 			this.buStart.setEnabled(true);
+			this.buSavePxStart.setEnabled(true);
 			this.formulaArea.setText("Poynomial Set:<br/><br/>nf(z) = (x <sup>" + this.polyPower + "</sup> + y <sup>" + this.polyPower + "</sup>) + C"+
 					"<br/>  x = Row + 0 * i , y = 0 + Column * i");
 			if (this.polyUseDiff || this.polyUseDiffCb.isSelected()) {
@@ -2008,6 +2037,7 @@ class SierpinskiComboPanel extends JPanel {
 			}
 		} else {
 			this.buStart.setEnabled(false);
+			this.buSavePxStart.setEnabled(false);
 		}
 	}
 	////////ends-poly////////////
@@ -2192,6 +2222,13 @@ class SierpinskiComboPanel extends JPanel {
 	private void doCloseCommand(){
 		this.getFractalBase().dispose();
 		this.buStart.setEnabled(false);
+		this.buSavePxStart.setEnabled(false);
+	}
+	
+	private void doSavePxStartCommand(boolean savPx) {
+		this.savePixelInfo2File = savPx;
+
+		this.doStartCommand();
 	}
 	
 	private void doStartCommand() {
@@ -2534,6 +2571,7 @@ class SierpinskiComboPanel extends JPanel {
 		FractalBase.setScaleSize(diyJScale);
 		
 		this.addJuliaConstInfo(ff);
+		ff.setSavePixelInfo2File(this.savePixelInfo2File);
 		return ff;
 	}
 	
@@ -2614,6 +2652,7 @@ class SierpinskiComboPanel extends JPanel {
 		FractalBase.setScaleSize(diyMScale);
 
 		this.addMandelbrotConstInfo(ff);
+		ff.setSavePixelInfo2File(this.savePixelInfo2File);
 		return ff;
 	}
 
@@ -2712,6 +2751,7 @@ class SierpinskiComboPanel extends JPanel {
 		FractalBase.setAreaSize(juliaLoopLt);
 
 		this.addJuliaConstInfo(ff);
+		ff.setSavePixelInfo2File(this.savePixelInfo2File);
 		return ff;
 	}
 
@@ -2797,6 +2837,7 @@ class SierpinskiComboPanel extends JPanel {
 		FractalBase.setAreaSize(mandLoopLt);
 
 		this.addMandelbrotConstInfo(ff);
+		ff.setSavePixelInfo2File(this.savePixelInfo2File);
 		return ff;
 	}
 
@@ -2907,6 +2948,8 @@ class SierpinskiComboPanel extends JPanel {
 		FractalBase.setAreaSize(this.polySize);
 
 		this.addPolyConstInfo(ff);
+		ff.setSavePixelInfo2File(this.savePixelInfo2File);
+		
 		return ff;
 	}	
 
@@ -2966,6 +3009,7 @@ class SierpinskiComboPanel extends JPanel {
 
 	private int closeIt(FractalBase frame) {
 		this.buStart.setEnabled(false);
+		this.buSavePxStart.setEnabled(false);
 		if (!(this.comboChoice.equals(JULIA)||this.comboChoice.equals(MANDELBROT)||this.comboChoice.equals(POLY))) {
 			this.formulaArea.setVisible(false);
 		}
@@ -3485,6 +3529,12 @@ class SierpinskiComboPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				doStartCommand();				
+			}});
+		
+		this.buSavePxStart.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doSavePxStartCommand(true);				
 			}});
 		
 		this.buClose.addActionListener(new ActionListener(){

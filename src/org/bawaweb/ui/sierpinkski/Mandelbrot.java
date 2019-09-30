@@ -124,6 +124,24 @@ public class Mandelbrot extends FractalBase {
 
 		String func2Apply = this.useFuncConst;
 		String pxFunc2Apply = this.useFuncPixel;
+		
+
+		
+		if (this.isSavePixelInfo2File()) {
+			if (!this.isComplexNumConst) {
+				if (func2Apply.equals("None")) {
+					this.appendConstantInfo2File("Dynamic Pixel Constant   z=C");
+				} else {
+					this.appendConstantInfo2File("Dynamic Pixel Constant  " + func2Apply + " (z)=C");
+				}
+			} else {
+				if (this.useFuncConst.equals("None")) {
+					this.appendConstantInfo2File("Constant z=C");
+				} else {
+					this.appendConstantInfo2File("Constant  " + this.useFuncConst + " (z)=C");
+				}
+			}
+		}
 
 		int n = getAreaSize();//599;//512;	(0-599)
 		//System.out.println("here with depth " + depth);
@@ -167,6 +185,9 @@ public class Mandelbrot extends FractalBase {
 					}
 					
 					setPixel(row, n - 1 - col, bOrW);
+					if (this.isSavePixelInfo2File()) {
+						this.appendPixelInfo2File(row, n - 1 - col, bOrW);
+					}
 
 				} else {
 
@@ -180,9 +201,17 @@ public class Mandelbrot extends FractalBase {
 					Color color = this.getPixelDisplayColor(row, col, colorRGB, diff);
 	
 					setPixel(row, n - 1 - col, color.getRGB());
+					
+					if (this.isSavePixelInfo2File()) {
+						this.appendPixelInfo2File(row, n - 1 - col, color.getRGB());
+					}
 				}
 
 			}
+		}
+		
+		if (this.isSavePixelInfo2File()) {
+			this.closePixelFile();
 		}
 	}
 	

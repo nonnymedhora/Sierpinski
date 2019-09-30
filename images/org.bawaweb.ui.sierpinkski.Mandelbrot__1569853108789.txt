@@ -1,0 +1,16 @@
+Set:	Mandelbrot
+x_Center:	0.0
+y_Center:	0.0
+scaleSize:	3.0
+Maximum Iterations:	450
+Power:	3
+X_Transformation:	absolute
+Y_Transformation:	absolute
+X_Y_Operation:	Multiply
+ReversePixelCalculation:	false
+Z=(X,Y) PixelFunction:	tan
+f(C) ConstantFunction:	sine
+Z=(X,Y) => C Pixel_Constant+Operaion:	Multiply
+Boundary:	1.0
+ColorPalette
+[Dynamic DynDyn]

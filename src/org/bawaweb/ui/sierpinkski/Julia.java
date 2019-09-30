@@ -255,6 +255,23 @@ public class Julia extends FractalBase {
 		
 		String func2Apply = this.useFuncConst;
 		String pxFunc2Apply = this.useFuncPixel;
+		
+		if (this.isSavePixelInfo2File()) {
+			if (!this.isComplexNumConst) {
+				if (func2Apply.equals("None")) {
+					this.appendConstantInfo2File("Dynamic Pixel Constant   z=C");
+				} else {
+					this.appendConstantInfo2File("Dynamic Pixel Constant  " + func2Apply + " (z)=C");
+				}
+			} else {
+				if (this.useFuncConst.equals("None")) {
+					this.appendConstantInfo2File("Constant z=C");
+				} else {
+					this.appendConstantInfo2File("Constant  " + this.useFuncConst + " (z)=C");
+				}
+			}
+		}
+		
 //		System.out.println("this.complexConst===" + this.complexConst);
 //		System.out.println("this.complex==null  " + (this.complex == null));
 //		System.out.println("this.isComplexNumConst  --  " + this.isComplexNumConst);
@@ -321,6 +338,9 @@ public class Julia extends FractalBase {
 					}
 					
 					setPixel(row, n - 1 - col, bOrW);
+					if (this.isSavePixelInfo2File()) {
+						this.appendPixelInfo2File(row, n - 1 - col, bOrW);
+					}
 
 				} else {
 				
@@ -333,8 +353,16 @@ public class Julia extends FractalBase {
 					Color color;
 					color = getPixelDisplayColor(row, col, colorRGB, diff);
 					setPixel(row, n - 1 - col, color.getRGB());
+					
+					if (this.isSavePixelInfo2File()) {
+						this.appendPixelInfo2File(row, n - 1 - col, color.getRGB());
+					}
 				}
 			}
+		}
+		
+		if (this.isSavePixelInfo2File()) {
+			this.closePixelFile();
 		}
 	}
 
@@ -464,6 +492,7 @@ public class Julia extends FractalBase {
 				this.isConstFuncApplied = true;
 			}
 		}
+		
 		return cConst;
 	}
 	

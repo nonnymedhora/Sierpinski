@@ -16,14 +16,15 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Objects;
 import java.util.Random;
 
 import javax.swing.JFrame;
-
-import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
 
 
 /**
@@ -32,6 +33,8 @@ import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
  */
 public abstract class FractalBase extends JFrame implements Runnable {
 	
+	private static final String NEW_LINE = "\r\n";
+
 	private static final long serialVersionUID = 123456543L;
 	
 	protected static final int HEIGHT 	= 800;
@@ -116,6 +119,8 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	protected boolean reversePixelCalculation = false;
 	
 	protected boolean useLyapunovExponent = false;
+	
+	protected boolean savePixelInfo2File = false;
 
 
 	/** Constructor: an instance */
@@ -1069,6 +1074,77 @@ public abstract class FractalBase extends JFrame implements Runnable {
 
 	public void setUseLyapunovExponent(boolean useLExp) {
 		this.useLyapunovExponent = useLExp;
+	}
+	
+	
+
+	public boolean isSavePixelInfo2File() {
+		return this.savePixelInfo2File;
+	}
+
+	private FileWriter fw;
+
+	public void setSavePixelInfo2File(boolean save2File) {
+		this.savePixelInfo2File = save2File;
+
+		if (save2File) {
+			try {
+				this.fw = new FileWriter("images\\" + this.getClass().getName()+"__"+System.currentTimeMillis()+".txt",true);
+
+				fw.write("Set:\t" + this.getClass().getName().replace("org.bawaweb.ui.sierpinkski.","") + NEW_LINE);
+				fw.write("x_Center:\t" + FractalBase.xC + NEW_LINE);
+				fw.write("y_Center:\t" + FractalBase.yC + NEW_LINE);
+				fw.write("scaleSize:\t" + FractalBase.scaleSize + NEW_LINE);
+				fw.write("Maximum Iterations:\t" + maxIter + NEW_LINE);
+				fw.write("Power:\t" + this.power + NEW_LINE);
+				fw.write("X_Transformation:\t" + this.pxXTransformation + NEW_LINE);
+				fw.write("Y_Transformation:\t" + this.pxYTransformation + NEW_LINE);
+				fw.write("X_Y_Operation:\t" + this.pixXYOperation + NEW_LINE);
+				fw.write("ReversePixelCalculation:\t" + this.reversePixelCalculation + NEW_LINE);
+				fw.write("Z=(X,Y) PixelFunction:\t" + this.useFuncPixel + NEW_LINE);
+				fw.write("f(C) ConstantFunction:\t" + this.useFuncConst + NEW_LINE);
+				fw.write("Z=(X,Y) => C Pixel_Constant+Operaion:\t" + this.pxConstOperation + NEW_LINE);
+				fw.write("Boundary:\t" + this.bound + NEW_LINE);
+
+				if (this.useColorPalette) {
+					fw.write("ColorPalette" + NEW_LINE);
+				} else if (this.useBlackWhite) {
+					fw.write("BlackWhite" + NEW_LINE);
+				} else if (this.useComputeColor) {
+					fw.write("ColorComputed" + NEW_LINE);
+				}
+
+//				fw.write("Constant:\tTBD" + NEW_LINE);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	protected void closePixelFile() {
+		try {
+			this.fw.flush();
+			this.fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	protected void appendPixelInfo2File(int row, int col, int color){
+		try {
+			this.fw.write("[" + row + "," + col + "," + color + "]" + NEW_LINE);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	protected void appendConstantInfo2File(String constant){
+		try {
+			this.fw.write("[" + constant + "]" + NEW_LINE);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	class Line {

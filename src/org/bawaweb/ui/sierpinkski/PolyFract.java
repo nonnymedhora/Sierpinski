@@ -76,6 +76,22 @@ public class PolyFract extends FractalBase {
 		double bd = this.getBound();
 		double pow = this.getPower();	
 		String type = this.getRowColMixType();
+		
+		if (this.isSavePixelInfo2File()) {
+			if (!this.isComplexNumConst) {
+				if (this.useFuncConst.equals("None")) {
+					this.appendConstantInfo2File("Dynamic Pixel Constant   z=C");
+				} else {
+					this.appendConstantInfo2File("Dynamic Pixel Constant  " + this.useFuncConst + " (z)=C");
+				}
+			} else {
+				if (this.useFuncConst.equals("None")) {
+					this.appendConstantInfo2File("Constant z=C");
+				} else {
+					this.appendConstantInfo2File("Constant  " + this.useFuncConst + " (z)=C");
+				}
+			}
+		}
 /*System.out.println("isComplexNumConst---->"+(isComplexNumConst));	
 System.out.println("this.compConst == null---->"+(this.compConst == null));	
 System.out.println("(BEFOR)this.compConst == "+this.compConst);
@@ -269,6 +285,10 @@ System.out.println("type---->"+(type));	*/
 					}
 					
 					setPixel(row, n - 1 - col, bOrW);
+					
+					if (this.isSavePixelInfo2File()) {
+						this.appendPixelInfo2File(row, n - 1 - col, bOrW);
+					}
 
 				} else {
 
@@ -283,6 +303,10 @@ System.out.println("type---->"+(type));	*/
 					Color color = this.getPixelDisplayColor(row, col, colorRGB, diff);
 	
 					setPixel(row, n - 1 - col, color.getRGB());
+
+					if (this.isSavePixelInfo2File()) {
+						this.appendPixelInfo2File(row, n - 1 - col, color.getRGB());
+					}
 				}
 
 			}
