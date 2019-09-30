@@ -75,7 +75,9 @@ class SierpinskiComboPanel extends JPanel {
 	private static final long serialVersionUID = 156478L;
 	private static final String eol = "<br/>";
 	
-	private static final String[] OPERATIONS = new String[]{"Plus","Minus","Multiply","Divide","Power"};
+	
+	
+	private static final String[] OPERATIONS = getOperations();
 
 	private static final Double[] BOUNDARIES = getBoundaryOptions();
 	
@@ -661,7 +663,35 @@ class SierpinskiComboPanel extends JPanel {
 		}
 		return bdArr;
 	}
+
+	private static String[] getOperations() {
+		return new String[]{
+			OpsEnum.Plus.getOperation(),
+			OpsEnum.Minus.getOperation(),
+			OpsEnum.Multiply.getOperation(),
+			OpsEnum.Divide.getOperation(),
+			OpsEnum.Power.getOperation()
+		};
+	}
 	
+	
+	private enum OpsEnum {
+		Plus("Plus"),Minus("Minus"),Multiply("Multiply"),Divide("Divide"),Power("Power");
+		
+		private String operation;
+
+		private OpsEnum(String op){
+			this.setOperation(op);
+		}
+
+		public final String getOperation() {
+			return this.operation;
+		}
+
+		public void setOperation(String oprn) {
+			this.operation = oprn;
+		}
+	}
 
 	private static Double[] getBoundaryOptions() {
 		final double start = -100.0;
@@ -4630,6 +4660,20 @@ class SierpinskiComboPanel extends JPanel {
 	public void setPixIntraXYOperation(String operation) {
 		this.pixIntraXYOperation = operation;
 	}
+	
+	///////////////////tosdos////////////////////////////////
+	
+	//error-handling
+	
+	
+	//regenrtion
+	
+	
+	//files
+	
+	
+	//colorhandlin
+	///////////////////tosdos////////////////////////////////
 	
 }
 

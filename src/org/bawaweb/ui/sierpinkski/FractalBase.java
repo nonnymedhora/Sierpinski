@@ -1131,20 +1131,20 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		}
 	}
 	
-	protected void appendPixelInfo2File(int row, int col, int color){
+	protected void appendPixelInfo2File(int row, int col, int rgbColor){
 		try {
-			this.fw.write("[" + row + "," + col + "," + color + "]" + NEW_LINE);
+			this.fw.write("[" + row + "," + col + "," + rgbColor + "]" + NEW_LINE);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	protected void appendConstantInfo2File(String constant){
-		try {
+	protected void appendConstantInfo2File(String constant){return;
+		/*try {
 			this.fw.write("[" + constant + "]" + NEW_LINE);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 	class Line {
