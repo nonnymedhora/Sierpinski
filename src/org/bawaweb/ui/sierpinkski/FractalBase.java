@@ -1482,7 +1482,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	}
 
 	public final /* abstract */ String getFractalDetails() {
-		String info = null;
+		String info = "";
 		// via reflection
 		Object obj = this;
 		@SuppressWarnings("unchecked")
@@ -1497,10 +1497,17 @@ public abstract class FractalBase extends JFrame implements Runnable {
 			String fVal = null;
 			int m =aFld.getModifiers();
 			try {
-				if (Modifier.isPublic(m)&&!(Modifier.isStatic(m)||Modifier.isFinal(m))) {
-					fVal = (aFld.get(fName)).toString();
-					info += fName + " :		" + fVal + "<br/>";
+				if (Modifier.isPublic(m) && !(Modifier.isStatic(m) || Modifier.isFinal(m))) {
+					// fVal = String.valueOf(aFld.get(fName))/*.toString()*/;
+//					info += fName + " :		" + fVal + "<br/>";
+					if (Modifier.isPrivate(m)) {
+						aFld.setAccessible(true);
+						// fVal = String.valueOf(aFld.get(fName))/*.toString()*/;
+					}
+					info += fName + " :		" + aFld.get(fName) + "<br/>";
 				}
+				
+				
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 				System.out.println("Exception in getting value for =>> " + fName);
 				e.printStackTrace();

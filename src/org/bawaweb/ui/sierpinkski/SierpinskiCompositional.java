@@ -56,12 +56,17 @@ import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
  * 		-save image with data	(current)	
  * 		-save image with detail from 'capture fractal info'	-	adjacent image
  * 	error info for NaN
- * 	send all strings to consts
+ * 	send all strings to consts / enums
  *  expand combos == scaleSize, maginification
  *  
  *  lyapunov exponent,	burning ship, buddhabrot
- *  expression evaluator
- * 	
+ *  expression evaluator for inserting custom formula
+ *  
+ *  save pixel info to txt file for future image regeneration 
+ * 	save image to file - user choice for file-destination & file-name
+ * 	save image options to jpeg
+ * 
+ * color selection choices
  * 	
  *
  */
@@ -591,7 +596,7 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.add(this.buSave);
 		this.add(this.buSaveWithData);
-		this.add(this.buSaveWithDetailData);
+//		this.add(this.buSaveWithDetailData);
 		
 		this.buClose.setEnabled(false);
 		this.add(this.buClose);
