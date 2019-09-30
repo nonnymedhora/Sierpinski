@@ -362,6 +362,12 @@ System.out.println("type---->"+(type));	*/
 		}
 		return maxIter;
 	}
+	
+
+	/*@Override
+	public String getFractalDetails() {		
+		return this.getFractalShapeTitle();
+	}*/
 
 	/* (non-Javadoc)
 	 * @see org.bawaweb.ui.sierpinkski.FractalBase#getFractalShapeTitle()

@@ -108,21 +108,27 @@ public class CSTFractal extends FractalBase {
 	 */
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
-		@Override
-		public void run() {
-			final FractalBase frame = new CSTFractal();
-			frame.setTitle(frame.getFractalShapeTitle());
-			frame.setSize(frame.WIDTH, frame.HEIGHT);
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.setResizable(false);
-			frame.setVisible(true);
-
-			new Thread(frame).start();
-
-		}
-	});
+			@Override
+			public void run() {
+				final FractalBase frame = new CSTFractal();
+				frame.setTitle(frame.getFractalShapeTitle());
+				frame.setSize(frame.WIDTH, frame.HEIGHT);
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frame.setResizable(false);
+				frame.setVisible(true);
+	
+				new Thread(frame).start();
+	
+			}}
+		);
 
 	}
+	
+/*
+	@Override
+	public String getFractalDetails() {		
+		return this.getFractalShapeTitle();
+	}*/
 
 	@Override
 	protected String getFractalShapeTitle() {		

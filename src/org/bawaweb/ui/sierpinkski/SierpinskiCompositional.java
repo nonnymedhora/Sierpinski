@@ -50,6 +50,19 @@ import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
 
 /**
  * @author Navroz
+ * 
+ * todo
+ * 	capture fractal info via reflection
+ * 		-save image with data	(current)	
+ * 		-save image with detail from 'capture fractal info'	-	adjacent image
+ * 	error info for NaN
+ * 	send all strings to consts
+ *  expand combos == scaleSize, maginification
+ *  
+ *  lyapunov exponent,	burning ship, buddhabrot
+ *  expression evaluator
+ * 	
+ * 	
  *
  */
 
@@ -69,7 +82,7 @@ class SierpinskiComboPanel extends JPanel {
 	private static final Integer[] MAX_ITERATIONS = new Integer[] { 10, 50, 100, 200, 225, 255, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 2000, 3000, 5000, 7500, 10000 };
 	private static final Integer[] AREA_SIZES = new Integer[] { 10, 50, 100, 200, 225, 255, 500, 512, 599, 800 };
 	private static final Double[] CENTER_XY = new Double[] { -5.0, -4.5, -4.0, -3.5, -3.0, -2.5, -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0 };
-	private static final Double[] SCALE_SIZES = new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private static final Double[] SCALE_SIZES = getScaleSizeOptions();//new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
 	private static final String[] POLY_RCMT_TYPES = new String[] { "Reverse", "Exchange", "Single", "Duplicate", "Exponent", "Power", "Default" };
 	private static final Integer[] FANNY_RATIOS = new Integer[] { 1, 2, 3, 4, 5, 6, 7 };
 	private static final Integer[] FANNY_SIZE_OPTIONS = new Integer[] { 50, 60, 70, 80, 90, 100, 120, 150, 170, 200, 250, 300, 350 };
@@ -151,6 +164,12 @@ class SierpinskiComboPanel extends JPanel {
 	// for Julia
 	private final String[] juliaOptions = new String[] { J1, J2, J3, J4, J5, J6, J7, J8, J9, J10, J11};
 	private final JComboBox<String> juliaCombos = new JComboBox<String>(juliaOptions);
+	
+	//lyapunov exponent for set determination
+	private final JCheckBox juliaUseLyapunovExpCb = new JCheckBox("UseLyapunovExponentOnly", /*false*/true);
+	private boolean juliaUseLyapunovExponent=true;
+	
+	//or use iterative escape algorithm
 	private final JCheckBox juliaUseDiffCb = new JCheckBox("UseDifferencesOnly", true);
 	private final Integer[] juliaMaxIterOptions = MAX_ITERATIONS;
 	private final JComboBox<Integer> juliaMaxIterCombos = new JComboBox<Integer>(juliaMaxIterOptions);
@@ -174,6 +193,11 @@ class SierpinskiComboPanel extends JPanel {
 	
 
 	// for Mandelbrot
+
+	//lyapunov exponent for set determination
+	private final JCheckBox mandUseLyapunovExpCb = new JCheckBox("UseLyapunovExponentOnly", /*false*/true);
+	private boolean mandUseLyapunovExponent=true;
+	
 	private final Integer[] mandOptions = EXPONENTS;	//TODO	-	ok for now
 	private final JComboBox<Integer> mandCombos = new JComboBox<Integer>(mandOptions);
 	private final Integer[] mandExpOptions = EXPONENTS;
@@ -289,6 +313,13 @@ class SierpinskiComboPanel extends JPanel {
 	protected double diyMandScaleSize;
 	
 	private final Integer[] diyMandMagOptions = EXPONENTS;
+	
+
+	//lyapunov exponent for set determination
+	private final JCheckBox diyMandUseLyapunovExpCb = new JCheckBox("UseLyapunovExponentOnly", /*false*/true);
+	private boolean diyMandUseLyapunovExponent=true;
+	
+	
 	private final JComboBox<Integer> diyMandMagCombos = new JComboBox<Integer>(diyMandMagOptions);
 	private final Integer[] diyMandExpOptions = EXPONENTS;
 	private final JComboBox<Integer> diyMandExpCombos = new JComboBox<Integer>(diyMandExpOptions);
@@ -332,6 +363,11 @@ class SierpinskiComboPanel extends JPanel {
 	protected double diyJuliaXC;
 	protected double diyJuliaYC;
 	protected double diyJuliaScaleSize;
+	
+
+	//lyapunov exponent for set determination
+	private final JCheckBox diyJuliaUseLyapunovExpCb = new JCheckBox("UseLyapunovExponentOnly", /*false*/true);
+	private boolean diyJuliaUseLyapunovExponent=true;
 	
 	private final Integer[] diyJuliaPowerOptions = EXPONENTS;
 	private final JComboBox<Integer> diyJuliaPowerCombos = new JComboBox<Integer>(diyJuliaPowerOptions);
@@ -385,6 +421,9 @@ class SierpinskiComboPanel extends JPanel {
 		
 	//POLY
 	private final Integer[] polyExpOptions = EXPONENTS;
+	private final JCheckBox polyUseLyapunovExpCb = new JCheckBox("UseLyapunovExponentOnly", /*false*/true);
+	private boolean polyUseLyapunovExponent=true;
+	
 	private final JComboBox<Integer> polyExpCombos = new JComboBox<Integer>(polyExpOptions);
 	private final JCheckBox polyUseDiffCb = new JCheckBox("UseDifferencesOnly",true);
 	private final Integer[] polyMaxIterOptions = MAX_ITERATIONS;
@@ -486,6 +525,8 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private JButton buPrint = new JButton("Print");
 	private JButton buSave = new JButton("Save");
+	private JButton buSaveWithData = new JButton("SaveWithData");
+	private JButton buSaveWithDetailData = new JButton("SaveWithDetailData");
 	
 	private Thread fbf;
 
@@ -547,7 +588,11 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(this.buStart);
 		// this.add(this.buPause);
 		this.add(this.buPrint);
+		
 		this.add(this.buSave);
+		this.add(this.buSaveWithData);
+		this.add(this.buSaveWithDetailData);
+		
 		this.buClose.setEnabled(false);
 		this.add(this.buClose);
 
@@ -588,6 +633,22 @@ class SierpinskiComboPanel extends JPanel {
 		this.rotateCombo.setVisible(false);
 	}
 	
+	private static Double[] getScaleSizeOptions() {
+		final double start = -50.0;
+		final double end = 50.0;
+		double tempVal = start;
+		Vector<Double> theSzVec = new Vector<Double>();
+		while(tempVal<=end){
+			theSzVec.add(tempVal);
+			tempVal+=0.5;
+		}
+		Double[] bdArr = new Double[theSzVec.size()];
+		for(int i = 0; i < theSzVec.size();i++){
+			bdArr[i]=theSzVec.get(i);
+		}
+		return bdArr;
+	}
+	
 
 	private static Double[] getBoundaryOptions() {
 		final double start = -100.0;
@@ -618,6 +679,9 @@ class SierpinskiComboPanel extends JPanel {
 		this.polyOptionsPanel.add(new JLabel("Exponent(X):"));
 		this.polyOptionsPanel.add(this.polyExpCombos);		
 		this.polyOptionsPanel.add(this.polyUseDiffCb);
+		
+		
+		this.polyOptionsPanel.add(this.polyUseLyapunovExpCb);
 		
 		this.polyConstBg.add(this.polyKeepConstRb);
 		this.polyConstBg.add(this.polyCreateConstRb);
@@ -716,6 +780,10 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaPanel.add(this.diyJuliaPowerCombos);
 		this.diyJuliaPanel.add(this.diyJuliaUseDiffCb);
 		
+
+
+		this.diyJuliaPanel.add(this.diyJuliaUseLyapunovExpCb);
+		
 		this.diyJuliaFieldLinesBG.add(diyJuliaFieldNoneRB);
 		this.diyJuliaFieldLinesBG.add(diyJuliaFieldFatouRB);
 		this.diyJuliaFieldLinesBG.add(diyJuliaFieldZSqRB);
@@ -774,6 +842,8 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyMandPanel.add(new JLabel("Exponent:"));
 		this.diyMandPanel.add(this.diyMandExpCombos);
 		this.diyMandPanel.add(this.diyMandUseDiffCb);
+
+		this.diyMandPanel.add(this.diyMandUseLyapunovExpCb);
 		
 		this.diyMandelbrotConstBg.add(this.diyMandelbrotKeepConstRb);
 		this.diyMandelbrotConstBg.add(this.diyMandelbrotCreateConstRb);
@@ -820,6 +890,10 @@ class SierpinskiComboPanel extends JPanel {
 		this.mandOptionsPanel.add(new JLabel("Exponent(X):"));
 		this.mandOptionsPanel.add(this.mandExpCombos);		
 		this.mandOptionsPanel.add(this.mandUseDiffCb);
+		
+		this.mandOptionsPanel.add(this.mandUseLyapunovExpCb);
+		
+		
 		this.mandOptionsPanel.add(new JLabel("Max Iterations:"));
 		this.mandOptionsPanel.add(this.mandMaxIterCombos);		
 		this.mandOptionsPanel.add(new  JLabel("Area Size:"));
@@ -849,6 +923,8 @@ class SierpinskiComboPanel extends JPanel {
 		this.juliaOptionsPanel.add(new JLabel("Power-Constant:"));
 		this.juliaOptionsPanel.add(this.juliaCombos);		
 		this.juliaOptionsPanel.add(this.juliaUseDiffCb);
+
+		this.juliaOptionsPanel.add(this.juliaUseLyapunovExpCb);
 		
 		this.juliaFieldLinesBG.add(this.juliaFieldNoneRB);
 		this.juliaFieldLinesBG.add(this.juliaFieldFatouRB);
@@ -1328,6 +1404,10 @@ class SierpinskiComboPanel extends JPanel {
 				this.formulaArea.setText("<font color='blue'>Julia Set:<br/><br/>f(z) = z <sup>" + this.power + "</sup> + ( pi/2 * (1.0 + 0.4 * i) )<br/>");
 			}
 		}
+
+		if (this.juliaUseLyapunovExponent) {
+			this.addUseLyapunovInfo();
+		}
 		
 		this.addXtrYtrXYInfroInfo(this.pixXTransform,this.pixYTransform,this.pixIntraXYOperation);
 		
@@ -1593,6 +1673,37 @@ class SierpinskiComboPanel extends JPanel {
 		} else {
 			this.sierpTDir = "DOWN";
 		}
+	}
+	
+	private void doSetPolyUseLyapunovExpCommand(boolean useLyapunovExpC) {
+		this.polyUseLyapunovExponent = useLyapunovExpC;
+		this.formulaArea.setVisible(true);
+		this.doPolyChoicesCheck();
+	}
+
+	private void doSetDiyMandUseLyapunovExpCommand(boolean useLyapunovExpC) {
+		this.diyMandUseLyapunovExponent = useLyapunovExpC;
+		this.formulaArea.setVisible(true);
+		this.doDiyMandelbrotChoicesCheck();
+	}
+	
+
+	private void doSetMandUseLyapunovExpCommand(boolean useLyapunovExpC) {
+		this.mandUseLyapunovExponent = useLyapunovExpC;
+		this.formulaArea.setVisible(true);
+		this.doMandelbrotChoicesCheck();
+	}
+	
+	private void doSetDiyJuliaUseLyapunovExpCommand(boolean useLyapunovExpC) {
+		this.diyJuliaUseLyapunovExponent = useLyapunovExpC;
+		this.formulaArea.setVisible(true);
+		this.doDiyJuliaChoicesCheck();
+	}
+	
+	private void doSetJuliaUseLyapunovExpCommand(boolean useLyapunovExpC) {
+		this.juliaUseLyapunovExponent = useLyapunovExpC;
+		this.formulaArea.setVisible(true);
+		this.doJuliaChoicesCheck();
 	}
 
 	private void doSetJuliaUseDiffCommand(boolean useDiffs) {
@@ -2155,6 +2266,10 @@ class SierpinskiComboPanel extends JPanel {
 		ff.setUseColorPalette(useCP);
 		return ff;
 	}
+	
+	private void addUseLyapunovInfo(){
+		this.formulaArea.append(eol+"<font color='red'>Lyapunov Exponent used:</font>"+eol);
+	}
 
 	
 	private void addPixelConstantOperationInfo() {		
@@ -2308,6 +2423,9 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setVisible(true);
 		this.formulaArea.setText("");
 		this.formulaArea.setText("<font color='blue'>(DIY)Julia Set:<br/>");
+		if (this.diyJuliaUseLyapunovExponent) {
+			this.addUseLyapunovInfo();
+		}
 		
 		this.addXtrYtrXYInfroInfo(this.pixXTransform,this.pixYTransform,this.pixIntraXYOperation);
 		
@@ -2344,6 +2462,8 @@ class SierpinskiComboPanel extends JPanel {
 				break;
 		}
 		
+		
+		
 		this.addDiyJuliaUseDiffInfo();
 
 		boolean diyJKConst = this.keepConst;
@@ -2357,7 +2477,8 @@ class SierpinskiComboPanel extends JPanel {
 			ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJuliaRealVal, diyJuliaImgVal);
 		}
 		
-		
+
+		ff.setUseLyapunovExponent(this.diyJuliaUseLyapunovExponent);
 		ff.setPxXTransformation(this.pixXTransform);
 		ff.setPxYTransformation(this.pixYTransform);
 		ff.setPixXYOperation(this.pixIntraXYOperation);
@@ -2438,6 +2559,10 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setText("");
 		this.formulaArea.setText("<font color='blue'>(DIY)Mandelbrot Set:<br/><br/>f(z) = z <sup>" + diyMandExp + "</sup> + C");
 		
+		if (this.diyMandUseLyapunovExponent) {
+			this.addUseLyapunovInfo();
+		}
+		
 		this.addXtrYtrXYInfroInfo(this.pixXTransform,this.pixYTransform,this.pixIntraXYOperation);
 		
 		this.addInvertPixelCalcInfo();
@@ -2456,6 +2581,8 @@ class SierpinskiComboPanel extends JPanel {
 			this.formulaArea.append("<br/>Constant = " + diyMRealVal + " + (" + diyMImgVal + " * i)</font>");
 			ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD,diyMandB, diyMRealVal, diyMImgVal);
 		}
+		
+		ff.setUseLyapunovExponent(this.diyMandUseLyapunovExponent);
 		ff.setPxXTransformation(this.pixXTransform);
 		ff.setPxYTransformation(this.pixYTransform);
 		ff.setPixXYOperation(this.pixIntraXYOperation);
@@ -2527,7 +2654,7 @@ class SierpinskiComboPanel extends JPanel {
 		} else {
 			ff = new Julia(pow, comp, jBound, jUseD);
 		}
-
+		ff.setUseLyapunovExponent(this.juliaUseLyapunovExponent);
 		ff.setPxXTransformation(this.pixXTransform);
 		ff.setPxYTransformation(this.pixYTransform);
 		ff.setPixXYOperation(this.pixIntraXYOperation);
@@ -2570,6 +2697,8 @@ class SierpinskiComboPanel extends JPanel {
 			ff.setClassicJulia(false);
 
 		}
+		
+		ff.setUseLyapunovExponent(this.juliaUseLyapunovExponent);
 		
 		FractalBase.setxC(jXc);
 		FractalBase.setxC(jYc);
@@ -2617,6 +2746,11 @@ class SierpinskiComboPanel extends JPanel {
 			this.formulaArea.setText("<font color='blue'>Mandelbrot Set:<br/><br/>f(z) = z  <sup>" + exp + "</sup> / C");
 		}
 		
+
+		if (this.mandUseLyapunovExponent) {
+			this.addUseLyapunovInfo();
+		}
+		
 		this.addXtrYtrXYInfroInfo(pxXTrans,pxYTrans,pxIntraOp);
 		
 		this.addInvertPixelCalcInfo();
@@ -2627,6 +2761,8 @@ class SierpinskiComboPanel extends JPanel {
 		this.addMandelbrotUseDiffInfo();
 
 		ff = new Mandelbrot(mag, exp, mUseD, mBound, true);
+
+		ff.setUseLyapunovExponent(this.mandUseLyapunovExponent);
 
 		ff.setPxXTransformation(this.pixXTransform);
 		ff.setPxYTransformation(this.pixYTransform);
@@ -2688,6 +2824,11 @@ class SierpinskiComboPanel extends JPanel {
 		}/* else if (pxConstOp.equals("Power")) {
 			this.formulaArea.setText("<br/>f(z) = (x ^ " + this.polyPower + " + y ^ " + this.polyPower + ") ^ C");
 		} */
+		
+
+		if (this.polyUseLyapunovExponent) {
+			this.addUseLyapunovInfo();
+		}
 			
 		if (!invertPix) {
 			this.formulaArea.append("<br/>  x = Row + 0 * i , y = 0 + Column * i<br/>");
@@ -2730,6 +2871,8 @@ class SierpinskiComboPanel extends JPanel {
 			
 			ff = new PolyFract(this.polyPower, this.polyUseDiff, this.polyBound, polyRealVal, polyImgVal);
 		}
+
+		ff.setUseLyapunovExponent(this.polyUseLyapunovExponent);
 
 		ff.setPxXTransformation(this.pixXTransform);
 		ff.setPxYTransformation(this.pixYTransform);
@@ -2830,25 +2973,42 @@ class SierpinskiComboPanel extends JPanel {
 		fb.interrupt();
 	}
 	
-	private void doSaveImageCommand() {
+	private void doSaveImageCommand(String saveCommand) {
 		BufferedImage fractalImage = this.getFractalImage();
-		
-		String imgBaseInfo = this.getImgBaseInfo();
 		String extraInfo = this.getExtraInfo();
 		
-		BufferedImage baseInfoImg = this.createImageInfo(imgBaseInfo);
-        
+		String imgBaseInfo;
+		BufferedImage dataInfoImg = null;
+//		BufferedImage dataInfoImg = null;
+		BufferedImage detailDataImg = null;
+		if (saveCommand.equals("saveWithData")||saveCommand.equals("saveWithDetailData")) {
+			imgBaseInfo = this.getImgBaseInfo();
+			dataInfoImg = this.createStringImage(imgBaseInfo);
+		}
+
+		if (saveCommand.equals("saveWithDetailData")) {
+			String detailDataInfo = this.fBase.getFractalDetails();
+			detailDataImg = this.createStringImage(detailDataInfo);
+		}
         
 		String imageFilePath="images\\"+this.getComboChoice()+"["+extraInfo+"]"+" ____"+System.currentTimeMillis()+".png";
 		File outputfile = new File(imageFilePath);
 	    try {
-			ImageIO.write(FractalBase.joinBufferedImage(fractalImage,baseInfoImg), "png", outputfile);
+			if (saveCommand.equals("saveWithData")) {
+				final BufferedImage joinedFractalDataImage = FractalBase.joinBufferedImage(fractalImage, dataInfoImg);
+				ImageIO.write(joinedFractalDataImage, "png", outputfile);
+			} else if(saveCommand.equals("saveWithDetailData")){
+				final BufferedImage joinedFractalDetailDataImage = FractalBase.joinAdjacentBufferedImage(fractalImage, detailDataImg);
+				ImageIO.write(joinedFractalDetailDataImage, "png", outputfile);
+			} else {
+				ImageIO.write(fractalImage, "png", outputfile);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private BufferedImage createImageInfo(final String info) {
+	private BufferedImage createStringImage(final String info) {
 		BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = img.createGraphics();
         /*int width = this.getFractalImage().getWidth();
@@ -3347,7 +3507,21 @@ class SierpinskiComboPanel extends JPanel {
 		this.buSave.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				doSaveImageCommand();				
+				doSaveImageCommand("save");				
+			}
+		});
+		
+		this.buSaveWithData.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doSaveImageCommand("saveWithData");				
+			}
+		});
+		
+		this.buSaveWithDetailData.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doSaveImageCommand("saveWithDetailData");				
 			}
 		});
 	}
@@ -3412,6 +3586,17 @@ class SierpinskiComboPanel extends JPanel {
 					doSetDiyJuliaUseDiffCommand(true);
 				} else if(event.getStateChange()==ItemEvent.DESELECTED){
 					doSetDiyJuliaUseDiffCommand(false);
+				}
+			}
+        });
+		
+		this.diyJuliaUseLyapunovExpCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetDiyJuliaUseLyapunovExpCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetDiyJuliaUseLyapunovExpCommand(false);
 				}
 			}
         });
@@ -3512,6 +3697,17 @@ class SierpinskiComboPanel extends JPanel {
 				}
 			}
         });
+		
+		this.diyMandUseLyapunovExpCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetDiyMandUseLyapunovExpCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetDiyMandUseLyapunovExpCommand(false);
+				}
+			}
+        });
 
 		this.diyMandelbrotKeepConstRb.addActionListener(this.keepConstRbListener());
 		this.diyMandelbrotCreateConstRb.addActionListener(this.keepConstRbListener());
@@ -3596,6 +3792,17 @@ class SierpinskiComboPanel extends JPanel {
 				}
 			}
 		});
+		
+		this.polyUseLyapunovExpCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetPolyUseLyapunovExpCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetPolyUseLyapunovExpCommand(false);
+				}
+			}
+        });
 
 		this.polyMaxIterCombos.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
@@ -3704,6 +3911,17 @@ class SierpinskiComboPanel extends JPanel {
 			}
         });
 		
+		this.mandUseLyapunovExpCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetMandUseLyapunovExpCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetMandUseLyapunovExpCommand(false);
+				}
+			}
+        });
+		
 		this.mandMaxIterCombos.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
 			@Override
@@ -3781,6 +3999,19 @@ class SierpinskiComboPanel extends JPanel {
 					doSetJuliaUseDiffCommand(true);
 				} else if(event.getStateChange()==ItemEvent.DESELECTED){
 					doSetJuliaUseDiffCommand(false);
+				}
+			}
+        });
+		
+
+		
+		this.juliaUseLyapunovExpCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetJuliaUseLyapunovExpCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetJuliaUseLyapunovExpCommand(false);
 				}
 			}
         });

@@ -62,6 +62,12 @@ public class DTest extends FractalBase {
 			}
 		});
 	}
+	
+
+	/*@Override
+	public String getFractalDetails() {		
+		return this.getFractalShapeTitle();
+	}*/
 
 	@Override
 	protected String getFractalShapeTitle() {

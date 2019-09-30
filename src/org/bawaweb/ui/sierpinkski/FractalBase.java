@@ -16,6 +16,8 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Objects;
 import java.util.Random;
 
@@ -112,6 +114,8 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	protected double  bound = 2.0;
 	
 	protected boolean reversePixelCalculation = false;
+	
+	protected boolean useLyapunovExponent = false;
 
 
 	/** Constructor: an instance */
@@ -331,6 +335,22 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		g2.setColor(oldColor);
 		g2.drawImage(img1, null, 0, 0);
 		g2.drawImage(img2, null, 0, img1.getHeight());
+		g2.dispose();
+		return newImage;
+	}
+	
+	public static BufferedImage joinAdjacentBufferedImage(BufferedImage img1, BufferedImage img2) {
+		// int offset = 2;
+		int width = img1.getWidth() + img2.getWidth();
+		int height = img1.getHeight();
+		BufferedImage newImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2 = newImage.createGraphics();
+		Color oldColor = g2.getColor();
+		g2.setPaint(Color.WHITE);
+		g2.fillRect(0, 0, width, height);
+		g2.setColor(oldColor);
+		g2.drawImage(img1, null, 0, 0);
+		g2.drawImage(img2, null, img1.getWidth(), 0);//img1.getHeight());
 		g2.dispose();
 		return newImage;
 	}
@@ -1043,6 +1063,14 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		this.reversePixelCalculation = reverse;
 	}
 
+	public boolean isUseLyapunovExponent() {
+		return this.useLyapunovExponent;
+	}
+
+	public void setUseLyapunovExponent(boolean useLExp) {
+		this.useLyapunovExponent = useLExp;
+	}
+
 	class Line {
 		double x, y, length, angle;
 
@@ -1451,6 +1479,36 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	}
 	public void setPxConstOperation(String pxConstOp) {
 		this.pxConstOperation=pxConstOp;		
+	}
+
+	public final /* abstract */ String getFractalDetails() {
+		String info = null;
+		// via reflection
+		Object obj = this;
+		@SuppressWarnings("unchecked")
+		Class<? extends FractalBase> theClazz = (Class<? extends FractalBase>) obj.getClass();
+		
+		String className = theClazz.getName();
+		info += className + "<br/>";
+		
+		Field[] fldz = theClazz.getDeclaredFields();
+		for (Field aFld : fldz) {
+			String fName = aFld.getName();
+			String fVal = null;
+			int m =aFld.getModifiers();
+			try {
+				if (Modifier.isPublic(m)&&!(Modifier.isStatic(m)||Modifier.isFinal(m))) {
+					fVal = (aFld.get(fName)).toString();
+					info += fName + " :		" + fVal + "<br/>";
+				}
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				System.out.println("Exception in getting value for =>> " + fName);
+				e.printStackTrace();
+			}
+		}
+
+		return info;
+
 	}
 	
 }

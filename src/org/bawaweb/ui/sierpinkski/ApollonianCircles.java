@@ -248,6 +248,11 @@ public class ApollonianCircles extends FractalBase {
 		this.multiplier = mult;
 	}
 
+	/*@Override
+	public String getFractalDetails() {		
+		return this.getFractalShapeTitle();
+	}*/
+
 }
 
 

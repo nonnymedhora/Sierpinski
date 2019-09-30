@@ -105,6 +105,13 @@ public class FannyTriangles extends FractalBase {
 	public void setCutDim(int cutDim) {
 		this.cutDim = cutDim;
 	}
+	
+
+/*	@Override
+	public String getFractalDetails() {		
+		return this.getFractalShapeTitle();
+	}*/
+	
 	@Override
 	protected String getFractalShapeTitle() {
 		return "Bawaz _ FannyTriangles";

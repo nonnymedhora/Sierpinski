@@ -355,6 +355,12 @@ System.out.println("Start___Line3 " + l3 + "\n\n");*/
 	public void createFractalShape(Graphics2D g) {
 		createKochSnowFractal(g);
 	}
+	
+
+	/*@Override
+	public String getFractalDetails() {		
+		return this.getFractalShapeTitle();
+	}*/
 
 
 	@Override

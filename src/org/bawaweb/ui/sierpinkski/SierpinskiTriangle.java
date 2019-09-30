@@ -134,6 +134,12 @@ public class SierpinskiTriangle extends FractalBase {
 		createSierpinskiT(g,depth);
 		
 	}
+	
+
+	/*@Override
+	public String getFractalDetails() {		
+		return this.getFractalShapeTitle();
+	}*/
 
 	@Override
 	protected String getFractalShapeTitle() {

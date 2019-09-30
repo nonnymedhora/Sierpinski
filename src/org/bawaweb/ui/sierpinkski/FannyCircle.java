@@ -110,5 +110,11 @@ public class FannyCircle extends FractalBase {
 	protected String getFractalShapeTitle() {
 		return "Bawaz _ FannyCircle";
 	}
+	
 
+/*	@Override
+	public String getFractalDetails() {		
+		return this.getFractalShapeTitle();
+	}
+*/
 }

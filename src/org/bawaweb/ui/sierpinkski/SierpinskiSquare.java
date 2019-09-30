@@ -134,4 +134,10 @@ public class SierpinskiSquare extends FractalBase {
 		return "Bawaz _ Sierpinski'Square";
 	}
 
+
+	/*@Override
+	public String getFractalDetails() {		
+		return this.getFractalShapeTitle();
+	}*/
+
 }
