@@ -5,6 +5,8 @@ package org.bawaweb.ui.sierpinkski;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -27,6 +29,10 @@ public class Mandelbrot extends FractalBase {
 	private boolean isComplexNumConst = false;
 	private ComplexNumber complex;// = new ComplexNumber(-0.75, 0.11);
 	private boolean isConstFuncApplied=false;
+	
+	// Buddhabrot
+	private boolean isBuddha = true;
+	private Map<Pixel,Integer> buddhaMap=new HashMap<Pixel,Integer>();
 	
 	
 	public Mandelbrot() {
@@ -165,26 +171,33 @@ public class Mandelbrot extends FractalBase {
 				
 
 				if (this.isUseBlackWhite()) {
-					int bOrW;
+					int bOrW = 0;
+					
 					if (diff) {
-						bOrW = this.mand(z0, max, this.power, this.complex, bd);
-						if (bOrW != max) {
-							bOrW = 0;
-						} else {
-							bOrW = COLORMAXRGB;
+						bOrW = this.mand(z0, max, this.power, this.complex, bd, row, col);
+						if (!this.isBuddha) {
+							if (bOrW != max) {
+								bOrW = 0;
+							} else {
+								bOrW = COLORMAXRGB;
+							} 
 						}
 					} else {
-						int res = this.mand(z0, max, this.power, this.complex, bd);
-						bOrW = max - res;
-						if (bOrW != res) {
-							bOrW = 0;
-						} else {
-							bOrW = COLORMAXRGB;
+						int res = this.mand(z0, max, this.power, this.complex, bd, row, col);
+						if (!this.isBuddha) {
+							bOrW = max - res;
+							if (bOrW != res) {
+								bOrW = 0;
+							} else {
+								bOrW = COLORMAXRGB;
+							} 
 						}
 
 					}
 					
-					setPixel(row, n - 1 - col, bOrW);
+					if (!this.isBuddha) {
+						setPixel(row, n - 1 - col, bOrW);
+					}
 					if (this.isSavePixelInfo2File()) {
 						this.appendPixelInfo2File(row, n - 1 - col, bOrW);
 					}
@@ -194,14 +207,17 @@ public class Mandelbrot extends FractalBase {
 					int colorRGB;
 	
 					if (diff) {
-						colorRGB = mand(z0, max, this.power, this.complex, bd);
+						colorRGB = mand(z0, max, this.power, this.complex, bd, row, col);
 					} else {
-						colorRGB = max - mand(z0, max, this.power, this.complex,bd);
+						colorRGB = max - mand(z0, max, this.power, this.complex,bd, row, col);
 					}
-					Color color = this.getPixelDisplayColor(row, col, colorRGB, diff);
-	
-					setPixel(row, n - 1 - col, color.getRGB());
 					
+					Color color = null;
+	
+					if (!this.isBuddha) {
+						color = this.getPixelDisplayColor(row, col, colorRGB, diff);
+						setPixel(row, n - 1 - col, color.getRGB());
+					}
 					if (this.isSavePixelInfo2File()) {
 						this.appendPixelInfo2File(row, n - 1 - col, color.getRGB());
 					}
@@ -213,6 +229,8 @@ public class Mandelbrot extends FractalBase {
 		if (this.isSavePixelInfo2File()) {
 			this.closePixelFile();
 		}
+		
+		if(this.isBuddha){System.out.println("BuddhaSize==="+this.buddhaMap.size());}
 	}
 	
 	
@@ -259,8 +277,7 @@ public class Mandelbrot extends FractalBase {
 				break;
 			case "log(e)":
 				z0 = z0.ln(); // z0.tan();
-				break;
-	
+				break;	
 			case "None":
 				z0 = z0;
 				break;
@@ -346,70 +363,10 @@ public class Mandelbrot extends FractalBase {
 		}
 		
 		return cConst;
-		////////////////////////////
-//		
-//		if (isComplexNumConst && this.complex == null) {
-//			this.complex = z0;
-//		}
-//		
-//		
-//		if (!this.isConstFuncApplied) {
-//			switch (func2Apply) {
-//				case "Sine":
-//					this.complex = /*z0*/this.complex.sine(); //z0.sin();
-//					break;
-//				case "Cosine":
-//					this.complex = /*z0*/this.complex.cosine(); //z0.cos();
-//					break;
-//				case "Tan":
-//					this.complex = /*z0*/this.complex.tangent(); //z0.tan();
-//					break;
-//				case "ArcSine":
-//					this.complex = /*z0*/this.complex.inverseSine(); //z0.sin();
-//					break;
-//				case "ArcCosine":
-//					this.complex = /*z0*/this.complex.inverseCosine(); //z0.cos();
-//					break;
-//				case "ArcTan":
-//					this.complex = /*z0*/this.complex.inverseTangent(); //z0.tan();
-//					break;
-//				case "Square":
-//					this.complex = /*z0*/this.complex.power(2); //z0.sin();
-//					break;
-//				case "Cube":
-//					this.complex = /*z0*/this.complex.power(3); //z0.cos();
-//					break;
-//				case "Exponent":
-//					this.complex = /*z0*/this.complex.exp(); //z0.tan();
-//					break;
-//				case "Root":
-//					this.complex = /*z0*/this.complex.sqroot(); //z0.sin();
-//					break;
-//				case "CubeRoot":
-//					this.complex = /*z0*/this.complex.curoot(); //z0.cos();
-//					break;
-//				case "Log":
-//					this.complex = /*z0*/this.complex.ln(); //z0.tan();
-//					break;
-//				case "None":
-//					this.complex = /*z0*/this.complex;
-//					break;
-//				default:
-//					this.complex = /*z0*/this.complex;
-//					break;
-//			}
-//			
-//			if(!this.isComplexNumConst){
-//				this.complex=cConst;
-//				this.isConstFuncApplied=true;
-//			}
-//		}
-//		return this.complex;
-		/////////////////////////////////////////
 	}
 
 	
-	private int mand(ComplexNumber z0, int maxIterations, int pwr, ComplexNumber constant, double bd) {
+	private int mand(ComplexNumber z0, int maxIterations, int pwr, ComplexNumber constant, double bd, int r, int c) {
 		ComplexNumber z = z0;
 		for (int t = 0; t < maxIterations; t++) {
 			if (z.abs() > bd)
@@ -427,7 +384,23 @@ public class Mandelbrot extends FractalBase {
 				z = z.power(pwr).power(constant);
 			}*/
 		}
-		return maxIterations;
+		if (!this.isBuddha) {
+			return maxIterations;
+		} else {
+			return this.populateBuddha(r,c);
+		}
+	}
+
+	private int populateBuddha(int row, int col) {
+		final Pixel key = new Pixel(row, col);
+		Integer value = this.buddhaMap.get(key);
+		if (value == null) {
+			this.buddhaMap.put(key, 1);
+		} else {
+			value += 1;
+			this.buddhaMap.put(key, value);
+		}
+		return 123;
 	}
 
 	public static void main(String[] args) {

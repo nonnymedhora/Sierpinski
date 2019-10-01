@@ -1146,6 +1146,52 @@ public abstract class FractalBase extends JFrame implements Runnable {
 			e.printStackTrace();
 		}*/
 	}
+	
+	
+	class Pixel {
+
+		double row, column;
+		int colorRGB;
+
+		public Pixel() {
+			super();
+		}
+
+		public Pixel(double r, double c, int clr) {
+			this.setRow(r);
+			this.setColumn(c);
+			this.setColorRGB(clr);
+		}
+
+		public Pixel(int r, int c) {
+			this.setRow(r);
+			this.setColumn(c);
+		}
+
+		public double getRow() {
+			return row;
+		}
+
+		public void setRow(double row) {
+			this.row = row;
+		}
+
+		public double getColumn() {
+			return column;
+		}
+
+		public void setColumn(double column) {
+			this.column = column;
+		}
+
+		public int getColorRGB() {
+			return colorRGB;
+		}
+
+		public void setColorRGB(int colorRGB) {
+			this.colorRGB = colorRGB;
+		}
+	}
 
 	class Line {
 		double x, y, length, angle;
