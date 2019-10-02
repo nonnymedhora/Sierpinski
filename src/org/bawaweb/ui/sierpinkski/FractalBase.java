@@ -530,12 +530,12 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	
 
 	protected void setPixel(int col, int row, int rgbColor) {
-		validateColumnIndex(col);
-		validateRowIndex(row);
-		if (isOriginUpperLeft)
-			bufferedImage.setRGB(col, row, rgbColor);
-		else
-			bufferedImage.setRGB(col, HEIGHT - row - 1, rgbColor);
+		if (validateColumnIndex(col) && validateRowIndex(row)) {
+			if (isOriginUpperLeft)
+				bufferedImage.setRGB(col, row, rgbColor);
+			else
+				bufferedImage.setRGB(col, HEIGHT - row - 1, rgbColor);
+		}	
 	}
 	
 	protected Color getPixelDisplayColor(final int row, final  int col, final int colorRGB, final boolean useD) {
@@ -621,14 +621,20 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		return corrected;
 	}
 	
-	private void validateRowIndex(int row) {
-        if (row < 0 || row >= HEIGHT)
-            throw new IllegalArgumentException("row index must be between 0 and " + (HEIGHT - 1) + ": " + row);
+	private boolean validateRowIndex(int row) {
+        if (row < 0 || row >= HEIGHT){
+        	return false;
+//            throw new IllegalArgumentException("row index must be between 0 and " + (HEIGHT - 1) + ": " + row);
+        }
+        return true;
     }
 
-    private void validateColumnIndex(int col) {
-        if (col < 0 || col >= WIDTH)
-            throw new IllegalArgumentException("column index must be between 0 and " + (WIDTH - 1) + ": " + col);
+    private boolean validateColumnIndex(int col) {
+        if (col < 0 || col >= WIDTH){
+//            throw new IllegalArgumentException("column index must be between 0 and " + (WIDTH - 1) + ": " + col);
+            return false;
+        }
+        return true;
     }
     
 	protected void fillCircle(Graphics2D g, Point center, int radius, Color color) {
@@ -1150,29 +1156,29 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	
 	class Pixel {
 
-		double row, column;
+		int row, column;
 		int colorRGB;
 
 		public Pixel() {
 			super();
 		}
 
-		public Pixel(double r, double c, int clr) {
-			this.setRow(r);
-			this.setColumn(c);
+		public Pixel(int r, int c, int clr) {
+			this(r,c);
 			this.setColorRGB(clr);
 		}
 
 		public Pixel(int r, int c) {
 			this.setRow(r);
 			this.setColumn(c);
+			this.setColorRGB(0);
 		}
 
-		public double getRow() {
+		public int getRow() {
 			return row;
 		}
 
-		public void setRow(double row) {
+		public void setRow(int row) {
 			this.row = row;
 		}
 
@@ -1180,7 +1186,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 			return column;
 		}
 
-		public void setColumn(double column) {
+		public void setColumn(int column) {
 			this.column = column;
 		}
 
@@ -1190,6 +1196,11 @@ public abstract class FractalBase extends JFrame implements Runnable {
 
 		public void setColorRGB(int colorRGB) {
 			this.colorRGB = colorRGB;
+		}
+
+		@Override
+		public String toString() {
+			return "Pixel [row=" + row + ", column=" + column + ", colorRGB=" + colorRGB + "]";
 		}
 	}
 

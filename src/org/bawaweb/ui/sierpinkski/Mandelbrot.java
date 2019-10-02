@@ -5,13 +5,15 @@ package org.bawaweb.ui.sierpinkski;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
 
 
 /**
@@ -22,6 +24,8 @@ import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
  */
 public class Mandelbrot extends FractalBase {
 
+	private static final int BUDDHA_START = 20;
+	private static final int IM_BUDDHA = 123;
 	private int mag;
 	private boolean useDiff = false;
 //	private int size;		//0-599 4 ltr
@@ -31,8 +35,9 @@ public class Mandelbrot extends FractalBase {
 	private boolean isConstFuncApplied=false;
 	
 	// Buddhabrot
-	private boolean isBuddha = true;
+	protected boolean isBuddha = false;//true;// 
 	private Map<Pixel,Integer> buddhaMap=new HashMap<Pixel,Integer>();
+	private List<Pixel> buddhaList=new ArrayList<Pixel>();
 	
 	
 	public Mandelbrot() {
@@ -131,43 +136,52 @@ public class Mandelbrot extends FractalBase {
 		String func2Apply = this.useFuncConst;
 		String pxFunc2Apply = this.useFuncPixel;
 		
-
-		
 		if (this.isSavePixelInfo2File()) {
-			if (!this.isComplexNumConst) {
-				if (func2Apply.equals("None")) {
-					this.appendConstantInfo2File("Dynamic Pixel Constant   z=C");
-				} else {
-					this.appendConstantInfo2File("Dynamic Pixel Constant  " + func2Apply + " (z)=C");
-				}
-			} else {
-				if (this.useFuncConst.equals("None")) {
-					this.appendConstantInfo2File("Constant z=C");
-				} else {
-					this.appendConstantInfo2File("Constant  " + this.useFuncConst + " (z)=C");
-				}
-			}
+			addConstInfo(func2Apply);
 		}
 
 		int n = getAreaSize();//599;//512;	(0-599)
 		//System.out.println("here with depth " + depth);
+		this.createMandelbrotPixels(diff, xc, yc, size, bd, max, func2Apply, pxFunc2Apply, n);
+		
+		if (this.isSavePixelInfo2File()) {
+			this.closePixelFile();
+		}
+		
+		if (this.isBuddha) {
+			System.out.println("BuddhaSize===" + this.buddhaMap.size());
+			for (Pixel p : this.buddhaMap.keySet()) {
+				System.out.println(p);
+			}
+		}
+		
+		if(this.isBuddha){this.processBuddhaMap();}
+	}
+
+	private void addConstInfo(String func2Apply) {
+		if (!this.isComplexNumConst) {
+			if (func2Apply.equals("None")) {
+				this.appendConstantInfo2File("Dynamic Pixel Constant   z=C");
+			} else {
+				this.appendConstantInfo2File("Dynamic Pixel Constant  " + func2Apply + " (z)=C");
+			}
+		} else {
+			if (this.useFuncConst.equals("None")) {
+				this.appendConstantInfo2File("Constant z=C");
+			} else {
+				this.appendConstantInfo2File("Constant  " + this.useFuncConst + " (z)=C");
+			}
+		}
+	}
+
+	private void createMandelbrotPixels(boolean diff, double xc, double yc, double size, double bd, int max,
+			String func2Apply, String pxFunc2Apply, int n) {
 		for (int row = 0; row < n; row++) {
 			for (int col = 0; col < n; col++) {
 				double x0 = xc - size / 2 + size * row / n;
 				double y0 = yc - size / 2 + size * col / n;
 				
-				ComplexNumber z0;
-				if (!this.isReversePixelCalculation()) {
-					z0 = new ComplexNumber(x0, y0);
-					z0 = this.getPixelComplexValue(x0, y0);					
-				} else {
-					z0 = new ComplexNumber(y0, x0);
-					z0 = this.getPixelComplexValue(y0, x0);
-				}
-				
-				
-				z0 = this.computePixel(pxFunc2Apply, z0);
-				z0 = this.computeComplexConstant(func2Apply, z0);	
+				ComplexNumber z0 = this.getZValue(func2Apply, pxFunc2Apply, x0, y0);	
 				
 
 				if (this.isUseBlackWhite()) {
@@ -195,9 +209,9 @@ public class Mandelbrot extends FractalBase {
 
 					}
 					
-					if (!this.isBuddha) {
+					/*if (!this.isBuddha) {*/
 						setPixel(row, n - 1 - col, bOrW);
-					}
+					/*}*/
 					if (this.isSavePixelInfo2File()) {
 						this.appendPixelInfo2File(row, n - 1 - col, bOrW);
 					}
@@ -214,10 +228,10 @@ public class Mandelbrot extends FractalBase {
 					
 					Color color = null;
 	
-					if (!this.isBuddha) {
+					/*if (!this.isBuddha) {*/
 						color = this.getPixelDisplayColor(row, col, colorRGB, diff);
 						setPixel(row, n - 1 - col, color.getRGB());
-					}
+					/*}*/
 					if (this.isSavePixelInfo2File()) {
 						this.appendPixelInfo2File(row, n - 1 - col, color.getRGB());
 					}
@@ -225,15 +239,117 @@ public class Mandelbrot extends FractalBase {
 
 			}
 		}
-		
-		if (this.isSavePixelInfo2File()) {
-			this.closePixelFile();
+	}
+
+	private ComplexNumber getZValue(String func2Apply, String pxFunc2Apply, double x0, double y0) {
+		ComplexNumber z0;
+		if (!this.isReversePixelCalculation()) {
+			z0 = new ComplexNumber(x0, y0);
+			z0 = this.getPixelComplexValue(x0, y0);					
+		} else {
+			z0 = new ComplexNumber(y0, x0);
+			z0 = this.getPixelComplexValue(y0, x0);
 		}
 		
-		if(this.isBuddha){System.out.println("BuddhaSize==="+this.buddhaMap.size());}
+		
+		z0 = this.computePixel(pxFunc2Apply, z0);
+		z0 = this.computeComplexConstant(func2Apply, z0);
+		return z0;
 	}
 	
 	
+	private void processBuddhaMap() {
+		List<Pixel> nonMandPix = this.getRandomPixList();
+
+		boolean isNotM = this.confirmNonMFrstPass(nonMandPix);
+		System.out.println("isNotM is " + isNotM + "nonMandPix size is " + nonMandPix.size());
+
+		if (isNotM) {
+			this.createBuddhaTrajectories(nonMandPix);
+		}
+
+	}
+
+	private void createBuddhaTrajectories(List<Pixel> nonMandPix) {
+		double xc = getxC();
+		double yc = getyC();
+		double size = this.mag;
+		double bd = this.getBound();
+		int n = getAreaSize();
+		int max = getMaxIter();
+		String func2Apply = this.useFuncConst;
+		String pxFunc2Apply = this.useFuncPixel;
+		boolean diff = this.useDiff;
+		
+		int valGrt1 = 0;
+		for(Pixel p : this.buddhaMap.keySet()){
+			if(this.buddhaMap.get(p)!=1){
+				valGrt1+=1;
+				
+			}
+		}
+		
+		System.out.println("valGrt1==="+valGrt1);
+		
+
+		for (Pixel aPix : nonMandPix) {
+			int row = aPix.row;
+			int col = aPix.column;
+
+			double x0 = xc - size / 2 + size * row / n;
+			double y0 = yc - size / 2 + size * col / n;
+			
+			ComplexNumber z0 = this.getZValue(func2Apply, pxFunc2Apply, x0, y0);
+			this.drawBuddhabrot(z0, max, this.power, n,this.complex, /*bd, row, col*/aPix);
+		}
+	}
+
+	private boolean confirmNonMFrstPass(List<Pixel> pixList) {
+		double xc = getxC();
+		double yc = getyC();
+		double size = this.mag;
+		double bd = this.getBound();
+		int n = getAreaSize();
+		int max = getMaxIter();
+		String func2Apply = this.useFuncConst;
+		String pxFunc2Apply = this.useFuncPixel;
+		boolean diff = this.useDiff;
+
+		for (Pixel aPix : pixList) {
+			int row = aPix.row;
+			int col = aPix.column;
+
+			double x0 = xc - size / 2 + size * row / n;
+			double y0 = yc - size / 2 + size * col / n;
+			
+			ComplexNumber z0 = this.getZValue(func2Apply, pxFunc2Apply, x0, y0);
+			
+			if (this.mand(z0, max, this.power, this.complex, bd, row, col) != IM_BUDDHA) {
+				return false;
+			}
+		}
+		
+		System.out.println("In+confirm+++ok");
+		
+		return true;
+
+	}
+
+	private List<Pixel> getRandomPixList() {
+		final int numSize = this.buddhaMap.size()/BUDDHA_START;
+		List<Pixel> rList = new ArrayList<Pixel>(numSize);
+
+		while (rList.size() < numSize) {
+			int r = new Random().nextInt(this.buddhaList.size());
+
+			final Pixel budhR = this.buddhaList.get(r);
+			if (!rList.contains(budhR)) {
+				rList.add(budhR);
+			}
+		}System.out.println("returning rList size=="+rList.size());
+		return rList;
+	}
+
 	private ComplexNumber computePixel(String fun, ComplexNumber z0) {
 		switch (fun) {
 			case "sine":
@@ -288,10 +404,6 @@ public class Mandelbrot extends FractalBase {
 
 		return z0;
 	}
-
-	
-	
-	
 
 	private ComplexNumber computeComplexConstant(String func2Apply, ComplexNumber z0) {
 		ComplexNumber cConst;
@@ -364,8 +476,47 @@ public class Mandelbrot extends FractalBase {
 		
 		return cConst;
 	}
-
 	
+	
+	private void drawBuddhabrot(ComplexNumber z0, int maxIterations, int pwr, int size, ComplexNumber constant, /*double bd, int row, int col*/Pixel pix) {
+
+		int row = pix.row;
+		int col = pix.column;
+		int colorRGB = pix.colorRGB;
+		/*final Pixel key = new Pixel(row, col);
+		int buPix = 0;
+		if(key!=null){
+			buPix = (this.buddhaList.contains(key) != null) ? this.buddhaMap.get(key):0;
+		}
+		int colorRGB = COLORMAXRGB - buPix;*/
+		this.setPixel(row, size - 1 - col, colorRGB);
+
+		for (int t = 0; t < maxIterations; t++) {
+			/*if (z0.abs() > bd) {
+				return;
+			}*/
+			colorRGB -= 50;
+			this.setPixel(row, size - 1 - col, new Color(colorRGB - 5).darker().getRGB());
+			
+			if (this.pxConstOperation.equals("Plus")) {
+				z0 = z0.power(pwr).plus(constant);
+			} else if (this.pxConstOperation.equals("Minus")) {
+				z0 = z0.power(pwr).minus(constant);
+			} else if (this.pxConstOperation.equals("Multiply")) {
+				z0 = z0.power(pwr).times(constant);
+			} else if (this.pxConstOperation.equals("Divide")) {
+				z0 = z0.power(pwr).divides(constant);
+			}
+			
+			row=(int) z0.real;
+			col=(int) z0.imaginary;
+			
+		}
+		
+	}
+	
+	
+
 	private int mand(ComplexNumber z0, int maxIterations, int pwr, ComplexNumber constant, double bd, int r, int c) {
 		ComplexNumber z = z0;
 		for (int t = 0; t < maxIterations; t++) {
@@ -392,22 +543,27 @@ public class Mandelbrot extends FractalBase {
 	}
 
 	private int populateBuddha(int row, int col) {
-		final Pixel key = new Pixel(row, col);
+		final Pixel key = new Pixel(row, col,IM_BUDDHA);
 		Integer value = this.buddhaMap.get(key);
 		if (value == null) {
 			this.buddhaMap.put(key, 1);
+			if(!this.buddhaList.contains(key)){this.buddhaList.add(key);}
 		} else {
+			System.out.println("ex hit r,c = "+row+","+col);
 			value += 1;
 			this.buddhaMap.put(key, value);
+			
+			if(!this.buddhaList.contains(key)){this.buddhaList.add(key);}
 		}
-		return 123;
+		return IM_BUDDHA;
 	}
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				final FractalBase frame = new Mandelbrot(2,2,true);//96);//,2);//,true);//(2,3,false);
+				final Mandelbrot frame = new Mandelbrot(2,2,true);//96);//,2);//,true);//(2,3,false);
+				frame.setBuddha(true);
 //				frame.depth = 5;
 /*				frame.setUseColorPalette(false);
 				frame.setUseBlackWhite(true);*/
@@ -443,6 +599,14 @@ public class Mandelbrot extends FractalBase {
 
 	public void setComplex(ComplexNumber comp) {
 		this.complex = comp;
+	}
+
+	public boolean isBuddha() {
+		return this.isBuddha;
+	}
+
+	public void setBuddha(boolean isB) {
+		this.isBuddha = isB;
 	}
 
 }

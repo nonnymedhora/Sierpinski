@@ -22,6 +22,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
@@ -292,7 +294,9 @@ class SierpinskiComboPanel extends JPanel {
 	
 	protected double mandXC;
 	protected double mandYC;
-	protected double mandScaleSize;	
+	protected double mandScaleSize;
+	private JCheckBox mandIsBuddhaCb = new JCheckBox("Get Buddha", false);
+	private boolean mandIsBuddhabrot = false;
 	
 	// for DIY
 	//radioButton
@@ -359,6 +363,9 @@ class SierpinskiComboPanel extends JPanel {
 
 	private final Double[] diyMandScaleSizeOptions = SCALE_SIZES;
 	private final JComboBox<Double> diyMandScaleSizeCombos = new JComboBox<Double>(diyMandScaleSizeOptions);
+	
+	private JCheckBox diyMandIsBuddhaCb = new JCheckBox("Get Buddha", false);
+	private boolean diyMandIsBuddhabrot = false;
 	
 	//diy Julia options
 	protected int diyJuliaPower;
@@ -885,6 +892,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyMandPanel.add(new JLabel("Exponent:"));
 		this.diyMandPanel.add(this.diyMandExpCombos);
 		this.diyMandPanel.add(this.diyMandUseDiffCb);
+		this.mandOptionsPanel.add(this.diyMandIsBuddhaCb);
 
 		this.diyMandPanel.add(this.diyMandUseLyapunovExpCb);
 		
@@ -933,7 +941,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.mandOptionsPanel.add(new JLabel("Exponent(X):"));
 		this.mandOptionsPanel.add(this.mandExpCombos);		
 		this.mandOptionsPanel.add(this.mandUseDiffCb);
-		
+		this.mandOptionsPanel.add(this.mandIsBuddhaCb);
 		this.mandOptionsPanel.add(this.mandUseLyapunovExpCb);
 		
 		
@@ -1995,6 +2003,11 @@ class SierpinskiComboPanel extends JPanel {
 		this.doMandelbrotChoicesCheck();
 	}
 	
+	private void doSetMandIsBuddhaCommand(boolean isB) {
+		this.mandIsBuddhabrot = isB;
+		this.doMandelbrotChoicesCheck();
+	}
+	
 
 	private void doSelectMandBoundCombosCommand(Double bound) {
 		this.mandBound = bound;
@@ -2088,6 +2101,12 @@ class SierpinskiComboPanel extends JPanel {
 	private void doSetDiyMandUseDiffCommand(boolean useDiffs) {
 		this.diyMandUseDiff = useDiffs;
 		this.formulaArea.setVisible(true);
+		this.doDiyMandelbrotChoicesCheck();
+	}
+	
+	
+	private void doSetDiyMandIsBuddhaCommand(boolean isB) {
+		this.diyMandIsBuddhabrot = isB;
 		this.doDiyMandelbrotChoicesCheck();
 	}
 	
@@ -2627,10 +2646,17 @@ class SierpinskiComboPanel extends JPanel {
 		double diyMXc = this.diyMandXC;
 		double diyMYc = this.diyMandYC;
 		double diyMScale = this.diyMandScaleSize;
+		
+		boolean isBuddha = this.diyMandIsBuddhabrot;
 
 		this.formulaArea.setVisible(true);
 		this.formulaArea.setText("");
 		this.formulaArea.setText("<font color='blue'>(DIY)Mandelbrot Set:<br/><br/>f(z) = z <sup>" + diyMandExp + "</sup> + C");
+		
+
+		if(isBuddha){
+			this.formulaArea.append(eol+"<font color='green'>BUDDHA<i>brot</i></font>"+eol);
+		}
 		
 		if (this.diyMandUseLyapunovExponent) {
 			this.addUseLyapunovInfo();
@@ -2653,6 +2679,12 @@ class SierpinskiComboPanel extends JPanel {
 			double diyMImgVal = Double.parseDouble(this.diyMandImgTf.getText());
 			this.formulaArea.append("<br/>Constant = " + diyMRealVal + " + (" + diyMImgVal + " * i)</font>");
 			ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD,diyMandB, diyMRealVal, diyMImgVal);
+		}
+		
+		if (isBuddha) {
+			Mandelbrot m = (Mandelbrot) ff;
+			m.setBuddha(isBuddha);
+			ff = m;
 		}
 		
 		ff.setUseLyapunovExponent(this.diyMandUseLyapunovExponent);
@@ -2807,6 +2839,8 @@ class SierpinskiComboPanel extends JPanel {
 		String pxFunc = this.pxFuncChoice;
 		double rot = this.getRotation();
 		
+		boolean isBuddha = this.mandIsBuddhabrot();
+		
 		FractalBase ff;
 		this.formulaArea.setVisible(true);
 		this.formulaArea.setText("");
@@ -2819,6 +2853,10 @@ class SierpinskiComboPanel extends JPanel {
 			this.formulaArea.setText("<font color='blue'>Mandelbrot Set:<br/><br/>f(z) = z  <sup>" + exp + "</sup> * C");
 		} else if (pxConstOp.equals("Divide")) {
 			this.formulaArea.setText("<font color='blue'>Mandelbrot Set:<br/><br/>f(z) = z  <sup>" + exp + "</sup> / C");
+		}
+		
+		if(isBuddha){
+			this.formulaArea.append("<font color='green'>BUDDHAbrot</font>"+eol);
 		}
 		
 
@@ -2837,6 +2875,11 @@ class SierpinskiComboPanel extends JPanel {
 
 		ff = new Mandelbrot(mag, exp, mUseD, mBound, true);
 
+		if (isBuddha) {
+			Mandelbrot m = (Mandelbrot) ff;
+			m.setBuddha(isBuddha);
+			ff = m;
+		}
 		ff.setUseLyapunovExponent(this.mandUseLyapunovExponent);
 
 		ff.setPxXTransformation(this.pixXTransform);
@@ -3053,7 +3096,30 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private void doSaveImageCommand(String saveCommand) {
+		/*	todo
+		 * for rotation	-	fix center
+		// reqd drawing location
+		int drawLocX = (int) this.fBase(int) FractalBase.getxC();
+		int drawLocY = (int) this.fBase(int) FractalBase.getyC();
+
+		// rotation info
+		double rotationReq = Math.toRadians(this.rotation);
+
+		double locX = getWidth() / 2;
+		double locY = getHeight() / 2;
+
+		AffineTransform tx = AffineTransform.getRotateInstance(rotationReq, locX, locY);
+		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+
 		BufferedImage fractalImage = this.getFractalImage();
+		// Drawing the rotated image at the required drawing locations
+		fractalImage = op.filter(fractalImage, null);
+		
+		//
+//		g2.drawImage(img, drawLocX, drawLocY, null);
+		
+		*/
+		
 		String extraInfo = this.getExtraInfo();
 		
 		String imgBaseInfo;
@@ -3783,6 +3849,17 @@ class SierpinskiComboPanel extends JPanel {
 			}
         });
 		
+		this.diyMandIsBuddhaCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetDiyMandIsBuddhaCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetDiyMandIsBuddhaCommand(false);
+				}
+			}
+        });
+		
 		this.diyMandUseLyapunovExpCb.addItemListener(new ItemListener() {
             @Override
 			public void itemStateChanged(ItemEvent event) {
@@ -3992,6 +4069,17 @@ class SierpinskiComboPanel extends JPanel {
 					doSetMandUseDiffCommand(true);
 				} else if(event.getStateChange()==ItemEvent.DESELECTED){
 					doSetMandUseDiffCommand(false);
+				}
+			}
+        });
+		
+		this.mandIsBuddhaCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetMandIsBuddhaCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetMandIsBuddhaCommand(false);
 				}
 			}
         });
@@ -4659,6 +4747,14 @@ class SierpinskiComboPanel extends JPanel {
 
 	public void setPixIntraXYOperation(String operation) {
 		this.pixIntraXYOperation = operation;
+	}
+
+	public boolean mandIsBuddhabrot() {
+		return this.mandIsBuddhabrot;
+	}
+
+	public void setMandIsBuddhabrot(boolean isB) {
+		this.mandIsBuddhabrot = isB;
 	}
 	
 	///////////////////tosdos////////////////////////////////
