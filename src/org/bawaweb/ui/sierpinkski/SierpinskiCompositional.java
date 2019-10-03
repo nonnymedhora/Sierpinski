@@ -3136,7 +3136,7 @@ class SierpinskiComboPanel extends JPanel {
 			detailDataImg = this.createStringImage(detailDataInfo);
 		}
         
-		String imageFilePath="images\\"+this.getComboChoice()+"["+extraInfo+"]"+" ____"+System.currentTimeMillis()+".png";
+		String imageFilePath="images_dump\\"+this.getComboChoice()+"["+extraInfo+"]"+" ____"+System.currentTimeMillis()+".png";
 		File outputfile = new File(imageFilePath);
 	    try {
 			if (saveCommand.equals("saveWithData")) {
