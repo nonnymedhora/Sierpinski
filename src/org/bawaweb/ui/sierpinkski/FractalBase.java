@@ -662,6 +662,11 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		return Math.sqrt( Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2) );
 	}
 	
+    protected void drawLine(Point p1, Point p2, int color) {
+    	Graphics2D g = (Graphics2D) this.getGraphics();
+    	g.setColor(new Color(color));
+    	this.drawLine(g,p1,p2);
+    }
 
 	/** Draw a line between p1 and p2 on g. */
 	protected void drawLine(Graphics2D g, Point p1, Point p2) {
@@ -840,7 +845,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	enum Colors {
 		RED (Color.RED), BLUE (Color.BLUE), GREEN (Color.GREEN),
 		ORANGE (Color.ORANGE), YELLOW (Color.YELLOW), PINK (Color.PINK),
-		BLACK (Color.BLACK), WHITE (Color.WHITE),		
+		BLACK /*(new Color(123))*/(Color.BLACK), WHITE (Color.WHITE),		
 		MAGENTA (Color.MAGENTA),CYAN (Color.CYAN),
 		LIGHT_GRAY (Color.LIGHT_GRAY), DARK_GRAY (Color.DARK_GRAY)
 		;
@@ -1158,6 +1163,8 @@ public abstract class FractalBase extends JFrame implements Runnable {
 
 		int row, column;
 		int colorRGB;
+		
+		ComplexNumber compVal;
 
 		public Pixel() {
 			super();
@@ -1198,10 +1205,19 @@ public abstract class FractalBase extends JFrame implements Runnable {
 			this.colorRGB = colorRGB;
 		}
 
+		public ComplexNumber getCompVal() {
+			return compVal;
+		}
+
+		public void setCompVal(ComplexNumber comp) {
+			this.compVal = comp;
+		}
+
 		@Override
 		public String toString() {
-			return "Pixel [row=" + row + ", column=" + column + ", colorRGB=" + colorRGB + "]";
+			return "Pixel [row=" + row + ", column=" + column + ", colorRGB=" + colorRGB + ", compVal=" + compVal + "]";
 		}
+
 	}
 
 	class Line {

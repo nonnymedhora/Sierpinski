@@ -2856,7 +2856,7 @@ class SierpinskiComboPanel extends JPanel {
 		}
 		
 		if(isBuddha){
-			this.formulaArea.append("<font color='green'>BUDDHAbrot</font>"+eol);
+			this.formulaArea.append(eol+"<font color='green'>BUDDHAbrot</font>"+eol);
 		}
 		
 

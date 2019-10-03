@@ -5,11 +5,14 @@ package org.bawaweb.ui.sierpinkski;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -34,10 +37,10 @@ public class Mandelbrot extends FractalBase {
 	private ComplexNumber complex;// = new ComplexNumber(-0.75, 0.11);
 	private boolean isConstFuncApplied=false;
 	
-	// Buddhabrot
+	/*// Buddhabrot*/
 	protected boolean isBuddha = false;//true;// 
-	private Map<Pixel,Integer> buddhaMap=new HashMap<Pixel,Integer>();
-	private List<Pixel> buddhaList=new ArrayList<Pixel>();
+	/*private Map<Pixel,Integer> buddhaMap=new HashMap<Pixel,Integer>();
+	private List<Pixel> buddhaList=new ArrayList<Pixel>();*/
 	
 	
 	public Mandelbrot() {
@@ -119,7 +122,119 @@ public class Mandelbrot extends FractalBase {
 	 */
 	@Override
 	public void createFractalShape(Graphics2D g) {
-		createMandelbrot(g, this.useDiff);
+		if (!this.isBuddha) {
+			createMandelbrot(g, this.useDiff);
+		}else{
+			createBuddhabrot(g, this.useDiff);
+		}
+	}
+
+	private void createBuddhabrot(Graphics2D g, boolean diff) {
+		double xc = getxC();
+		double yc = getyC();
+		double size = this.mag;
+		double bd = this.getBound();
+		int max = getMaxIter();
+		
+		String func2Apply = this.useFuncConst;
+		String pxFunc2Apply = this.useFuncPixel;
+		
+		if (this.isSavePixelInfo2File()) {
+			addConstInfo(func2Apply);
+		}
+
+		int n = getAreaSize();
+		
+
+		Map<Pixel,ComplexNumber> buddhaMap = this.createNonMandelbrotPixelsMap(diff, xc, yc, size, bd, max, func2Apply, pxFunc2Apply, n);
+		
+		System.out.println("budhaMap.size()=="+buddhaMap.size());
+		/*
+		for(Pixel buddhaPix: buddhaMap.keySet()){
+			setPixel(buddhaPix.row, n - 1 - buddhaPix.column, buddhaPix.colorRGB);
+		}
+		*/
+		List<Pixel> buddhaPixPaths = this.traceBuddhaTrajectories(buddhaMap);
+		System.out.println("buddhaPixPaths.size()=="+buddhaPixPaths.size());
+		
+		this.drawPixelPath(g,buddhaPixPaths);
+	}
+
+	private List<Pixel> traceBuddhaTrajectories(Map<Pixel, ComplexNumber> bMap) {
+		List<Pixel> randBuddhaPixList = this.getRandomPixList(bMap);
+		
+		boolean isNotM = this.confirmNonMFrstPass(randBuddhaPixList);
+		if (isNotM) {
+			return this.createBuddhaTrajectories(randBuddhaPixList);
+		}
+		return null;
+		
+//		return this.createBuddhaTrajectories(randBuddhaPixList);
+	}
+	
+	private List<Pixel> createBuddhaTrajectories(List<Pixel> nonMandPix) {
+		List<Pixel> allPixels = new ArrayList<Pixel>();
+//		double xc = getxC();
+//		double yc = getyC();
+//		double size = this.mag;
+//		double bd = this.getBound();
+		int n = getAreaSize();
+		int max = getMaxIter();
+//		String func2Apply = this.useFuncConst;
+//		String pxFunc2Apply = this.useFuncPixel;
+//		boolean diff = this.useDiff;
+		System.out.println("nonMandPix.size()===="+nonMandPix.size());
+		for (Pixel aPix : nonMandPix) {
+//			int row = aPix.row;
+//			int col = aPix.column;
+			
+			ComplexNumber z0 = aPix.compVal;//this.getZValue(func2Apply, pxFunc2Apply, x0, y0);
+			allPixels.addAll( this.drawBuddhabrot(z0, max, this.power, n,this.complex, aPix) );
+		}
+		return allPixels;
+	}
+
+	private List<Pixel> getRandomPixList(Map<Pixel, ComplexNumber> bMap) {
+		final int numSize = bMap.size()/BUDDHA_START;
+		Pixel[] rPixArray = new Pixel[numSize];
+		rPixArray=bMap.keySet().toArray(rPixArray);
+		List<Pixel> rList = new ArrayList<Pixel>(numSize);
+
+		while (rList.size() < numSize) {
+			int r = new Random().nextInt(bMap.size());
+
+			final Pixel budhR = rPixArray[r];
+			
+			if (!rList.contains(budhR)) {
+				rList.add(budhR);
+			}
+		}
+		System.out.println("returning rList size=="+rList.size());
+		return rList;
+	}
+
+	private Map<Pixel, ComplexNumber> createNonMandelbrotPixelsMap(boolean diff, double xc, double yc, double size,
+			double bd, int max, String func2Apply, String pxFunc2Apply, int n) {
+		Map<Pixel,ComplexNumber> bMap = new HashMap<Pixel,ComplexNumber>();
+		
+		for (int row = 0; row < n; row++) {
+			for (int col = 0; col < n; col++) {
+				double x0 = xc - size / 2 + size * row / n;
+				double y0 = yc - size / 2 + size * col / n;
+				
+				ComplexNumber z0 = this.getZValue(func2Apply, pxFunc2Apply, x0, y0);
+				
+				int res = this.mand(z0, max, this.power, this.complex, bd, row, col);
+				if(res==IM_BUDDHA){//if (res < max) { // 
+					Pixel p = new Pixel(row, col, IM_BUDDHA);
+					p.setCompVal(z0);
+
+					bMap.put(p, z0);
+				}
+			}
+		}
+		
+		return bMap;
 	}
 
 	private void createMandelbrot(Graphics2D g, boolean diff) {		
@@ -147,7 +262,7 @@ public class Mandelbrot extends FractalBase {
 		if (this.isSavePixelInfo2File()) {
 			this.closePixelFile();
 		}
-		
+		/*
 		if (this.isBuddha) {
 			System.out.println("BuddhaSize===" + this.buddhaMap.size());
 			for (Pixel p : this.buddhaMap.keySet()) {
@@ -155,7 +270,7 @@ public class Mandelbrot extends FractalBase {
 			}
 		}
 		
-		if(this.isBuddha){this.processBuddhaMap();}
+		if(this.isBuddha){this.processBuddhaMap();}*/
 	}
 
 	private void addConstInfo(String func2Apply) {
@@ -189,23 +304,23 @@ public class Mandelbrot extends FractalBase {
 					
 					if (diff) {
 						bOrW = this.mand(z0, max, this.power, this.complex, bd, row, col);
-						if (!this.isBuddha) {
+						/*if (!this.isBuddha) {*/
 							if (bOrW != max) {
 								bOrW = 0;
 							} else {
 								bOrW = COLORMAXRGB;
 							} 
-						}
+						/*}*/
 					} else {
 						int res = this.mand(z0, max, this.power, this.complex, bd, row, col);
-						if (!this.isBuddha) {
+						/*if (!this.isBuddha) {*/
 							bOrW = max - res;
 							if (bOrW != res) {
 								bOrW = 0;
 							} else {
 								bOrW = COLORMAXRGB;
 							} 
-						}
+						/*}*/
 
 					}
 					
@@ -258,52 +373,52 @@ public class Mandelbrot extends FractalBase {
 	}
 	
 	
-	private void processBuddhaMap() {
-		List<Pixel> nonMandPix = this.getRandomPixList();
+//	private void processBuddhaMap() {
+//		List<Pixel> nonMandPix = this.getRandomPixList();
+//
+//		boolean isNotM = this.confirmNonMFrstPass(nonMandPix);
+//		System.out.println("isNotM is " + isNotM + "nonMandPix size is " + nonMandPix.size());
+//
+//		if (isNotM) {
+//			this.createBuddhaTrajectories(nonMandPix);
+//		}
+//
+//	}
 
-		boolean isNotM = this.confirmNonMFrstPass(nonMandPix);
-		System.out.println("isNotM is " + isNotM + "nonMandPix size is " + nonMandPix.size());
-
-		if (isNotM) {
-			this.createBuddhaTrajectories(nonMandPix);
-		}
-
-	}
-
-	private void createBuddhaTrajectories(List<Pixel> nonMandPix) {
-		double xc = getxC();
-		double yc = getyC();
-		double size = this.mag;
-		double bd = this.getBound();
-		int n = getAreaSize();
-		int max = getMaxIter();
-		String func2Apply = this.useFuncConst;
-		String pxFunc2Apply = this.useFuncPixel;
-		boolean diff = this.useDiff;
-		
-		int valGrt1 = 0;
-		for(Pixel p : this.buddhaMap.keySet()){
-			if(this.buddhaMap.get(p)!=1){
-				valGrt1+=1;
-				
-			}
-		}
-		
-		System.out.println("valGrt1==="+valGrt1);
-		
-
-		for (Pixel aPix : nonMandPix) {
-			int row = aPix.row;
-			int col = aPix.column;
-
-			double x0 = xc - size / 2 + size * row / n;
-			double y0 = yc - size / 2 + size * col / n;
-			
-			ComplexNumber z0 = this.getZValue(func2Apply, pxFunc2Apply, x0, y0);
-			this.drawBuddhabrot(z0, max, this.power, n,this.complex, /*bd, row, col*/aPix);
-		}
-	}
-
+//	private void createBuddhaTrajectories(List<Pixel> nonMandPix) {
+//		double xc = getxC();
+//		double yc = getyC();
+//		double size = this.mag;
+//		double bd = this.getBound();
+//		int n = getAreaSize();
+//		int max = getMaxIter();
+//		String func2Apply = this.useFuncConst;
+//		String pxFunc2Apply = this.useFuncPixel;
+//		boolean diff = this.useDiff;
+//		
+//		int valGrt1 = 0;
+//		for(Pixel p : this.buddhaMap.keySet()){
+//			if(this.buddhaMap.get(p)!=1){
+//				valGrt1+=1;
+//				
+//			}
+//		}
+//		
+//		System.out.println("valGrt1==="+valGrt1);
+//		
+//
+//		for (Pixel aPix : nonMandPix) {
+//			int row = aPix.row;
+//			int col = aPix.column;
+//
+//			double x0 = xc - size / 2 + size * row / n;
+//			double y0 = yc - size / 2 + size * col / n;
+//			
+//			ComplexNumber z0 = this.getZValue(func2Apply, pxFunc2Apply, x0, y0);
+//			this.drawBuddhabrot(z0, max, this.power, n,this.complex, /*bd, row, col*/aPix);
+//		}
+//	}
+//
 	private boolean confirmNonMFrstPass(List<Pixel> pixList) {
 		double xc = getxC();
 		double yc = getyC();
@@ -325,6 +440,7 @@ public class Mandelbrot extends FractalBase {
 			ComplexNumber z0 = this.getZValue(func2Apply, pxFunc2Apply, x0, y0);
 			
 			if (this.mand(z0, max, this.power, this.complex, bd, row, col) != IM_BUDDHA) {
+				System.out.println("In+confirm+++NOTOOOOOok");
 				return false;
 			}
 		}
@@ -334,21 +450,21 @@ public class Mandelbrot extends FractalBase {
 		return true;
 
 	}
-
-	private List<Pixel> getRandomPixList() {
-		final int numSize = this.buddhaMap.size()/BUDDHA_START;
-		List<Pixel> rList = new ArrayList<Pixel>(numSize);
-
-		while (rList.size() < numSize) {
-			int r = new Random().nextInt(this.buddhaList.size());
-
-			final Pixel budhR = this.buddhaList.get(r);
-			if (!rList.contains(budhR)) {
-				rList.add(budhR);
-			}
-		}System.out.println("returning rList size=="+rList.size());
-		return rList;
-	}
+//
+//	private List<Pixel> getRandomPixList() {
+//		final int numSize = this.buddhaMap.size()/BUDDHA_START;
+//		List<Pixel> rList = new ArrayList<Pixel>(numSize);
+//
+//		while (rList.size() < numSize) {
+//			int r = new Random().nextInt(this.buddhaList.size());
+//
+//			final Pixel budhR = this.buddhaList.get(r);
+//			if (!rList.contains(budhR)) {
+//				rList.add(budhR);
+//			}
+//		}System.out.println("returning rList size=="+rList.size());
+//		return rList;
+//	}
 
 	private ComplexNumber computePixel(String fun, ComplexNumber z0) {
 		switch (fun) {
@@ -478,25 +594,28 @@ public class Mandelbrot extends FractalBase {
 	}
 	
 	
-	private void drawBuddhabrot(ComplexNumber z0, int maxIterations, int pwr, int size, ComplexNumber constant, /*double bd, int row, int col*/Pixel pix) {
+	private List<Pixel> drawBuddhabrot(ComplexNumber z0, int maxIterations, int pwr, int size, ComplexNumber constant, Pixel pix) {
+//		System.out.println("in drawBuddhabrot - pix is "+pix);
 
+		List<Pixel> pixelPathList = new ArrayList<Pixel>();
+		pixelPathList.add(pix);
+		
 		int row = pix.row;
 		int col = pix.column;
 		int colorRGB = pix.colorRGB;
-		/*final Pixel key = new Pixel(row, col);
-		int buPix = 0;
-		if(key!=null){
-			buPix = (this.buddhaList.contains(key) != null) ? this.buddhaMap.get(key):0;
-		}
-		int colorRGB = COLORMAXRGB - buPix;*/
-		this.setPixel(row, size - 1 - col, colorRGB);
+
+		this.setPixel(row, size - 1 - col, colorRGB);	//	start
+		
 
 		for (int t = 0; t < maxIterations; t++) {
-			/*if (z0.abs() > bd) {
-				return;
-			}*/
-			colorRGB -= 50;
-			this.setPixel(row, size - 1 - col, new Color(colorRGB - 5).darker().getRGB());
+
+			/*colorRGB -= 50;
+			this.setPixel(row, size - 1 - col, new Color(colorRGB - 5).brighter().getRGB());*/
+		
+			Pixel newPix = new Pixel(row,col,colorRGB);
+			newPix.setCompVal(z0);
+			
+			pixelPathList.add(newPix);
 			
 			if (this.pxConstOperation.equals("Plus")) {
 				z0 = z0.power(pwr).plus(constant);
@@ -508,14 +627,40 @@ public class Mandelbrot extends FractalBase {
 				z0 = z0.power(pwr).divides(constant);
 			}
 			
-			row=(int) z0.real;
-			col=(int) z0.imaginary;
+			row = (int)z0.real;
+			col = (int)z0.imaginary;
+			colorRGB -= 50;
 			
 		}
+		/*System.out.println("pixelPathList size is "+pixelPathList.size()
+			+"\nfor pix "+pix);*/
+		return pixelPathList;
+		
+//		this.drawPixelPath(pixelPathList);
 		
 	}
 	
 	
+
+	private void drawPixelPath(Graphics2D g, List<Pixel> path) {
+		System.out.println("in drawPixelPath -- pathSize is "+path.size());
+		for(int i = 0; i <path.size()-2; i++){
+			Pixel p1 = path.get(i);
+			Pixel p2 = path.get(i+1);
+			
+			Point pt1=new Point(p1.row,p1.column);
+			Point pt2=new Point(p2.row,p2.column);
+			int color = p2.colorRGB;
+			g.setColor(new Color(color));
+			this.drawLine(g,pt1,pt2);
+		}
+		/*
+		
+		for(Pixel p : path){
+			this.setPixel(p.row,p.column,p.colorRGB);
+		}*/
+		
+	}
 
 	private int mand(ComplexNumber z0, int maxIterations, int pwr, ComplexNumber constant, double bd, int r, int c) {
 		ComplexNumber z = z0;
@@ -538,11 +683,12 @@ public class Mandelbrot extends FractalBase {
 		if (!this.isBuddha) {
 			return maxIterations;
 		} else {
-			return this.populateBuddha(r,c);
+			return IM_BUDDHA;//this.populateBuddha(r,c);
 		}
+		/*return maxIterations;*/
 	}
 
-	private int populateBuddha(int row, int col) {
+	/*private int populateBuddha(int row, int col) {
 		final Pixel key = new Pixel(row, col,IM_BUDDHA);
 		Integer value = this.buddhaMap.get(key);
 		if (value == null) {
@@ -556,14 +702,14 @@ public class Mandelbrot extends FractalBase {
 			if(!this.buddhaList.contains(key)){this.buddhaList.add(key);}
 		}
 		return IM_BUDDHA;
-	}
+	}*/
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				final Mandelbrot frame = new Mandelbrot(2,2,true);//96);//,2);//,true);//(2,3,false);
-				frame.setBuddha(true);
+				/*frame.setBuddha(true);*/
 //				frame.depth = 5;
 /*				frame.setUseColorPalette(false);
 				frame.setUseBlackWhite(true);*/
