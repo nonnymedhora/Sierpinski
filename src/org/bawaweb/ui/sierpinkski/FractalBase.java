@@ -32,10 +32,26 @@ import javax.swing.JFrame;
  * Superclass for SierpinskiTriangle, SiepinskiSquare, KochSnowflake
  */
 public abstract class FractalBase extends JFrame implements Runnable {
+	private static final long serialVersionUID = 123456543L;
 	
+
+	//for computecolors
+	//	for divisors
+	public static final int[] FRST_SIX_PRIMES = new int[] { 2, 3, 5, 7, 11, 13 };
+	public static final int[] FRST_SIX_ODDS = new int[] { 3, 5, 7, 9, 11, 13 };
+
+	//	for startVals
+	public static final int[] POW2_4_200 = new int[] { 4, 8, 16, 32, 64, 128, 200 };
+	public static final int[] POW2_2_128 = new int[] { 2, 4, 8, 16, 32, 64, 128 };
+	public static final int[] POW3_3_243 = new int[] { 1,3, 9, 27, 81, 200,243 };
+
+	private int[] rgbDivisors;
+	private int[] rgbStartVals;
+	//endsfor computecolors
+	
+
 	private static final String NEW_LINE = "\r\n";
 
-	private static final long serialVersionUID = 123456543L;
 	
 	protected static final int HEIGHT 	= 800;
 	protected static final int WIDTH 	= 800;
@@ -123,11 +139,15 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	protected boolean savePixelInfo2File = false;
 
 
+
 	/** Constructor: an instance */
 	public FractalBase() {
 		super();
-		setSize(WIDTH, HEIGHT);
-		setVisible(true);
+		this.setSize(WIDTH, HEIGHT);
+		this.setVisible(true);
+		
+		this.setRgbStartVals(POW3_3_243);	//POW2_4_200
+		this.setRgbDivisors(FRST_SIX_ODDS);	//FRST_SIX_PRIMES
 	}
 	
 	protected void fillEquilateralTriangle(Graphics2D g, Point center, int length, String dir, Color color) {
@@ -539,8 +559,8 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	}
 	
 	protected Color getPixelDisplayColor(final int row, final  int col, final int colorRGB, final boolean useD) {
-		final int[] divs = new int[] { 2, 3, 5, 7, 11, 13 };				//	1st 6 primes
-		final int[] colStart = new int[] { 4, 8, 16, 32, 64, 128, 200 };	//	pow 2s till end-200
+		final int[] divs = this.getRgbDivisors();				//	1st 6 primes
+		final int[] colStart = this.getRgbStartVals();			//	pow 2s till end-200
 		Color color = null;
 		
 		for(int iter = 0; iter < divs.length; iter++) {
@@ -597,6 +617,22 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		
 		return color;
 	}
+
+	private int[] getRgbStartVals() {
+		return this.rgbStartVals;// POW2_4_200;
+	}
+
+	public void setRgbStartVals(int[] startVals) {
+		this.rgbStartVals = startVals;
+	}
+
+	private int[] getRgbDivisors() {
+		return this.rgbDivisors;// FRST_SIX_PRIMES;
+	}
+
+	public void setRgbDivisors(int[] divs) {
+		this.rgbDivisors = divs;
+	}
 	
 	
 	protected int corectColorRGB(int colorRGB) {
@@ -610,13 +646,13 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	 * // correction for color range  0--255
 	 * @param start	---	initial value
 	 * @param num	---	value to add
-	 * @param sub		---	value to subtract
+	 * @param sub	---	value to subtract
 	 * @param div	---	divisor of num
 	 * @return		 color range  0--255
 	 */
 	protected int correctColor(int start, int num, int sub, int div) {
 		int corrected = start + (num / div) - sub;	//random transformation
-		corrected = corrected > 255 ? 255 : corrected;
+		corrected = corrected > COLORMAXRGB ? COLORMAXRGB : corrected;
 		corrected = corrected < 0 ? 0 : corrected;
 		return corrected;
 	}
