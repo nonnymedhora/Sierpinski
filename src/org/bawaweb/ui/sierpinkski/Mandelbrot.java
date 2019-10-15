@@ -3,9 +3,13 @@
  */
 package org.bawaweb.ui.sierpinkski;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -41,6 +45,15 @@ public class Mandelbrot extends FractalBase {
 	protected boolean isBuddha = false;//true;// 
 	/*private Map<Pixel,Integer> buddhaMap=new HashMap<Pixel,Integer>();
 	private List<Pixel> buddhaList=new ArrayList<Pixel>();*/
+	
+	
+	
+	//Motionbrot
+	private boolean isMotionBrot = false;// true;//
+	
+	private String motionParam = "bd";	//	others are exponent/power/magnification
+	
+	private BufferedImage[] motionImages = new BufferedImage[MAX_DEPTH];//[this.depth];	//[10];;
 	
 	
 	public Mandelbrot() {
@@ -122,11 +135,109 @@ public class Mandelbrot extends FractalBase {
 	 */
 	@Override
 	public void createFractalShape(Graphics2D g) {
-		if (!this.isBuddha) {
-			createMandelbrot(g, this.useDiff);
-		}else{
+		if (this.isBuddha) {
 			createBuddhabrot(g, this.useDiff);
+		}else if(isMotionBrot){
+			this.createMotionbrot(g,depth);
+		}else /*if(this.isMotionBrot)*/{
+			createMandelbrot(g, this.useDiff);
 		}
+	}
+	
+	public void paint(Graphics g1) {
+		if (this.isMotionBrot) {
+			Graphics2D g = (Graphics2D) g1;
+			Image img = this.createMotionbrot(g, depth);
+			g.drawImage(img, null, null);
+			g.dispose();
+		}
+	}
+
+	private Image createMotionbrot(Graphics2D g, int depth) {
+		System.out.println("here");
+		double xc = getxC();
+		double yc = getyC();
+		double size = this.mag;
+		double bd; // variable
+		if (!this.motionParam.equals("bd")) {
+			bd = this.getBound();
+		} else {
+			bd = 0.25;
+		}
+		int pow = this.power;
+
+		if (this.motionParam.equals("pow")) {
+			pow = -10;
+			this.power = pow;
+		}
+
+		int max = getMaxIter();
+
+		String func2Apply = this.useFuncConst;
+		String pxFunc2Apply = this.useFuncPixel;
+
+		int n = getAreaSize();
+		this.createMandelbrotPixels(this.useDiff, xc, yc, size, bd, pow, max, func2Apply, pxFunc2Apply, n);
+
+		this.drawMandelMotionbrot(g, depth, bd, pow);
+		return bufferedImage;
+
+	}
+
+	private void drawMandelMotionbrot(Graphics2D g, int d, double bd, int pwr) {
+		System.out.println("drawMotiondepth = "+depth+" and d is"+d+" ytime is "+System.currentTimeMillis());
+		
+		
+		
+		double xc = getxC();
+		double yc = getyC();
+		double size = this.mag;
+		
+		if (this.motionParam.equals("bd")) {
+			bd+=0.25;
+			this.bound=bd;
+		}
+		
+		if(this.motionParam.equals("pow")){
+			pwr+=1;
+			this.power=pwr;
+		}
+
+		int max = getMaxIter();
+
+		String func2Apply = this.useFuncConst;
+		String pxFunc2Apply = this.useFuncPixel;
+		
+		int n = getAreaSize();
+		System.out.println("this.useDiff is "+this.useDiff);
+		this.useDiff = !this.useDiff;
+		System.out.println("this.useDiff is now "+this.useDiff);
+		//this.createMandelbrotPixels(this.useDiff, xc, yc, size, bd, pwr, max, func2Apply, pxFunc2Apply, n);
+		
+		if (d == 0) { // depth is 0, draw the triangle
+			/*g.setStroke(new BasicStroke(1));
+			drawLine(g, p1, p2);
+			drawLine(g, p2, p3);
+			drawLine(g, p3, p1);*/ 
+			System.out.println("this.useDiff is "+this.useDiff+" and d="+d+"and depth is"+depth+" and bd is "+bd);
+			this.createMandelbrotPixels(this.useDiff, xc, yc, size, bd, pwr, max, func2Apply, pxFunc2Apply, n);
+
+			if (this.motionParam.equals("bd")) {
+				this.bound+=0.25;
+			}
+			
+			if(this.motionParam.equals("pow")){
+				pwr+=1;
+				this.power=pwr;
+			}
+			return;
+		}
+		
+//		this.createMandelbrotPixels(this.useDiff, xc, yc, size, bd, pwr, max, func2Apply, pxFunc2Apply, n);
+//		
+		this.drawMandelMotionbrot(g, d - 1, bd, pwr);
+
+		
 	}
 
 	private void createBuddhabrot(Graphics2D g, boolean diff) {
@@ -168,29 +279,18 @@ public class Mandelbrot extends FractalBase {
 			return this.createBuddhaTrajectories(randBuddhaPixList);
 		}
 		return null;
-		
-//		return this.createBuddhaTrajectories(randBuddhaPixList);
 	}
 	
 	private List<Pixel> createBuddhaTrajectories(List<Pixel> nonMandPix) {
 		List<Pixel> allPixels = new ArrayList<Pixel>();
-//		double xc = getxC();
-//		double yc = getyC();
-//		double size = this.mag;
-//		double bd = this.getBound();
 		int n = getAreaSize();
 		int max = getMaxIter();
-//		String func2Apply = this.useFuncConst;
-//		String pxFunc2Apply = this.useFuncPixel;
-//		boolean diff = this.useDiff;
 		System.out.println("nonMandPix.size()===="+nonMandPix.size());
-		for (Pixel aPix : nonMandPix) {
-//			int row = aPix.row;
-//			int col = aPix.column;
-			
+		for (Pixel aPix : nonMandPix) {			
 			ComplexNumber z0 = aPix.compVal;//this.getZValue(func2Apply, pxFunc2Apply, x0, y0);
 			allPixels.addAll( this.drawBuddhabrot(z0, max, this.power, n,this.complex, aPix) );
 		}
+		
 		return allPixels;
 	}
 
@@ -256,8 +356,9 @@ public class Mandelbrot extends FractalBase {
 		}
 
 		int n = getAreaSize();//599;//512;	(0-599)
+		int pow = this.power;
 		//System.out.println("here with depth " + depth);
-		this.createMandelbrotPixels(diff, xc, yc, size, bd, max, func2Apply, pxFunc2Apply, n);
+		this.createMandelbrotPixels(diff, xc, yc, size, bd, pow, max, func2Apply, pxFunc2Apply, n);
 		
 		if (this.isSavePixelInfo2File()) {
 			this.closePixelFile();
@@ -289,7 +390,7 @@ public class Mandelbrot extends FractalBase {
 		}
 	}
 
-	private void createMandelbrotPixels(boolean diff, double xc, double yc, double size, double bd, int max,
+	private void createMandelbrotPixels(boolean diff, double xc, double yc, double size, double bd, int pow, int max,
 			String func2Apply, String pxFunc2Apply, int n) {
 		for (int row = 0; row < n; row++) {
 			for (int col = 0; col < n; col++) {
@@ -303,7 +404,7 @@ public class Mandelbrot extends FractalBase {
 					int bOrW = 0;
 					
 					if (diff) {
-						bOrW = this.mand(z0, max, this.power, this.complex, bd, row, col);
+						bOrW = this.mand(z0, max, pow, this.complex, bd, row, col);
 						/*if (!this.isBuddha) {*/
 							if (bOrW != max) {
 								bOrW = 0;
@@ -312,7 +413,7 @@ public class Mandelbrot extends FractalBase {
 							} 
 						/*}*/
 					} else {
-						int res = this.mand(z0, max, this.power, this.complex, bd, row, col);
+						int res = this.mand(z0, max, pow, this.complex, bd, row, col);
 						/*if (!this.isBuddha) {*/
 							bOrW = max - res;
 							if (bOrW != res) {
@@ -336,9 +437,9 @@ public class Mandelbrot extends FractalBase {
 					int colorRGB;
 	
 					if (diff) {
-						colorRGB = mand(z0, max, this.power, this.complex, bd, row, col);
+						colorRGB = mand(z0, max, pow, this.complex, bd, row, col);
 					} else {
-						colorRGB = max - mand(z0, max, this.power, this.complex,bd, row, col);
+						colorRGB = max - mand(z0, max, pow, this.complex,bd, row, col);
 					}
 					
 					Color color = null;
@@ -644,21 +745,20 @@ public class Mandelbrot extends FractalBase {
 
 	private void drawPixelPath(Graphics2D g, List<Pixel> path) {
 		System.out.println("in drawPixelPath -- pathSize is "+path.size());
-		for(int i = 0; i <path.size()-2; i++){
-			Pixel p1 = path.get(i);
-			Pixel p2 = path.get(i+1);
-			
-			Point pt1=new Point(p1.row,p1.column);
-			Point pt2=new Point(p2.row,p2.column);
-			int color = p2.colorRGB;
-			g.setColor(new Color(color));
-			this.drawLine(g,pt1,pt2);
+//		for(int i = 0; i <path.size()-2; i++){
+//			Pixel p1 = path.get(i);
+//			Pixel p2 = path.get(i+1);
+//			
+//			Point pt1=new Point(p1.row,p1.column);
+//			Point pt2=new Point(p2.row,p2.column);
+//			int color = p2.colorRGB;
+//			g.setColor(new Color(color));
+//			this.drawLine(g,pt1,pt2);
+//		}
+
+		for (Pixel p : path) {
+			this.setPixel(p.row, p.column, p.colorRGB);
 		}
-		/*
-		
-		for(Pixel p : path){
-			this.setPixel(p.row,p.column,p.colorRGB);
-		}*/
 		
 	}
 
@@ -709,6 +809,8 @@ public class Mandelbrot extends FractalBase {
 			@Override
 			public void run() {
 				final Mandelbrot frame = new Mandelbrot(2,2,true);//96);//,2);//,true);//(2,3,false);
+				frame.setRunning(true);
+				
 				/*frame.setBuddha(true);*/
 //				frame.depth = 5;
 /*				frame.setUseColorPalette(false);
@@ -723,6 +825,8 @@ public class Mandelbrot extends FractalBase {
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setResizable(false);
 				frame.setVisible(true);
+				
+				new Thread(frame).start();
 
 			}
 		});
@@ -753,6 +857,14 @@ public class Mandelbrot extends FractalBase {
 
 	public void setBuddha(boolean isB) {
 		this.isBuddha = isB;
+	}
+
+	public boolean isMotionBrot() {
+		return this.isMotionBrot;
+	}
+
+	public void setMotionBrot(boolean isB) {
+		this.isMotionBrot = isB;
 	}
 
 }
