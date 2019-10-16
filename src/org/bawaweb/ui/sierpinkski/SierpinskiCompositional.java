@@ -892,7 +892,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyMandPanel.add(new JLabel("Exponent:"));
 		this.diyMandPanel.add(this.diyMandExpCombos);
 		this.diyMandPanel.add(this.diyMandUseDiffCb);
-		this.mandOptionsPanel.add(this.diyMandIsBuddhaCb);
+		this.diyMandPanel.add(this.diyMandIsBuddhaCb);
 
 		this.diyMandPanel.add(this.diyMandUseLyapunovExpCb);
 		

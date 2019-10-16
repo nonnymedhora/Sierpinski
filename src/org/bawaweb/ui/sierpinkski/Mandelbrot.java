@@ -39,16 +39,16 @@ public class Mandelbrot extends FractalBase {
 	
 	private boolean isComplexNumConst = false;
 	private ComplexNumber complex;// = new ComplexNumber(-0.75, 0.11);
-	private boolean isConstFuncApplied=false;
+	private boolean isConstFuncApplied = false;
 	
 	/*// Buddhabrot*/
-	protected boolean isBuddha = false;//true;// 
+	protected boolean isBuddha = false;// true;//
 	/*private Map<Pixel,Integer> buddhaMap=new HashMap<Pixel,Integer>();
 	private List<Pixel> buddhaList=new ArrayList<Pixel>();*/
 	
 	
 	
-	//Motionbrot
+	/*/Motionbrot			*/
 	private boolean isMotionBrot = false;// true;//
 	
 	private String motionParam = "bd";	//	others are exponent/power/magnification
@@ -135,6 +135,7 @@ public class Mandelbrot extends FractalBase {
 	 */
 	@Override
 	public void createFractalShape(Graphics2D g) {
+		/*System.out.println("increatefractalshape");*/
 		if (this.isBuddha) {
 			createBuddhabrot(g, this.useDiff);
 		}else if(isMotionBrot){
@@ -145,6 +146,7 @@ public class Mandelbrot extends FractalBase {
 	}
 	
 	public void paint(Graphics g1) {
+		super.paint(g1);
 		if (this.isMotionBrot) {
 			Graphics2D g = (Graphics2D) g1;
 			Image img = this.createMotionbrot(g, depth);
@@ -809,7 +811,7 @@ public class Mandelbrot extends FractalBase {
 			@Override
 			public void run() {
 				final Mandelbrot frame = new Mandelbrot(2,2,true);//96);//,2);//,true);//(2,3,false);
-				frame.setRunning(true);
+//				frame.setRunning(true);
 				
 				/*frame.setBuddha(true);*/
 //				frame.depth = 5;
