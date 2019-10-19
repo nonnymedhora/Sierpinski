@@ -37,6 +37,7 @@ import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
+import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
@@ -141,6 +142,11 @@ class SierpinskiComboPanel extends JPanel {
 	private static final String KOCHSNOWFLAKE 			= "KochSnowFlake";
 	private static final String DIY 					= "Do_It_Yourself";
 	private static final String POLY 					= "Poly_Fractals";
+	
+	
+	//= "bd";	//	others are exponent/power/magnification/scaleSize
+	//= "bd";	//	others are exponent/power/magnification/scaleSize
+	private static final String[] MOTION_PARAM_OPTIONS = new String[] {"bd","pow","scaleSize"};
 
 	
 	private final String[] comboOptions = new String[]{ DIY, FANNY_CIRCLE, FANNY_TRIANGLES, SIERPINSKI_TRIANGLES, SIERPINSKI_SQUARES, APOLLONIAN_CIRCLES, CST_FRACTAL, SAMPLE, MANDELBROT, JULIA, KOCHSNOWFLAKE, POLY };
@@ -298,6 +304,17 @@ class SierpinskiComboPanel extends JPanel {
 	protected double mandScaleSize;
 	private JCheckBox mandIsBuddhaCb = new JCheckBox("Get Buddha", false);
 	private boolean mandIsBuddhabrot = false;
+	
+	private JCheckBox mandIsMotionbrotCb = new JCheckBox("Create Motionbrot:", false);
+	private boolean mandIsMotionbrot = false;
+	
+	private String mandMotionParam="None";	//	others are "= "bd";	//	others are exponent/power/magnification/scaleSize
+	
+	private JComboBox<String> mandMotionParamCombo = new JComboBox<String>(MOTION_PARAM_OPTIONS);
+	
+	
+	
+	
 	
 	// for DIY
 	//radioButton
@@ -946,6 +963,11 @@ class SierpinskiComboPanel extends JPanel {
 		this.mandOptionsPanel.add(this.mandExpCombos);		
 		this.mandOptionsPanel.add(this.mandUseDiffCb);
 		this.mandOptionsPanel.add(this.mandIsBuddhaCb);
+		this.mandOptionsPanel.add(this.mandIsMotionbrotCb);
+		
+		this.mandOptionsPanel.add(this.mandMotionParamCombo);
+		this.mandMotionParamCombo.setVisible(false);
+		
 		this.mandOptionsPanel.add(this.mandUseLyapunovExpCb);
 		
 		
@@ -2013,6 +2035,17 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 
+	private void doSetMandIsMotionCommand(boolean isM) {
+		this.mandIsMotionbrot = isM;
+		this.doMandelbrotChoicesCheck();
+	}
+
+
+	private void doSelectMandMotionParamCombosCommand(String motParam) {
+		this.mandMotionParam = motParam;
+	}
+	
+
 	private void doSelectMandBoundCombosCommand(Double bound) {
 		this.mandBound = bound;
 	}
@@ -2844,6 +2877,8 @@ class SierpinskiComboPanel extends JPanel {
 		double rot = this.getRotation();
 		
 		boolean isBuddha = this.mandIsBuddhabrot();
+		boolean isInMotion = this.isMandIsMotionbrot();
+		String motParam = this.getMandMotionParam();
 		
 		FractalBase ff;
 		this.formulaArea.setVisible(true);
@@ -2884,6 +2919,14 @@ class SierpinskiComboPanel extends JPanel {
 			m.setBuddha(isBuddha);
 			ff = m;
 		}
+		
+		if(isInMotion) {
+			Mandelbrot m = (Mandelbrot) ff;
+			m.setMotionBrot(isInMotion);
+			m.setMotionParam(motParam);
+			ff = m;			
+		}
+		
 		ff.setUseLyapunovExponent(this.mandUseLyapunovExponent);
 
 		ff.setPxXTransformation(this.pixXTransform);
@@ -3055,7 +3098,7 @@ class SierpinskiComboPanel extends JPanel {
 			new ZoomInBox(frame);
 		}*/
 		
-		boolean staticIterativeFractalChoice = ( this.comboChoice.contains(MANDELBROT) || this.comboChoice.contains(JULIA) || this.comboChoice.contains(POLY) ||
+		boolean staticIterativeFractalChoice = ( (!this.mandIsMotionbrot && this.comboChoice.contains(MANDELBROT)) || this.comboChoice.contains(JULIA) || this.comboChoice.contains(POLY) ||
 				(this.comboChoice.contains("self")&&!(this.diyApolloRb.isSelected() || this.getComboChoice().equals(APOLLONIAN_CIRCLES))));
 		if(!staticIterativeFractalChoice) {
 			frame.setRunning(true);
@@ -4095,6 +4138,30 @@ class SierpinskiComboPanel extends JPanel {
 			}
         });
 		
+		this.mandIsMotionbrotCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetMandIsMotionCommand(true);
+					mandMotionParamCombo.setVisible(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetMandIsMotionCommand(false);
+					mandMotionParamCombo.setVisible(false);
+				}
+			}
+        });
+		
+
+		this.mandMotionParamCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<String> cb = (JComboBox<String>)e.getSource();
+				String mandMotionParamComboOption = (String)cb.getSelectedItem();
+				doSelectMandMotionParamCombosCommand(mandMotionParamComboOption);				
+			}});
+
+		
 		this.mandUseLyapunovExpCb.addItemListener(new ItemListener() {
             @Override
 			public void itemStateChanged(ItemEvent event) {
@@ -4766,6 +4833,22 @@ class SierpinskiComboPanel extends JPanel {
 
 	public void setMandIsBuddhabrot(boolean isB) {
 		this.mandIsBuddhabrot = isB;
+	}
+
+	public boolean isMandIsMotionbrot() {
+		return this.mandIsMotionbrot;
+	}
+
+	public void setMandIsMotionbrot(boolean isInMotion) {
+		this.mandIsMotionbrot = isInMotion;
+	}
+
+	public String getMandMotionParam() {
+		return this.mandMotionParam;
+	}
+
+	public void setMandMotionParam(String moParam) {
+		this.mandMotionParam = moParam;
 	}
 	
 	///////////////////tosdos////////////////////////////////

@@ -51,9 +51,9 @@ public class Mandelbrot extends FractalBase {
 	/*/Motionbrot			*/
 	private boolean isMotionBrot = false;// true;//
 	
-	private String motionParam = "bd";	//	others are exponent/power/magnification
+	private String motionParam = "bd";	//	others are exponent/power/magnification/scaleSize
 	
-	private BufferedImage[] motionImages = new BufferedImage[MAX_DEPTH];//[this.depth];	//[10];;
+	private Image[] motionImages = new Image[MAX_DEPTH];//[this.depth];	//[10];;
 	
 	
 	public Mandelbrot() {
@@ -146,13 +146,49 @@ public class Mandelbrot extends FractalBase {
 	}
 	
 	public void paint(Graphics g1) {
+		// regular or classic and buddha
+		// static iterative-function on complex
 		super.paint(g1);
+		
+		// for motionbrot
 		if (this.isMotionBrot) {
+			
 			Graphics2D g = (Graphics2D) g1;
 			Image img = this.createMotionbrot(g, depth);
-			g.drawImage(img, null, null);
+
+			int motionCount = this.getMotionImageCount();
+			for (int i = 0; i <= motionCount; i++) {
+				try {
+					System.out.println("motionCount===" + motionCount + " and depth is " + depth);
+					Thread.sleep(1000);
+					g.drawImage(this.motionImages[i], null, null);// g.drawImage(img, null, null);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			
 			g.dispose();
 		}
+	}
+
+	private int getMotionImageCount() {
+		for (int i = 0; i < this.motionImages.length; i++) {
+			if (this.motionImages[i] == null) {
+				return i;
+			}
+		}
+		return 0;
+	}
+
+	private int addMotionImage(Image img) {
+		for (int i = 0; i < this.motionImages.length; i++) {
+			if (this.motionImages[i] == null) {
+				this.motionImages[i] = img;
+				return i;
+			}
+		}
+		return 0;
+
 	}
 
 	private Image createMotionbrot(Graphics2D g, int depth) {
@@ -160,18 +196,19 @@ public class Mandelbrot extends FractalBase {
 		double xc = getxC();
 		double yc = getyC();
 		double size = this.mag;
-		double bd; // variable
-		if (!this.motionParam.equals("bd")) {
+		double bd = this.getBound();//; // variable
+		/*if (!this.motionParam.equals("bd")) {
 			bd = this.getBound();
 		} else {
 			bd = 0.25;
-		}
+		}*/
+		
 		int pow = this.power;
 
-		if (this.motionParam.equals("pow")) {
-			pow = -10;
+		/*if (this.motionParam.equals("pow")) {
+			pow = this.getPower();//-10;
 			this.power = pow;
-		}
+		}*/
 
 		int max = getMaxIter();
 
@@ -182,12 +219,17 @@ public class Mandelbrot extends FractalBase {
 		this.createMandelbrotPixels(this.useDiff, xc, yc, size, bd, pow, max, func2Apply, pxFunc2Apply, n);
 
 		this.drawMandelMotionbrot(g, depth, bd, pow);
+		
+		this.addMotionImage(bufferedImage);
 		return bufferedImage;
 
 	}
 
 	private void drawMandelMotionbrot(Graphics2D g, int d, double bd, int pwr) {
-		System.out.println("drawMotiondepth = "+depth+" and d is"+d+" ytime is "+System.currentTimeMillis());
+		
+		System.out.println("drawMotiondepth = "+depth+" and d is "+d+" time is "+System.currentTimeMillis());
+		System.out.print("motionParam is "+this.motionParam);
+		
 		
 		
 		
@@ -198,11 +240,14 @@ public class Mandelbrot extends FractalBase {
 		if (this.motionParam.equals("bd")) {
 			bd+=0.25;
 			this.bound=bd;
+			
+			System.out.println("  bd is now "+this.bound+" and d is "+d);
 		}
 		
 		if(this.motionParam.equals("pow")){
 			pwr+=1;
 			this.power=pwr;
+			System.out.println("  pow is now "+this.power+" and d is "+d);
 		}
 
 		int max = getMaxIter();
@@ -232,6 +277,8 @@ public class Mandelbrot extends FractalBase {
 				pwr+=1;
 				this.power=pwr;
 			}
+			
+			
 			return;
 		}
 		
@@ -867,6 +914,14 @@ public class Mandelbrot extends FractalBase {
 
 	public void setMotionBrot(boolean isB) {
 		this.isMotionBrot = isB;
+	}
+
+	public String getMotionParam() {
+		return this.motionParam;
+	}
+
+	public void setMotionParam(String motParam) {
+		this.motionParam = motParam;
 	}
 
 }
