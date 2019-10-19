@@ -39,6 +39,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -504,10 +505,12 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private JLabel rotLabel = new JLabel("Rotation:");
 	private Vector<Double> rotOptions = new Vector<Double>();
-	protected JComboBox<Double> rotateCombo ;
-	
-	private JComboBox<String> colorChoiceCombo = new JComboBox<String>(COLOR_OPTIONS);	
+	protected JComboBox<Double> rotateCombo;
+
+	private JComboBox<String> colorChoiceCombo = new JComboBox<String>(COLOR_OPTIONS);
 	private String colorChoice = "BlackWhite";
+	private JButton buColorChooser = new JButton("ColorChooser");
+	
 	
 	//for complexNumber z	= xtranformed operation ytrasnform
 	private JComboBox<String>	pxXTransformCombo = new JComboBox<String>(PIX_TRANSFORM_OPTIONS);
@@ -571,6 +574,7 @@ class SierpinskiComboPanel extends JPanel {
 		// creates-color-choice-options
 		this.add(new JLabel("Choose Color:"));
 		this.add(this.colorChoiceCombo);
+		this.add(this.buColorChooser);
 		
 		this.add(new JLabel("PixelTransformation:  X"));
 		this.add(this.pxXTransformCombo);
@@ -3513,6 +3517,13 @@ class SierpinskiComboPanel extends JPanel {
 				JComboBox<String> cb = (JComboBox<String>)e.getSource();
 		        String comboOption = (String)cb.getSelectedItem();
 				doSelectFractalColorChoiceCommand(comboOption);				
+			}});
+		
+		this.buColorChooser.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				 Color ch = JColorChooser.showDialog(null,"ChooseYerColor",new Color(13));
 			}});
 		
 		this.setupFannyListeners();	
