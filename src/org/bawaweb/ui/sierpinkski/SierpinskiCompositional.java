@@ -84,14 +84,15 @@ class SierpinskiComboPanel extends JPanel {
 	private static final String[] OPERATIONS = getOperations();
 
 	private static final Double[] BOUNDARIES = getBoundaryOptions();
-	
-	private static final String[] COLOR_OPTIONS = new String[]{"BlackWhite","ColorPalette","ComputeColor"/*,"Random"*/};
+	private static final String[] COLOR_SAMPLE_STARTVAL_OPTIONS = new String[] {"POW2_4_200", "POW2_2_128", "POW2_2_F4", "POW3_3_243", "EQUAL_PARTS_40", "EQUAL_PARTS_50", "EQUAL_PARTS_25"};
+	private static final String[] COLOR_SAMPLE_DIV_OPTIONS = new String[] {"FRST_SIX_PRIMES", "FRST_SIX_ODDS", "FRST_SIX_FIBS"};
+	private static final String[] COLOR_OPTIONS = new String[]{"BlackWhite","ColorPalette","ComputeColor"/*,"Random"*/,"SampleMix"};
 	private static final String[] FUNCTION_OPTIONS = {"None","sine","cosine","tan","arcsine","arccosine","arctan","reciprocal", "reciprocalSquare","square","cube","exponent(e)","root",/*"cube-root",*/"log(e)"};
 	private static final String[] PIX_TRANSFORM_OPTIONS = {"none", "absolute", "absoluteSquare","reciprocal", "reciprocalSquare", "square", "cube","root", "exponent", "log(10)", "log(e)", "sine", "cosine", "tangent", "arcsine", "arccosine", "arctangent"};
 	
 	private static final Integer[] EXPONENTS = new Integer[] { -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	private static final Integer[] MAX_ITERATIONS = new Integer[] { 10, 50, 100, 200, 225, 255, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 2000, 3000, 5000, 7500, 10000 };
-	private static final Integer[] AREA_SIZES = new Integer[] { 10, 50, 100, 200, 225, 255, 500, 512, 599, 800 };
+	private static final Integer[] AREA_SIZES = new Integer[] { 10, 50, 100, 200, 225, 255, 500, 512, 599, 800, Integer.MAX_VALUE };
 	private static final Double[] CENTER_XY = new Double[] { -5.0, -4.5, -4.0, -3.5, -3.0, -2.5, -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0 };
 	private static final Double[] SCALE_SIZES = getScaleSizeOptions();//new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
 	private static final String[] POLY_RCMT_TYPES = new String[] { "Reverse", "Exchange", "Single", "Duplicate", "Exponent", "Power", "Default" };
@@ -529,6 +530,18 @@ class SierpinskiComboPanel extends JPanel {
 	private JButton buColorChooser = new JButton("ColorChooser");
 	
 	
+	private final JLabel colorSampleMixStartValsLabel = new JLabel("Color Start Vals:");
+	private final JComboBox<String> colorSampleMixStartValsCombo = new JComboBox<String>(COLOR_SAMPLE_STARTVAL_OPTIONS);
+	private String colorSampleMixStartVals = "POW2_4_200";
+	private final JLabel colorSampleDivValsLabel = new JLabel("Divisor Vals:");
+	private final JComboBox<String> colorSampleDivValsCombo = new JComboBox<String>(COLOR_SAMPLE_DIV_OPTIONS);
+	private String colorSampleDivVals = "FRST_SIX_PRIMES";
+	
+	
+	
+	
+	
+	
 	//for complexNumber z	= xtranformed operation ytrasnform
 	private JComboBox<String>	pxXTransformCombo = new JComboBox<String>(PIX_TRANSFORM_OPTIONS);
 	private JComboBox<String>	pxYTransformCombo = new JComboBox<String>(PIX_TRANSFORM_OPTIONS);
@@ -591,7 +604,17 @@ class SierpinskiComboPanel extends JPanel {
 		// creates-color-choice-options
 		this.add(new JLabel("Choose Color:"));
 		this.add(this.colorChoiceCombo);
-		this.add(this.buColorChooser);
+//		this.add(this.buColorChooser);
+		
+		this.add(this.colorSampleMixStartValsLabel);
+		this.colorSampleMixStartValsLabel.setVisible(false);
+		this.add(this.colorSampleMixStartValsCombo);
+		this.colorSampleMixStartValsCombo.setVisible(false);
+
+		this.add(this.colorSampleDivValsLabel);
+		this.colorSampleDivValsLabel.setVisible(false);
+		this.add(this.colorSampleDivValsCombo);
+		this.colorSampleDivValsCombo.setVisible(false);		
 		
 		this.add(new JLabel("PixelTransformation:  X"));
 		this.add(this.pxXTransformCombo);
@@ -2530,6 +2553,8 @@ class SierpinskiComboPanel extends JPanel {
 		boolean useCP = this.colorChoice.equals("ColorPalette");
 		boolean useBw = this.colorChoice.equals("BlackWhite");	
 		
+		boolean useSample = this.colorChoice.equals("SampleMix");
+		
 		String pxConstOp = this.pxConstOprnChoice;
 		String func = this.constFuncChoice;
 		String pxFunc = this.pxFuncChoice;
@@ -2620,7 +2645,13 @@ class SierpinskiComboPanel extends JPanel {
 			if (useBw) {
 				ff.setUseBlackWhite(useBw);
 			} else {
-				ff.setUseColorPalette(useCP);
+				if (useSample) {
+					
+					this.setSampleColorMix(ff);
+				} else {
+
+					ff.setUseColorPalette(useCP);
+				}
 			}
 		}
 		
@@ -2660,6 +2691,31 @@ class SierpinskiComboPanel extends JPanel {
 		ff.setSavePixelInfo2File(this.savePixelInfo2File);
 		return ff;
 	}
+
+	private void setSampleColorMix(FractalBase ff) {
+		int[] startVals = null;
+		switch(this.colorSampleMixStartVals) {
+			case "POW2_4_200":	startVals = FractalBase.POW2_4_200; break;
+			case "POW2_2_128":  startVals = FractalBase.POW2_2_128; break;
+			case "POW2_2_F4":   startVals = FractalBase.POW2_2_F4; break;
+			case "POW3_3_243":	startVals = FractalBase.POW3_3_243; break;
+			case "EQUAL_PARTS_40":	startVals = FractalBase.EQUAL_PARTS_40; break;
+			case "EQUAL_PARTS_50":			startVals = FractalBase.EQUAL_PARTS_50; break;
+			case "EQUAL_PARTS_25":			startVals = FractalBase.EQUAL_PARTS_25; break;
+			default: startVals = FractalBase.POW2_4_200; break; 
+		}
+		
+		int[] divVals = null;
+		switch(this.colorSampleDivVals) {
+			case "FRST_SIX_PRIMES": divVals = FractalBase.FRST_SIX_PRIMES; break;
+			case "FRST_SIX_ODDS": divVals = FractalBase.FRST_SIX_ODDS; break;
+			case "FRST_SIX_FIBS": divVals = FractalBase.FRST_SIX_FIBS; break;
+			default: divVals = FractalBase.FRST_SIX_PRIMES; break;
+		}					
+		
+		ff.setRgbStartVals(startVals);
+		ff.setRgbDivisors(divVals);
+	}
 	
 	private FractalBase createDIYMandelbrot() {
 		FractalBase ff;
@@ -2667,6 +2723,8 @@ class SierpinskiComboPanel extends JPanel {
 
 		boolean useCP = this.colorChoice.equals("ColorPalette");
 		boolean useBw = this.colorChoice.equals("BlackWhite");
+		
+		boolean useSample = this.colorChoice.equals("SampleMix");
 
 		String pxConstOp = this.pxConstOprnChoice;
 		String func = this.constFuncChoice;
@@ -2738,7 +2796,13 @@ class SierpinskiComboPanel extends JPanel {
 			if (useBw) {
 				ff.setUseBlackWhite(useBw);
 			} else {
-				ff.setUseColorPalette(useCP);
+				if (useSample) {
+
+					this.setSampleColorMix(ff);
+				} else {
+
+					ff.setUseColorPalette(useCP);
+				}
 			}
 		}
 		ff.setUseFuncConst(func);
@@ -2775,6 +2839,7 @@ class SierpinskiComboPanel extends JPanel {
 
 		boolean useCP = this.colorChoice.equals("ColorPalette");
 		boolean useBw = this.colorChoice.equals("BlackWhite");
+		boolean useSample = this.colorChoice.equals("SampleMix");
 		
 		String pxConstOp = this.pxConstOprnChoice;
 		String func = this.constFuncChoice;
@@ -2813,7 +2878,13 @@ class SierpinskiComboPanel extends JPanel {
 			if (useBw) {
 				ff.setUseBlackWhite(useBw);
 			} else {
-				ff.setUseColorPalette(useCP);
+				if (useSample) {
+
+					this.setSampleColorMix(ff);
+				} else {
+
+					ff.setUseColorPalette(useCP);
+				}
 			}
 		}
 		ff.setUseFuncConst(func);
@@ -2866,6 +2937,7 @@ class SierpinskiComboPanel extends JPanel {
 		double mScale = this.mandScaleSize;
 		boolean useCP = this.colorChoice.equals("ColorPalette");
 		boolean useBw = this.colorChoice.equals("BlackWhite");	
+		boolean useSample = this.colorChoice.equals("SampleMix");
 		
 		String pxXTrans = this.pixXTransform;
 		String pxYTrans = this.pixYTransform;
@@ -2943,7 +3015,13 @@ class SierpinskiComboPanel extends JPanel {
 			if (useBw) {
 				ff.setUseBlackWhite(useBw);
 			} else {
-				ff.setUseColorPalette(useCP);
+				if (useSample) {
+
+					this.setSampleColorMix(ff);
+				} else {
+
+					ff.setUseColorPalette(useCP);
+				}
 			}
 		}
 		ff.setUseBlackWhite(useBw);
@@ -2963,7 +3041,8 @@ class SierpinskiComboPanel extends JPanel {
 
 	private FractalBase startPoly() {
 		boolean useCP = this.colorChoice.equals("ColorPalette");
-		boolean useBw = this.colorChoice.equals("BlackWhite");	
+		boolean useBw = this.colorChoice.equals("BlackWhite");
+		boolean useSample = this.colorChoice.equals("sampleMix");
 
 		/*String pxXTrans = this.pixXTransform;
 		String pxYTrans = this.pixYTransform;
@@ -3054,7 +3133,13 @@ class SierpinskiComboPanel extends JPanel {
 			if (useBw) {
 				ff.setUseBlackWhite(useBw);
 			} else {
-				ff.setUseColorPalette(useCP);
+				if (useSample) {
+
+					this.setSampleColorMix(ff);
+				} else {
+
+					ff.setUseColorPalette(useCP);
+				}
 			}
 		}
 		ff.setUseFuncConst(func);
@@ -3274,6 +3359,7 @@ class SierpinskiComboPanel extends JPanel {
 				
 			case 	POLY:
 				baseInfo += this.colorChoice + "," + eol;
+				if(this.colorChoice.equals("SampleMix")) { baseInfo += "startVals["+this.colorSampleMixStartVals+"] divVals["+this.colorSampleDivVals+"]" + eol; }
 				baseInfo += "Power: " + this.polyPower + ", ";
 				if (this.polyUseDiff) {
 					baseInfo += "Ud, "+eol;
@@ -3298,6 +3384,7 @@ class SierpinskiComboPanel extends JPanel {
 			
 			case	MANDELBROT	:
 				baseInfo += this.colorChoice + "," + eol;
+				if(this.colorChoice.equals("SampleMix")) { baseInfo += "startVals["+this.colorSampleMixStartVals+"] divVals["+this.colorSampleDivVals+"]" + eol; }
 				baseInfo += "ImageMagnification: " + this.magnification + eol;
 				baseInfo += "Power: " + this.exponent + ", ";
 				if (this.getMUseDiff()) {
@@ -3317,6 +3404,7 @@ class SierpinskiComboPanel extends JPanel {
 				
 			case	JULIA	:
 				baseInfo += this.colorChoice + "," + eol;
+				if(this.colorChoice.equals("SampleMix")) { baseInfo += "startVals["+this.colorSampleMixStartVals+"] divVals["+this.colorSampleDivVals+"]" + eol; }
 				baseInfo += "Power: " + this.polyPower + ", ";
 				if (this.getJUseDiff()) {
 					baseInfo += "Ud, ";
@@ -3336,6 +3424,7 @@ class SierpinskiComboPanel extends JPanel {
 			case	diyMand:
 				baseInfo += MANDELBROT + eol;
 				baseInfo += this.colorChoice + "," + eol;
+				if(this.colorChoice.equals("SampleMix")) { baseInfo += "startVals["+this.colorSampleMixStartVals+"] divVals["+this.colorSampleDivVals+"]" + eol; }
 				baseInfo += "ImageMagnification: " + this.diyMandMagnification + eol;
 				baseInfo += "Power: " + this.diyMandExponent + ", ";
 				if (this.getDiyMandUseDiff()) {
@@ -3362,6 +3451,7 @@ class SierpinskiComboPanel extends JPanel {
 			case diyJulia:
 				baseInfo += JULIA + eol;
 				baseInfo += this.colorChoice + "," + eol;
+				if(this.colorChoice.equals("SampleMix")) { baseInfo += "startVals["+this.colorSampleMixStartVals+"] divVals["+this.colorSampleDivVals+"]" + eol; }
 				baseInfo += "Power: " + this.diyJuliaPower + ", ";
 				if (this.getDiyJuliaUseDiff()) {
 					baseInfo += "Ud, ";
@@ -3559,15 +3649,48 @@ class SierpinskiComboPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				JComboBox<String> cb = (JComboBox<String>)e.getSource();
 		        String comboOption = (String)cb.getSelectedItem();
-				doSelectFractalColorChoiceCommand(comboOption);				
+				doSelectFractalColorChoiceCommand(comboOption);		
+				
+				if(comboOption.equals("SampleMix")) {
+					colorSampleMixStartValsLabel.setVisible(true);
+					colorSampleMixStartValsCombo.setVisible(true);
+					colorSampleDivValsLabel.setVisible(true);
+					colorSampleDivValsCombo.setVisible(true);
+				} else {
+					colorSampleMixStartValsLabel.setVisible(false);
+					colorSampleMixStartValsCombo.setVisible(false);
+					colorSampleDivValsLabel.setVisible(false);
+					colorSampleDivValsCombo.setVisible(false);
+					
+				}
 			}});
 		
-		this.buColorChooser.addActionListener(new ActionListener() {
+		this.colorSampleMixStartValsCombo.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				 Color ch = JColorChooser.showDialog(null,"ChooseYerColor",new Color(13));
+				JComboBox<String> cb = (JComboBox<String>)e.getSource();
+		        String comboOption = (String)cb.getSelectedItem();
+		        doSelectColorSampleMixStartValsComboCommand(comboOption);				
 			}});
+		
+		this.colorSampleDivValsCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<String> cb = (JComboBox<String>)e.getSource();
+		        String comboOption = (String)cb.getSelectedItem();
+		        doSelectColorSampleDivValsComboCommand(comboOption);				
+			}});
+		
+		
+		
+//		this.buColorChooser.addActionListener(new ActionListener() {
+//			@SuppressWarnings("unchecked")
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				 Color ch = JColorChooser.showDialog(null,"ChooseYerColor",new Color(13));
+//			}});
 		
 		this.setupFannyListeners();	
 		this.setupSierpisnkiTListeners();
@@ -4460,6 +4583,14 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private void doSelectFractalColorChoiceCommand(String choice) {
 		this.colorChoice = choice;
+	}
+	
+	private void doSelectColorSampleMixStartValsComboCommand(String startVals) {
+		this.colorSampleMixStartVals = startVals;
+	}
+		
+	private void doSelectColorSampleDivValsComboCommand(String divVals) {
+		this.colorSampleDivVals = divVals;
 	}
 	
 	private void doSelectPixXTransformComboChoice(String transform){

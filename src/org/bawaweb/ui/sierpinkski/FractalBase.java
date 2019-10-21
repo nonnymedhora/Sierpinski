@@ -37,16 +37,21 @@ public abstract class FractalBase extends JFrame implements Runnable {
 
 	//for computecolors
 	//	for divisors
-	public static final int[] FRST_SIX_PRIMES = new int[] { 2, 3, 5, 7, 11, 13 };
-	public static final int[] FRST_SIX_ODDS = new int[] { 3, 5, 7, 9, 11, 13 };
+	public static final int[] FRST_SIX_PRIMES 	= new int[] { 2, 3, 5, 7, 11, 13 };
+	public static final int[] FRST_SIX_ODDS 	= new int[] { 3, 5, 7, 9, 11, 13 };
+	public static final int[] FRST_SIX_FIBS 	= new int[] { 3, 5, 8, 13, 21, 34 };
 
-	//	for startVals
-	public static final int[] POW2_4_200 = new int[] { 4, 8, 16, 32, 64, 128, 200 };
-	public static final int[] POW2_2_128 = new int[] { 2, 4, 8, 16, 32, 64, 128 };
-	public static final int[] POW3_3_243 = new int[] { 1,3, 9, 27, 81, 200,243 };
+	// for startVals
+	public static final int[] POW2_4_200 		= new int[] { 4, 8, 16, 32, 64, 128, 200 };
+	public static final int[] POW2_2_128 		= new int[] { 2, 4, 8, 16, 32, 64, 128 };
+	public static final int[] POW2_2_F4 		= new int[] { 4, 8, 16, 32, 64, 128 };
+	public static final int[] POW3_3_243 		= new int[] { 1, 3, 9, 27, 81, 243 };
+	public static final int[] EQUAL_PARTS_40 	= new int[] { 40, 80, 120, 160, 200, 240 };
+	public static final int[] EQUAL_PARTS_50 	= new int[] { 10, 50, 100, 150, 200, 250 };
+	public static final int[] EQUAL_PARTS_25 	= new int[] { 25, 65, 105, 145, 185, 225 };
 
-	private int[] rgbDivisors;
-	private int[] rgbStartVals;
+	private int[] rgbDivisors = FRST_SIX_PRIMES;
+	private int[] rgbStartVals = POW2_4_200;
 	//endsfor computecolors
 	
 
@@ -57,12 +62,12 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	protected static final int WIDTH 	= 800;
 
     boolean isOriginUpperLeft 	= true;  	// location of origin
-	static int OFFSET 			= 25; 			// pixel offset from edge
+	static int OFFSET 			= 25; 		// pixel offset from edge
 
-	static int depth; 					// recursion depth
+	static int depth; 						// recursion depth
 	static final int MAX_DEPTH 		= 10;
 	
-	static final int COLORMAXRGB	= 255;
+	static final int COLORMAXRGB	= 0xFF;
 	
 	//used in Mandelbrot & Julia & Poly
 	static int maxIter 	= 255;		//	maximum iterations to check for Mandelbrot, Julia & Poly
@@ -145,9 +150,10 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		super();
 		this.setSize(WIDTH, HEIGHT);
 		this.setVisible(true);
-		
+/******************		
 		this.setRgbStartVals(POW3_3_243);	//POW2_4_200
 		this.setRgbDivisors(FRST_SIX_ODDS);	//FRST_SIX_PRIMES
+*******************/		
 	}
 	
 	protected void fillEquilateralTriangle(Graphics2D g, Point center, int length, String dir, Color color) {
@@ -637,7 +643,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	
 	
 	protected int corectColorRGB(int colorRGB) {
-		int corrected = colorRGB > 255 ? 255 : colorRGB;
+		int corrected = colorRGB > COLORMAXRGB ? COLORMAXRGB : colorRGB;
 		corrected = corrected < 0 ? 0 : corrected;
 		return corrected;
 	}
