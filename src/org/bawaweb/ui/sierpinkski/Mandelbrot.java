@@ -52,7 +52,7 @@ public class Mandelbrot extends FractalBase {
 	private boolean isMotionBrot = false;// true;//
 	
 	private String motionParam = "bd";	//	others are exponent/power/magnification/scaleSize
-	
+	private double motionParamJumpVal = 0.25;
 	private Image[] motionImages = new Image[MAX_DEPTH];//[this.depth];	//[10];;
 	
 	
@@ -196,20 +196,8 @@ public class Mandelbrot extends FractalBase {
 		double xc = getxC();
 		double yc = getyC();
 		double size = this.mag;
-		double bd = this.getBound();//; // variable
-		/*if (!this.motionParam.equals("bd")) {
-			bd = this.getBound();
-		} else {
-			bd = 0.25;
-		}*/
-		
+		double bd = this.getBound();		
 		int pow = this.power;
-
-		/*if (this.motionParam.equals("pow")) {
-			pow = this.getPower();//-10;
-			this.power = pow;
-		}*/
-
 		int max = getMaxIter();
 
 		String func2Apply = this.useFuncConst;
@@ -218,36 +206,41 @@ public class Mandelbrot extends FractalBase {
 		int n = getAreaSize();
 		this.createMandelbrotPixels(this.useDiff, xc, yc, size, bd, pow, max, func2Apply, pxFunc2Apply, n);
 
-		this.drawMandelMotionbrot(g, depth, bd, pow);
+		this.drawMandelMotionbrot(g, depth, bd, pow, size);
 		
 		this.addMotionImage(bufferedImage);
 		return bufferedImage;
 
 	}
 
-	private void drawMandelMotionbrot(Graphics2D g, int d, double bd, int pwr) {
+	private void drawMandelMotionbrot(Graphics2D g, int d, double bd, int pwr, double size) {
 		
 		System.out.println("drawMotiondepth = "+depth+" and d is "+d+" time is "+System.currentTimeMillis());
 		System.out.print("motionParam is "+this.motionParam);
 		
-		
-		
-		
 		double xc = getxC();
 		double yc = getyC();
-		double size = this.mag;
+		/*double size = this.mag;*/
 		
 		if (this.motionParam.equals("bd")) {
-			bd+=0.25;
+			bd+=this.getMotionParamJumpVal();	//0.25;
 			this.bound=bd;
 			
 			System.out.println("  bd is now "+this.bound+" and d is "+d);
 		}
 		
 		if(this.motionParam.equals("pow")){
-			pwr+=1;
+			pwr+=this.getMotionParamJumpVal();	//1;
 			this.power=pwr;
 			System.out.println("  pow is now "+this.power+" and d is "+d);
+		}
+		
+
+		if (this.motionParam.equals("scaleSize")) {
+			size+=this.getMotionParamJumpVal();	
+			this.mag=(int) size;
+			
+			System.out.println("  scaleSize is now "+this.mag+" and d is "+d);
 		}
 
 		int max = getMaxIter();
@@ -270,12 +263,19 @@ public class Mandelbrot extends FractalBase {
 			this.createMandelbrotPixels(this.useDiff, xc, yc, size, bd, pwr, max, func2Apply, pxFunc2Apply, n);
 
 			if (this.motionParam.equals("bd")) {
-				this.bound+=0.25;
+				this.bound+=this.getMotionParamJumpVal();//0.25;
 			}
 			
 			if(this.motionParam.equals("pow")){
-				pwr+=1;
+				pwr+=this.getMotionParamJumpVal();//1;
 				this.power=pwr;
+			}
+			
+			if (this.motionParam.equals("scaleSize")) {
+				size+=this.getMotionParamJumpVal();	
+				this.mag=(int) size;
+				
+				System.out.println("  scaleSize is now "+this.mag+" and d is "+d);
 			}
 			
 			
@@ -284,7 +284,7 @@ public class Mandelbrot extends FractalBase {
 		
 //		this.createMandelbrotPixels(this.useDiff, xc, yc, size, bd, pwr, max, func2Apply, pxFunc2Apply, n);
 //		
-		this.drawMandelMotionbrot(g, d - 1, bd, pwr);
+		this.drawMandelMotionbrot(g, d - 1, bd, pwr, size);
 
 		
 	}
@@ -922,6 +922,14 @@ public class Mandelbrot extends FractalBase {
 
 	public void setMotionParam(String motParam) {
 		this.motionParam = motParam;
+	}
+
+	public double getMotionParamJumpVal() {
+		return this.motionParamJumpVal;
+	}
+
+	public void setMotionParamJumpVal(double mpJumpVal) {
+		this.motionParamJumpVal = mpJumpVal;
 	}
 
 }

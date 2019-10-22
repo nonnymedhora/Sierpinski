@@ -148,6 +148,7 @@ class SierpinskiComboPanel extends JPanel {
 	//= "bd";	//	others are exponent/power/magnification/scaleSize
 	//= "bd";	//	others are exponent/power/magnification/scaleSize
 	private static final String[] MOTION_PARAM_OPTIONS = new String[] {"bd","pow","scaleSize"};
+	private static final Double[] MOTION_PARAM_JUMP_OPTIONS = getMotionParamJumpOptions();
 
 	
 	private final String[] comboOptions = new String[]{ DIY, FANNY_CIRCLE, FANNY_TRIANGLES, SIERPINSKI_TRIANGLES, SIERPINSKI_SQUARES, APOLLONIAN_CIRCLES, CST_FRACTAL, SAMPLE, MANDELBROT, JULIA, KOCHSNOWFLAKE, POLY };
@@ -309,9 +310,16 @@ class SierpinskiComboPanel extends JPanel {
 	private JCheckBox mandIsMotionbrotCb = new JCheckBox("Create Motionbrot:", false);
 	private boolean mandIsMotionbrot = false;
 	
-	private String mandMotionParam="None";	//	others are "= "bd";	//	others are exponent/power/magnification/scaleSize
-	
+	private String mandMotionParam = "None"; // others are "= "bd"; // others
+												// are
+												// exponent/power/magnification/scaleSize
+
+	private JLabel mandMotionParamLabel = new JLabel("Motion Param:");
 	private JComboBox<String> mandMotionParamCombo = new JComboBox<String>(MOTION_PARAM_OPTIONS);
+	private JLabel mandMotionParamJumpLabel = new JLabel("Jump:");
+	private JComboBox<Double> mandMotionParamJumpCombo = new JComboBox<Double>(MOTION_PARAM_JUMP_OPTIONS);
+
+	private double mandMotionParamJumpVal = 0.5;
 	
 	
 	
@@ -743,6 +751,22 @@ class SierpinskiComboPanel extends JPanel {
 			this.operation = oprn;
 		}
 	}
+	
+	private static Double[] getMotionParamJumpOptions() {
+		final double start = -10.0;
+		final double end = 10.0;
+		double tempVal = start;
+		Vector<Double> theBdVec = new Vector<Double>();
+		while(tempVal<=end){
+			theBdVec.add(tempVal);
+			tempVal+=0.25;
+		}
+		Double[] bdArr = new Double[theBdVec.size()];
+		for(int i = 0; i < theBdVec.size();i++){
+			bdArr[i]=theBdVec.get(i);
+		}
+		return bdArr;
+	}
 
 	private static Double[] getBoundaryOptions() {
 		final double start = -100.0;
@@ -988,8 +1012,17 @@ class SierpinskiComboPanel extends JPanel {
 		this.mandOptionsPanel.add(this.mandIsBuddhaCb);
 		this.mandOptionsPanel.add(this.mandIsMotionbrotCb);
 		
+		this.mandOptionsPanel.add(this.mandMotionParamLabel);
+		this.mandMotionParamLabel.setVisible(false);
+		
 		this.mandOptionsPanel.add(this.mandMotionParamCombo);
 		this.mandMotionParamCombo.setVisible(false);
+		
+		this.mandOptionsPanel.add(this.mandMotionParamJumpLabel);
+		this.mandMotionParamJumpLabel.setVisible(false);
+		
+		this.mandOptionsPanel.add(this.mandMotionParamJumpCombo);
+		this.mandMotionParamJumpCombo.setVisible(false);
 		
 		this.mandOptionsPanel.add(this.mandUseLyapunovExpCb);
 		
@@ -2067,7 +2100,11 @@ class SierpinskiComboPanel extends JPanel {
 	private void doSelectMandMotionParamCombosCommand(String motParam) {
 		this.mandMotionParam = motParam;
 	}
-	
+
+
+	private void doSelectMandMotionParamJumpCombosCommand(Double motParamJumpVal) {
+		this.mandMotionParamJumpVal = motParamJumpVal;
+	}
 
 	private void doSelectMandBoundCombosCommand(Double bound) {
 		this.mandBound = bound;
@@ -2951,6 +2988,7 @@ class SierpinskiComboPanel extends JPanel {
 		boolean isBuddha = this.mandIsBuddhabrot();
 		boolean isInMotion = this.isMandIsMotionbrot();
 		String motParam = this.getMandMotionParam();
+		double motParamJumpVal = this.getMandMotionParamJumpVal();
 		
 		FractalBase ff;
 		this.formulaArea.setVisible(true);
@@ -2996,6 +3034,7 @@ class SierpinskiComboPanel extends JPanel {
 			Mandelbrot m = (Mandelbrot) ff;
 			m.setMotionBrot(isInMotion);
 			m.setMotionParam(motParam);
+			m.setMotionParamJumpVal(motParamJumpVal);
 			ff = m;			
 		}
 		
@@ -4266,10 +4305,16 @@ class SierpinskiComboPanel extends JPanel {
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSetMandIsMotionCommand(true);
+					mandMotionParamLabel.setVisible(true);
 					mandMotionParamCombo.setVisible(true);
+					mandMotionParamJumpLabel.setVisible(true);
+					mandMotionParamJumpCombo.setVisible(true);
 				} else if(event.getStateChange()==ItemEvent.DESELECTED){
 					doSetMandIsMotionCommand(false);
+					mandMotionParamLabel.setVisible(false);
 					mandMotionParamCombo.setVisible(false);
+					mandMotionParamJumpLabel.setVisible(false);
+					mandMotionParamJumpCombo.setVisible(false);
 				}
 			}
         });
@@ -4282,6 +4327,15 @@ class SierpinskiComboPanel extends JPanel {
 				JComboBox<String> cb = (JComboBox<String>)e.getSource();
 				String mandMotionParamComboOption = (String)cb.getSelectedItem();
 				doSelectMandMotionParamCombosCommand(mandMotionParamComboOption);				
+			}});
+		
+		this.mandMotionParamJumpCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double mandMotionParamJumpOption = (Double)cb.getSelectedItem();
+				doSelectMandMotionParamJumpCombosCommand(mandMotionParamJumpOption);				
 			}});
 
 		
@@ -4980,6 +5034,16 @@ class SierpinskiComboPanel extends JPanel {
 
 	public void setMandMotionParam(String moParam) {
 		this.mandMotionParam = moParam;
+	}
+	
+
+
+	public double getMandMotionParamJumpVal() {
+		return this.mandMotionParamJumpVal;
+	}
+
+	public void setMandMotionParam(double moParamJumpVal) {
+		this.mandMotionParamJumpVal = moParamJumpVal;
 	}
 	
 	///////////////////tosdos////////////////////////////////
