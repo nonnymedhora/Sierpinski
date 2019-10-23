@@ -815,6 +815,270 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		FractalBase.scaleSize = scaleSize;
 	}
 
+	//tobecontinued
+	//forGenerate--needing-static
+//	/l8r
+//	public /*static*/ int julia(/*ComplexNumber zz, */int maxIter, double bd, int pow, ComplexNumber complexConstant, String constOp,
+//			String func2Apply, double pxX, String pxTrans, double pxY, String pyTrans, String pxFunc2Apply, String funComp) {
+//				double xc = getxC();// 0;
+//				double yc = getyC();// 0;
+//				double size = getScaleSize();// this.power;//this.mag;//2;
+//			
+//				int n = getAreaSize();//512;
+//				
+//				int max = getMaxIter();
+//				//function on complex constant
+//				switch (func2Apply) {
+//					case "sine":
+//						complexConstant = complexConstant.sine(); //z0.sin();
+//						break;
+//					case "cosine":
+//						complexConstant = complexConstant.cosine(); //z0.cos();
+//						break;
+//					case "tan":
+//						complexConstant = complexConstant.tangent(); //z0.tan();
+//						break;
+//					case "arcsine":
+//						complexConstant = complexConstant.inverseSine(); //z0.sin();
+//						break;
+//					case "arccosine":
+//						complexConstant = complexConstant.inverseCosine(); //z0.cos();
+//						break;
+//					case "arctan":
+//						complexConstant = complexConstant.inverseTangent(); //z0.tan();
+//						break;
+//					case "reciprocal":
+//						complexConstant = complexConstant.reciprocal(); //z0.tan();
+//						break;
+//					case "reciprocalSquare":
+//						complexConstant = (complexConstant.reciprocal()).power(2); //z0.tan();
+//						break;
+//					case "square":
+//						complexConstant = complexConstant.power(2); //z0.sin();
+//						break;
+//					case "cube":
+//						complexConstant = complexConstant.power(3); //z0.cos();
+//						break;
+//					case "exponent(e)":
+//						complexConstant = complexConstant.exp(); //z0.tan();
+//						break;
+//					case "root":
+//						complexConstant = complexConstant.sqroot(); //z0.sin();
+//						break;
+//					case "cube-root":
+//						complexConstant = complexConstant.curoot(); //z0.cos();
+//						break;
+//					case "log(e)":
+//						complexConstant = complexConstant.ln(); //z0.tan();
+//						break;
+//			
+//					case "None":
+//						complexConstant = complexConstant;
+//						break;
+//					default:
+//						complexConstant = complexConstant;
+//						break;
+//				}//ends-switch
+//				
+//				//function pixel X
+//				switch (pxTrans) {
+//					case "none":
+//						break;
+//					case "absolute":
+//						pxX = Math.abs(pxX);
+//						break;
+//					case "absoluteSquare":
+//						pxX = Math.pow(Math.abs(pxX),2);
+//						break;
+//					case "reciprocal":
+//						pxX = 1.0/(pxX);
+//						break;
+//					case "reciprocalSquare":
+//						pxX = Math.pow((1.0/(pxX)),2);
+//						break;
+//					case "square":
+//						pxX = Math.pow(pxX, 2);
+//						break;
+//					case "cube":
+//						pxX = Math.pow(pxX, 3);
+//						break;
+//					case "root":
+//						pxX = Math.sqrt(pxX);
+//						break;
+//					case "exponent":
+//						pxX = Math.exp(pxX);
+//						break;	
+//					case "log(10)":
+//						pxX = Math.log10(pxX);
+//						break;
+//					case "log(e)":
+//						pxX = Math.log(pxX);
+//						break;
+//					case "sine":
+//						pxX = Math.sin(pxX);
+//						break;
+//					case "cosine":
+//						pxX = Math.cos(pxX);
+//						break;
+//					case "tangent":
+//						pxX = Math.tan(pxX);
+//						break;
+//					case "arcsine":
+//						pxX = Math.asin(pxX);
+//						break;
+//					case "arccosine":
+//						pxX = Math.acos(pxX);
+//						break;
+//					case "arctangent":
+//						pxX = Math.atan(pxX);
+//						break;
+//					default:
+//						break;
+//				}
+//				
+//				//function pixel Y
+//				switch (pyTrans) {
+//					case "none":
+//						break;
+//					case "absolute":
+//						pxY = Math.abs(pxY);
+//						break;
+//					case "absoluteSquare":
+//						pxY = Math.pow(Math.abs(pxY),2);
+//						break;
+//					case "reciprocal":
+//						pxY = 1.0/(pxY);
+//						break;
+//					case "reciprocalSquare":
+//						pxY = Math.pow((1.0/(pxY)),2);
+//						break;
+//					case "square":
+//						pxY = Math.pow(pxY, 2);
+//						break;
+//					case "cube":
+//						pxY = Math.pow(pxY, 3);
+//						break;
+//					case "root":
+//						pxY = Math.sqrt(pxY);
+//						break;
+//					case "exponent":
+//						pxY = Math.exp(pxY);
+//						break;	
+//					case "log(10)":
+//						pxY = Math.log10(pxY);
+//						break;
+//					case "log(e)":
+//						pxY = Math.log(pxY);
+//						break;
+//					case "sine":
+//						pxY = Math.sin(pxY);
+//						break;
+//					case "cosine":
+//						pxY = Math.cos(pxY);
+//						break;
+//					case "tangent":
+//						pxY = Math.tan(pxY);
+//						break;
+//					case "arcsine":
+//						pxY = Math.asin(pxY);
+//						break;
+//					case "arccosine":
+//						pxY = Math.acos(pxY);
+//						break;
+//					case "arctangent":
+//						pxY = Math.atan(pxY);
+//						break;
+//					default:
+//						break;
+//				}
+//				
+//				
+//				ComplexNumber zz=null;
+//				//..intra__Pixel__x-Y
+//				switch(pxFunc2Apply){
+//				case	"Plus":		zz = new ComplexNumber(pxX,pxY);	break;
+//				case	"Minus":	zz = new ComplexNumber(pxX,pxY*-1.0);	break;
+//				case	"Multiply":	zz = new ComplexNumber(pxX,0.0).times(new	ComplexNumber(0.0,pxY));	break;
+//				case	"Divide":	zz = new ComplexNumber(pxX,0.0).divides(new	ComplexNumber(0.0,pxY));	break;
+//				case	"Power":	zz = new ComplexNumber(pxX,0.0).power((int)pxY);	break;
+//				default:	zz = new ComplexNumber(pxX,pxY);	break;	
+//				}
+//				
+//				
+//				//function on complex number z
+//				switch (funComp) {
+//					case "sine":
+//						zz = zz.sine(); // zz.sin();
+//						break;
+//					case "cosine":
+//						zz = zz.cosine(); // zz.cos();
+//						break;
+//					case "tan":
+//						zz = zz.tangent(); // zz.tan();
+//						break;
+//					case "arcsine":
+//						zz = zz.inverseSine(); // zz.sin();
+//						break;
+//					case "arccosine":
+//						zz = zz.inverseCosine(); // zz.cos();
+//						break;
+//					case "arctan":
+//						zz = zz.inverseTangent(); // zz.tan();
+//						break;
+//					case "reciprocal":
+//						zz = zz.reciprocal(); // zz.sin();
+//						break;
+//					case "reciprocalSquare":
+//						zz = (zz.reciprocal()).power(2); // zz.sin();
+//						break;
+//					case "square":
+//						zz = zz.power(2); // zz.sin();
+//						break;
+//					case "cube":
+//						zz = zz.power(3); // zz.cos();
+//						break;
+//					case "exponent(e)":
+//						zz = zz.exp(); // zz.tan();
+//						break;
+//					case "root":
+//						zz = zz.sqroot(); // zz.sin();
+//						break;
+//					case "cube-root":
+//						zz = zz.curoot(); // zz.cos();
+//						break;
+//					case "log(e)":
+//						zz = zz.ln(); // zz.tan();
+//						break;
+//			
+//					case "None":
+//						zz = zz;
+//						break;
+//					default:
+//						zz = zz;
+//						break;
+//				}// ends-switch
+//				
+//				
+//				ComplexNumber z = zz;
+//				
+//				for (int t = 0; t < maxIter; t++) {
+//					if (z.abs() > bd) {
+//						return t;
+//					}
+//					
+//					if (constOp.equals("Plus")) {
+//						z = z.power(pow).plus(complexConstant);
+//					} else if (constOp.equals("Minus")) {
+//						z = z.power(pow).minus(complexConstant);
+//					} else if (constOp.equals("Multiply")) {
+//						z = z.power(pow).times(complexConstant);
+//					} else if (constOp.equals("Divide")) {
+//						z = z.power(pow).divides(complexConstant);
+//					}
+//				}
+//				return 0;
+//			}
+
 	public BufferedImage getBufferedImage() {
 		return this.bufferedImage;
 	}

@@ -365,12 +365,13 @@ public class Julia extends FractalBase {
 			this.closePixelFile();
 		}
 	}
-
+	
+	
 	private int julia(ComplexNumber zz, int max, double bd) {
 		// f(z)=z^n+c
 		ComplexNumber z = zz;
 
-		ComplexNumber complexConstant = computeComplexConstant();
+		ComplexNumber complexConstant = this.computeComplexConstant();
 
 		for (int t = 0; t < max; t++) {
 			if (z.abs() > bd) {
