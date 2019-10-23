@@ -71,6 +71,8 @@ import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
  * 	save image options to jpeg
  * 
  * color selection choices
+ * 
+ * fractal generator
  * 	
  *
  */
