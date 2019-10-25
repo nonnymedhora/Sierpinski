@@ -450,6 +450,35 @@ class SierpinskiComboPanel extends JPanel {
 
 	private final Double[] diyJuliaScaleSizeOptions = SCALE_SIZES;
 	private final JComboBox<Double> diyJuliaScaleSizeCombos = new JComboBox<Double>(diyJuliaScaleSizeOptions);
+	
+	
+	//Generator
+	private final JCheckBox diyJuliaGenCb = new JCheckBox("Generate", false);
+	private JLabel diyJuliaGenRealFromLabel = new JLabel("Constant - Real [From]");
+	private final JTextField diyJuliaGenRealFromTf = new JTextField(5);
+	private JLabel diyJuliaGenRealToLabel = new JLabel(" Real [To]");
+	private final JTextField diyJuliaGenRealToTf = new JTextField(5);
+	private JLabel diyJuliaGenRealJumpLabel = new JLabel(" Real [Jump]");	
+	private JComboBox<Double> diyJuliaGenRealJumpCombo = new JComboBox<Double>(getConstantJumpOptions());
+	
+	private JLabel diyJuliaGenImagFromLabel = new JLabel(" Img [From]");
+	private final JTextField diyJuliaGenImagFromTf = new JTextField(5);
+	private JLabel diyJuliaGenImagToLabel = new JLabel(" Img [To]");
+	private final JTextField diyJuliaGenImagToTf = new JTextField(5);
+	private JLabel diyJuliaGenImagJumpLabel = new JLabel(" Img [Jump]");
+	private JComboBox<Double> diyJuliaGenImagJumpCombo = new JComboBox<Double>(getConstantJumpOptions());
+	
+	
+	private boolean diyJuliaGen = false;
+	private double diyJuliaGenRealFromVal;
+	private double diyJuliaGenRealToVal;
+	private double diyJuliaGenRealJumpVal;
+	private double diyJuliaGenImagFromVal;
+	private double diyJuliaGenImagToVal;
+	private double diyJuliaGenImagJumpVal;
+	
+	private JButton diyJuliaGenBu = new JButton("Generate Julia");
+	
 		
 	//diy Apollo Options
 	protected int diyApolloC1;
@@ -769,6 +798,10 @@ class SierpinskiComboPanel extends JPanel {
 		}
 		return bdArr;
 	}
+	
+	private static Double[] getConstantJumpOptions() {		
+		return new Double[]{0.0001,0.001,0.01,0.05,0.75,0.1,0.5,1.0};
+	}
 
 	private static Double[] getBoundaryOptions() {
 		final double start = -100.0;
@@ -943,6 +976,40 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaPanel.add(this.diyJuliaYCCombos);
 		this.diyJuliaPanel.add(new JLabel("ScaleSize:"));
 		this.diyJuliaPanel.add(this.diyJuliaScaleSizeCombos);
+		
+		this.diyJuliaPanel.add(this.diyJuliaGenCb);
+		
+		this.diyJuliaGenRealFromLabel.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaGenRealFromLabel);
+		this.diyJuliaGenRealFromTf.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaGenRealFromTf);
+		this.diyJuliaGenRealToLabel.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaGenRealToLabel);
+		this.diyJuliaGenRealToTf.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaGenRealToTf);
+		
+		this.diyJuliaGenRealJumpLabel.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaGenRealJumpLabel);
+		this.diyJuliaGenRealJumpCombo.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaGenRealJumpCombo);
+		
+
+		this.diyJuliaGenImagFromLabel.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaGenImagFromLabel);
+		this.diyJuliaGenImagFromTf.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaGenImagFromTf);
+		this.diyJuliaGenImagToLabel.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaGenImagToLabel);
+		this.diyJuliaGenImagToTf.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaGenImagToTf);
+		
+		this.diyJuliaGenImagJumpLabel.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaGenImagJumpLabel);
+		this.diyJuliaGenImagJumpCombo.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaGenImagJumpCombo);
+		
+		this.diyJuliaGenBu.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaGenBu);
 		
 		this.diyJuliaPanel.setVisible(false);
 	}
@@ -1598,45 +1665,45 @@ class SierpinskiComboPanel extends JPanel {
 	private void addDiyJuliaUseDiffInfo() {
 		if (this.diyJuliaUseDiff || this.diyJuliaUseDiffCb.isSelected()) {
 			this.formulaArea
-					.append("<br/><br/>Calculated inverted colors based on differences in pixel values from origin</font>");
+					.append("<br/><br/>Calculated inverted colors based on differences in pixel values from origin</font>"+eol);
 		} else {
-			this.formulaArea.append("<br/><br/>Calculated colors based on pixel values with a 'top-and-left' origin</font>");
+			this.formulaArea.append("<br/><br/>Calculated colors based on pixel values with a 'top-and-left' origin</font>"+eol);
 		}
 	}
 	
 	private void addDiyMandelbrotUseDiffInfo() {
 		if (this.diyMandUseDiff || this.diyMandUseDiffCb.isSelected()) {
 			this.formulaArea
-					.append("<br/><br/>Calculated inverted colors based on differences in pixel values from origin</font>");
+					.append("<br/><br/>Calculated inverted colors based on differences in pixel values from origin</font>"+eol);
 		} else {
-			this.formulaArea.append("<br/><br/>Calculated colors based on pixel values with a 'top-and-left' origin</font>");
+			this.formulaArea.append("<br/><br/>Calculated colors based on pixel values with a 'top-and-left' origin</font>"+eol);
 		}
 	}
 
 	private void addJuliaUseDiffInfo() {
 		if (this.jUseDiff || this.juliaUseDiffCb.isSelected()) {
 			this.formulaArea
-					.append("<br/><br/>Calculated inverted colors based on differences in pixel values from origin</font>");
+					.append("<br/><br/>Calculated inverted colors based on differences in pixel values from origin</font>"+eol);
 		} else {
-			this.formulaArea.append("<br/><br/>Calculated colors based on pixel values with a 'top-and-left' origin</font>");
+			this.formulaArea.append("<br/><br/>Calculated colors based on pixel values with a 'top-and-left' origin</font>"+eol);
 		}
 	}
 	
 	private void addMandelbrotUseDiffInfo() {
 		if (this.mUseDiff || this.mandUseDiffCb.isSelected()) {
 			this.formulaArea
-					.append("<br/><br/>Calculated inverted colors based on differences in pixel values from origin</font>");
+					.append("<br/><br/>Calculated inverted colors based on differences in pixel values from origin</font>"+eol);
 		} else {
-			this.formulaArea.append("<br/><br/>Calculated colors based on pixel values with a 'top-and-left' origin</font>");
+			this.formulaArea.append("<br/><br/>Calculated colors based on pixel values with a 'top-and-left' origin</font>"+eol);
 		}
 	}
 	
 	private void addPolyUseDiffInfo() {
 		if (this.polyUseDiff || this.polyUseDiffCb.isSelected()) {
 			this.formulaArea
-					.append("<br/><br/>Calculated inverted colors based on differences in pixel values from origin</font>");
+					.append("<br/><br/>Calculated inverted colors based on differences in pixel values from origin</font>"+eol);
 		} else {
-			this.formulaArea.append("<br/><br/>Calculated colors based on pixel values with a 'top-and-left' origin</font>");
+			this.formulaArea.append("<br/><br/>Calculated colors based on pixel values with a 'top-and-left' origin</font>"+eol);
 		}
 	}
 	
@@ -2270,6 +2337,234 @@ class SierpinskiComboPanel extends JPanel {
 
 	private void doSelectDiyJuliaScaleSizeCombosCommand(Double size) {
 		this.diyJuliaScaleSize = size;
+	}
+	
+	private void doSetDiyJuliaGenCommand(boolean gen) {
+		this.diyJuliaGen = gen;
+		if (gen) {
+			this.keepConst = false;
+			this.buStart.setEnabled(false);
+			this.buSavePxStart.setEnabled(false);
+		}
+		this.formulaArea.setVisible(true);
+		this.doDiyJuliaChoicesCheck();
+	}
+	
+	private void doSelectDiyJuliaGenRealJumpCombosCommand(Double realJump) {
+		this.diyJuliaGenRealJumpVal = realJump;
+	}
+	private void doSelectDiyJuliaGenImagJumpCombosCommand(Double imagJump) {
+		this.diyJuliaGenImagJumpVal = imagJump;
+	}
+	
+	
+	
+	private void doJuliaGenerateCommand() {
+
+		this.diyJuliaGenRealFromVal = Double.parseDouble(this.diyJuliaGenRealFromTf.getText());
+		this.diyJuliaGenImagFromVal = Double.parseDouble(this.diyJuliaGenImagFromTf.getText());
+		this.diyJuliaGenRealToVal = Double.parseDouble(this.diyJuliaGenRealToTf.getText());
+		this.diyJuliaGenImagToVal = Double.parseDouble(this.diyJuliaGenImagToTf.getText());
+		
+		FractalBase ff;
+		
+		boolean useCP = this.colorChoice.equals("ColorPalette");
+		boolean useBw = this.colorChoice.equals("BlackWhite");	
+		
+		boolean useSample = this.colorChoice.equals("SampleMix");
+		
+		String pxConstOp = this.pxConstOprnChoice;
+		String func = this.constFuncChoice;
+		String pxFunc = this.pxFuncChoice;
+		double rot = this.getRotation();
+		int diyJuliaLoopLt = this.juliaSize;
+		int diyJuliaP = this.getDiyJuliaPower();
+		boolean diyJuliaUseD = this.getDiyJuliaUseDiff();
+		int diyJuliaMaxIt = this.diyJuliaMaxIter;
+		double diyJuliaBd = this.diyJuliaBound;
+		double diyJXc = this.diyJuliaXC;
+		double diyJYc = this.diyJuliaYC;
+		double diyJScale = this.diyJuliaScaleSize;
+
+		String diyJApplyField = this.fieldLines;
+		boolean diyJApplyFatou = this.applyFatou;
+		boolean diyJApplyZSq = this.applyZSq;
+		boolean diyJApplyClassic = this.applyClassicJulia;
+		
+		
+		double jReal = this.diyJuliaGenRealFromVal;
+		double jImag = this.diyJuliaGenImagFromVal;
+		final double jRealTO = this.diyJuliaGenRealToVal;
+		final double jImagTO = this.diyJuliaGenImagToVal;
+		
+		final double realJumpVal = this.diyJuliaGenRealJumpVal;
+		final double imagJumpVal = this.diyJuliaGenImagJumpVal;
+		
+		boolean realToReached = false;
+		boolean imagToReached = false;
+		
+				
+		for (double real = jReal; real <= jRealTO; real += realJumpVal) {
+			for (double imag = jImag; imag <= jImagTO; imag += imagJumpVal) {
+				this.diyJuliaConstReal = real;
+				this.diyJuliaConstImg = imag;
+				
+				this.setDiyJuliaGenFormulaArea(pxFunc, diyJuliaP, diyJApplyFatou, diyJApplyZSq, diyJApplyClassic);		
+		
+				this.formulaArea.append("<br/>Constant = " + this.diyJuliaConstReal + " + (" + this.diyJuliaConstImg + " * i)</font>" + eol);
+				
+				ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, real, imag);
+
+				ff.setUseLyapunovExponent(this.diyJuliaUseLyapunovExponent);
+				ff.setPxXTransformation(this.pixXTransform);
+				ff.setPxYTransformation(this.pixYTransform);
+				ff.setPixXYOperation(this.pixIntraXYOperation);
+				ff.setReversePixelCalculation(this.invertPixelCalculation);
+				if (useCP) {
+					ff.setUseColorPalette(useCP);
+				} else {
+					if (useBw) {
+						ff.setUseBlackWhite(useBw);
+					} else {
+						if (useSample) {
+
+							this.setSampleColorMix(ff);
+						} else {
+
+							ff.setUseColorPalette(useCP);
+						}
+					}
+				}
+				ff.setPxConstOperation(pxConstOp);
+				ff.setUseFuncConst(func);
+				ff.setUseFuncPixel(pxFunc);
+				ff.setRotation(rot);
+				if (!diyJApplyField.equals("None")) {
+					if (diyJApplyFatou) {
+						ff.setFatou(diyJApplyFatou);
+						ff.setZSq(false);
+						ff.setClassicJulia(false);
+					} else if (diyJApplyZSq) {
+						ff.setZSq(diyJApplyZSq);
+						ff.setFatou(false);
+						ff.setClassicJulia(false);
+					} else if (diyJApplyClassic) {
+						ff.setClassicJulia(diyJApplyClassic);
+						ff.setFatou(false);
+						ff.setZSq(false);
+					}
+				} else {
+					ff.setFatou(false);
+					ff.setZSq(false);
+					ff.setClassicJulia(false);
+
+				}
+				ff.reset();
+				FractalBase.setMaxIter(diyJuliaMaxIt);
+				FractalBase.setAreaSize(diyJuliaLoopLt);
+				FractalBase.setxC(diyJXc);
+				FractalBase.setxC(diyJYc);
+				FractalBase.setScaleSize(diyJScale);
+				
+
+				this.addJuliaConstInfo(ff);
+				// --endDoStart
+
+				ff.setVisible(false);
+				
+				Graphics2D g = ff.getBufferedImage().createGraphics();
+				ff.paint(g);
+
+				this.setFractalImage(ff.getBufferedImage());
+
+				String extraInfo = this.getExtraInfo();
+				String imgBaseInfo = this.getImgBaseInfo();
+				BufferedImage dataInfoImg = this.createStringImage(imgBaseInfo);
+				String imageFilePath = "images_gen\\" + this.getComboChoice() + "[" + extraInfo + "]" + " ____" + System.currentTimeMillis() + ".png";
+				File outputfile = new File(imageFilePath);
+				String imageDetailFilePath = "images_gen\\" + this.getComboChoice() + "[" + extraInfo + "]" + "Detail ____" + System.currentTimeMillis() + ".png";
+				File outputDetailfile = new File(imageDetailFilePath);
+
+				try {
+					ImageIO.write(ff.getBufferedImage(), "png", outputfile);
+					System.out.println("Generated File: "+imageFilePath);
+					
+					final BufferedImage joinedFractalDataImage = FractalBase.joinBufferedImage(ff.getBufferedImage(), dataInfoImg);
+					ImageIO.write(joinedFractalDataImage, "png", outputDetailfile);
+					System.out.println("Generated FileDetail: "+imageDetailFilePath);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				this.formulaArea.setText("");
+
+				g.dispose();
+				ff.dispose();
+
+				//to ensure endImagLimit is called
+				if (imag + imagJumpVal > jImagTO && !imagToReached) {
+					imag = jImagTO - imagJumpVal;
+					imagToReached = true;
+				}
+
+			} // ends forImag
+			
+			//to ensure endRealLimit is called
+			if (real + realJumpVal > jRealTO && !realToReached) {
+				real = jRealTO - realJumpVal;
+				realToReached = true;
+			}
+		}	//	ends forReal
+
+		ff = null;
+
+		System.out.println("Done JuliaGeneration");
+		
+	}
+
+	private void setDiyJuliaGenFormulaArea(String pixelFunction, int juliaPower, boolean applyFatou, boolean applyZSq,
+			boolean applyClassic) {
+		this.formulaArea.setVisible(true);
+		this.formulaArea.setText("");
+		this.formulaArea.setText("<font color='blue'>(DIY)Julia Set:" + eol);
+		if (this.diyJuliaUseLyapunovExponent) {
+			this.addUseLyapunovInfo();
+		}
+		
+		this.addXtrYtrXYInfroInfo(this.pixXTransform,this.pixYTransform,this.pixIntraXYOperation);		
+		this.addInvertPixelCalcInfo();
+		this.addPixelConstantOperationInfo();
+		this.addPixelFuncInfo(pixelFunction);
+		
+		if (applyFatou) {
+			this.formulaArea.append("<br/><font color='green'>Fatou Field Lines:<br/><br/>f(z) = (1 - (z<sup>3</sup>/6)) / ((z - (z<sup>2</sup>/2)) <sup>2</sup>)");// + eol);// + C</font><br/>");			
+		} else if (applyZSq) {
+			this.formulaArea.append("<br/><font color='green'>ZSquared Field Lines:<br/><br/>f(z) = (z <sup>2</sup>) <sup> " + juliaPower+"</sup>");// + eol);// + " + C</font><br/>");
+		} else if (applyClassic) {
+			this.formulaArea.append("<br/><font color='green'>Classic Julia:<br/><br/>f(z) = z<sup>4</sup> + z<sup>3</sup>/(z-1) + z<sup>2</sup>/(z<sup>3</sup> + 4*z<sup>2</sup> + 5)");// + eol);//  + C</font><br/>");
+		} else {
+			this.formulaArea.append("<br/><font color='green'>f(z) = z <sup>" + juliaPower+"</sup>");// + eol);// + " + C</font><br/>");
+		}
+		
+		switch(this.pxConstOprnChoice){
+			case	"Plus"	:	
+				this.formulaArea.append(" + C</font>" + eol);
+				break;
+			case	"Minus"	:	
+				this.formulaArea.append(" - C</font>" + eol);
+				break;
+			case	"Multiply"	:	
+				this.formulaArea.append(" * C</font>" + eol);
+				break;
+			case	"Divide"	:	
+				this.formulaArea.append(" / C</font>" + eol);
+				break;
+			default:
+				this.formulaArea.append(" + C</font>" + eol);
+				break;
+		}
+		
+		this.addDiyJuliaUseDiffInfo();
 	}
 	
 	//-apollo
@@ -3501,8 +3796,13 @@ class SierpinskiComboPanel extends JPanel {
 				if (this.keepConst) {
 					baseInfo += "Dynamic Constant	Z=C" + eol;
 				} else {
-					baseInfo += "Real Value = " + Double.parseDouble(this.diyJuliaRealTf.getText()) + "," + eol;
-					baseInfo += "Imaginary Value = " + Double.parseDouble(this.diyJuliaImgTf.getText()) + eol;
+					if (!diyJuliaGen) {
+						baseInfo += "Real Value = " + Double.parseDouble(this.diyJuliaRealTf.getText()) + "," + eol;
+						baseInfo += "Imaginary Value = " + Double.parseDouble(this.diyJuliaImgTf.getText()) + eol;
+					}else{
+						baseInfo += "Real Value = " + this.diyJuliaConstReal + "," + eol;
+						baseInfo += "Imaginary Value = " + this.diyJuliaConstImg + eol;
+					}
 				}
 
 				baseInfo = addConstFuncInfo(baseInfo);
@@ -4031,6 +4331,75 @@ class SierpinskiComboPanel extends JPanel {
 				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
 				Double diyJuliaScaleSizeComboOption = (Double)cb.getSelectedItem();
 				doSelectDiyJuliaScaleSizeCombosCommand(diyJuliaScaleSizeComboOption);				
+			}});
+		
+		//generator
+		this.diyJuliaGenCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetDiyJuliaGenCommand(true);
+					
+					diyJuliaGenRealFromLabel.setVisible(true);
+					diyJuliaGenRealFromTf.setVisible(true);
+					diyJuliaGenRealToLabel.setVisible(true);
+					diyJuliaGenRealToTf.setVisible(true);
+					diyJuliaGenRealJumpLabel.setVisible(true);
+					diyJuliaGenRealJumpCombo.setVisible(true);
+					diyJuliaGenImagFromLabel.setVisible(true);
+					diyJuliaGenImagFromTf.setVisible(true);
+					diyJuliaGenImagToLabel.setVisible(true);
+					diyJuliaGenImagToTf.setVisible(true);
+					diyJuliaGenImagJumpLabel.setVisible(true);
+					diyJuliaGenImagJumpCombo.setVisible(true);
+					diyJuliaGenBu.setVisible(true);
+					
+					
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetDiyJuliaGenCommand(false);
+					
+					diyJuliaGenRealFromLabel.setVisible(false);
+					diyJuliaGenRealFromTf.setVisible(false);
+					diyJuliaGenRealToLabel.setVisible(false);
+					diyJuliaGenRealToTf.setVisible(false);
+					diyJuliaGenRealJumpLabel.setVisible(false);
+					diyJuliaGenRealJumpCombo.setVisible(false);
+					diyJuliaGenImagFromLabel.setVisible(false);
+					diyJuliaGenImagFromTf.setVisible(false);
+					diyJuliaGenImagToLabel.setVisible(false);
+					diyJuliaGenImagToTf.setVisible(false);
+					diyJuliaGenImagJumpLabel.setVisible(false);
+					diyJuliaGenImagJumpCombo.setVisible(false);
+					diyJuliaGenBu.setVisible(false);
+					
+				}
+			}
+        });
+		
+		this.diyJuliaGenRealJumpCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double diyJuliaRealJumpComboOption = (Double)cb.getSelectedItem();
+				doSelectDiyJuliaGenRealJumpCombosCommand(diyJuliaRealJumpComboOption);				
+			}});
+		
+		
+		this.diyJuliaGenImagJumpCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double diyJuliaImagJumpComboOption = (Double)cb.getSelectedItem();
+				doSelectDiyJuliaGenImagJumpCombosCommand(diyJuliaImagJumpComboOption);				
+			}});
+		
+		
+		this.diyJuliaGenBu.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doJuliaGenerateCommand();				
 			}});
 	}
 
