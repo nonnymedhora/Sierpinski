@@ -44,6 +44,7 @@ import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
@@ -2085,8 +2086,13 @@ class SierpinskiComboPanel extends JPanel {
 			this.buSavePxStart.setEnabled(true);
 			String formula = "Mandelbrot Set:<br/><br/>f(z) = z <sup>" + this.diyMandExponent + "</sup> + C";
 			if (!this.keepConst) {
-				formula += "<br/>  C = " + Double.parseDouble(this.diyMandRealTf.getText()) + " + ("
-						+ Double.parseDouble(this.diyMandImgTf.getText()) + ")";
+				try {
+					formula += "<br/>  C = " + Double.parseDouble(this.diyMandRealTf.getText()) + " + ("
+							+ Double.parseDouble(this.diyMandImgTf.getText()) + ")";
+				} catch (NumberFormatException  | NullPointerException e2) {
+					e2.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number", "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 			if (this.mUseDiff || this.mandUseDiffCb.isSelected()) {
 				formula += "<br/><br/>Calculated inverted colors based on differences in pixel values from origin";
@@ -2110,8 +2116,13 @@ class SierpinskiComboPanel extends JPanel {
 			this.buSavePxStart.setEnabled(true);
 			String formula = "Julia Set:<br/><br/>f(z) = z <sup>" + this.diyJuliaPower + "</sup> + C";
 			if (!this.keepConst) {
-				formula += "<br/>  C = " + Double.parseDouble(this.diyJuliaRealTf.getText()) + " + ("
-						+ Double.parseDouble(this.diyJuliaImgTf.getText()) + ")";
+				try {
+					formula += "<br/>  C = " + Double.parseDouble(this.diyJuliaRealTf.getText()) + " + ("
+							+ Double.parseDouble(this.diyJuliaImgTf.getText()) + ")";
+				} catch (NumberFormatException  | NullPointerException e2) {
+					e2.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number", "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 			if (this.diyJuliaUseDiff || this.diyJuliaUseDiffCb.isSelected()) {
 				formula += "<br/><br/>Calculated inverted colors based on differences in pixel values from origin";
@@ -2361,10 +2372,15 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private void doJuliaGenerateCommand() {
 
-		this.diyJuliaGenRealFromVal = Double.parseDouble(this.diyJuliaGenRealFromTf.getText());
-		this.diyJuliaGenImagFromVal = Double.parseDouble(this.diyJuliaGenImagFromTf.getText());
-		this.diyJuliaGenRealToVal = Double.parseDouble(this.diyJuliaGenRealToTf.getText());
-		this.diyJuliaGenImagToVal = Double.parseDouble(this.diyJuliaGenImagToTf.getText());
+		try {
+			this.diyJuliaGenRealFromVal = Double.parseDouble(this.diyJuliaGenRealFromTf.getText());
+			this.diyJuliaGenImagFromVal = Double.parseDouble(this.diyJuliaGenImagFromTf.getText());
+			this.diyJuliaGenRealToVal = Double.parseDouble(this.diyJuliaGenRealToTf.getText());
+			this.diyJuliaGenImagToVal = Double.parseDouble(this.diyJuliaGenImagToTf.getText());
+		} catch (NumberFormatException  | NullPointerException e2) {
+			e2.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number", "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+		}
 		
 		FractalBase ff;
 		
@@ -2958,8 +2974,15 @@ class SierpinskiComboPanel extends JPanel {
 			this.formulaArea.append("<br/>Dynamic Constant = z</font>");
 			ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJKConst);
 		} else {
-			double diyJuliaRealVal = Double.parseDouble(this.diyJuliaRealTf.getText());
-			double diyJuliaImgVal = Double.parseDouble(this.diyJuliaImgTf.getText());
+			double diyJuliaRealVal = 0;
+			double diyJuliaImgVal = 0;
+			try {
+				diyJuliaRealVal = Double.parseDouble(this.diyJuliaRealTf.getText());
+				diyJuliaImgVal = Double.parseDouble(this.diyJuliaImgTf.getText());
+			} catch (NumberFormatException  | NullPointerException e2) {
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number", "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+			}
 			this.formulaArea.append("<br/>Constant = " + diyJuliaRealVal + " + (" + diyJuliaImgVal + " * i)</font>");
 			ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJuliaRealVal, diyJuliaImgVal);
 		}
@@ -3052,7 +3075,7 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private FractalBase createDIYMandelbrot() {
-		FractalBase ff;
+		FractalBase ff = null;
 		// for diy mandelbrot
 
 		boolean useCP = this.colorChoice.equals("ColorPalette");
@@ -3104,10 +3127,15 @@ class SierpinskiComboPanel extends JPanel {
 			this.formulaArea.append("<br/>Dynamic Constant = z</font>");
 			ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD,diyMandB, diyMKConst);			
 		} else {
-			double diyMRealVal = Double.parseDouble(this.diyMandRealTf.getText());
-			double diyMImgVal = Double.parseDouble(this.diyMandImgTf.getText());
-			this.formulaArea.append("<br/>Constant = " + diyMRealVal + " + (" + diyMImgVal + " * i)</font>");
-			ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD,diyMandB, diyMRealVal, diyMImgVal);
+			try {
+				double diyMRealVal = Double.parseDouble(this.diyMandRealTf.getText());
+				double diyMImgVal = Double.parseDouble(this.diyMandImgTf.getText());
+				this.formulaArea.append("<br/>Constant = " + diyMRealVal + " + (" + diyMImgVal + " * i)</font>");
+				ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD,diyMandB, diyMRealVal, diyMImgVal);
+			} catch (NumberFormatException  | NullPointerException e2) {
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number", "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 		
 		if (isBuddha) {
@@ -3390,7 +3418,7 @@ class SierpinskiComboPanel extends JPanel {
 		double rot = this.getRotation();
 		boolean invertPix = this.invertPixelCalculation;
 		
-		FractalBase ff;
+		FractalBase ff = null;
 		this.formulaArea.setVisible(true);
 		this.formulaArea.setText("");
 		this.formulaArea.setText("<font color='blue'>Poynomial Set:<br/>");
@@ -3446,11 +3474,16 @@ class SierpinskiComboPanel extends JPanel {
 			this.formulaArea.append("<br/>Dynamic Constant = z</font>");
 			ff = new PolyFract(this.polyPower, this.polyUseDiff, this.polyBound, this.keepConst);
 		}else{
-			double polyRealVal = Double.parseDouble(this.polyRealTf.getText());
-			double polyImgVal = Double.parseDouble(this.polyImgTf.getText());
-			this.formulaArea.append("<br/>Constant = " + polyRealVal + " + (" + polyImgVal + " * i)</font>");
-			
-			ff = new PolyFract(this.polyPower, this.polyUseDiff, this.polyBound, polyRealVal, polyImgVal);
+			try {
+				double polyRealVal = Double.parseDouble(this.polyRealTf.getText());
+				double polyImgVal = Double.parseDouble(this.polyImgTf.getText());
+				this.formulaArea.append("<br/>Constant = " + polyRealVal + " + (" + polyImgVal + " * i)</font>");
+				
+				ff = new PolyFract(this.polyPower, this.polyUseDiff, this.polyBound, polyRealVal, polyImgVal);
+			} catch (NumberFormatException  | NullPointerException e2) {
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number", "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 
 		ff.setUseLyapunovExponent(this.polyUseLyapunovExponent);
@@ -3704,8 +3737,13 @@ class SierpinskiComboPanel extends JPanel {
 				if (this.keepConst) {
 					baseInfo += "Dynamic Constant	C = z"+eol;
 				} else {
-					baseInfo += "Real Value = " + Double.parseDouble(this.polyRealTf.getText()) + "," + eol;
-					baseInfo += "Imaginary Value = " + Double.parseDouble(this.polyImgTf.getText()) + eol;
+					try {
+						baseInfo += "Real Value = " + Double.parseDouble(this.polyRealTf.getText()) + "," + eol;
+						baseInfo += "Imaginary Value = " + Double.parseDouble(this.polyImgTf.getText()) + eol;
+					} catch (NumberFormatException  | NullPointerException e2) {
+						e2.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number", "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 				baseInfo = addConstFuncInfo(baseInfo);
 				
@@ -3770,8 +3808,13 @@ class SierpinskiComboPanel extends JPanel {
 				if (this.keepConst) {
 					baseInfo += "Dynamic Constant	Z=C" + eol;
 				} else {
-					baseInfo += "Real Value = " + Double.parseDouble(this.diyMandRealTf.getText()) + ","+eol;
-					baseInfo += "Imaginary Value = " + Double.parseDouble(this.diyMandImgTf.getText()) + eol;
+					try {
+						baseInfo += "Real Value = " + Double.parseDouble(this.diyMandRealTf.getText()) + ","+eol;
+						baseInfo += "Imaginary Value = " + Double.parseDouble(this.diyMandImgTf.getText()) + eol;
+					} catch (NumberFormatException  | NullPointerException e2) {
+						e2.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number", "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 				
 				baseInfo = addConstFuncInfo(baseInfo);
@@ -3797,9 +3840,14 @@ class SierpinskiComboPanel extends JPanel {
 					baseInfo += "Dynamic Constant	Z=C" + eol;
 				} else {
 					if (!diyJuliaGen) {
-						baseInfo += "Real Value = " + Double.parseDouble(this.diyJuliaRealTf.getText()) + "," + eol;
-						baseInfo += "Imaginary Value = " + Double.parseDouble(this.diyJuliaImgTf.getText()) + eol;
-					}else{
+						try {
+							baseInfo += "Real Value = " + Double.parseDouble(this.diyJuliaRealTf.getText()) + "," + eol;
+							baseInfo += "Imaginary Value = " + Double.parseDouble(this.diyJuliaImgTf.getText()) + eol;
+						} catch (NumberFormatException  | NullPointerException e2) {
+							e2.printStackTrace();
+							JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number", "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+						}
+					} else {
 						baseInfo += "Real Value = " + this.diyJuliaConstReal + "," + eol;
 						baseInfo += "Imaginary Value = " + this.diyJuliaConstImg + eol;
 					}
