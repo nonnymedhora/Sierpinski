@@ -47,6 +47,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -257,7 +258,7 @@ class SierpinskiComboPanel extends JPanel {
 	private JPanel diyOptionsPanel		= new JPanel(new FlowLayout(),true);
 	
 	private JPanel diyMandPanel 		= new JPanel(new GridLayout(5,8),true);
-	private JPanel diyJuliaPanel 		= new JPanel(new GridLayout(5,8),true);
+	private JPanel diyJuliaPanel 		= new JPanel(new GridLayout(20,15),true);
 	private JPanel diyApolloPanel 		= new JPanel(new GridLayout(4,8),true);
 	
 	private JTextArea formulaArea = new JTextArea(5,20);
@@ -452,9 +453,74 @@ class SierpinskiComboPanel extends JPanel {
 	private final Double[] diyJuliaScaleSizeOptions = SCALE_SIZES;
 	private final JComboBox<Double> diyJuliaScaleSizeCombos = new JComboBox<Double>(diyJuliaScaleSizeOptions);
 	
-	
+	/////////////////////////////////////////////////////////////////////////////
 	//Generator
 	private final JCheckBox diyJuliaGenCb = new JCheckBox("Generate", false);
+
+	private JCheckBox diyJuliaVaryColorCb = new JCheckBox("Vary Color", false);
+	private JCheckBox diyJuliaVaryPixXTranCb = new JCheckBox("Vary Pixel_X_Trans f(x)", false);
+	private JCheckBox diyJuliaVaryPixYTranCb = new JCheckBox("Vary Pixel_Y_Tran f(y)", false);
+	private JCheckBox diyJuliaVaryIntraPixXYCb = new JCheckBox("Vary Intra_Pixel_Op f(x,y)", false);
+	private JCheckBox diyJuliaVaryPixelZFuncCb = new JCheckBox("Vary Pixel_Complex f(Z)", false);
+	private JCheckBox diyJuliaVaryConstCFuncCb = new JCheckBox("Vary Constant Function f(C)", false);
+	private JCheckBox diyJuliaVaryPixelConstOpZCCb = new JCheckBox("Vary Pixel(Z)_Constant(C) Op O(Z,C)", false);
+	private JCheckBox diyJuliaVaryGenConstantCb = new JCheckBox("Vary Constant Value  C", false);
+	private JCheckBox diyJuliaVaryPixelPowerZCb = new JCheckBox("Vary Power Z^n", false);
+	private JCheckBox diyJuliaVaryIterCb = new JCheckBox("Vary MaxIterations", false);
+	private JCheckBox diyJuliaVaryBoundaryCb = new JCheckBox("Vary Boundary", false);
+	private JCheckBox diyJuliaVaryPixXCentrCb = new JCheckBox("Vary PixelCenter_X", false);
+	private JCheckBox diyJuliaVaryPixYCentrCb = new JCheckBox("Vary PixelCenter_Y", false);
+	private JCheckBox diyJuliaVaryScaleSizeCb = new JCheckBox("Vary Scale", false);
+	
+	private boolean diyJuliaVaryColor 		= false;			//diyJuliaVaryColorCb
+	private boolean diyJuliaVaryPixXTran 	= false;			//diyJuliaVaryPixXTranCb
+	private boolean diyJuliaVaryPixYTran 	= false;			//diyJuliaVaryPixYTranCb
+	private boolean diyJuliaVaryIntraPixXY 	= false;			//diyJuliaVaryIntraPixXYCb
+	private boolean diyJuliaVaryPixelZFunc 	= false;			//diyJuliaVaryPixelZFuncCb
+	private boolean diyJuliaVaryConstCFunc 	= false;			//diyJuliaVaryConstCFuncCb
+	private boolean diyJuliaVaryPixelConstOpZC 	= false;		//diyJuliaVaryPixelConstOpZCCb
+	private boolean diyJuliaVaryPixelPowerZ = false;			//diyJuliaVaryPixelPowerZCb
+	
+
+	private boolean diyJuliaVaryIter 	= false;			//diyJuliaVaryIterCb
+	private boolean diyJuliaVaryPixXCentr 	= false;			//diyJuliaVaryPixXCentrCb
+	private boolean diyJuliaVaryPixYCentr 	= false;			//diyJuliaVaryPixYCentrCb
+	
+	
+	
+	
+	
+	//diyJuliaVaryScaleSizeCb applies here
+	private JLabel diyJuliaGenScaleSizeFromLabel = new JLabel("ScaleSize [From]:");
+	private final JTextField diyJuliaGenScaleSizeFromTf = new JTextField(5);
+	private JLabel diyJuliaGenScaleSizeToLabel = new JLabel(" [To]:");
+	private final JTextField diyJuliaGenScaleSizeToTf = new JTextField(5);
+	private JLabel diyJuliaGenScaleSizeJumpLabel = new JLabel(" [Jump]");	
+	private JComboBox<Double> diyJuliaGenScaleSizeJumpCombo = new JComboBox<Double>(getScaleSizeJumpOptions());
+	
+	private boolean diyJuliaVaryScaleSize = false;
+	private double diyJuliaVaryScaleSizeFromVal;
+	private double diyJuliaVaryScaleSizeToVal;
+	private double diyJuliaVaryScaleSizeJumpVal;
+	//ends
+	//diyJuliaVaryScaleSizeCb applies here
+	
+	//diyJuliaVaryBoundaryCb applies here
+	private JLabel diyJuliaGenBoundaryFromLabel = new JLabel("Boundary [From]:");
+	private final JTextField diyJuliaGenBoundaryFromTf = new JTextField(5);
+	private JLabel diyJuliaGenBoundaryToLabel = new JLabel(" [To]:");
+	private final JTextField diyJuliaGenBoundaryToTf = new JTextField(5);
+	private JLabel diyJuliaGenBoundaryJumpLabel = new JLabel(" [Jump]");	
+	private JComboBox<Double> diyJuliaGenBoundaryJumpCombo = new JComboBox<Double>(getBoundaryJumpOptions());
+	
+	private boolean diyJuliaVaryBoundary = false;
+	private double diyJuliaVaryBoundaryFromVal;
+	private double diyJuliaVaryBoundaryToVal;
+	private double diyJuliaVaryBoundaryJumpVal;
+	//ends
+	//diyJuliaVaryBoundaryCCb applies here
+	
+	//diyJuliaVaryGenConstantCb applies here
 	private JLabel diyJuliaGenRealFromLabel = new JLabel("Constant - Real [From]");
 	private final JTextField diyJuliaGenRealFromTf = new JTextField(5);
 	private JLabel diyJuliaGenRealToLabel = new JLabel(" Real [To]");
@@ -467,10 +533,9 @@ class SierpinskiComboPanel extends JPanel {
 	private JLabel diyJuliaGenImagToLabel = new JLabel(" Img [To]");
 	private final JTextField diyJuliaGenImagToTf = new JTextField(5);
 	private JLabel diyJuliaGenImagJumpLabel = new JLabel(" Img [Jump]");
-	private JComboBox<Double> diyJuliaGenImagJumpCombo = new JComboBox<Double>(getConstantJumpOptions());
+	private JComboBox<Double> diyJuliaGenImagJumpCombo = new JComboBox<Double>(getConstantJumpOptions());	
 	
-	
-	private boolean diyJuliaGen = false;
+	private boolean diyJuliaVaryConstant = false;
 	private double diyJuliaGenRealFromVal;
 	private double diyJuliaGenRealToVal;
 	private double diyJuliaGenRealJumpVal;
@@ -478,8 +543,13 @@ class SierpinskiComboPanel extends JPanel {
 	private double diyJuliaGenImagToVal;
 	private double diyJuliaGenImagJumpVal;
 	
-	private JButton diyJuliaGenBu = new JButton("Generate Julia");
+	//ends
+	//diyJuliaVaryGenConstantCb applies here
 	
+	private boolean diyJuliaGen = false;
+	private JButton diyJuliaGenBu = new JButton("Generate Julia");
+	///////////////////////////////////////////////////////////////////////////
+	///////////ends	Generator//////////////////////////////////////////////////
 		
 	//diy Apollo Options
 	protected int diyApolloC1;
@@ -800,8 +870,16 @@ class SierpinskiComboPanel extends JPanel {
 		return bdArr;
 	}
 	
-	private static Double[] getConstantJumpOptions() {		
-		return new Double[]{0.0001,0.001,0.01,0.05,0.75,0.1,0.5,1.0};
+	private static Double[] getConstantJumpOptions() {
+		return new Double[] { 0.0001, 0.001, 0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1.0 };
+	}
+	
+	private static Double[] getBoundaryJumpOptions(){
+		return new Double[] { 0.0001, 0.001, 0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1.0, 1.5 };
+	}
+	
+	private static Double[] getScaleSizeJumpOptions(){
+		return new Double[] { 0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 2.5 };
 	}
 
 	private static Double[] getBoundaryOptions() {
@@ -978,7 +1056,31 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaPanel.add(new JLabel("ScaleSize:"));
 		this.diyJuliaPanel.add(this.diyJuliaScaleSizeCombos);
 		
+		this.setupDiyJuliaGeneratorPanel();
+		
+		this.diyJuliaPanel.setVisible(false);
+	}
+
+	private void setupDiyJuliaGeneratorPanel() {
 		this.diyJuliaPanel.add(this.diyJuliaGenCb);
+		
+		this.diyJuliaVaryColorCb.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaVaryColorCb);
+		this.diyJuliaVaryPixXTranCb.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaVaryPixXTranCb);
+		this.diyJuliaVaryPixYTranCb.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaVaryPixYTranCb);
+		this.diyJuliaVaryIntraPixXYCb.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaVaryIntraPixXYCb);
+		this.diyJuliaVaryPixelZFuncCb.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaVaryPixelZFuncCb);
+		this.diyJuliaVaryConstCFuncCb.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaVaryConstCFuncCb);
+		this.diyJuliaVaryPixelConstOpZCCb.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaVaryPixelConstOpZCCb);
+		
+		this.diyJuliaVaryGenConstantCb.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaVaryGenConstantCb);		
 		
 		this.diyJuliaGenRealFromLabel.setVisible(false);
 		this.diyJuliaPanel.add(this.diyJuliaGenRealFromLabel);
@@ -1009,10 +1111,52 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaGenImagJumpCombo.setVisible(false);
 		this.diyJuliaPanel.add(this.diyJuliaGenImagJumpCombo);
 		
+		this.diyJuliaVaryPixelPowerZCb.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaVaryPixelPowerZCb);		
+
+		this.diyJuliaVaryIterCb.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaVaryIterCb);
+		
+		this.diyJuliaVaryBoundaryCb.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaVaryBoundaryCb);
+		this.diyJuliaGenBoundaryFromLabel.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaGenBoundaryFromLabel);
+		this.diyJuliaGenBoundaryFromTf.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaGenBoundaryFromTf);
+		this.diyJuliaGenBoundaryToLabel.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaGenBoundaryToLabel);
+		this.diyJuliaGenBoundaryToTf.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaGenBoundaryToTf);
+		this.diyJuliaGenBoundaryJumpLabel.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaGenBoundaryJumpLabel);	
+		this.diyJuliaGenBoundaryJumpCombo.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaGenBoundaryJumpCombo);
+		
+
+		this.diyJuliaVaryPixXCentrCb.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaVaryPixXCentrCb);
+
+		this.diyJuliaVaryPixYCentrCb.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaVaryPixYCentrCb);
+
+		this.diyJuliaVaryScaleSizeCb.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaVaryScaleSizeCb);
+		
+		this.diyJuliaGenScaleSizeFromLabel.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaGenScaleSizeFromLabel);
+		this.diyJuliaGenScaleSizeFromTf.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaGenScaleSizeFromTf);
+		this.diyJuliaGenScaleSizeToLabel.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaGenScaleSizeToLabel);
+		this.diyJuliaGenScaleSizeToTf.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaGenScaleSizeToTf);
+		this.diyJuliaGenScaleSizeJumpLabel.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaGenScaleSizeJumpLabel);	
+		this.diyJuliaGenScaleSizeJumpCombo.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaGenScaleSizeJumpCombo);
+		
 		this.diyJuliaGenBu.setVisible(false);
 		this.diyJuliaPanel.add(this.diyJuliaGenBu);
-		
-		this.diyJuliaPanel.setVisible(false);
 	}
 
 	private void createDiyMandelbrotPanel() {
@@ -2349,6 +2493,69 @@ class SierpinskiComboPanel extends JPanel {
 	private void doSelectDiyJuliaScaleSizeCombosCommand(Double size) {
 		this.diyJuliaScaleSize = size;
 	}
+
+	private void doSelectDiyJuliaVaryColorCommand(boolean varyColor) {
+		this.diyJuliaVaryColor = varyColor;
+	}	
+
+	private void doSelectDiyJuliaVaryIntraPixXYCommand(boolean varyaryIntraPixXY) {
+		this.diyJuliaVaryIntraPixXY = varyaryIntraPixXY;
+	}
+	
+	private void doSelectDiyJuliaVaryPixYTranCommand(boolean varyPixYTran) {
+		this.diyJuliaVaryPixYTran = varyPixYTran;
+	}	
+
+	private void doSelectDiyJuliaVaryPixXTranCommand(boolean varyPixXTran) {
+		this.diyJuliaVaryPixXTran = varyPixXTran;
+	}	
+
+	private void doSelectDiyJuliaVaryPixelZFuncCommand(boolean varyPixelZFunc) {
+		this.diyJuliaVaryPixelZFunc = varyPixelZFunc;
+	}
+
+	private void doSelectDiyJuliaVaryConstCFuncCommand(boolean varyConstCFunc) {
+		this.diyJuliaVaryConstCFunc = varyConstCFunc;
+	}
+
+	private void doSelectDiyJuliaVaryPixelConstOpZCCommand(boolean varyPixelConstOpZC) {
+		this.diyJuliaVaryPixelConstOpZC = varyPixelConstOpZC;
+	}
+
+	private void doSelectDiyJuliaVaryGenConstantCommand(boolean varyGenConstant) {
+		this.diyJuliaVaryConstant = varyGenConstant;
+	}
+
+	private void doSelectDiyJuliaVaryPixelPowerZCommand(boolean varyPixelPowerZ) {
+		this.diyJuliaVaryPixelPowerZ = varyPixelPowerZ;
+	}
+	
+	private void doSelectDiyJuliaVaryIterCommand(boolean varyIter) {
+		this.diyJuliaVaryIter = varyIter;
+	}
+	
+	private void doSelectDiyJuliaVaryBoundaryCommand(boolean varyBoundary) {
+		this.diyJuliaVaryBoundary = varyBoundary;
+	}
+	
+	private void doSelectDiyJuliaVaryPixXCentrCommand(boolean varyPixXCentr) {
+		this.diyJuliaVaryPixXCentr = varyPixXCentr;
+	}
+	private void doSelectDiyJuliaVaryPixYCentrCommand(boolean varyPixYCentr) {
+		this.diyJuliaVaryPixYCentr = varyPixYCentr;
+	}
+	
+	private void doSelectDiyJuliaVaryScaleSizeCommand(boolean varyScaleSize) {
+		this.diyJuliaVaryScaleSize = varyScaleSize;
+	}
+	
+	private void doSelectDiyJuliaVaryBoundaryJumpCombosCommand(Double varyBoundaryJumpVal) {
+		this.diyJuliaVaryBoundaryJumpVal = varyBoundaryJumpVal;
+	}
+	private void doSelectDiyJuliaVaryScaleSizeCombosCommand(Double varyScaleSizeJumpVal) {
+		this.diyJuliaVaryScaleSizeJumpVal = varyScaleSizeJumpVal;
+	}
+	
 	
 	private void doSetDiyJuliaGenCommand(boolean gen) {
 		this.diyJuliaGen = gen;
@@ -4381,13 +4588,28 @@ class SierpinskiComboPanel extends JPanel {
 				doSelectDiyJuliaScaleSizeCombosCommand(diyJuliaScaleSizeComboOption);				
 			}});
 		
-		//generator
+		this.setupDiyJuliaGeneratorListeners();
+		
+	}
+
+	private void setupDiyJuliaGeneratorListeners() {
+		///////////////////////////////////////////////////////////
+		//generatorListeners
 		this.diyJuliaGenCb.addItemListener(new ItemListener() {
             @Override
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSetDiyJuliaGenCommand(true);
 					
+					diyJuliaVaryColorCb.setVisible(true);
+					diyJuliaVaryPixXTranCb.setVisible(true);
+					diyJuliaVaryPixYTranCb.setVisible(true);
+					diyJuliaVaryIntraPixXYCb.setVisible(true);
+					diyJuliaVaryPixelZFuncCb.setVisible(true);
+					diyJuliaVaryConstCFuncCb.setVisible(true);
+					diyJuliaVaryPixelConstOpZCCb.setVisible(true);
+					
+					diyJuliaVaryGenConstantCb.setVisible(true);					
 					diyJuliaGenRealFromLabel.setVisible(true);
 					diyJuliaGenRealFromTf.setVisible(true);
 					diyJuliaGenRealToLabel.setVisible(true);
@@ -4400,12 +4622,48 @@ class SierpinskiComboPanel extends JPanel {
 					diyJuliaGenImagToTf.setVisible(true);
 					diyJuliaGenImagJumpLabel.setVisible(true);
 					diyJuliaGenImagJumpCombo.setVisible(true);
-					diyJuliaGenBu.setVisible(true);
 					
+					diyJuliaVaryPixelPowerZCb.setVisible(true);
+					diyJuliaVaryIterCb.setVisible(true);
 					
-				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					diyJuliaVaryBoundaryCb.setVisible(true);
+					diyJuliaGenBoundaryFromLabel.setVisible(true);
+					diyJuliaGenBoundaryFromTf.setVisible(true);
+					diyJuliaGenBoundaryToLabel.setVisible(true);
+					diyJuliaGenBoundaryToTf.setVisible(true);
+					diyJuliaGenBoundaryJumpLabel.setVisible(true);	
+					diyJuliaGenBoundaryJumpCombo.setVisible(true);					
+					
+					diyJuliaVaryPixXCentrCb.setVisible(true);
+					diyJuliaVaryPixYCentrCb.setVisible(true);
+					
+					diyJuliaVaryScaleSizeCb.setVisible(true);
+					diyJuliaGenScaleSizeFromLabel.setVisible(true);
+					diyJuliaGenScaleSizeFromTf.setVisible(true);
+					diyJuliaGenScaleSizeToLabel.setVisible(true);
+					diyJuliaGenScaleSizeToTf.setVisible(true);
+					diyJuliaGenScaleSizeJumpLabel.setVisible(true);	
+					diyJuliaGenScaleSizeJumpCombo.setVisible(true);					
+					
+					diyJuliaGenBu.setVisible(true);					
+
+					diyJuliaRealTf.setEnabled(false);
+					diyJuliaImgTf.setEnabled(false);
+					diyJuliaKeepConstRb.setEnabled(false);
+					diyJuliaCreateConstRb.setEnabled(false);
+
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
 					doSetDiyJuliaGenCommand(false);
+
+					diyJuliaVaryColorCb.setVisible(false);
+					diyJuliaVaryPixXTranCb.setVisible(false);
+					diyJuliaVaryPixYTranCb.setVisible(false);
+					diyJuliaVaryIntraPixXYCb.setVisible(false);
+					diyJuliaVaryPixelZFuncCb.setVisible(false);
+					diyJuliaVaryConstCFuncCb.setVisible(false);
+					diyJuliaVaryPixelConstOpZCCb.setVisible(false);
 					
+					diyJuliaVaryGenConstantCb.setVisible(false);					
 					diyJuliaGenRealFromLabel.setVisible(false);
 					diyJuliaGenRealFromTf.setVisible(false);
 					diyJuliaGenRealToLabel.setVisible(false);
@@ -4418,11 +4676,224 @@ class SierpinskiComboPanel extends JPanel {
 					diyJuliaGenImagToTf.setVisible(false);
 					diyJuliaGenImagJumpLabel.setVisible(false);
 					diyJuliaGenImagJumpCombo.setVisible(false);
+					
+					diyJuliaVaryPixelPowerZCb.setVisible(false);
+					diyJuliaVaryIterCb.setVisible(false);
+					
+					diyJuliaVaryBoundaryCb.setVisible(false);
+					diyJuliaGenBoundaryFromLabel.setVisible(false);
+					diyJuliaGenBoundaryFromTf.setVisible(false);
+					diyJuliaGenBoundaryToLabel.setVisible(false);
+					diyJuliaGenBoundaryToTf.setVisible(false);
+					diyJuliaGenBoundaryJumpLabel.setVisible(false);	
+					diyJuliaGenBoundaryJumpCombo.setVisible(false);					
+					
+					diyJuliaVaryPixXCentrCb.setVisible(false);
+					diyJuliaVaryPixYCentrCb.setVisible(false);
+					
+					diyJuliaVaryScaleSizeCb.setVisible(false);
+					diyJuliaGenScaleSizeFromLabel.setVisible(false);
+					diyJuliaGenScaleSizeFromTf.setVisible(false);
+					diyJuliaGenScaleSizeToLabel.setVisible(false);
+					diyJuliaGenScaleSizeToTf.setVisible(false);
+					diyJuliaGenScaleSizeJumpLabel.setVisible(false);	
+					diyJuliaGenScaleSizeJumpCombo.setVisible(false);					
+					
 					diyJuliaGenBu.setVisible(false);
+					
+
+					diyJuliaRealTf.setEnabled(true);
+					diyJuliaImgTf.setEnabled(true);
+					diyJuliaKeepConstRb.setEnabled(true);
+					diyJuliaCreateConstRb.setEnabled(true);
 					
 				}
 			}
         });
+		
+		this.diyJuliaVaryColorCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyJuliaVaryColorCommand(true);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyJuliaVaryColorCommand(true);
+				}
+			}
+		});
+		
+		this.diyJuliaVaryPixXTranCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyJuliaVaryPixXTranCommand(true);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyJuliaVaryPixXTranCommand(true);
+				}
+			}
+		});
+
+		
+		this.diyJuliaVaryPixYTranCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyJuliaVaryPixYTranCommand(true);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyJuliaVaryPixYTranCommand(true);
+				}
+			}
+		});
+		
+
+
+		
+		this.diyJuliaVaryIntraPixXYCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyJuliaVaryIntraPixXYCommand(true);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyJuliaVaryIntraPixXYCommand(true);
+				}
+			}
+		});
+		
+
+		this.diyJuliaVaryPixelZFuncCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyJuliaVaryPixelZFuncCommand(true);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyJuliaVaryPixelZFuncCommand(true);
+				}
+			}
+		});
+		
+
+		this.diyJuliaVaryConstCFuncCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyJuliaVaryConstCFuncCommand(true);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyJuliaVaryConstCFuncCommand(true);
+				}
+			}
+		});
+
+		this.diyJuliaVaryPixelConstOpZCCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyJuliaVaryPixelConstOpZCCommand(true);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyJuliaVaryPixelConstOpZCCommand(true);
+				}
+			}
+		});
+		
+
+		this.diyJuliaVaryGenConstantCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyJuliaVaryGenConstantCommand(true);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyJuliaVaryGenConstantCommand(true);
+				}
+			}
+		});
+		
+		this.diyJuliaVaryPixelPowerZCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyJuliaVaryPixelPowerZCommand(true);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyJuliaVaryPixelPowerZCommand(true);
+				}
+			}
+		});
+
+		this.diyJuliaVaryIterCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyJuliaVaryIterCommand(true);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyJuliaVaryIterCommand(true);
+				}
+			}
+		});
+
+		this.diyJuliaVaryBoundaryCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyJuliaVaryBoundaryCommand(true);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyJuliaVaryBoundaryCommand(true);
+				}
+			}
+		});
+		
+		this.diyJuliaVaryPixXCentrCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyJuliaVaryPixXCentrCommand(true);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyJuliaVaryPixXCentrCommand(true);
+				}
+			}
+		});
+		
+		this.diyJuliaVaryPixYCentrCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyJuliaVaryPixYCentrCommand(true);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyJuliaVaryPixYCentrCommand(true);
+				}
+			}
+		});
+		
+
+		this.diyJuliaVaryScaleSizeCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyJuliaVaryScaleSizeCommand(true);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyJuliaVaryScaleSizeCommand(true);
+				}
+			}
+		});
+		
+
+		this.diyJuliaGenScaleSizeJumpCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>) e.getSource();
+				Double diyJuliaVaryScaleSizeComboOption = (Double) cb.getSelectedItem();
+				doSelectDiyJuliaVaryScaleSizeCombosCommand(diyJuliaVaryScaleSizeComboOption);
+			}
+		});
+		
+		this.diyJuliaGenBoundaryJumpCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>) e.getSource();
+				Double diyJuliaVaryBoundaryComboOption = (Double) cb.getSelectedItem();
+				doSelectDiyJuliaVaryBoundaryJumpCombosCommand(diyJuliaVaryBoundaryComboOption);
+			}
+		});
+		
 		
 		this.diyJuliaGenRealJumpCombo.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
@@ -4449,6 +4920,8 @@ class SierpinskiComboPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				doJuliaGenerateCommand();				
 			}});
+		//////////////////////////endsGeneratorListeners/////////////////////////
+		/////////////////////////////////////////////////////////////////////////
 	}
 
 	private void setupDIYMandelbrotListeners() {
@@ -5488,6 +5961,7 @@ public class SierpinskiCompositional extends JFrame {
 
 	private static final long serialVersionUID = 17584L;
 	private SierpinskiComboPanel topPanel = new SierpinskiComboPanel();
+//	private JScrollPane jsp1 = new JScrollPane(this.topPanel);
 
 	/**
 	 * @throws HeadlessException
@@ -5501,15 +5975,15 @@ public class SierpinskiCompositional extends JFrame {
 		Container cp;
 		cp = this.getContentPane();
 		cp.setLayout(new BorderLayout());
+//		this.jsp1.add(this.topPanel);
+		cp.add(this.topPanel);//(this.jsp1);// 
 
-		cp.add(this.topPanel);
-		
 		this.pack();
 		this.revalidate();
-	    this.repaint();
-	   	    
+		this.repaint();
+
 		this.setVisible(true);
-	    
+
 	}
 
 	/**
