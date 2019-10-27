@@ -1,0 +1,10 @@
+GalaxiesFractal
+z = (x + y*i ) ^ 2 + C
+C = -0.75 - 0.2 * i
+
+
+FrostFractal
+z = (x + y*i ) ^ 2 + C
+C = -0.7 + 0.35 * i
+
+Boundary	=	4	

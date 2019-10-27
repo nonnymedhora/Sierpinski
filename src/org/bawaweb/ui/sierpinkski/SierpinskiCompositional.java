@@ -2703,9 +2703,17 @@ class SierpinskiComboPanel extends JPanel {
 				String extraInfo = this.getExtraInfo();
 				String imgBaseInfo = this.getImgBaseInfo();
 				BufferedImage dataInfoImg = this.createStringImage(imgBaseInfo);
-				String imageFilePath = "images_gen\\" + this.getComboChoice() + "[" + extraInfo + "]" + " ____" + System.currentTimeMillis() + ".png";
+				
+				final String subDirName = "Julia_{(R)["+String.format("%.2f", this.diyJuliaGenRealFromVal)+"_to_"+String.format("%.2f", this.diyJuliaGenRealToVal)+"],(I)["+String.format("%.2f", this.diyJuliaGenImagFromVal)+"_to_"+String.format("%.2f", this.diyJuliaGenImagToVal)+"]"+/*System.currentTimeMillis()+*/"}";
+				File subDir = new File("images_gen\\"+subDirName);
+				if (!subDir.exists()) {
+					subDir.mkdir();
+				}
+				
+				String imageFilePath = "images_gen\\" + subDirName + "\\" /*+ this.getComboChoice()*/ + "[" + extraInfo + "]_" + System.currentTimeMillis() + ".png";
 				File outputfile = new File(imageFilePath);
-				String imageDetailFilePath = "images_gen\\" + this.getComboChoice() + "[" + extraInfo + "]" + "Detail ____" + System.currentTimeMillis() + ".png";
+				
+				String imageDetailFilePath = "images_gen\\" + subDirName + "\\" /*+ this.getComboChoice()*/ + "[" + extraInfo + "]_Detail_" + System.currentTimeMillis() + ".png";
 				File outputDetailfile = new File(imageDetailFilePath);
 
 				try {
@@ -4175,8 +4183,8 @@ class SierpinskiComboPanel extends JPanel {
 				if (this.keepConst) {
 					extra += "CONST";
 				} else {
-					extra += "Real(" + this.diyMandConstReal + "),";
-					extra += "Img(" + this.diyMandConstImg + ")";
+					extra += "Real(" + String.format("%.2f", this.diyMandConstReal) + "),";
+					extra += "Img(" + String.format("%.2f", this.diyMandConstImg) + ")";
 				}
 				break;
 			case diyJulia:
@@ -4191,8 +4199,8 @@ class SierpinskiComboPanel extends JPanel {
 				if (this.keepConst) {
 					extra += "CONST";
 				}else{
-					extra += "Real(" + this.diyJuliaConstReal + "),";
-					extra += "Img(" + this.diyJuliaConstImg + ")";
+					extra += "Real(" + String.format("%.2f", this.diyJuliaConstReal) + "),";
+					extra += "Img(" + String.format("%.2f", this.diyJuliaConstImg) + ")";
 				}
 				break;
 			case diyApollo:
