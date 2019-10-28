@@ -2495,6 +2495,7 @@ class SierpinskiComboPanel extends JPanel {
 	private void doSelectDiyJuliaScaleSizeCombosCommand(Double size) {
 		this.diyJuliaScaleSize = size;
 	}
+	///////////////////////////////////generator-methods///////////////////
 
 	private void doSelectDiyJuliaVaryColorCommand(boolean varyColor) {
 		this.diyJuliaVaryColor = varyColor;
@@ -2595,201 +2596,399 @@ class SierpinskiComboPanel extends JPanel {
 				return;
 			} 
 		}
-		FractalBase ff;
 		
-		boolean useCP = this.colorChoice.equals("ColorPalette");
-		boolean useBw = this.colorChoice.equals("BlackWhite");	
-		
-		boolean useSample = this.colorChoice.equals("SampleMix");
-		
-		String pxConstOp = this.pxConstOprnChoice;
-		String func = this.constFuncChoice;
-		String pxFunc = this.pxFuncChoice;
-		double rot = this.getRotation();
-		int diyJuliaLoopLt = this.juliaSize;
-		int diyJuliaP = this.getDiyJuliaPower();
-		boolean diyJuliaUseD = this.getDiyJuliaUseDiff();
-		int diyJuliaMaxIt = this.diyJuliaMaxIter;
-		double diyJuliaBd = this.diyJuliaBound;
-		double diyJXc = this.diyJuliaXC;
-		double diyJYc = this.diyJuliaYC;
-		double diyJScale = this.diyJuliaScaleSize;
-
-		String diyJApplyField = this.fieldLines;
-		boolean diyJApplyFatou = this.applyFatou;
-		boolean diyJApplyZSq = this.applyZSq;
-		boolean diyJApplyClassic = this.applyClassicJulia;
-		
-		
-		double jReal = this.diyJuliaGenRealFromVal;
-		double jImag = this.diyJuliaGenImagFromVal;
-		final double jRealTO = this.diyJuliaGenRealToVal;
-		final double jImagTO = this.diyJuliaGenImagToVal;
-		
-		final double realJumpVal = this.diyJuliaGenRealJumpVal;
-		final double imagJumpVal = this.diyJuliaGenImagJumpVal;
-		
-		final int realJumpCount = this.getJuliaGenRealOrImagJumpCount(jReal,jRealTO,realJumpVal);
-		final int imagJumpCount = this.getJuliaGenRealOrImagJumpCount(jImag,jImagTO,imagJumpVal);
-		
-		System.out.println("RealJumpCount == "+realJumpCount);
-		System.out.println("ImagJumpCount == "+imagJumpCount);
-		System.out.println("Total = "+(realJumpCount*imagJumpCount));
-
-		//////////////////////////////////////////st
-		double real = jReal;
-		double imag = jImag;
-		
-		final String subDirName = "Julia_{(R)["+String.format("%.2f", this.diyJuliaGenRealFromVal)+"_to_"+String.format("%.2f", this.diyJuliaGenRealToVal)+"],(I)["+String.format("%.2f", this.diyJuliaGenImagFromVal)+"_to_"+String.format("%.2f", this.diyJuliaGenImagToVal)+"]"+System.currentTimeMillis()+"}";
-		File subDir = new File("images_gen\\"+subDirName);
-		if (!subDir.exists()) {
-			subDir.mkdir();
+		if (this.diyJuliaVaryBoundary) {
+			System.out.println("in_doJuliaGenerateCommand_this.diyJuliaVaryBoundary=true");
+			try {
+				this.diyJuliaVaryBoundaryFromVal = Double.parseDouble(this.diyJuliaGenBoundaryFromTf.getText());
+				this.diyJuliaVaryBoundaryToVal = Double.parseDouble(this.diyJuliaGenBoundaryToTf.getText());
+			} catch (NumberFormatException | NullPointerException e2) {
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number", "Error - Not a Decimal",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			} 
 		}
 		
-		File subDirDetail = new File(subDir,"Detail");
-		if (!subDirDetail.exists()) {
-			subDirDetail.mkdir();
+		if (this.diyJuliaVaryScaleSize) {
+			System.out.println("in_doJuliaGenerateCommand_this.diyJuliaVaryScaleSize=true");
+			try {
+				this.diyJuliaVaryScaleSizeFromVal = Double.parseDouble(this.diyJuliaGenScaleSizeFromTf.getText());
+				this.diyJuliaVaryScaleSizeToVal = Double.parseDouble(this.diyJuliaGenScaleSizeToTf.getText());
+			} catch (NumberFormatException | NullPointerException e2) {
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number", "Error - Not a Decimal",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			} 
 		}
 		
+		System.out.println("getTotalVaryCount="+getTotalVaryCount());
 		
-		
-		for (int r = 0; r < realJumpCount; r++) {
-			for (int i = 0; i < imagJumpCount; i++) {
-//		for (double real = jReal; real <= jRealTO; real += realJumpVal) {
-//			for (double imag = jImag; imag <= jImagTO; imag += imagJumpVal) {
-				this.diyJuliaConstReal = real;
-				this.diyJuliaConstImg = imag;
-				
-				this.setDiyJuliaGenFormulaArea(pxFunc, diyJuliaP, diyJApplyFatou, diyJApplyZSq, diyJApplyClassic);		
-		
-				this.formulaArea.append("<br/>Constant = " + this.diyJuliaConstReal + " + (" + this.diyJuliaConstImg + " * i)</font>" + eol);
-				
-				ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, real, imag);
-
-				ff.setUseLyapunovExponent(this.diyJuliaUseLyapunovExponent);
-				ff.setPxXTransformation(this.pixXTransform);
-				ff.setPxYTransformation(this.pixYTransform);
-				ff.setPixXYOperation(this.pixIntraXYOperation);
-				ff.setReversePixelCalculation(this.invertPixelCalculation);
-				if (useCP) {
-					ff.setUseColorPalette(useCP);
-				} else {
-					if (useBw) {
-						ff.setUseBlackWhite(useBw);
-					} else {
-						if (useSample) {
-
-							this.setSampleColorMix(ff);
-						} else {
-
-							ff.setUseColorPalette(useCP);
-						}
-					}
-				}
-				ff.setPxConstOperation(pxConstOp);
-				ff.setUseFuncConst(func);
-				ff.setUseFuncPixel(pxFunc);
-				ff.setRotation(rot);
-				if (!diyJApplyField.equals("None")) {
-					if (diyJApplyFatou) {
-						ff.setFatou(diyJApplyFatou);
-						ff.setZSq(false);
-						ff.setClassicJulia(false);
-					} else if (diyJApplyZSq) {
-						ff.setZSq(diyJApplyZSq);
-						ff.setFatou(false);
-						ff.setClassicJulia(false);
-					} else if (diyJApplyClassic) {
-						ff.setClassicJulia(diyJApplyClassic);
-						ff.setFatou(false);
-						ff.setZSq(false);
-					}
-				} else {
-					ff.setFatou(false);
-					ff.setZSq(false);
-					ff.setClassicJulia(false);
-
-				}
-				ff.reset();
-				FractalBase.setMaxIter(diyJuliaMaxIt);
-				FractalBase.setAreaSize(diyJuliaLoopLt);
-				FractalBase.setxC(diyJXc);
-				FractalBase.setxC(diyJYc);
-				FractalBase.setScaleSize(diyJScale);
-				
-
-				this.addJuliaConstInfo(ff);
-				// --endDoStart
-
-				ff.setVisible(false);
-				
-				Graphics2D g = ff.getBufferedImage().createGraphics();
-				ff.paint(g);
-
-				this.setFractalImage(ff.getBufferedImage());
-
-				String extraInfo = this.getExtraInfo();
-				String imgBaseInfo = this.getImgBaseInfo();
-				BufferedImage dataInfoImg = this.createStringImage(imgBaseInfo);
-				
-				/*final String subDirName = "Julia_{(R)["+String.format("%.2f", this.diyJuliaGenRealFromVal)+"_to_"+String.format("%.2f", this.diyJuliaGenRealToVal)+"],(I)["+String.format("%.2f", this.diyJuliaGenImagFromVal)+"_to_"+String.format("%.2f", this.diyJuliaGenImagToVal)+"]"+System.currentTimeMillis()+"}";
-				File subDir = new File("images_gen\\"+subDirName);
-				if (!subDir.exists()) {
-					subDir.mkdir();
-				}*/
-				
-				String imageFilePath = "images_gen\\" + subDirName + "\\" /*+ this.getComboChoice()*/ + "[" + extraInfo + "]_" + System.currentTimeMillis() + ".png";
-				File outputfile = new File(imageFilePath);
-				
-				String imageDetailFilePath = "images_gen\\" + subDirName + "\\Detail\\" /*+ this.getComboChoice()*/ + "[" + extraInfo + "]_Detail_" + System.currentTimeMillis() + ".png";
-				File outputDetailfile = new File(imageDetailFilePath);
-
-				try {
-					ImageIO.write(ff.getBufferedImage(), "png", outputfile);
-					System.out.println("Generated File: "+imageFilePath);
-					
-					final BufferedImage joinedFractalDataImage = FractalBase.joinBufferedImage(ff.getBufferedImage(), dataInfoImg);
-					ImageIO.write(joinedFractalDataImage, "png", outputDetailfile);
-					System.out.println("Generated FileDetail: "+imageDetailFilePath);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				
-				this.formulaArea.setText("");
-
-				g.dispose();
-				ff.dispose();
-
-				/*//to ensure endImagLimit is called
-				if (imag + imagJumpVal > jImagTO && !imagToReached) {
-					imag = jImagTO - imagJumpVal;
-					imagToReached = true;
-				}*/
-				imag += imagJumpVal;
-
-			} // ends forImag
-			
-			/*//to ensure endRealLimit is called
-			if (real + realJumpVal > jRealTO && !realToReached) {
-				real = jRealTO - realJumpVal;
-				realToReached = true;
-			}*/
-			
-			real += realJumpVal;
-		}	//	ends forReal
-
-		ff = null;
-
-		System.out.println("Done JuliaGeneration");
-		JOptionPane.showMessageDialog(null, "Dir created: "+subDirName, "Julia Generated", JOptionPane.INFORMATION_MESSAGE);
-		//////////////////////////////////////////////
-		
-		
+//		
+//		///////////////////////removin4now///////////////////////////////
+//		FractalBase ff;
+//		
+//		boolean useCP = this.colorChoice.equals("ColorPalette");
+//		boolean useBw = this.colorChoice.equals("BlackWhite");	
+//		
+//		boolean useSample = this.colorChoice.equals("SampleMix");
+//		
+//		String pxConstOp = this.pxConstOprnChoice;
+//		String func = this.constFuncChoice;
+//		String pxFunc = this.pxFuncChoice;
+//		double rot = this.getRotation();
+//		int diyJuliaLoopLt = this.juliaSize;
+//		int diyJuliaP = this.getDiyJuliaPower();
+//		boolean diyJuliaUseD = this.getDiyJuliaUseDiff();
+//		int diyJuliaMaxIt = this.diyJuliaMaxIter;
+//		double diyJuliaBd = this.diyJuliaBound;
+//		double diyJXc = this.diyJuliaXC;
+//		double diyJYc = this.diyJuliaYC;
+//		double diyJScale = this.diyJuliaScaleSize;
+//
+//		String diyJApplyField = this.fieldLines;
+//		boolean diyJApplyFatou = this.applyFatou;
+//		boolean diyJApplyZSq = this.applyZSq;
+//		boolean diyJApplyClassic = this.applyClassicJulia;
+//		
+//		
+//		double jReal = this.diyJuliaGenRealFromVal;
+//		double jImag = this.diyJuliaGenImagFromVal;
+//		final double jRealTO = this.diyJuliaGenRealToVal;
+//		final double jImagTO = this.diyJuliaGenImagToVal;
+//		
+//		final double realJumpVal = this.diyJuliaGenRealJumpVal;
+//		final double imagJumpVal = this.diyJuliaGenImagJumpVal;
+//		
+//		final int realJumpCount = this.getJumpCount(jReal,jRealTO,realJumpVal);
+//		final int imagJumpCount = this.getJumpCount(jImag,jImagTO,imagJumpVal);
+//		
+//		System.out.println("RealJumpCount == "+realJumpCount);
+//		System.out.println("ImagJumpCount == "+imagJumpCount);
+//		System.out.println("Total = "+(realJumpCount*imagJumpCount));
+//
+//		//////////////////////////////////////////st
+//		double real = jReal;
+//		double imag = jImag;
+//		
+//		final String subDirName = "Julia_{(R)["+String.format("%.2f", this.diyJuliaGenRealFromVal)+"_to_"+String.format("%.2f", this.diyJuliaGenRealToVal)+"],(I)["+String.format("%.2f", this.diyJuliaGenImagFromVal)+"_to_"+String.format("%.2f", this.diyJuliaGenImagToVal)+"]"+System.currentTimeMillis()+"}";
+//		File subDir = new File("images_gen\\"+subDirName);
+//		if (!subDir.exists()) {
+//			subDir.mkdir();
+//		}
+//		
+//		File subDirDetail = new File(subDir,"Detail");
+//		if (!subDirDetail.exists()) {
+//			subDirDetail.mkdir();
+//		}
+//		
+//		
+//		
+//		for (int r = 0; r < realJumpCount; r++) {
+//			for (int i = 0; i < imagJumpCount; i++) {
+////		for (double real = jReal; real <= jRealTO; real += realJumpVal) {
+////			for (double imag = jImag; imag <= jImagTO; imag += imagJumpVal) {
+//				this.diyJuliaConstReal = real;
+//				this.diyJuliaConstImg = imag;
+//				
+//				this.setDiyJuliaGenFormulaArea(pxFunc, diyJuliaP, diyJApplyFatou, diyJApplyZSq, diyJApplyClassic);		
+//		
+//				this.formulaArea.append("<br/>Constant = " + this.diyJuliaConstReal + " + (" + this.diyJuliaConstImg + " * i)</font>" + eol);
+//				
+//				ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, real, imag);
+//
+//				ff.setUseLyapunovExponent(this.diyJuliaUseLyapunovExponent);
+//				ff.setPxXTransformation(this.pixXTransform);
+//				ff.setPxYTransformation(this.pixYTransform);
+//				ff.setPixXYOperation(this.pixIntraXYOperation);
+//				ff.setReversePixelCalculation(this.invertPixelCalculation);
+//				if (useCP) {
+//					ff.setUseColorPalette(useCP);
+//				} else {
+//					if (useBw) {
+//						ff.setUseBlackWhite(useBw);
+//					} else {
+//						if (useSample) {
+//
+//							this.setSampleColorMix(ff);
+//						} else {
+//
+//							ff.setUseColorPalette(useCP);
+//						}
+//					}
+//				}
+//				ff.setPxConstOperation(pxConstOp);
+//				ff.setUseFuncConst(func);
+//				ff.setUseFuncPixel(pxFunc);
+//				ff.setRotation(rot);
+//				if (!diyJApplyField.equals("None")) {
+//					if (diyJApplyFatou) {
+//						ff.setFatou(diyJApplyFatou);
+//						ff.setZSq(false);
+//						ff.setClassicJulia(false);
+//					} else if (diyJApplyZSq) {
+//						ff.setZSq(diyJApplyZSq);
+//						ff.setFatou(false);
+//						ff.setClassicJulia(false);
+//					} else if (diyJApplyClassic) {
+//						ff.setClassicJulia(diyJApplyClassic);
+//						ff.setFatou(false);
+//						ff.setZSq(false);
+//					}
+//				} else {
+//					ff.setFatou(false);
+//					ff.setZSq(false);
+//					ff.setClassicJulia(false);
+//
+//				}
+//				ff.reset();
+//				FractalBase.setMaxIter(diyJuliaMaxIt);
+//				FractalBase.setAreaSize(diyJuliaLoopLt);
+//				FractalBase.setxC(diyJXc);
+//				FractalBase.setxC(diyJYc);
+//				FractalBase.setScaleSize(diyJScale);
+//				
+//
+//				this.addJuliaConstInfo(ff);
+//				// --endDoStart
+//
+//				ff.setVisible(false);
+//				
+//				Graphics2D g = ff.getBufferedImage().createGraphics();
+//				ff.paint(g);
+//
+//				this.setFractalImage(ff.getBufferedImage());
+//
+//				String extraInfo = this.getExtraInfo();
+//				String imgBaseInfo = this.getImgBaseInfo();
+//				BufferedImage dataInfoImg = this.createStringImage(imgBaseInfo);
+//				
+//				/*final String subDirName = "Julia_{(R)["+String.format("%.2f", this.diyJuliaGenRealFromVal)+"_to_"+String.format("%.2f", this.diyJuliaGenRealToVal)+"],(I)["+String.format("%.2f", this.diyJuliaGenImagFromVal)+"_to_"+String.format("%.2f", this.diyJuliaGenImagToVal)+"]"+System.currentTimeMillis()+"}";
+//				File subDir = new File("images_gen\\"+subDirName);
+//				if (!subDir.exists()) {
+//					subDir.mkdir();
+//				}*/
+//				
+//				String imageFilePath = "images_gen\\" + subDirName + "\\" /*+ this.getComboChoice()*/ + "[" + extraInfo + "]_" + System.currentTimeMillis() + ".png";
+//				File outputfile = new File(imageFilePath);
+//				
+//				String imageDetailFilePath = "images_gen\\" + subDirName + "\\Detail\\" /*+ this.getComboChoice()*/ + "[" + extraInfo + "]_Detail_" + System.currentTimeMillis() + ".png";
+//				File outputDetailfile = new File(imageDetailFilePath);
+//
+//				try {
+//					ImageIO.write(ff.getBufferedImage(), "png", outputfile);
+//					System.out.println("Generated File: "+imageFilePath);
+//					
+//					final BufferedImage joinedFractalDataImage = FractalBase.joinBufferedImage(ff.getBufferedImage(), dataInfoImg);
+//					ImageIO.write(joinedFractalDataImage, "png", outputDetailfile);
+//					System.out.println("Generated FileDetail: "+imageDetailFilePath);
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//				
+//				this.formulaArea.setText("");
+//
+//				g.dispose();
+//				ff.dispose();
+//
+//				/*//to ensure endImagLimit is called
+//				if (imag + imagJumpVal > jImagTO && !imagToReached) {
+//					imag = jImagTO - imagJumpVal;
+//					imagToReached = true;
+//				}*/
+//				imag += imagJumpVal;
+//
+//			} // ends forImag
+//			
+//			/*//to ensure endRealLimit is called
+//			if (real + realJumpVal > jRealTO && !realToReached) {
+//				real = jRealTO - realJumpVal;
+//				realToReached = true;
+//			}*/
+//			
+//			real += realJumpVal;
+//		}	//	ends forReal
+//
+//		ff = null;
+//
+//		System.out.println("Done JuliaGeneration");
+//		JOptionPane.showMessageDialog(null, "Dir created: "+subDirName, "Julia Generated", JOptionPane.INFORMATION_MESSAGE);
+//		//////////////////////////////////////////////
+//		
+//		//////////////////////endsremovin4now/////////////////////////////
+//		
 		return;
 		
 	}
+	
+	private int getTotalVaryCount() {
+		return this.getVaryColorCount() * this.getVaryPixXTransCount() * this.getVaryPixYTransCount()
+				* this.getVaryIntraPixXYOpCount() * this.getVaryZFuncCount() * this.getVaryConstCFuncCount()
+				* this.getVaryPixelConstOpZCCount() * this.getVaryPowerCount() * this.getVaryConstantCount()
+				* this.getVaryIterCount() * this.getVaryBoundaryCount() * this.getVaryPixXCenterCount()
+				* this.getVaryPixYCenterCount() * this.getVaryScaleSizeCount();
 
-	private int getJuliaGenRealOrImagJumpCount(final double from, final double to, final double jumpVal) {
+	}
+
+	private int getVaryColorCount() {
+		if (this.diyJuliaVaryColorCb.isSelected()) {
+			int count = COLOR_OPTIONS.length - 1;
+			count += (COLOR_SAMPLE_STARTVAL_OPTIONS.length * COLOR_SAMPLE_DIV_OPTIONS.length);
+			System.out.println("In_getVaryColorCount count = " + count);
+			return count;
+		} else {
+			return 1;
+		}
+	}
+
+	private int getVaryPixXTransCount() {
+		if (this.diyJuliaVaryPixXTranCb.isSelected()) {
+			System.out.println("In_getVaryPixXTransCount count = "+PIX_TRANSFORM_OPTIONS.length);
+			return PIX_TRANSFORM_OPTIONS.length;
+		} else {
+			return 1;
+		}
+	}
+
+	private int getVaryPixYTransCount() {
+		if (this.diyJuliaVaryPixYTranCb.isSelected()) {
+			System.out.println("In_getVaryPixYTransCount count = "+PIX_TRANSFORM_OPTIONS.length);
+			return PIX_TRANSFORM_OPTIONS.length;
+		} else {
+			return 1;
+		}
+	}
+
+	private int getVaryIntraPixXYOpCount() {
+		if (this.diyJuliaVaryIntraPixXYCb.isSelected()) {
+			System.out.println("In_getVaryIntraPixXYOpCount count = "+PIX_INTRA_OPRNS.length);
+			return PIX_INTRA_OPRNS.length;
+		} else {
+			return 1;
+		}
+	}
+
+	private int getVaryZFuncCount() {
+		if (this.diyJuliaVaryPixelZFuncCb.isSelected()) {
+			System.out.println("In_getVaryZFuncCount count = "+FUNCTION_OPTIONS.length);
+			return FUNCTION_OPTIONS.length;
+		} else {
+			return 1;
+		}
+	}
+
+	private int getVaryConstCFuncCount() {
+		if (this.diyJuliaVaryConstCFuncCb.isSelected()) {
+			System.out.println("In_getVaryConstCFuncCount count = "+FUNCTION_OPTIONS.length);
+			return FUNCTION_OPTIONS.length;
+		} else {
+			return 1;
+		}
+	}
+
+	private int getVaryPixelConstOpZCCount() {
+		if (this.diyJuliaVaryPixelConstOpZCCb.isSelected()) {
+			System.out.println("In_getVaryPixelConstOpZCCount count = "+PIX_CONST_OPRNS.length);
+			return PIX_CONST_OPRNS.length;
+		} else {
+			return 1;
+		}
+	}
+
+	private int getVaryPowerCount() {
+		if (this.diyJuliaVaryPixelPowerZCb.isSelected()) {
+			System.out.println("In_getVaryPowerCount count = "+EXPONENTS.length);
+			return EXPONENTS.length;
+		} else {
+			return 1;
+		}
+	}
+
+	private int getVaryConstantCount() {
+		if (this.diyJuliaVaryGenConstantCb.isSelected()) {
+			System.out.println("In_getVaryConstantCount()  realCount= "+this.getVaryRealConstantCount()+" imagCount= "+this.getVaryImagConstantCount());
+			System.out.println("TotalCount realCount*imagCount= "+(this.getVaryRealConstantCount() * this.getVaryImagConstantCount()));
+			return (this.getVaryRealConstantCount() * this.getVaryImagConstantCount());
+		} else {
+			return 1;
+		}
+	}
+
+	private int getVaryRealConstantCount() {
+		if (this.diyJuliaVaryGenConstantCb.isSelected()) {
+			double realFrom = this.diyJuliaGenRealFromVal;
+			double realTo = this.diyJuliaGenRealToVal;
+			double realJump = this.diyJuliaGenRealJumpVal;
+			return this.getJumpCount(realFrom, realTo, realJump);
+		} else {
+			return 1;
+		}
+	}
+
+	private int getVaryImagConstantCount() {
+		if (this.diyJuliaVaryGenConstantCb.isSelected()) {
+			double imagFrom = this.diyJuliaGenImagFromVal;
+			double imagTo = this.diyJuliaGenImagToVal;
+			double imagJump = this.diyJuliaGenImagJumpVal;
+			return this.getJumpCount(imagFrom, imagTo, imagJump);
+		} else {
+			return 1;
+		}
+	}
+
+	private int getVaryIterCount() {
+		if (this.diyJuliaVaryIterCb.isSelected()) {
+			System.out.println("In_getVaryIterCount count = "+MAX_ITERATIONS.length);
+			return MAX_ITERATIONS.length;
+		} else {
+			return 1;
+		}
+	}
+
+	private int getVaryBoundaryCount() {
+		if (this.diyJuliaVaryBoundaryCb.isSelected()) {
+			double boundaryFrom = this.diyJuliaVaryBoundaryFromVal;
+			double boundaryTo = this.diyJuliaVaryBoundaryToVal;
+			double boundaryJump = this.diyJuliaVaryBoundaryJumpVal;
+			System.out.println("In_getVaryBoundaryCount count = "+this.getJumpCount(boundaryFrom, boundaryTo, boundaryJump));
+			return this.getJumpCount(boundaryFrom, boundaryTo, boundaryJump);
+		} else {
+			return 1;
+		}
+	}
+
+	private int getVaryPixXCenterCount() {
+		if (this.diyJuliaVaryPixXCentrCb.isSelected()) {
+			System.out.println("In_getVaryPixXCenterCount count = "+CENTER_XY.length);
+			return CENTER_XY.length;
+		} else {
+			return 1;
+		}
+	}
+
+	private int getVaryPixYCenterCount() {
+		if (this.diyJuliaVaryPixYCentrCb.isSelected()) {
+			System.out.println("In_getVaryPixYCenterCount count = "+CENTER_XY.length);
+			return CENTER_XY.length;
+		} else {
+			return 1;
+		}
+	}
+
+	private int getVaryScaleSizeCount() {
+		if (this.diyJuliaVaryScaleSizeCb.isSelected()) {
+			double scaleSizeFrom = this.diyJuliaVaryScaleSizeFromVal;
+			double scaleSizeTo = this.diyJuliaVaryScaleSizeToVal;
+			double scaleSizeJump = this.diyJuliaVaryScaleSizeJumpVal;
+			System.out.println("In_getVaryScaleSizeCount count = "+this.getJumpCount(scaleSizeFrom, scaleSizeTo, scaleSizeJump));
+			return this.getJumpCount(scaleSizeFrom, scaleSizeTo, scaleSizeJump);
+		} else {
+			return 1;
+		}
+	}
+
+	private int getJumpCount(final double from, final double to, final double jumpVal) {
 		assert (to > from);
 		int count = 0;
 		boolean reached = false;
@@ -2852,7 +3051,7 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.addDiyJuliaUseDiffInfo();
 	}
-	
+	///////////////////////////genertor-end///////////////////////////////////////
 	//-apollo
 	private void doSelectDiyApolloC1CombosCommand(Integer c1Option) {
 		this.diyApolloC1 = c1Option;
