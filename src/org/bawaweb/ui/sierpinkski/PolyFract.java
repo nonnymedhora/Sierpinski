@@ -264,7 +264,7 @@ System.out.println("type---->"+(type));	*/
 				}
 				
 				
-				if (this.isUseBlackWhite()) {
+				if (this.colorChoice.equals(BlackWhite)) {
 					int bOrW;
 					if (diff) {
 						bOrW = this.polyFract(zx,zy, max, this.power, this.compConst, bd);

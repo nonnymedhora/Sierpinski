@@ -449,7 +449,7 @@ public class Mandelbrot extends FractalBase {
 				ComplexNumber z0 = this.getZValue(func2Apply, pxFunc2Apply, x0, y0);	
 				
 
-				if (this.isUseBlackWhite()) {
+				if (this.colorChoice.equals(BlackWhite)) {
 					int bOrW = 0;
 					
 					if (diff) {

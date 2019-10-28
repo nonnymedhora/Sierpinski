@@ -317,7 +317,7 @@ public class Julia extends FractalBase {
 					}
 				}*/			
 				
-				if (this.isUseBlackWhite()) {
+				if (this.colorChoice.equals(BlackWhite)) {
 					int bOrW;
 					if (diff) {
 						bOrW = this.julia(z0, max, bd);
@@ -573,8 +573,9 @@ public class Julia extends FractalBase {
 //				final FractalBase frame = new Julia(2,true,-0.4,0.59); //new Julia(2,false,-1.29904,-0.75); //new Julia(2,0.279,true/*false*/);
 				//
 				final FractalBase frame = new Julia(2,"C3",true);//
-				frame.setUseColorPalette(false);
-				frame.setUseBlackWhite(true);
+				frame.setColorChoice("ComputeColor");
+				/*frame.setUseColorPalette(false);
+				frame.setUseBlackWhite(true);*/
 //				frame.setUseFuncConst("Log");
 				/*frame.setPower(2);
 				frame.setComplex(frame.c1);*/

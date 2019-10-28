@@ -178,7 +178,7 @@ public class ApollonianCircles extends FractalBase {
 		////////////////////////////////////////////////////
 		Color[] colors = null;
 
-		if (this.useColorPalette) {
+		if (this.colorChoice.equals(Color_Palette)) {
 			colors = ColorPalette;
 		} else {
 			colors = this.computeColorPalette();

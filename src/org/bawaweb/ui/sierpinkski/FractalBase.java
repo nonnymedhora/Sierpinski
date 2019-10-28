@@ -130,10 +130,20 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	protected String useFuncConst = "None";	//	others are "Sine", "Cosine", "Tangent", etc
 	
 	protected boolean running = false;
-
+/*
 	protected boolean useColorPalette = false;
 	protected boolean useBlackWhite = false;
-	protected boolean useComputeColor = !(this.isUseColorPalette() || this.isUseBlackWhite());
+	protected boolean useComputeColor = !(this.isUseColorPalette() || this.isUseBlackWhite());*/
+	
+	//COLOR_OPTIONS = new String[]{"BlackWhite","ColorPalette","ComputeColor"/*,"Random"*/,"SampleMix"};
+	
+	public final String Color_Palette = "ColorPalette";
+	public final String ComputeColor = "ComputeColor";
+	public final String SampleMix = "SampleMix";
+	public final String BlackWhite = "BlackWhite";
+	public final String Random_COLOR = "Random";
+	
+	protected String colorChoice=Color_Palette;
 	
 	protected double  bound = 2.0;
 	
@@ -572,7 +582,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		
 		for(int iter = 0; iter < divs.length; iter++) {
 			if (colorRGB % divs[iter] == 0) {
-				if (this.useColorPalette) {
+				if (this.colorChoice.equals(Color_Palette)) {
 					if (useD) {
 						color = ColorPalette[iter];
 					} else {
@@ -580,7 +590,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 					}
 				}/* else if(this.useBlackWhite){
 					
-				} */else {
+				} */else if(this.colorChoice.equals(ComputeColor)||this.colorChoice.equals(SampleMix)){
 
 					final int start = colStart[iter];
 					final int end = COLORMAXRGB - start;
@@ -600,7 +610,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 			
 		}
 		
-		if(this.useColorPalette){
+		if(this.colorChoice.equals(Color_Palette)){
 			if (useD) {
 				color = ColorPalette[4];
 			} else {
@@ -609,7 +619,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 			return color;
 		}
 		
-		if (!this.useColorPalette) {
+		if (this.colorChoice.equals(ComputeColor)||this.colorChoice.equals(SampleMix)) {
 			final int start = 200; // 255 is max.	0<=colorRGB<=255
 			final int end = COLORMAXRGB - start;
 			int num1 = correctColor(start, colorRGB, row, 1);
@@ -840,21 +850,21 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	public void setRunning(boolean run) {
 		this.running = run;
 	}
-	public boolean isUseBlackWhite() {
-		return this.useBlackWhite/*=true*/;
-	}
-
-	public void setUseBlackWhite(boolean blackWhite) {
-		this.useBlackWhite = blackWhite;
-	}
-
-	public boolean isUseColorPalette() {
-		return this.useColorPalette/*=false*/;
-	}
-
-	public void setUseColorPalette(boolean useCPalette) {
-		this.useColorPalette = useCPalette;
-	}
+//	public boolean isUseBlackWhite() {
+//		return this.useBlackWhite/*=true*/;
+//	}
+//
+//	public void setUseBlackWhite(boolean blackWhite) {
+//		this.useBlackWhite = blackWhite;
+//	}
+//
+//	public boolean isUseColorPalette() {
+//		return this.useColorPalette/*=false*/;
+//	}
+//
+//	public void setUseColorPalette(boolean useCPalette) {
+//		this.useColorPalette = useCPalette;
+//	}
 
 	/*//from-apollo
 	  final Color[] colors = { 
@@ -1132,6 +1142,14 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	
 	
 
+	public String getColorChoice() {
+		return this.colorChoice;
+	}
+
+	public void setColorChoice(String choice) {
+		this.colorChoice = choice;
+	}
+
 	public boolean isSavePixelInfo2File() {
 		return this.savePixelInfo2File;
 	}
@@ -1160,11 +1178,11 @@ public abstract class FractalBase extends JFrame implements Runnable {
 				fw.write("Z=(X,Y) => C Pixel_Constant+Operaion:\t" + this.pxConstOperation + NEW_LINE);
 				fw.write("Boundary:\t" + this.bound + NEW_LINE);
 
-				if (this.useColorPalette) {
+				if (this.colorChoice.equals(Color_Palette)) {
 					fw.write("ColorPalette" + NEW_LINE);
-				} else if (this.useBlackWhite) {
+				} else if (this.colorChoice.equals(BlackWhite)) {
 					fw.write("BlackWhite" + NEW_LINE);
-				} else if (this.useComputeColor) {
+				} else if (this.colorChoice.equals(ComputeColor)) {
 					fw.write("ColorComputed" + NEW_LINE);
 				}
 

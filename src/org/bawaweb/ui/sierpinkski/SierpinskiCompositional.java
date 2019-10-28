@@ -758,7 +758,9 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(this.formulaArea);
 
 		this.buStart.setEnabled(false);
-		this.add(this.buStart);		
+		this.add(this.buStart);	
+		
+		this.buSavePxStart.setVisible(false);
 
 		this.buSavePxStart.setEnabled(false);
 		this.add(this.buSavePxStart);
@@ -2830,6 +2832,81 @@ class SierpinskiComboPanel extends JPanel {
 				* this.getVaryPixYCenterCount() * this.getVaryScaleSizeCount();
 
 	}
+	
+	private void setColors(final Julia[] julias){
+		if (this.diyJuliaVaryColorCb.isSelected()) {
+			int colrCount = this.getVaryColorCount();
+			
+			int indexColor = 0;
+			for(int i = 0; i < julias.length; i++) {
+				if(indexColor+1>colrCount){
+					indexColor=0;
+				}
+			}
+			
+			
+		} else {
+			//dont-vary---all-same-color
+			//COLOR_OPTIONS = new String[]{"BlackWhite","ColorPalette","ComputeColor"/*,"Random"*/,"SampleMix"};
+			String colorChosen = this.colorChoice;
+			boolean useSample = colorChosen.equals("SampleMix");
+			for(Julia aJulia : julias) {
+				aJulia.setColorChoice(colorChosen);
+				if(useSample){
+					this.setSampleColorMix(aJulia);
+				}
+			}
+		}
+//			
+//	//////////////////removing--all-bleow---4--now/////////////////		
+//			
+//			boolean useCP = colorChosen.equals("ColorPalette");
+//			boolean useBw = colorChosen.equals("BlackWhite");
+////			boolean useSample = colorChosen.equals("SampleMix");
+//			/*FB
+//			 * protected boolean useColorPalette = false;
+//	protected boolean useBlackWhite = false;
+//	protected boolean useComputeColor = !(this.isUseColorPalette() || this.isUseBlackWhite());
+//	if (useCP) {
+//			ff.setUseColorPalette(useCP);
+//		} else {
+//			if (useBw) {
+//				ff.setUseBlackWhite(useBw);
+//			} else {
+//				if (useSample) {
+//					
+//					this.setSampleColorMix(ff);
+//				} else {
+//
+//					ff.setUseColorPalette(useCP);
+//				}
+//			}
+//		}
+//		
+//	*/
+//			for(Julia aJulia : julias) {
+//				if (useCP) {
+//					aJulia.setColorChoice(colorChosen);//	aJulia.setUseColorPalette(useCP);
+//				} else {
+//					if (useBw) {
+//						aJulia.setColorChoice(colorChosen);//	aJulia.setUseBlackWhite(useBw);
+//					} else {
+//						if (useSample) {
+//							
+//							this.setSampleColorMix(aJulia);
+//						} else {
+//
+//							aJulia.setColorChoice(colorChosen);//	aJulia.setUseColorPalette(useCP);
+//						}
+//					}
+//				}
+//				
+//			}
+//			
+//		}
+////////////////////removing--all-bleow---4--now/////////////////
+//		
+	}
 
 	private int getVaryColorCount() {
 		if (this.diyJuliaVaryColorCb.isSelected()) {
@@ -3186,8 +3263,8 @@ class SierpinskiComboPanel extends JPanel {
 		} else if (choice.equals(APOLLONIAN_CIRCLES)) {
 			ff = new ApollonianCircles(cChoices, mXt);
 			
-			boolean useCP = this.colorChoice.equals("ColorPalette");			
-			ff.setUseColorPalette(useCP);
+//			boolean useCP = this.colorChoice.equals("ColorPalette");			
+			ff.setColorChoice(this.colorChoice);//		ff.setUseColorPalette(useCP);
 		} else if (choice.equals(SAMPLE)) {
 			ff = new FractalBaseSample();
 		} else if (choice.equals(POLY)) {			
@@ -3233,7 +3310,7 @@ class SierpinskiComboPanel extends JPanel {
 		double c3 = this.diyApolloC3;
 		double mult = this.diyApolloMult;
 		ff = new ApollonianCircles(new double[] {c1,c2,c3}, mult);
-		ff.setUseColorPalette(useCP);
+		ff.setColorChoice(this.colorChoice);	//ff.setUseColorPalette(useCP);
 		return ff;
 	}
 	
@@ -3467,17 +3544,17 @@ class SierpinskiComboPanel extends JPanel {
 		ff.setReversePixelCalculation(this.invertPixelCalculation);
 		
 		if (useCP) {
-			ff.setUseColorPalette(useCP);
+			ff.setColorChoice(this.colorChoice);	//	ff.setUseColorPalette(useCP);
 		} else {
 			if (useBw) {
-				ff.setUseBlackWhite(useBw);
+				ff.setColorChoice(this.colorChoice);	//	ff.setUseBlackWhite(useBw);
 			} else {
 				if (useSample) {
-					
+					ff.setColorChoice(this.colorChoice);	//	
 					this.setSampleColorMix(ff);
 				} else {
 
-					ff.setUseColorPalette(useCP);
+					ff.setColorChoice(this.colorChoice);	//	ff.setUseColorPalette(useCP);
 				}
 			}
 		}
@@ -3624,17 +3701,17 @@ class SierpinskiComboPanel extends JPanel {
 		ff.setReversePixelCalculation(this.invertPixelCalculation);
 		
 		if (useCP) {
-			ff.setUseColorPalette(useCP);
+			ff.setColorChoice(this.colorChoice);	//	ff.setUseColorPalette(useCP);
 		} else {
 			if (useBw) {
-				ff.setUseBlackWhite(useBw);
+				ff.setColorChoice(this.colorChoice);	//	ff.setUseBlackWhite(useBw);
 			} else {
 				if (useSample) {
-
+					ff.setColorChoice(this.colorChoice);	//	
 					this.setSampleColorMix(ff);
 				} else {
 
-					ff.setUseColorPalette(useCP);
+					ff.setColorChoice(this.colorChoice);	//	ff.setUseColorPalette(useCP);
 				}
 			}
 		}
@@ -3706,17 +3783,17 @@ class SierpinskiComboPanel extends JPanel {
 		ff.setReversePixelCalculation(invertPix);
 		
 		if (useCP) {
-			ff.setUseColorPalette(useCP);
+			ff.setColorChoice(this.colorChoice);	//	ff.setUseColorPalette(useCP);
 		} else {
 			if (useBw) {
-				ff.setUseBlackWhite(useBw);
+				ff.setColorChoice(this.colorChoice);	//	ff.setUseBlackWhite(useBw);
 			} else {
 				if (useSample) {
-
+					ff.setColorChoice(this.colorChoice);	//	
 					this.setSampleColorMix(ff);
 				} else {
 
-					ff.setUseColorPalette(useCP);
+					ff.setColorChoice(this.colorChoice);	//	ff.setUseColorPalette(useCP);
 				}
 			}
 		}
@@ -3845,21 +3922,21 @@ class SierpinskiComboPanel extends JPanel {
 		ff.setReversePixelCalculation(this.invertPixelCalculation);
 		
 		if (useCP) {
-			ff.setUseColorPalette(useCP);
+			ff.setColorChoice(this.colorChoice);	//	ff.setUseColorPalette(useCP);
 		} else {
 			if (useBw) {
-				ff.setUseBlackWhite(useBw);
+				ff.setColorChoice(this.colorChoice);	//	ff.setUseBlackWhite(useBw);
 			} else {
 				if (useSample) {
-
+					ff.setColorChoice(this.colorChoice);	//	
 					this.setSampleColorMix(ff);
 				} else {
 
-					ff.setUseColorPalette(useCP);
+					ff.setColorChoice(this.colorChoice);	//	ff.setUseColorPalette(useCP);
 				}
 			}
 		}
-		ff.setUseBlackWhite(useBw);
+		/*ff.setUseBlackWhite(useBw);		removing_4_now*/
 		ff.setUseFuncConst(func);
 		ff.setUseFuncPixel(pxFunc);
 		ff.setRotation(rot);
@@ -3969,17 +4046,17 @@ class SierpinskiComboPanel extends JPanel {
 		ff.setReversePixelCalculation(invertPix);
 		
 		if (useCP) {
-			ff.setUseColorPalette(useCP);
+			ff.setColorChoice(this.colorChoice);	//	ff.setUseColorPalette(useCP);
 		} else {
 			if (useBw) {
-				ff.setUseBlackWhite(useBw);
+				ff.setColorChoice(this.colorChoice);	//	ff.setUseBlackWhite(useBw);
 			} else {
 				if (useSample) {
-
+					ff.setColorChoice(this.colorChoice);	//	
 					this.setSampleColorMix(ff);
 				} else {
 
-					ff.setUseColorPalette(useCP);
+					ff.setColorChoice(this.colorChoice);	//	ff.setUseColorPalette(useCP);
 				}
 			}
 		}
@@ -4668,11 +4745,11 @@ class SierpinskiComboPanel extends JPanel {
 				doStartCommand();				
 			}});
 		
-		this.buSavePxStart.addActionListener(new ActionListener() {
+		/*this.buSavePxStart.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				doSavePxStartCommand(true);				
-			}});
+			}});*/
 		
 		this.buClose.addActionListener(new ActionListener(){
 			@Override
