@@ -381,8 +381,8 @@ class SierpinskiComboPanel extends JPanel {
 	private final Integer[] diyMandMaxIterOptions = MAX_ITERATIONS;
 	private final JComboBox<Integer> diyMandMaxIterCombos = new JComboBox<Integer>(diyMandMaxIterOptions);
 	
-	private final Integer[] diyMandSizeOptions = AREA_SIZES;
-	private final JComboBox<Integer> diyMandSizeCombos = new JComboBox<Integer>(diyMandSizeOptions);
+	private final Integer[] diyMandAreaSizeOptions = AREA_SIZES;
+	private final JComboBox<Integer> diyMandAreaSizeCombos = new JComboBox<Integer>(diyMandAreaSizeOptions);
 	
 	private final Double[] diyMandBoundOptions = BOUNDARIES;
 	private final JComboBox<Double> diyMandBoundCombos = new JComboBox<Double>(diyMandBoundOptions);
@@ -439,8 +439,8 @@ class SierpinskiComboPanel extends JPanel {
 	private final Integer[] diyJuliaMaxIterOptions = MAX_ITERATIONS;
 	private final JComboBox<Integer> diyJuliaMaxIterCombos = new JComboBox<Integer>(diyJuliaMaxIterOptions);	
 
-	private final Integer[] diyJuliaSizeOptions = AREA_SIZES;
-	private final JComboBox<Integer> diyJuliaSizeCombos = new JComboBox<Integer>(diyJuliaSizeOptions);	
+	private final Integer[] diyJuliaAreaSizeOptions = AREA_SIZES;
+	private final JComboBox<Integer> diyJuliaAreaSizeCombos = new JComboBox<Integer>(diyJuliaAreaSizeOptions);	
 	
 	private final Double[] diyJuliaBoundOptions = BOUNDARIES;
 	private final JComboBox<Double> diyJuliaBoundCombos = new JComboBox<Double>(diyJuliaBoundOptions);
@@ -1044,7 +1044,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaPanel.add(this.diyJuliaMaxIterCombos);
 
 		this.diyJuliaPanel.add(new JLabel("Area: "));
-		this.diyJuliaPanel.add(this.diyJuliaSizeCombos);
+		this.diyJuliaPanel.add(this.diyJuliaAreaSizeCombos);
 		
 		this.diyJuliaPanel.add(new JLabel("Boundary: "));
 		this.diyJuliaPanel.add(this.diyJuliaBoundCombos);
@@ -1194,7 +1194,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyMandPanel.add(this.diyMandMaxIterCombos);
 
 		this.diyMandPanel.add(new JLabel("Area: "));
-		this.diyMandPanel.add(this.diyMandSizeCombos);
+		this.diyMandPanel.add(this.diyMandAreaSizeCombos);
 		
 		this.diyMandPanel.add(new JLabel("Boundary: "));
 		this.diyMandPanel.add(this.diyMandBoundCombos);
@@ -4611,7 +4611,7 @@ class SierpinskiComboPanel extends JPanel {
 				doSelectDiyJuliaMaxIterCombosCommand(diyJuliaMaxIterComboOption);				
 			}});
 		
-		this.diyJuliaSizeCombos.addActionListener(new ActionListener() {
+		this.diyJuliaAreaSizeCombos.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -4731,10 +4731,10 @@ class SierpinskiComboPanel extends JPanel {
 					
 					diyJuliaGenBu.setVisible(true);					
 
-					diyJuliaRealTf.setEnabled(false);
+					/*diyJuliaRealTf.setEnabled(false);
 					diyJuliaImgTf.setEnabled(false);
 					diyJuliaKeepConstRb.setEnabled(false);
-					diyJuliaCreateConstRb.setEnabled(false);
+					diyJuliaCreateConstRb.setEnabled(false);*/
 
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
 					doSetDiyJuliaGenCommand(false);
@@ -4786,10 +4786,10 @@ class SierpinskiComboPanel extends JPanel {
 					diyJuliaGenBu.setVisible(false);
 					
 
-					diyJuliaRealTf.setEnabled(true);
+					/*diyJuliaRealTf.setEnabled(true);
 					diyJuliaImgTf.setEnabled(true);
 					diyJuliaKeepConstRb.setEnabled(true);
-					diyJuliaCreateConstRb.setEnabled(true);
+					diyJuliaCreateConstRb.setEnabled(true);*/
 					
 				}
 			}
@@ -4800,8 +4800,24 @@ class SierpinskiComboPanel extends JPanel {
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyJuliaVaryColorCommand(true);
+					colorChoiceCombo.setEnabled(false);
+					colorSampleMixStartValsCombo.setEnabled(false);
+					colorSampleDivValsCombo.setEnabled(false);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
 					doSelectDiyJuliaVaryColorCommand(false);
+					colorChoiceCombo.setEnabled(true);
+
+					if (colorChoiceCombo.getSelectedItem().equals("SampleMix")) {
+						colorSampleMixStartValsCombo.setVisible(true);
+						colorSampleDivValsCombo.setVisible(true);
+						colorSampleMixStartValsCombo.setEnabled(true);
+						colorSampleDivValsCombo.setEnabled(true);
+					} else {
+						colorSampleMixStartValsCombo.setVisible(false);
+						colorSampleDivValsCombo.setVisible(false);
+						colorSampleMixStartValsCombo.setEnabled(false);
+						colorSampleDivValsCombo.setEnabled(false);
+					}
 				}
 			}
 		});
@@ -4810,9 +4826,11 @@ class SierpinskiComboPanel extends JPanel {
 			@Override
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
-					doSelectDiyJuliaVaryPixXTranCommand(true);
+					doSelectDiyJuliaVaryPixXTranCommand(true);					
+					pxXTransformCombo.setEnabled(false);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
 					doSelectDiyJuliaVaryPixXTranCommand(false);
+					pxXTransformCombo.setEnabled(true);
 				}
 			}
 		});
@@ -4823,8 +4841,10 @@ class SierpinskiComboPanel extends JPanel {
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyJuliaVaryPixYTranCommand(true);
+					pxYTransformCombo.setEnabled(false);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
 					doSelectDiyJuliaVaryPixYTranCommand(false);
+					pxYTransformCombo.setEnabled(true);
 				}
 			}
 		});
@@ -4835,8 +4855,10 @@ class SierpinskiComboPanel extends JPanel {
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyJuliaVaryIntraPixXYCommand(true);
+					intraPixOperationCombo.setEnabled(false);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
 					doSelectDiyJuliaVaryIntraPixXYCommand(false);
+					intraPixOperationCombo.setEnabled(true);
 				}
 			}
 		});
@@ -4847,8 +4869,10 @@ class SierpinskiComboPanel extends JPanel {
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyJuliaVaryPixelZFuncCommand(true);
+					pxFuncCombo.setEnabled(false);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
 					doSelectDiyJuliaVaryPixelZFuncCommand(false);
+					pxFuncCombo.setEnabled(true);
 				}
 			}
 		});
@@ -4859,8 +4883,10 @@ class SierpinskiComboPanel extends JPanel {
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyJuliaVaryConstCFuncCommand(true);
+					constFuncCombo.setEnabled(false);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
 					doSelectDiyJuliaVaryConstCFuncCommand(false);
+					constFuncCombo.setEnabled(true);
 				}
 			}
 		});
@@ -4870,8 +4896,10 @@ class SierpinskiComboPanel extends JPanel {
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyJuliaVaryPixelConstOpZCCommand(true);
+					pxConstOprnCombo.setEnabled(false);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
 					doSelectDiyJuliaVaryPixelConstOpZCCommand(false);
+					pxConstOprnCombo.setEnabled(true);
 				}
 			}
 		});
@@ -4894,6 +4922,13 @@ class SierpinskiComboPanel extends JPanel {
 					diyJuliaGenImagToTf.setEnabled(true);
 					diyJuliaGenImagJumpLabel.setEnabled(true);
 					diyJuliaGenImagJumpCombo.setEnabled(true);
+					
+					diyJuliaKeepConstRb.setEnabled(false);
+					diyJuliaCreateConstRb.setEnabled(false);
+					diyJuliaRealTf.setEnabled(false);
+					diyJuliaImgTf.setEnabled(false);
+					
+					
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
 					doSelectDiyJuliaVaryGenConstantCommand(false);
 					diyJuliaGenRealFromLabel.setEnabled(false);
@@ -4908,6 +4943,17 @@ class SierpinskiComboPanel extends JPanel {
 					diyJuliaGenImagToTf.setEnabled(false);
 					diyJuliaGenImagJumpLabel.setEnabled(false);
 					diyJuliaGenImagJumpCombo.setEnabled(false);
+					
+					diyJuliaKeepConstRb.setEnabled(true);
+					diyJuliaCreateConstRb.setEnabled(true);
+					if (diyJuliaKeepConstRb.isSelected()) {
+						diyJuliaRealTf.setEnabled(false);
+						diyJuliaImgTf.setEnabled(false);
+					}
+					if (diyJuliaCreateConstRb.isSelected()) {
+						diyJuliaRealTf.setEnabled(true);
+						diyJuliaImgTf.setEnabled(true);
+					}
 				}
 			}
 		});
@@ -4917,8 +4963,10 @@ class SierpinskiComboPanel extends JPanel {
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyJuliaVaryPixelPowerZCommand(true);
+					diyJuliaPowerCombos.setEnabled(false);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
 					doSelectDiyJuliaVaryPixelPowerZCommand(false);
+					diyJuliaPowerCombos.setEnabled(true);
 				}
 			}
 		});
@@ -4928,8 +4976,10 @@ class SierpinskiComboPanel extends JPanel {
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyJuliaVaryIterCommand(true);
+					diyJuliaMaxIterCombos.setEnabled(false);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
 					doSelectDiyJuliaVaryIterCommand(false);
+					diyJuliaMaxIterCombos.setEnabled(true);
 				}
 			}
 		});
@@ -4942,12 +4992,14 @@ class SierpinskiComboPanel extends JPanel {
 					diyJuliaGenBoundaryFromTf.setEnabled(true);
 					diyJuliaGenBoundaryToTf.setEnabled(true);
 					diyJuliaGenBoundaryJumpCombo.setEnabled(true);
+					diyJuliaBoundCombos.setEnabled(false);
 					
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
 					doSelectDiyJuliaVaryBoundaryCommand(false);
 					diyJuliaGenBoundaryFromTf.setEnabled(false);
 					diyJuliaGenBoundaryToTf.setEnabled(false);
 					diyJuliaGenBoundaryJumpCombo.setEnabled(false);
+					diyJuliaBoundCombos.setEnabled(true);
 				}
 			}
 		});
@@ -4957,8 +5009,10 @@ class SierpinskiComboPanel extends JPanel {
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyJuliaVaryPixXCentrCommand(true);
+					diyJuliaXCCombos.setEnabled(false);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
 					doSelectDiyJuliaVaryPixXCentrCommand(false);
+					diyJuliaXCCombos.setEnabled(true);
 				}
 			}
 		});
@@ -4968,8 +5022,10 @@ class SierpinskiComboPanel extends JPanel {
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyJuliaVaryPixYCentrCommand(true);
+					diyJuliaYCCombos.setEnabled(false);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
 					doSelectDiyJuliaVaryPixYCentrCommand(false);
+					diyJuliaYCCombos.setEnabled(true);
 				}
 			}
 		});
@@ -4983,12 +5039,14 @@ class SierpinskiComboPanel extends JPanel {
 					diyJuliaGenScaleSizeFromTf.setEnabled(true);
 					diyJuliaGenScaleSizeToTf.setEnabled(true);
 					diyJuliaGenScaleSizeJumpCombo.setEnabled(true);
+					diyJuliaScaleSizeCombos.setEnabled(false);
 					
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
 					doSelectDiyJuliaVaryScaleSizeCommand(false);
 					diyJuliaGenScaleSizeFromTf.setEnabled(false);
 					diyJuliaGenScaleSizeToTf.setEnabled(false);
 					diyJuliaGenScaleSizeJumpCombo.setEnabled(false);
+					diyJuliaScaleSizeCombos.setEnabled(true);
 				}
 			}
 		});
@@ -5111,7 +5169,7 @@ class SierpinskiComboPanel extends JPanel {
 				doSelectDiyMandMaxIterCombosCommand(diyMandMaxIterComboOption);				
 			}});
 		
-		this.diyMandSizeCombos.addActionListener(new ActionListener() {
+		this.diyMandAreaSizeCombos.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
 			@Override
 			public void actionPerformed(ActionEvent e) {
