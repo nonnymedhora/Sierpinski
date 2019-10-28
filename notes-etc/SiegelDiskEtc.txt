@@ -1,0 +1,17 @@
+Julia	SiegelDisk
+Constant
+Real	-0.391
+Imag	0.587
+
+Power		2
+Boundary		4
+
+--------------
+
+Julia	Groovy
+Constant
+Real		-0.725
+Imag		0.15
+
+Power		2
+Boundary		4

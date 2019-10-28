@@ -2236,6 +2236,7 @@ class SierpinskiComboPanel extends JPanel {
 				} catch (NumberFormatException  | NullPointerException e2) {
 					e2.printStackTrace();
 					JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number", "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+					return;
 				}
 			}
 			if (this.mUseDiff || this.mandUseDiffCb.isSelected()) {
@@ -2266,6 +2267,7 @@ class SierpinskiComboPanel extends JPanel {
 				} catch (NumberFormatException  | NullPointerException e2) {
 					e2.printStackTrace();
 					JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number", "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+					return;
 				}
 			}
 			if (this.diyJuliaUseDiff || this.diyJuliaUseDiffCb.isSelected()) {
@@ -2578,17 +2580,21 @@ class SierpinskiComboPanel extends JPanel {
 	
 	
 	private void doJuliaGenerateCommand() {
-
-		try {
-			this.diyJuliaGenRealFromVal = Double.parseDouble(this.diyJuliaGenRealFromTf.getText());
-			this.diyJuliaGenImagFromVal = Double.parseDouble(this.diyJuliaGenImagFromTf.getText());
-			this.diyJuliaGenRealToVal = Double.parseDouble(this.diyJuliaGenRealToTf.getText());
-			this.diyJuliaGenImagToVal = Double.parseDouble(this.diyJuliaGenImagToTf.getText());
-		} catch (NumberFormatException  | NullPointerException e2) {
-			e2.printStackTrace();
-			JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number", "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
-		}
 		
+		if (this.diyJuliaVaryConstant) {
+			System.out.println("in_doJuliaGenerateCommand_this.diyJuliaVaryConstant=true");
+			try {
+				this.diyJuliaGenRealFromVal = Double.parseDouble(this.diyJuliaGenRealFromTf.getText());
+				this.diyJuliaGenImagFromVal = Double.parseDouble(this.diyJuliaGenImagFromTf.getText());
+				this.diyJuliaGenRealToVal = Double.parseDouble(this.diyJuliaGenRealToTf.getText());
+				this.diyJuliaGenImagToVal = Double.parseDouble(this.diyJuliaGenImagToTf.getText());
+			} catch (NumberFormatException | NullPointerException e2) {
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number", "Error - Not a Decimal",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			} 
+		}
 		FractalBase ff;
 		
 		boolean useCP = this.colorChoice.equals("ColorPalette");
@@ -2623,12 +2629,34 @@ class SierpinskiComboPanel extends JPanel {
 		final double realJumpVal = this.diyJuliaGenRealJumpVal;
 		final double imagJumpVal = this.diyJuliaGenImagJumpVal;
 		
-		boolean realToReached = false;
-		boolean imagToReached = false;
+		final int realJumpCount = this.getJuliaGenRealOrImagJumpCount(jReal,jRealTO,realJumpVal);
+		final int imagJumpCount = this.getJuliaGenRealOrImagJumpCount(jImag,jImagTO,imagJumpVal);
 		
-				
-		for (double real = jReal; real <= jRealTO; real += realJumpVal) {
-			for (double imag = jImag; imag <= jImagTO; imag += imagJumpVal) {
+		System.out.println("RealJumpCount == "+realJumpCount);
+		System.out.println("ImagJumpCount == "+imagJumpCount);
+		System.out.println("Total = "+(realJumpCount*imagJumpCount));
+
+		//////////////////////////////////////////st
+		double real = jReal;
+		double imag = jImag;
+		
+		final String subDirName = "Julia_{(R)["+String.format("%.2f", this.diyJuliaGenRealFromVal)+"_to_"+String.format("%.2f", this.diyJuliaGenRealToVal)+"],(I)["+String.format("%.2f", this.diyJuliaGenImagFromVal)+"_to_"+String.format("%.2f", this.diyJuliaGenImagToVal)+"]"+System.currentTimeMillis()+"}";
+		File subDir = new File("images_gen\\"+subDirName);
+		if (!subDir.exists()) {
+			subDir.mkdir();
+		}
+		
+		File subDirDetail = new File(subDir,"Detail");
+		if (!subDirDetail.exists()) {
+			subDirDetail.mkdir();
+		}
+		
+		
+		
+		for (int r = 0; r < realJumpCount; r++) {
+			for (int i = 0; i < imagJumpCount; i++) {
+//		for (double real = jReal; real <= jRealTO; real += realJumpVal) {
+//			for (double imag = jImag; imag <= jImagTO; imag += imagJumpVal) {
 				this.diyJuliaConstReal = real;
 				this.diyJuliaConstImg = imag;
 				
@@ -2704,16 +2732,16 @@ class SierpinskiComboPanel extends JPanel {
 				String imgBaseInfo = this.getImgBaseInfo();
 				BufferedImage dataInfoImg = this.createStringImage(imgBaseInfo);
 				
-				final String subDirName = "Julia_{(R)["+String.format("%.2f", this.diyJuliaGenRealFromVal)+"_to_"+String.format("%.2f", this.diyJuliaGenRealToVal)+"],(I)["+String.format("%.2f", this.diyJuliaGenImagFromVal)+"_to_"+String.format("%.2f", this.diyJuliaGenImagToVal)+"]"+/*System.currentTimeMillis()+*/"}";
+				/*final String subDirName = "Julia_{(R)["+String.format("%.2f", this.diyJuliaGenRealFromVal)+"_to_"+String.format("%.2f", this.diyJuliaGenRealToVal)+"],(I)["+String.format("%.2f", this.diyJuliaGenImagFromVal)+"_to_"+String.format("%.2f", this.diyJuliaGenImagToVal)+"]"+System.currentTimeMillis()+"}";
 				File subDir = new File("images_gen\\"+subDirName);
 				if (!subDir.exists()) {
 					subDir.mkdir();
-				}
+				}*/
 				
 				String imageFilePath = "images_gen\\" + subDirName + "\\" /*+ this.getComboChoice()*/ + "[" + extraInfo + "]_" + System.currentTimeMillis() + ".png";
 				File outputfile = new File(imageFilePath);
 				
-				String imageDetailFilePath = "images_gen\\" + subDirName + "\\" /*+ this.getComboChoice()*/ + "[" + extraInfo + "]_Detail_" + System.currentTimeMillis() + ".png";
+				String imageDetailFilePath = "images_gen\\" + subDirName + "\\Detail\\" /*+ this.getComboChoice()*/ + "[" + extraInfo + "]_Detail_" + System.currentTimeMillis() + ".png";
 				File outputDetailfile = new File(imageDetailFilePath);
 
 				try {
@@ -2732,25 +2760,52 @@ class SierpinskiComboPanel extends JPanel {
 				g.dispose();
 				ff.dispose();
 
-				//to ensure endImagLimit is called
+				/*//to ensure endImagLimit is called
 				if (imag + imagJumpVal > jImagTO && !imagToReached) {
 					imag = jImagTO - imagJumpVal;
 					imagToReached = true;
-				}
+				}*/
+				imag += imagJumpVal;
 
 			} // ends forImag
 			
-			//to ensure endRealLimit is called
+			/*//to ensure endRealLimit is called
 			if (real + realJumpVal > jRealTO && !realToReached) {
 				real = jRealTO - realJumpVal;
 				realToReached = true;
-			}
+			}*/
+			
+			real += realJumpVal;
 		}	//	ends forReal
 
 		ff = null;
 
 		System.out.println("Done JuliaGeneration");
+		JOptionPane.showMessageDialog(null, "Dir created: "+subDirName, "Julia Generated", JOptionPane.INFORMATION_MESSAGE);
+		//////////////////////////////////////////////
 		
+		
+		return;
+		
+	}
+
+	private int getJuliaGenRealOrImagJumpCount(final double from, final double to, final double jumpVal) {
+		assert (to > from);
+		int count = 0;
+		boolean reached = false;
+
+		double start = from;
+
+		while (start <= to) {
+			if (start + jumpVal > to && !reached) {
+				reached = true;
+				start = to - jumpVal;
+			}
+			start += jumpVal;
+			count += 1;
+		}
+
+		return count;
 	}
 
 	private void setDiyJuliaGenFormulaArea(String pixelFunction, int juliaPower, boolean applyFatou, boolean applyZSq,
@@ -3197,6 +3252,7 @@ class SierpinskiComboPanel extends JPanel {
 			} catch (NumberFormatException  | NullPointerException e2) {
 				e2.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number", "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+				return null;
 			}
 			this.formulaArea.append("<br/>Constant = " + diyJuliaRealVal + " + (" + diyJuliaImgVal + " * i)</font>");
 			ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJuliaRealVal, diyJuliaImgVal);
@@ -3350,6 +3406,7 @@ class SierpinskiComboPanel extends JPanel {
 			} catch (NumberFormatException  | NullPointerException e2) {
 				e2.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number", "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+				return null;
 			}
 		}
 		
@@ -3698,6 +3755,7 @@ class SierpinskiComboPanel extends JPanel {
 			} catch (NumberFormatException  | NullPointerException e2) {
 				e2.printStackTrace();
 				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number", "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+				return null;
 			}
 		}
 
@@ -3958,6 +4016,7 @@ class SierpinskiComboPanel extends JPanel {
 					} catch (NumberFormatException  | NullPointerException e2) {
 						e2.printStackTrace();
 						JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number", "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+						return null;
 					}
 				}
 				baseInfo = addConstFuncInfo(baseInfo);
@@ -4029,6 +4088,7 @@ class SierpinskiComboPanel extends JPanel {
 					} catch (NumberFormatException  | NullPointerException e2) {
 						e2.printStackTrace();
 						JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number", "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+						return null;
 					}
 				}
 				
@@ -4061,6 +4121,7 @@ class SierpinskiComboPanel extends JPanel {
 						} catch (NumberFormatException  | NullPointerException e2) {
 							e2.printStackTrace();
 							JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number", "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+							return null;
 						}
 					} else {
 						baseInfo += "Real Value = " + this.diyJuliaConstReal + "," + eol;
@@ -4631,6 +4692,13 @@ class SierpinskiComboPanel extends JPanel {
 					diyJuliaGenImagJumpLabel.setVisible(true);
 					diyJuliaGenImagJumpCombo.setVisible(true);
 					
+					diyJuliaGenRealFromTf.setEnabled(false);
+					diyJuliaGenRealToTf.setEnabled(false);
+					diyJuliaGenRealJumpCombo.setEnabled(false);
+					diyJuliaGenImagFromTf.setEnabled(false);
+					diyJuliaGenImagToTf.setEnabled(false);
+					diyJuliaGenImagJumpCombo.setEnabled(false);
+					
 					diyJuliaVaryPixelPowerZCb.setVisible(true);
 					diyJuliaVaryIterCb.setVisible(true);
 					
@@ -4640,7 +4708,11 @@ class SierpinskiComboPanel extends JPanel {
 					diyJuliaGenBoundaryToLabel.setVisible(true);
 					diyJuliaGenBoundaryToTf.setVisible(true);
 					diyJuliaGenBoundaryJumpLabel.setVisible(true);	
-					diyJuliaGenBoundaryJumpCombo.setVisible(true);					
+					diyJuliaGenBoundaryJumpCombo.setVisible(true);
+					
+					diyJuliaGenBoundaryFromTf.setEnabled(false);
+					diyJuliaGenBoundaryToTf.setEnabled(false);
+					diyJuliaGenBoundaryJumpCombo.setEnabled(false);
 					
 					diyJuliaVaryPixXCentrCb.setVisible(true);
 					diyJuliaVaryPixYCentrCb.setVisible(true);
@@ -4651,7 +4723,11 @@ class SierpinskiComboPanel extends JPanel {
 					diyJuliaGenScaleSizeToLabel.setVisible(true);
 					diyJuliaGenScaleSizeToTf.setVisible(true);
 					diyJuliaGenScaleSizeJumpLabel.setVisible(true);	
-					diyJuliaGenScaleSizeJumpCombo.setVisible(true);					
+					diyJuliaGenScaleSizeJumpCombo.setVisible(true);
+					
+					diyJuliaGenScaleSizeFromTf.setEnabled(false);
+					diyJuliaGenScaleSizeToTf.setEnabled(false);
+					diyJuliaGenScaleSizeJumpCombo.setEnabled(false);					
 					
 					diyJuliaGenBu.setVisible(true);					
 
@@ -4725,7 +4801,7 @@ class SierpinskiComboPanel extends JPanel {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyJuliaVaryColorCommand(true);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
-					doSelectDiyJuliaVaryColorCommand(true);
+					doSelectDiyJuliaVaryColorCommand(false);
 				}
 			}
 		});
@@ -4736,7 +4812,7 @@ class SierpinskiComboPanel extends JPanel {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyJuliaVaryPixXTranCommand(true);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
-					doSelectDiyJuliaVaryPixXTranCommand(true);
+					doSelectDiyJuliaVaryPixXTranCommand(false);
 				}
 			}
 		});
@@ -4748,12 +4824,10 @@ class SierpinskiComboPanel extends JPanel {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyJuliaVaryPixYTranCommand(true);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
-					doSelectDiyJuliaVaryPixYTranCommand(true);
+					doSelectDiyJuliaVaryPixYTranCommand(false);
 				}
 			}
 		});
-		
-
 
 		
 		this.diyJuliaVaryIntraPixXYCb.addItemListener(new ItemListener() {
@@ -4762,7 +4836,7 @@ class SierpinskiComboPanel extends JPanel {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyJuliaVaryIntraPixXYCommand(true);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
-					doSelectDiyJuliaVaryIntraPixXYCommand(true);
+					doSelectDiyJuliaVaryIntraPixXYCommand(false);
 				}
 			}
 		});
@@ -4774,7 +4848,7 @@ class SierpinskiComboPanel extends JPanel {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyJuliaVaryPixelZFuncCommand(true);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
-					doSelectDiyJuliaVaryPixelZFuncCommand(true);
+					doSelectDiyJuliaVaryPixelZFuncCommand(false);
 				}
 			}
 		});
@@ -4786,7 +4860,7 @@ class SierpinskiComboPanel extends JPanel {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyJuliaVaryConstCFuncCommand(true);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
-					doSelectDiyJuliaVaryConstCFuncCommand(true);
+					doSelectDiyJuliaVaryConstCFuncCommand(false);
 				}
 			}
 		});
@@ -4797,7 +4871,7 @@ class SierpinskiComboPanel extends JPanel {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyJuliaVaryPixelConstOpZCCommand(true);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
-					doSelectDiyJuliaVaryPixelConstOpZCCommand(true);
+					doSelectDiyJuliaVaryPixelConstOpZCCommand(false);
 				}
 			}
 		});
@@ -4808,8 +4882,32 @@ class SierpinskiComboPanel extends JPanel {
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyJuliaVaryGenConstantCommand(true);
+					diyJuliaGenRealFromLabel.setEnabled(true);
+					diyJuliaGenRealFromTf.setEnabled(true);
+					diyJuliaGenRealToLabel.setEnabled(true);
+					diyJuliaGenRealToTf.setEnabled(true);
+					diyJuliaGenRealJumpLabel.setEnabled(true);
+					diyJuliaGenRealJumpCombo.setEnabled(true);
+					diyJuliaGenImagFromLabel.setEnabled(true);
+					diyJuliaGenImagFromTf.setEnabled(true);
+					diyJuliaGenImagToLabel.setEnabled(true);
+					diyJuliaGenImagToTf.setEnabled(true);
+					diyJuliaGenImagJumpLabel.setEnabled(true);
+					diyJuliaGenImagJumpCombo.setEnabled(true);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
-					doSelectDiyJuliaVaryGenConstantCommand(true);
+					doSelectDiyJuliaVaryGenConstantCommand(false);
+					diyJuliaGenRealFromLabel.setEnabled(false);
+					diyJuliaGenRealFromTf.setEnabled(false);
+					diyJuliaGenRealToLabel.setEnabled(false);
+					diyJuliaGenRealToTf.setEnabled(false);
+					diyJuliaGenRealJumpLabel.setEnabled(false);
+					diyJuliaGenRealJumpCombo.setEnabled(false);
+					diyJuliaGenImagFromLabel.setEnabled(false);
+					diyJuliaGenImagFromTf.setEnabled(false);
+					diyJuliaGenImagToLabel.setEnabled(false);
+					diyJuliaGenImagToTf.setEnabled(false);
+					diyJuliaGenImagJumpLabel.setEnabled(false);
+					diyJuliaGenImagJumpCombo.setEnabled(false);
 				}
 			}
 		});
@@ -4820,7 +4918,7 @@ class SierpinskiComboPanel extends JPanel {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyJuliaVaryPixelPowerZCommand(true);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
-					doSelectDiyJuliaVaryPixelPowerZCommand(true);
+					doSelectDiyJuliaVaryPixelPowerZCommand(false);
 				}
 			}
 		});
@@ -4831,7 +4929,7 @@ class SierpinskiComboPanel extends JPanel {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyJuliaVaryIterCommand(true);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
-					doSelectDiyJuliaVaryIterCommand(true);
+					doSelectDiyJuliaVaryIterCommand(false);
 				}
 			}
 		});
@@ -4841,8 +4939,15 @@ class SierpinskiComboPanel extends JPanel {
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyJuliaVaryBoundaryCommand(true);
+					diyJuliaGenBoundaryFromTf.setEnabled(true);
+					diyJuliaGenBoundaryToTf.setEnabled(true);
+					diyJuliaGenBoundaryJumpCombo.setEnabled(true);
+					
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
-					doSelectDiyJuliaVaryBoundaryCommand(true);
+					doSelectDiyJuliaVaryBoundaryCommand(false);
+					diyJuliaGenBoundaryFromTf.setEnabled(false);
+					diyJuliaGenBoundaryToTf.setEnabled(false);
+					diyJuliaGenBoundaryJumpCombo.setEnabled(false);
 				}
 			}
 		});
@@ -4853,7 +4958,7 @@ class SierpinskiComboPanel extends JPanel {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyJuliaVaryPixXCentrCommand(true);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
-					doSelectDiyJuliaVaryPixXCentrCommand(true);
+					doSelectDiyJuliaVaryPixXCentrCommand(false);
 				}
 			}
 		});
@@ -4864,7 +4969,7 @@ class SierpinskiComboPanel extends JPanel {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyJuliaVaryPixYCentrCommand(true);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
-					doSelectDiyJuliaVaryPixYCentrCommand(true);
+					doSelectDiyJuliaVaryPixYCentrCommand(false);
 				}
 			}
 		});
@@ -4875,8 +4980,15 @@ class SierpinskiComboPanel extends JPanel {
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyJuliaVaryScaleSizeCommand(true);
+					diyJuliaGenScaleSizeFromTf.setEnabled(true);
+					diyJuliaGenScaleSizeToTf.setEnabled(true);
+					diyJuliaGenScaleSizeJumpCombo.setEnabled(true);
+					
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
-					doSelectDiyJuliaVaryScaleSizeCommand(true);
+					doSelectDiyJuliaVaryScaleSizeCommand(false);
+					diyJuliaGenScaleSizeFromTf.setEnabled(false);
+					diyJuliaGenScaleSizeToTf.setEnabled(false);
+					diyJuliaGenScaleSizeJumpCombo.setEnabled(false);
 				}
 			}
 		});

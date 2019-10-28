@@ -1,0 +1,25 @@
+GalaxiesFractal
+z = (x + y*i ) ^ 2 + C
+C = -0.75 - 0.2 * i
+
+
+FrostFractal
+z = (x + y*i ) ^ 2 + C
+C = -0.7 + 0.35 * i
+
+Boundary	=	4	
+
+
+------------------------------------------
+
+		from	to	jump		f
+real		-0.80	-0.60	0.05		((0-0.6)-(0-0.8))/0.05=4	-0.8+(0.05*4)	-0.8+0.5+0
+
+imag		-0.4	0.4	0.1		(0.4-(-0.4))/0.1=8		
+
+
+generated	100 images
+			
+System.out.println("RealJumpCount == "+realJumpCount);5
+System.out.println("ImagJumpCount == "+imagJumpCount);10
+System.out.println("Total = "+(realJumpCount*imagJumpCount));50				
