@@ -785,11 +785,11 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		g.draw(myPath);
 	}
 	
-	public static int getMaxIter() {
+	public int getMaxIter() {
 		return maxIter;
 	}
 
-	public static void setMaxIter(int max) {
+	public void setMaxIter(int max) {
 		FractalBase.maxIter = max;
 	}
 
@@ -797,31 +797,31 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		return areaSize;
 	}
 
-	public static void setAreaSize(int ss) {
+	public void setAreaSize(int ss) {
 		FractalBase.areaSize = ss;
 	}
 
-	public static double getxC() {
+	public double getxC() {
 		return xC;
 	}
 
-	public static void setxC(double x) {
+	public void setxC(double x) {
 		FractalBase.xC = x;
 	}
 
-	public static double getyC() {
+	public double getyC() {
 		return yC;
 	}
 
-	public static void setyC(double y) {
+	public void setyC(double y) {
 		FractalBase.yC = y;
 	}
 
-	public static double getScaleSize() {
+	public double getScaleSize() {
 		return scaleSize;
 	}
 
-	public static void setScaleSize(double scaleSize) {
+	public void setScaleSize(double scaleSize) {
 		FractalBase.scaleSize = scaleSize;
 	}
 

@@ -205,6 +205,12 @@ public class Julia extends FractalBase {
 	public void setComplex(ComplexNumber complex) {
 		this.complex = complex;
 	}
+	/**
+	 * @param complex the complex to set
+	 */
+	public void setComplex(double realVal,double imagVal) {
+		this.complex = new ComplexNumber(realVal,imagVal);
+	}
 
 	/**
 	 * @return the useDiff
