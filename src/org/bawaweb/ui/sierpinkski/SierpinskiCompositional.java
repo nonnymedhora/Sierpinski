@@ -90,6 +90,9 @@ class SierpinskiComboPanel extends JPanel {
 	private static final Double[] BOUNDARIES = getBoundaryOptions();
 	private static final String[] COLOR_SAMPLE_STARTVAL_OPTIONS = new String[] {"POW2_4_200", "POW2_2_128", "POW2_2_F4", "POW3_3_243", "EQUAL_PARTS_40", "EQUAL_PARTS_50", "EQUAL_PARTS_25"};
 	private static final String[] COLOR_SAMPLE_DIV_OPTIONS = new String[] {"FRST_SIX_PRIMES", "FRST_SIX_ODDS", "FRST_SIX_FIBS"};
+	private static final int[][] COLOR_SAMPLE_STARTVAL_ARRAYS = new int[][] {FractalBase.POW2_4_200, FractalBase.POW2_2_128, FractalBase.POW2_2_F4, FractalBase.POW3_3_243, FractalBase.EQUAL_PARTS_40, FractalBase.EQUAL_PARTS_50, FractalBase.EQUAL_PARTS_25};
+	private static final int[][] COLOR_SAMPLE_DIV_ARRAYS = new int[][] {FractalBase.FRST_SIX_PRIMES, FractalBase.FRST_SIX_ODDS, FractalBase.FRST_SIX_FIBS};
+	
 	private static final String[] COLOR_OPTIONS = new String[]{"BlackWhite","ColorPalette","ComputeColor"/*,"Random"*/,"SampleMix"};
 	private static final String[] FUNCTION_OPTIONS = {"None","sine","cosine","tan","arcsine","arccosine","arctan","reciprocal", "reciprocalSquare","square","cube","exponent(e)","root",/*"cube-root",*/"log(e)"};
 	private static final String[] PIX_TRANSFORM_OPTIONS = {"none", "absolute", "absoluteSquare","reciprocal", "reciprocalSquare", "square", "cube","root", "exponent", "log(10)", "log(e)", "sine", "cosine", "tangent", "arcsine", "arccosine", "arctangent"};
@@ -107,6 +110,7 @@ class SierpinskiComboPanel extends JPanel {
 	
 	//	for	z+C, z-C, z*C, z/C, z^C
 	private static final String[] PIX_CONST_OPRNS = OPERATIONS;
+	//	for	x+iy,	x-iy,	x*iy,	x/iy
 	private static final String[] PIX_INTRA_OPRNS = OPERATIONS;
 	
 	// for Julia
@@ -2624,8 +2628,35 @@ class SierpinskiComboPanel extends JPanel {
 				return;
 			} 
 		}
+
+		System.out.println("getTotalVaryCount=" + this.getTotalVaryCount());
+		int totalVaryCount = this.getTotalVaryCount();
+		Julia[] julies = new Julia[totalVaryCount];
+		for(int i = 0; i < totalVaryCount;i++){
+			julies[i] = new Julia();
+			julies[i].setVisible(false);
+			this.setColors(julies[i],totalVaryCount,i);
+			this.setPxXTransformations(julies[i],totalVaryCount,i);
+			this.setPxYTransformations(julies[i],totalVaryCount,i);
+			this.setPixXYOperations(julies[i],totalVaryCount,i);
+			this.setUseFuncPixels(julies[i],totalVaryCount,i);
+			
+		}
+		/*this.setColors(julies);
+		this.setPxXTransformations(julies);
+		this.setPxYTransformations(julies);
+		this.setPixXYOperations(julies);*/
+		this.setUseFuncPixels(julies);
 		
-		System.out.println("getTotalVaryCount="+getTotalVaryCount());
+		/*for(int i = 0; i < julies.length; i++){
+			Julia aJ = julies[i];
+			System.out.println(aJ.getColorChoice());
+			
+			if(aJ.getColorChoice().equals("SampleMix")){
+				System.out.println(aJ.getRgbStartVals());
+				System.out.println(aJ.getRgbDivisors());
+			}
+		}*/
 		
 //		
 //		///////////////////////removin4now///////////////////////////////
@@ -2833,26 +2864,237 @@ class SierpinskiComboPanel extends JPanel {
 
 	}
 	
-	private void setColors(final Julia[] julias){
+	private void setUseFuncPixels(final Julia aJulia, final int totalJuliaCount, final int index) {
+		if (this.diyJuliaVaryPixelZFuncCb.isSelected()) {
+
+		} else {
+			aJulia.setUseFuncPixel(this.pxFuncChoice);
+		}
+	}
+	
+	
+	private void setUseFuncPixels(final Julia[] julias) {
+		System.out.println("setUseFuncPixels__julias__lenghIs" + julias.length);
+		if (this.diyJuliaVaryPixelZFuncCb.isSelected()) {
+			//FUNCTION_OPTIONS
+		} else {
+			for (Julia aJulia : julias) {
+				aJulia.setUseFuncPixel(this.pxFuncChoice);
+			}
+		}
+	}
+	
+	private void setPixXYOperations(final Julia[] julias) {
+		System.out.println("setPixXYOperations__julias__lenghIs" + julias.length);
+		if (this.diyJuliaVaryIntraPixXYCb.isSelected()) {
+			//PIX_INTRA_OPRNS
+			int pixYYOpsCount = this.getVaryIntraPixXYOpCount();
+
+			int indexCount = 0;
+		}
+	}
+	
+	private void setPixXYOperations(final Julia aJulia, final int totalJuliaCount, final int index) {
+		if (this.diyJuliaVaryIntraPixXYCb.isSelected()) {
+			// PIX_INTRA_OPRNS
+			int pixYYOpsCount = this.getVaryIntraPixXYOpCount();
+
+			int indexCount = 0;
+			for (int i = 0; i < totalJuliaCount; i++) {
+				System.out.println("i_is_" + i + " indexCount us " + indexCount);
+				if (indexCount + 1 > pixYYOpsCount - 1) {
+					indexCount = 0;
+				}
+				if (i == index) {
+					aJulia.setPixXYOperation(PIX_INTRA_OPRNS[indexCount]);
+					break;
+				}
+			}
+		} else {
+			aJulia.setPixXYOperation(this.pixIntraXYOperation);
+		}
+	}
+	
+	private void setPxYTransformations(final Julia aJulia, final int totalJuliaCount, final int index) {
+		if (this.diyJuliaVaryPixYTranCb.isSelected()) {
+			// PIY_TRANSFORM_OPTIONS
+			int pixYTransCount = this.getVaryPixYTransCount();
+
+			int indexCount = 0;
+			for (int i = 0; i < totalJuliaCount; i++) {
+				if (indexCount + 1 > pixYTransCount - 1) {
+					indexCount = 0;
+				}
+				if (i == index) {
+					aJulia.setPxYTransformation(PIX_TRANSFORM_OPTIONS[indexCount]);
+					break;
+				}
+				indexCount += 1;
+			}
+		} else {
+			aJulia.setPxYTransformation(this.pixYTransform);
+		}
+	}
+
+	private void setPxYTransformations(final Julia[] julias) {
+		System.out.println("setPxYTransformations__julias__lenghIs" + julias.length);
+		if (this.diyJuliaVaryPixYTranCb.isSelected()) {
+			// PIX_TRANSFORM_OPTIONS
+			int pixYTransCount = this.getVaryPixYTransCount();
+
+			int indexCount = 0;
+			for (int i = 0; i < julias.length; i++) {
+				System.out.println("i_is_" + i + " indexCount us " + indexCount);
+				Julia aJulia = julias[i];
+				if (indexCount + 1 > pixYTransCount-1) {
+					indexCount = 0;
+				}
+				aJulia.setPxYTransformation(PIX_TRANSFORM_OPTIONS[indexCount]);
+			}
+		} else {
+			for (Julia aJulia : julias) {
+				aJulia.setPxYTransformation(this.pixYTransform);
+			}
+		}
+
+	}
+	
+	private void setPxXTransformations(final Julia aJulia, final int totalJuliaCount, final int index) {
+		if (this.diyJuliaVaryPixXTranCb.isSelected()) {
+			// PIX_TRANSFORM_OPTIONS
+			int pixXTransCount = this.getVaryPixXTransCount();
+
+			int indexCount = 0;
+			for (int i = 0; i < totalJuliaCount; i++) {
+				if (indexCount + 1 > pixXTransCount - 1) {
+					indexCount = 0;
+				}
+				if (i == index) {
+					aJulia.setPxXTransformation(PIX_TRANSFORM_OPTIONS[indexCount]);
+					break;
+				}
+				indexCount += 1;
+			}
+		} else {
+			aJulia.setPxXTransformation(this.pixXTransform);
+		}
+	}
+	
+	private void setPxXTransformations(final Julia[] julias) {
+		System.out.println("setPxXTransformations__julias__lenghIs" + julias.length);
+		if (this.diyJuliaVaryPixXTranCb.isSelected()) {
+			// PIX_TRANSFORM_OPTIONS
+			int pixXTransCount = this.getVaryPixXTransCount();
+
+			int indexCount = 0;
+			for (int i = 0; i < julias.length; i++) {
+				System.out.println("i_is_" + i + " indexCount us " + indexCount);
+				Julia aJulia = julias[i];
+				if (indexCount + 1 > pixXTransCount-1) {
+					indexCount = 0;
+				}
+				aJulia.setPxXTransformation(PIX_TRANSFORM_OPTIONS[indexCount]);
+			}
+		} else {
+			for (Julia aJulia : julias) {
+				aJulia.setPxXTransformation(this.pixXTransform);
+			}
+		}
+
+	}
+	
+	
+	private void setColors(final Julia aJulia, final int totalJuliaCount, final int index) {
 		if (this.diyJuliaVaryColorCb.isSelected()) {
 			int colrCount = this.getVaryColorCount();
-			
+
 			int indexColor = 0;
-			for(int i = 0; i < julias.length; i++) {
-				if(indexColor+1>colrCount){
-					indexColor=0;
+			int sampStartVal = 0;
+			int sampDivVal = 0;
+			for (int i = 0; i < totalJuliaCount; i++) {
+				if (indexColor + 1 > colrCount - 1) {
+					indexColor = 0;
+				}
+				if (indexColor < COLOR_OPTIONS.length - 1) {
+					if (i == index) {
+						aJulia.setColorChoice(COLOR_OPTIONS[indexColor]);
+						break;
+					}
+				} else if (indexColor >= COLOR_OPTIONS.length - 1) {
+
+					if (sampStartVal >= COLOR_SAMPLE_STARTVAL_ARRAYS.length - 1) {
+						sampStartVal = 0;
+					}
+					if (sampDivVal >= COLOR_SAMPLE_DIV_ARRAYS.length - 1) {
+						sampDivVal = 0;
+					}
+
+					if (i == index) {
+						aJulia.setColorChoice(COLOR_OPTIONS[COLOR_OPTIONS.length - 1]);
+						aJulia.setRgbStartVals(COLOR_SAMPLE_STARTVAL_ARRAYS[sampStartVal]);
+						aJulia.setRgbDivisors(COLOR_SAMPLE_DIV_ARRAYS[sampDivVal]);
+						break;
+					}
+					sampStartVal += 1;
+					sampDivVal += 1;
 				}
 			}
 			
-			
 		} else {
-			//dont-vary---all-same-color
-			//COLOR_OPTIONS = new String[]{"BlackWhite","ColorPalette","ComputeColor"/*,"Random"*/,"SampleMix"};
+			String colorChosen = this.colorChoice;
+			aJulia.setColorChoice(colorChosen);
+			boolean useSample = colorChosen.equals("SampleMix");
+			if (useSample) {
+				this.setSampleColorMix(aJulia);
+			}
+		}
+	}
+	
+	private void setColors(final Julia[] julias) {
+		System.out.println("setColors__julias__lenghIs"+julias.length);
+		if (this.diyJuliaVaryColorCb.isSelected()) {
+			int colrCount = this.getVaryColorCount();
+
+			int indexColor = 0;			
+			int sampStartVal = 0;
+			int sampDivVal = 0;
+			
+			for (int i = 0; i < julias.length; i++) {
+				System.out.println("i_is_"+i+" indexColor us "+indexColor);
+				Julia aJulia = julias[i];
+				if (indexColor + 1 > colrCount-1) {
+					indexColor = 0;
+				}
+
+				if (indexColor >= COLOR_OPTIONS.length - 1) {
+					aJulia.setColorChoice(COLOR_OPTIONS[COLOR_OPTIONS.length - 1]);
+
+					if (sampStartVal >= COLOR_SAMPLE_STARTVAL_ARRAYS.length - 1) {
+						sampStartVal = 0;
+					}
+					if (sampDivVal >= COLOR_SAMPLE_DIV_ARRAYS.length - 1) {
+						sampDivVal = 0;
+					}
+					aJulia.setRgbStartVals(COLOR_SAMPLE_STARTVAL_ARRAYS[sampStartVal]);
+					aJulia.setRgbDivisors(COLOR_SAMPLE_DIV_ARRAYS[sampDivVal]);
+
+					sampStartVal += 1;
+					sampDivVal += 1;
+				} else {
+					aJulia.setColorChoice(COLOR_OPTIONS[indexColor]);
+				}
+				indexColor += 1;
+			}
+
+		} else {
+			// dont-vary---all-same-color
+			// COLOR_OPTIONS = new
+			// String[]{"BlackWhite","ColorPalette","ComputeColor"/*,"Random"*/,"SampleMix"};
 			String colorChosen = this.colorChoice;
 			boolean useSample = colorChosen.equals("SampleMix");
-			for(Julia aJulia : julias) {
+			for (Julia aJulia : julias) {
 				aJulia.setColorChoice(colorChosen);
-				if(useSample){
+				if (useSample) {
 					this.setSampleColorMix(aJulia);
 				}
 			}
@@ -3593,6 +3835,9 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.addJuliaConstInfo(ff);
 		ff.setSavePixelInfo2File(this.savePixelInfo2File);
+
+		ff.setVisible(true);
+		
 		return ff;
 	}
 
@@ -3772,6 +4017,9 @@ class SierpinskiComboPanel extends JPanel {
 		} else {
 			ff = new Julia(pow, comp, jBound, jUseD);
 		}
+		
+		
+		
 		ff.setUseLyapunovExponent(this.juliaUseLyapunovExponent);
 		ff.setPxXTransformation(this.pixXTransform);
 		ff.setPxYTransformation(this.pixYTransform);
@@ -3832,6 +4080,8 @@ class SierpinskiComboPanel extends JPanel {
 
 		this.addJuliaConstInfo(ff);
 		ff.setSavePixelInfo2File(this.savePixelInfo2File);
+		
+		ff.setVisible(true);
 		return ff;
 	}
 
@@ -4079,6 +4329,9 @@ class SierpinskiComboPanel extends JPanel {
 	private void startFractals(final FractalBase ff) {
 //		this.startProgress();
 		final FractalBase frame = ff;
+
+		ff.setVisible(true);
+		
 		frame.setTitle(ff.getFractalShapeTitle());
 		
 		if (!(this.diyApolloRb.isSelected() || this.getComboChoice().equals(APOLLONIAN_CIRCLES))) {

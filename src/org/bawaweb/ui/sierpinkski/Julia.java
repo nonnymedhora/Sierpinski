@@ -56,6 +56,7 @@ public class Julia extends FractalBase {
 	
 	public Julia() {
 		super();
+		this.setVisible(false);
 	}
 
 	/**

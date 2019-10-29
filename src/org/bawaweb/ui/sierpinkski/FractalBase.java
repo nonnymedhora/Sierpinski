@@ -635,7 +635,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		return color;
 	}
 
-	private int[] getRgbStartVals() {
+	int[] getRgbStartVals() {
 		return this.rgbStartVals;// POW2_4_200;
 	}
 
@@ -643,7 +643,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		this.rgbStartVals = startVals;
 	}
 
-	private int[] getRgbDivisors() {
+	int[] getRgbDivisors() {
 		return this.rgbDivisors;// FRST_SIX_PRIMES;
 	}
 
