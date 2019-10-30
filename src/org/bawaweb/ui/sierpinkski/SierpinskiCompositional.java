@@ -877,15 +877,15 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private static Double[] getConstantJumpOptions() {
-		return new Double[] { 0.0001, 0.001, 0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1.0 };
+		return new Double[] { 0.0001, 0.001, 0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.25, 2.5, 2.75, 3.0, 3.5, 3.75, 4.0, 4.5, 5.0 };
 	}
 	
 	private static Double[] getBoundaryJumpOptions(){
-		return new Double[] { 0.0001, 0.001, 0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1.0, 1.5 };
+		return new Double[] { 0.0001, 0.001, 0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.25, 2.5, 2.75, 3.0, 3.5, 3.75, 4.0, 4.5, 5.0 };
 	}
 	
 	private static Double[] getScaleSizeJumpOptions(){
-		return new Double[] { 0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 2.5 };
+		return new Double[] { 0.25, 0.5, 0.75, 1.0, 1.5, 1.75, 2.0, 2.25, 2.5, 2.75, 3.0, 3.5, 3.75, 4.0, 4.5, 5.0 };
 	}
 
 	private static Double[] getBoundaryOptions() {
@@ -2675,7 +2675,7 @@ class SierpinskiComboPanel extends JPanel {
 		int totalVaryCount = this.getTotalVaryCount();//55;//
 
 
-		if(totalVaryCount>50){
+		if (totalVaryCount > 150) {
 			int ans = JOptionPane.showConfirmDialog(null, "Are You Sure needs to generate\n"+totalVaryCount+"images", "Are_You_Sure",
 					JOptionPane.YES_NO_CANCEL_OPTION);
 			if(ans!=JOptionPane.YES_OPTION){
@@ -2736,16 +2736,19 @@ class SierpinskiComboPanel extends JPanel {
 		Julia[] julies = new Julia[totalVaryCount];
 		
 		for (int i = 0; i < totalVaryCount; i++) {
+			// initialize
 			julies[i] = new Julia();
-			julies[i].setVisible(false);
-			
+			julies[i].setVisible(false); // make invisible
+
 			this.setColors(julies[i], totalVaryCount, i, varyColorCount);
-			this.setPxXTransformations(julies[i], totalVaryCount, i, varyPixXTransCount);
-			this.setPxYTransformations(julies[i], totalVaryCount, i, varyPixYTransCount);
-			this.setPixXYOperations(julies[i], totalVaryCount, i, varyIntraPixXYOpCount);
+			this.setUseDiff_InvertPixels(julies[i], totalVaryCount, i);
+
+			String pixXTr = this.setPxXTransformations(julies[i], totalVaryCount, i, varyPixXTransCount);
+			String pixYTr = this.setPxYTransformations(julies[i], totalVaryCount, i, varyPixYTransCount);
+			String pixIntraXYOp = this.setPixXYOperations(julies[i], totalVaryCount, i, varyIntraPixXYOpCount);
 			String pxFunc = this.setUseFuncPixels(julies[i], totalVaryCount, i, varyZFuncCount);
 			this.setUseConstFunctions(julies[i], totalVaryCount, i, varyConstCFuncCount);
-			this.setPxConstOperations(julies[i], totalVaryCount, i, varyPixelConstOpZCCount);
+			String pixConstOp = this.setPxConstOperations(julies[i], totalVaryCount, i, varyPixelConstOpZCCount);
 
 			if (varyConst) {
 				double realVal = this.setRealConstant(julies[i], totalVaryCount, i, jRealFrom, jRealTO, realJumpVal, varyRealConstantCount);
@@ -2757,11 +2760,9 @@ class SierpinskiComboPanel extends JPanel {
 				// grabit_4__GenerateConstant
 				julies[i].setComplex(this.diyJuliaConstReal, this.diyJuliaConstImg);
 			}
-			
-			int diyJuliaP=this.setPowers(julies[i], totalVaryCount, i, varyPowerCount);
-			this.setLoopLimits(julies[i], totalVaryCount, i);
 
-			julies[i].setReversePixelCalculation(this.invertPixelCalculation);
+			int diyJuliaP = this.setPowers(julies[i], totalVaryCount, i, varyPowerCount);
+			this.setLoopLimits(julies[i], totalVaryCount, i);
 
 			julies[i].setRotation(this.rotation);
 
@@ -2785,6 +2786,7 @@ class SierpinskiComboPanel extends JPanel {
 				julies[i].setClassicJulia(false);
 
 			}
+
 			julies[i].setUseLyapunovExponent(this.diyJuliaUseLyapunovExponent);
 			julies[i].setAreaSize(this.juliaSize);
 
@@ -2793,24 +2795,11 @@ class SierpinskiComboPanel extends JPanel {
 
 			this.setScaleSizes(julies[i], totalVaryCount, i, scaleSizeFrom, scaleSizeTo, scaleSizeJump, varyScaleSizeCount);
 			this.setBoundarys(julies[i], totalVaryCount, i, boundaryFrom, boundaryTo, boundaryJump, varyBoundaryCount);
-			this.setDiyJuliaGenFormulaArea(pxFunc, diyJuliaP, diyJApplyFatou, diyJApplyZSq, diyJApplyClassic, pixXTransform, pixYTransform, pixIntraXYOperation,  pxConstOprnChoice);
 			
-			this.formulaArea.append("<br/>Constant = " + this.diyJuliaConstReal + " + (" + this.diyJuliaConstImg + " * i)</font>" + eol);
-//			
-			this.addJuliaConstInfo(julies[i]);
+			///////	reassign 2 UI -	4 formulaArea
+			this.constFuncChoice = julies[i].getUseFuncConst();
 
-			julies[i].reset();
-			
-			
-			///done1---now-to-imging
-			julies[i].setVisible(false);
-			
-			Graphics2D g = julies[i].getBufferedImage().createGraphics();
-			julies[i].paint(g);
-
-			this.setFractalImage(julies[i].getBufferedImage());
-			
-			//4_getExtraInfo
+			// 4_getExtraInfo
 			this.diyJuliaPower = julies[i].getPower();
 			this.diyJuliaBound = julies[i].getBound();
 			this.diyJuliaMaxIter = julies[i].getMaxIter();
@@ -2818,14 +2807,28 @@ class SierpinskiComboPanel extends JPanel {
 			this.diyJuliaYC = julies[i].getyC();
 			this.diyJuliaScaleSize = julies[i].getScaleSize();
 
-			String extraInfo = this.getExtraInfo();
-			//4_img_Base_Info
-			this.colorChoice=julies[i].getColorChoice();
-			if(this.colorChoice.equals("SampleMix")){
+			// 4_img_Base_Info
+			this.colorChoice = julies[i].getColorChoice();
+			if (this.colorChoice.equals("SampleMix")) {
 				this.setSampleColorMix(julies[i]);
 			}
-			this.setDiyJuliaUseDiff(julies[i].isUseDiff());
-			this.constFuncChoice=julies[i].getUseFuncConst();
+			
+			String extraInfo = this.getExtraInfo();
+			
+			this.setDiyJuliaGenFormulaArea(pxFunc, diyJuliaP, diyJApplyFatou, diyJApplyZSq, diyJApplyClassic, pixXTr, pixYTr, pixIntraXYOp,  pixConstOp);			
+			this.formulaArea.append("<br/>Constant = " + this.diyJuliaConstReal + " + (" + this.diyJuliaConstImg + " * i)</font>" + eol);
+//			
+			this.addJuliaConstInfo(julies[i]);
+
+			julies[i].reset();
+			
+			
+			///done1---now-to-imaging
+			
+			Graphics2D g = julies[i].getBufferedImage().createGraphics();
+			julies[i].paint(g);
+
+			this.setFractalImage(julies[i].getBufferedImage());
 			
 			String imgBaseInfo = this.getImgBaseInfo();
 			BufferedImage dataInfoImg = this.createStringImage(imgBaseInfo);
@@ -3060,7 +3063,10 @@ class SierpinskiComboPanel extends JPanel {
 				* this.getVaryIntraPixXYOpCount() * this.getVaryZFuncCount() * this.getVaryConstCFuncCount()
 				* this.getVaryPixelConstOpZCCount() * this.getVaryPowerCount() * this.getVaryConstantCount()
 				* this.getVaryIterCount() * this.getVaryBoundaryCount() * this.getVaryPixXCenterCount()
-				* this.getVaryPixYCenterCount() * this.getVaryScaleSizeCount();
+				* this.getVaryPixYCenterCount() * this.getVaryScaleSizeCount()
+//				*	2	//	for	detailData
+				*	2	//	for	useDiff
+				*	2;	//	for	invertPix		
 
 	}
 
@@ -3070,7 +3076,7 @@ class SierpinskiComboPanel extends JPanel {
 		if (this.diyJuliaVaryConstant && this.diyJuliaVaryGenConstantCb.isSelected()) {
 			double start = from;
 			int indexCount = 0;
-			for(int r = 0; r < totalJuliaCount;r++){
+			for (int r = 0; r < totalJuliaCount; r++, indexCount++) {
 				if (indexCount + 1 > realConstantCount - 1) {
 					indexCount = 0;
 					start = from;
@@ -3090,7 +3096,7 @@ class SierpinskiComboPanel extends JPanel {
 		if (this.diyJuliaVaryConstant && this.diyJuliaVaryGenConstantCb.isSelected()) {
 			double start = from;
 			int indexCount = 0;
-			for(int r = 0; r < totalJuliaCount;r++){
+			for (int r = 0; r < totalJuliaCount; r++, indexCount++) {
 				if (indexCount + 1 > imagConstantCount - 1) {
 					indexCount = 0;
 					start = from;
@@ -3110,7 +3116,7 @@ class SierpinskiComboPanel extends JPanel {
 		if (this.diyJuliaVaryBoundaryCb.isSelected() && this.diyJuliaVaryBoundary) {
 			double start = from;
 			int indexCount = 0;
-			for (int r = 0; r < totalJuliaCount; r++) {
+			for (int r = 0; r < totalJuliaCount; r++, indexCount++) {
 				if (indexCount + 1 > boundarycount - 1) {
 					indexCount = 0;
 					start = from;
@@ -3131,7 +3137,7 @@ class SierpinskiComboPanel extends JPanel {
 		if (this.diyJuliaVaryScaleSizeCb.isSelected() && this.diyJuliaVaryScaleSize) {
 			double start = from;
 			int indexCount = 0;
-			for (int r = 0; r < totalJuliaCount; r++) {
+			for (int r = 0; r < totalJuliaCount; r++, indexCount++) {
 				if (indexCount + 1 > scaleSizecount - 1) {
 					indexCount = 0;
 					start = from;
@@ -3168,7 +3174,7 @@ class SierpinskiComboPanel extends JPanel {
 			//CENTER_XY
 			/*int yCcount = this.getVaryPixYCenterCount();*/
 			int indexCount = 0;
-			for (int i = 0; i < totalJuliaCount; i++) {
+			for (int i = 0; i < totalJuliaCount; i++, indexCount++) {
 				if (indexCount + 1 > yCcount - 1) {
 					indexCount = 0;
 				}
@@ -3188,7 +3194,7 @@ class SierpinskiComboPanel extends JPanel {
 			//CENTER_XY
 			/*int xCcount = this.getVaryPixXCenterCount();*/
 			int indexCount = 0;
-			for (int i = 0; i < totalJuliaCount; i++) {
+			for (int i = 0; i < totalJuliaCount; i++, indexCount++) {
 				if (indexCount + 1 > xCcount - 1) {
 					indexCount = 0;
 				}
@@ -3209,7 +3215,7 @@ class SierpinskiComboPanel extends JPanel {
 			//EXPONENTS
 			int itersCount = this.getVaryIterCount();
 			int indexCount = 0;
-			for (int i = 0; i < totalJuliaCount; i++) {
+			for (int i = 0; i < totalJuliaCount; i++, indexCount++) {
 				if (indexCount + 1 > itersCount - 1) {
 					indexCount = 0;
 				}
@@ -3229,7 +3235,7 @@ class SierpinskiComboPanel extends JPanel {
 			//EXPONENTS
 			/*int powersCount = this.getVaryPowerCount();*/
 			int indexCount = 0;
-			for (int i = 0; i < totalJuliaCount; i++) {
+			for (int i = 0; i < totalJuliaCount; i++, indexCount++) {
 				if (indexCount + 1 > powersCount - 1) {
 					indexCount = 0;
 				}
@@ -3250,7 +3256,7 @@ class SierpinskiComboPanel extends JPanel {
 			//FUNCTION_OPTIONS
 			/*int pixZFuncCount = this.getVaryConstCFuncCount();*/
 			int indexCount = 0;
-			for (int i = 0; i < totalJuliaCount; i++) {
+			for (int i = 0; i < totalJuliaCount; i++, indexCount++) {
 				if (indexCount + 1 > pixZFuncCount - 1) {
 					indexCount = 0;
 				}
@@ -3264,23 +3270,25 @@ class SierpinskiComboPanel extends JPanel {
 		}
 	}
 	
-	private void setPxConstOperations(final Julia aJulia, final int totalJuliaCount, final int index, final int pixZFuncCount) {
+	private String setPxConstOperations(final Julia aJulia, final int totalJuliaCount, final int index, final int pixZFuncCount) {
 		if (this.diyJuliaVaryPixelConstOpZCCb.isSelected()) {
 			//PIX_CONST_OPRNS
 			/*int pixZFuncCount = this.getVaryConstCFuncCount();*/
 			int indexCount = 0;
-			for (int i = 0; i < totalJuliaCount; i++) {
+			for (int i = 0; i < totalJuliaCount; i++, indexCount++) {
 				if (indexCount + 1 > pixZFuncCount - 1) {
 					indexCount = 0;
 				}
 				if (i == index) {
 					aJulia.setPxConstOperation(PIX_CONST_OPRNS[indexCount]);
-					return;
+					return PIX_CONST_OPRNS[indexCount];
 				}
 			}
 		} else {
 			aJulia.setPxConstOperation(this.pxConstOprnChoice);
+			return this.pxConstOprnChoice;
 		}
+		return this.pxConstOprnChoice;
 	}
 	
 	
@@ -3289,7 +3297,7 @@ class SierpinskiComboPanel extends JPanel {
 			//FUNCTION_OPTIONS
 			/*int pixZFuncCount = this.getVaryZFuncCount();*/
 			int indexCount = 0;
-			for (int i = 0; i < totalJuliaCount; i++) {
+			for (int i = 0; i < totalJuliaCount; i++,indexCount++) {
 				if (indexCount + 1 > pixZFuncCount - 1) {
 					indexCount = 0;
 				}
@@ -3329,28 +3337,31 @@ class SierpinskiComboPanel extends JPanel {
 //		}
 //	}
 */	
-	private void setPixXYOperations(final Julia aJulia, final int totalJuliaCount, final int index, final int pixYYOpsCount) {
+	private String setPixXYOperations(final Julia aJulia, final int totalJuliaCount, final int index, final int pixYYOpsCount) {
 		if (this.diyJuliaVaryIntraPixXYCb.isSelected()) {
 			// PIX_INTRA_OPRNS
 			/*int pixYYOpsCount = this.getVaryIntraPixXYOpCount();*/
 
 			int indexCount = 0;
-			for (int i = 0; i < totalJuliaCount; i++) {
+			for (int i = 0; i < totalJuliaCount; i++,indexCount++) {
 				/*System.out.println("i_is_" + i + " indexCount us " + indexCount);*/
 				if (indexCount + 1 > pixYYOpsCount - 1) {
 					indexCount = 0;
 				}
 				if (i == index) {
 					aJulia.setPixXYOperation(PIX_INTRA_OPRNS[indexCount]);
-					return;
+					return PIX_INTRA_OPRNS[indexCount];
 				}
 			}
 		} else {
 			aJulia.setPixXYOperation(this.pixIntraXYOperation);
+			return this.pixIntraXYOperation;
 		}
+
+		return this.pixIntraXYOperation;
 	}
 	
-	private void setPxYTransformations(final Julia aJulia, final int totalJuliaCount, final int index, final int pixYTransCount) {
+	private String setPxYTransformations(final Julia aJulia, final int totalJuliaCount, final int index, final int pixYTransCount) {
 		if (this.diyJuliaVaryPixYTranCb.isSelected()) {
 			// PIY_TRANSFORM_OPTIONS
 			/*int pixYTransCount = this.getVaryPixYTransCount();*/
@@ -3362,13 +3373,15 @@ class SierpinskiComboPanel extends JPanel {
 				}
 				if (i == index) {
 					aJulia.setPxYTransformation(PIX_TRANSFORM_OPTIONS[indexCount]);
-					return;
+					return PIX_TRANSFORM_OPTIONS[indexCount];
 				}
 				indexCount += 1;
 			}
 		} else {
 			aJulia.setPxYTransformation(this.pixYTransform);
+			return this.pixYTransform;
 		}
+		return this.pixYTransform;
 	}
 /*
 //	private void setPxYTransformations(final Julia[] julias) {
@@ -3394,7 +3407,7 @@ class SierpinskiComboPanel extends JPanel {
 //
 //	}
 */	
-	private void setPxXTransformations(final Julia aJulia, final int totalJuliaCount, final int index,final int pixXTransCount) {
+	private String setPxXTransformations(final Julia aJulia, final int totalJuliaCount, final int index,final int pixXTransCount) {
 		if (this.diyJuliaVaryPixXTranCb.isSelected()) {
 			// PIX_TRANSFORM_OPTIONS
 			/*int pixXTransCount = this.getVaryPixXTransCount();*/
@@ -3406,13 +3419,15 @@ class SierpinskiComboPanel extends JPanel {
 				}
 				if (i == index) {
 					aJulia.setPxXTransformation(PIX_TRANSFORM_OPTIONS[indexCount]);
-					return;
+					return PIX_TRANSFORM_OPTIONS[indexCount];
 				}
 				indexCount += 1;
 			}
 		} else {
 			aJulia.setPxXTransformation(this.pixXTransform);
+			return this.pixXTransform;
 		}
+		return this.pixXTransform;
 	}
 	
 	/*
@@ -3440,6 +3455,40 @@ class SierpinskiComboPanel extends JPanel {
 //	}
 */	
 	
+	private void setUseDiff_InvertPixels(final Julia aJulia, final int totalJuliaCount, final int index) {
+		/*
+		 * 	uD		useDifference		DuD		DontUseDifference
+		 * 	rPx		reversePixel		DrPx	DontReversePixel
+		 * 
+		 *	4
+		 *	ud		Dud		uD		Dud
+		 *	DrPx	DrPx	rPx		rPx
+		 */
+		if (index % 2 == 0) {
+			aJulia.setUseDiff(true);
+			this.setDiyJuliaUseDiff(true);
+		} else {
+			aJulia.setUseDiff(false);
+			this.setDiyJuliaUseDiff(false);
+		}
+		
+		int invertPixSwitch = 0;
+		int indexCount = 0;
+		boolean reversePix = false;
+		for (int i = 0; i < totalJuliaCount; i++, indexCount++, invertPixSwitch++) {
+			if (invertPixSwitch + 1 >= 2) {
+				invertPixSwitch = 0;
+				reversePix = !(reversePix);
+			}
+			if (indexCount == index) {
+				aJulia.setReversePixelCalculation(reversePix);
+				this.invertPixelCalculation = reversePix;
+				return;
+			}
+		}
+	}
+	
+	
 	private void setColors(final Julia aJulia, final int totalJuliaCount, final int index, final int colrCount) {
 		if (this.diyJuliaVaryColorCb.isSelected()) {
 			/*int colrCount = this.getVaryColorCount();*/
@@ -3447,7 +3496,7 @@ class SierpinskiComboPanel extends JPanel {
 			int indexColor = 0;
 			int sampStartVal = 0;
 			int sampDivVal = 0;
-			for (int i = 0; i < totalJuliaCount; i++) {
+			for (int i = 0; i < totalJuliaCount; i++,indexColor++) {
 				if (indexColor + 1 > colrCount - 1) {
 					indexColor = 0;
 				}
@@ -3469,6 +3518,9 @@ class SierpinskiComboPanel extends JPanel {
 						aJulia.setColorChoice(COLOR_OPTIONS[COLOR_OPTIONS.length - 1]);
 						aJulia.setRgbStartVals(COLOR_SAMPLE_STARTVAL_ARRAYS[sampStartVal]);
 						aJulia.setRgbDivisors(COLOR_SAMPLE_DIV_ARRAYS[sampDivVal]);
+
+						this.colorSampleMixStartVals = COLOR_SAMPLE_STARTVAL_OPTIONS[sampStartVal];
+						this.colorSampleDivVals = COLOR_SAMPLE_DIV_OPTIONS[sampDivVal];
 						return;
 					}
 					sampStartVal += 1;
@@ -5692,7 +5744,10 @@ class SierpinskiComboPanel extends JPanel {
 					
 					diyJuliaGenScaleSizeFromTf.setEnabled(false);
 					diyJuliaGenScaleSizeToTf.setEnabled(false);
-					diyJuliaGenScaleSizeJumpCombo.setEnabled(false);					
+					diyJuliaGenScaleSizeJumpCombo.setEnabled(false);	
+					
+					diyJuliaUseDiffCb.setEnabled(false);
+					invertPixelsCb.setEnabled(false);
 					
 					diyJuliaGenBu.setVisible(true);					
 
@@ -5746,7 +5801,10 @@ class SierpinskiComboPanel extends JPanel {
 					diyJuliaGenScaleSizeToLabel.setVisible(false);
 					diyJuliaGenScaleSizeToTf.setVisible(false);
 					diyJuliaGenScaleSizeJumpLabel.setVisible(false);	
-					diyJuliaGenScaleSizeJumpCombo.setVisible(false);					
+					diyJuliaGenScaleSizeJumpCombo.setVisible(false);
+					
+					diyJuliaUseDiffCb.setEnabled(true);
+					invertPixelsCb.setEnabled(true);
 					
 					diyJuliaGenBu.setVisible(false);
 					

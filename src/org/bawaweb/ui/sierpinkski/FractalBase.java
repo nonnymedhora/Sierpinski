@@ -825,11 +825,11 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		FractalBase.scaleSize = scaleSize;
 	}
 
-	public BufferedImage getBufferedImage() {
+	public synchronized BufferedImage getBufferedImage() {
 		return this.bufferedImage;
 	}
 
-	public void setImage(Image img) {
+	public synchronized void setImage(Image img) {
 		this.bufferedImage = (BufferedImage) img;
 	}
 	
@@ -1148,6 +1148,10 @@ public abstract class FractalBase extends JFrame implements Runnable {
 
 	public void setColorChoice(String choice) {
 		this.colorChoice = choice;
+		
+		if(this.colorChoice.equals(BlackWhite)){
+			
+		}
 	}
 
 	public boolean isSavePixelInfo2File() {
