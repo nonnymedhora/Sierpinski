@@ -3455,6 +3455,11 @@ class SierpinskiComboPanel extends JPanel {
 //	}
 */	
 	
+	/**
+	 * @param aJulia
+	 * @param totalJuliaCount
+	 * @param index
+	 */
 	private void setUseDiff_InvertPixels(final Julia aJulia, final int totalJuliaCount, final int index) {
 		/*
 		 * 	uD		useDifference		DuD		DontUseDifference
@@ -6974,7 +6979,7 @@ class SierpinskiComboPanel extends JPanel {
 	}
 
 	public boolean getDiyJuliaUseDiff() {
-		return this.diyJuliaUseDiff || this.diyJuliaUseDiffCb.isSelected();
+		return this.diyJuliaUseDiff/* || (this.diyJuliaUseDiffCb.isSelected() && !this.diyJuliaGen)*/;
 	}
 
 	public void setDiyJuliaUseDiff(boolean diyJuliaUseDiff) {
