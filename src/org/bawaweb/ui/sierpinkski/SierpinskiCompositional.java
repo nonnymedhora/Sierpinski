@@ -2714,14 +2714,47 @@ class SierpinskiComboPanel extends JPanel {
 		final int varyImagConstantCount = this.getVaryImagConstantCount();
 		
 		/*final*/ String subDirName;
-		if(!varyConst && !varyKeepConst) {
+		/*if(!varyConst && !varyKeepConst) {
 			subDirName = "Julia_{(R)[" + String.format("%.2f", this.diyJuliaGenRealFromVal) + "_to_"
 					+ String.format("%.2f", this.diyJuliaGenRealToVal) + "],(I)["
 					+ String.format("%.2f", this.diyJuliaGenImagFromVal) + "_to_"
 					+ String.format("%.2f", this.diyJuliaGenImagToVal) + "]" + System.currentTimeMillis() + "}";
 		} else {
 			subDirName = "Julia_" + System.currentTimeMillis();
-		}
+		}*/
+
+		subDirName = JULIA + "__Vary[";
+		
+		if (this.diyJuliaVaryColor)					subDirName += "Colr,";
+		if (this.diyJuliaVaryPixXTran)				subDirName += "F(x),";
+		if (this.diyJuliaVaryPixYTran)				subDirName += "F(y),";
+		if (this.diyJuliaVaryIntraPixXY)			subDirName += "I(xy),";
+		if (this.diyJuliaVaryPixelZFunc)			subDirName += "F(Z),";
+		if (this.diyJuliaVaryConstCFunc)			subDirName += "F(C),";
+		if (this.diyJuliaVaryPixelConstOpZC)		subDirName += "O(ZC),";
+		if (this.diyJuliaVaryPixelPowerZ)			subDirName += "X(Z),";
+		if (this.diyJuliaVaryIter)					subDirName += "M(It),";
+		if (this.diyJuliaVaryPixXCentr)				subDirName += "Cx,";
+		if (this.diyJuliaVaryPixYCentr)				subDirName += "Cy,";
+		if (this.diyJuliaVaryBoundary)				subDirName += "Bd,";
+		if (this.diyJuliaVaryScaleSize)				subDirName += "Sz,";
+		
+		subDirName = subDirName.substring(0, subDirName.length() - 1) + "]_" + System.currentTimeMillis();
+		
+		/*subDirName += "DIY_"+JULIA+"_";
+		subDirName += "P("+this.diyJuliaPower+"),";
+		
+		subDirName += "B(" + this.diyJuliaBound + "),";
+		subDirName += "MxIt(" + this.diyJuliaMaxIter + "),";
+		subDirName += "Cx(" + this.diyJuliaXC + "),";
+		subDirName += "Cy(" + this.diyJuliaYC + "),";
+		subDirName += "Sz(" + this.diyJuliaScaleSize + "),";
+		if (this.keepConst ) {
+			subDirName += "CONST";
+		}else{
+				subDirName += "Real(" + String.format("%.2f", this.diyJuliaConstReal) + "),";
+				subDirName += "Img(" + String.format("%.2f", this.diyJuliaConstImg) + ")";
+		}*/
 		
 		File subDir = new File("images_gen\\"+subDirName);
 		if (!subDir.exists()) {
