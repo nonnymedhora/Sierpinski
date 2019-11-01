@@ -2730,6 +2730,7 @@ class SierpinskiComboPanel extends JPanel {
 		if (this.diyJuliaVaryPixYTran)				subDirName += "F(y),";
 		if (this.diyJuliaVaryIntraPixXY)			subDirName += "I(xy),";
 		if (this.diyJuliaVaryPixelZFunc)			subDirName += "F(Z),";
+		if (this.diyJuliaVaryConstant)				subDirName += "Const,";
 		if (this.diyJuliaVaryConstCFunc)			subDirName += "F(C),";
 		if (this.diyJuliaVaryPixelConstOpZC)		subDirName += "O(ZC),";
 		if (this.diyJuliaVaryPixelPowerZ)			subDirName += "X(Z),";
@@ -2787,11 +2788,17 @@ class SierpinskiComboPanel extends JPanel {
 				double realVal = this.setRealConstant(julies[i], totalVaryCount, i, jRealFrom, jRealTO, realJumpVal, varyRealConstantCount);
 				double imagVal = this.setImagConstant(julies[i], totalVaryCount, i, jImagFrom, jImagTO, imagJumpVal, varyImagConstantCount);
 				julies[i].setComplex(realVal, imagVal);
+				julies[i].setComplexNumConst(false);
+
+				this.diyJuliaConstReal = realVal;
+				this.diyJuliaConstImg = imagVal;
 			} else if (varyKeepConst) {
 				julies[i].setComplexNumConst(true);
+				this.keepConst=true;
 			} else {
 				// grabit_4__GenerateConstant
 				julies[i].setComplex(this.diyJuliaConstReal, this.diyJuliaConstImg);
+				julies[i].setComplexNumConst(false);
 			}
 
 			int diyJuliaP = this.setPowers(julies[i], totalVaryCount, i, varyPowerCount);
