@@ -26,6 +26,7 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 
+import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
 
 /**
  * @author Navroz
@@ -1402,9 +1403,24 @@ public abstract class FractalBase extends JFrame implements Runnable {
 
 
 	}
+	
+	//	used in complex number
+	final String START_BRACKET = "(";
+	final String END_BRACKET = ")";
+	final String WHITESPACE = " ";
+	final String EMPTY = "";
+	
+	final ComplexNumber i = new ComplexNumber(0.0, 1.0);
+	
+	final ComplexNumber DUMMY = new ComplexNumber(Double.NaN,Double.NaN);
+	ComplexNumber Z = DUMMY;
+
+
+	protected boolean applyCustomFormula = false;
 
 
 	class ComplexNumber {
+		final String I = "i";
 		final double real;		// the real part
 		final double imaginary;	// the imaginary part
 		
@@ -1416,6 +1432,15 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		public double imaginary(){
 			return imaginary;
 		}
+
+		
+		public ComplexNumber(double r) {
+			super();
+			this.real = r;
+			this.imaginary = 0.0;
+		}
+		
+		
 		/**
 		 * @param r	-	real part
 		 * @param i	-	imaginary part
@@ -1425,6 +1450,98 @@ public abstract class FractalBase extends JFrame implements Runnable {
 			this.real = r;
 			this.imaginary = i;
 		}
+		
+		
+		//convert	0.2-7.5i	//	5.7	//	-1.1i	//-4.3-0.7i
+		//3.1+i	//-1.8+0.8i	//	-0.8
+		//	1.1i
+		//	NO	leading	plus	SO	+0.8+1.5i	invalid
+		//						but	0.8+1.5i	valid
+		//	No stars for i		SO	1.1*i		invalid
+		//						but	1.1i		valid
+		public ComplexNumber(String c) {
+//			System.out.println("c[1] is "+c);
+			c = c.replaceAll(WHITESPACE,EMPTY);
+//			System.out.println("c[2] is "+c);
+			
+			final String plus = "+";
+			final String minus = "-";
+			final String[] EMPTYARR = new String[] {};
+
+			int i_index = c.indexOf(I);					//System.out.println("i_index="+i_index);
+			final int plusIndex = c.indexOf(plus);		//System.out.println("plusIndex"+plusIndex);
+			final int minusIndex = c.indexOf(minus);	//System.out.println("minusIndex="+minusIndex);
+
+			boolean hasPlus = plusIndex > -1;			//System.out.println("hasPlus is "+hasPlus);
+			boolean hasMinus = minusIndex > -1;			//System.out.println("hasMinus is "+hasMinus);
+
+			int plusCount = 0;
+			for (int i = 0; i < c.length(); i++) {
+				if (plus.equals(String.valueOf(c.charAt(i)))) {
+					plusCount += 1;
+				}
+			}											//System.out.println("plusCount is "+plusCount);
+
+			int minusCount = 0;
+			for (int i = 0; i < c.length(); i++) {
+				if (minus.equals(String.valueOf(c.charAt(i)))) {
+					minusCount += 1;
+				}
+			}											//System.out.println("minusCount is "+minusCount);
+
+			if (i_index == -1) {
+				this.real = Double.parseDouble(c);
+				this.imaginary = 0.0;
+			} else if (minusCount == 0) {
+				if (plusCount == 1) {
+					String realPart = c.substring(0, plusIndex);
+					String imaginaryPart = c.substring(plusIndex);
+					this.real = Double.parseDouble(realPart);
+					if (plusIndex + 1 == i_index/* && imaginaryPart.equals(I)*/) {
+						this.imaginary = 1.0;
+					} else {
+						this.imaginary = Double.parseDouble(imaginaryPart.replace(I, EMPTY));
+					}
+				} else {
+System.out.println("WHYr v here?");
+this.real=Double.NaN;this.imaginary=Double.NaN;
+				}
+			} else {
+				if (plusCount == 1) {
+					String realPart = c.substring(0, plusIndex);
+					String imaginaryPart = c.substring(plusIndex);
+					this.real = Double.parseDouble(realPart);
+					if (plusIndex + 1 == i_index && imaginaryPart.equals(I)) {
+						this.imaginary = 1.0;
+					} else {
+						this.imaginary = Double.parseDouble(imaginaryPart.replace(I, EMPTY));
+					}
+				} else {
+					if (!c.startsWith(minus)) {
+						String realPart = c.substring(0, minusIndex);
+						String imaginaryPart = c.substring(minusIndex);
+						this.real = Double.parseDouble(realPart);
+						if (minusIndex + 1 == i_index && imaginaryPart.equals(I)) {
+							this.imaginary = 1.0;
+						} else {
+							this.imaginary = Double.parseDouble(imaginaryPart.replace(I, EMPTY));
+						} 
+					} else {
+						String c2 = c.substring(1,c.length()-1);	//remove leading minus
+						System.out.println("C2 us "+c2);
+						final int c2MinusIndex = c2.indexOf(minus);
+						if (c2MinusIndex>0) {
+							this.real = Double.parseDouble(c2.substring(0, c2MinusIndex)) * -1;
+							this.imaginary = Double.parseDouble(c2.substring(c2MinusIndex).replace(I, EMPTY));
+						}else{
+							this.real = Double.parseDouble(c.replace(I,EMPTY));
+							this.imaginary=0;
+						}
+					}
+				}
+			}
+		}
+		
 		
 		// return a new Complex object whose value is (this * b)
 	    public ComplexNumber times(ComplexNumber b) {
@@ -1639,6 +1756,476 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		
 	}
 	
+	
+	//https://math.hws.edu › javanotes › source › chapter8 › Expr
+		/*
+	    An object belonging to the class Expr is a mathematical expression that
+	    can involve:
+
+	            -- real numbers such as 2.7, 3, and 12.7e-12
+	            -- the variable x
+	            -- arithmetic operators  +,  -,  *,  /,  and  ^ , where
+	               the last of these represents raising to a power
+	            -- the mathematical functions sin, cos, tan, sec, csc, cot,
+	               arcsin, arccos, arctan, exp, ln, log2, log10, abs, and sqrt,
+	               where ln is the natural log, log2 is the log to the base 2,
+	               log10 is the log to the base 10, abs is absolute value,
+	               and sqrt is the square root
+	            -- parentheses
+
+	     Some examples would be:   x^2 + x + 1
+	                               sin(2.3*x-7.1) - cos(7.1*x-2.3)
+	                               x - 1
+	                               42
+	                               exp(x^2) - 1
+
+	     The trigonometric functions work with radians, not degrees.  The parameter
+	     of a function must be enclosed in parentheses, so that "sin x" is NOT allowed.
+
+	     An Expr is constructed from a String that contains its definition.  If an
+	     error is found in this definition, the constructor will throw an
+	     IllegalArgumentException with a message that describes the error and
+	     the position of the error in the string.  After an Expr has been
+	     constructed, its defining string can be retrieved using the
+	     method getDefinition().
+
+	     The main operation on an Expr object is to find its value, given
+	     a value for the variable x.  The value is computed by the value() method.
+	     If the expression is undefined at the given value of x, then the
+	     number returned by value() method will be the special "non-a-number number",
+	     Double.NaN.  (The boolean-valued function Double.isNaN(v) can be used to
+	     test whether the double value v is the special NaN value.  For technical
+	     reasons, you can't just use the == operator to test for this value.)
+
+		 */
+
+	class Expr {
+
+		// ----------------- public interface
+		// ---------------------------------------
+		public Expr() {
+		}
+
+		/**
+		 * Construct an expression, given its definition as a string. This will
+		 * throw an IllegalArgumentException if the string does not contain a
+		 * legal expression.
+		 */
+		public Expr(String definition) {
+			parse(definition);
+		}
+
+		/**
+		 * Computes the value of this expression, when the variable x has a
+		 * specified value. If the expression is undefined for the specified
+		 * value of x, then Double.NaN is returned.
+		 * 
+		 * @param x
+		 *            the value to be used for the variable x in the expression
+		 * @return the computed value of the expression
+		 */
+		public ComplexNumber value(ComplexNumber x) {
+			return eval(x);
+		}
+
+		/**
+		 * Return the original definition string of this expression. This is the
+		 * same string that was provided in the constructor.
+		 */
+		public String toString() {
+			return definition;
+		}
+
+		// ------------------- private implementation details
+		// ----------------------------------
+
+		private String definition; // The original definition of the expression,
+									// as passed to the constructor.
+
+		private byte[] code; // A translated version of the expression,
+								// containing
+								// stack operations that compute the value of
+								// the expression.
+
+		private ComplexNumber[] stack; // A stack to be used during the
+										// evaluation of
+		// the expression.
+
+		private ComplexNumber[] constants; // An array containing all the
+											// constants
+		// found in the expression.
+
+		private static final byte // values for code array; values >= 0 are
+									// indices into constants array
+		PLUS = -1, MINUS = -2, TIMES = -3, DIVIDE = -4, POWER = -5, SIN = -6, COS = -7, TAN = -8, COT = -9, SEC = -10,
+				CSC = -11, ARCSIN = -12, ARCCOS = -13, ARCTAN = -14, EXP = -15, LN = -16, LOG10 = -17, LOG2 = -18,
+				ABS = -19, SQRT = -20, UNARYMINUS = -21, VARIABLE = -22;
+
+		private /* static */ String[] functionNames = {
+				// names of standard functions, used during parsing
+				"sin", "cos", "tan", "cot", "sec", "csc", "arcsin", "arccos", "arctan", "exp", "ln", "log10", "log2",
+				"abs", "sqrt" };
+
+		private ComplexNumber eval(ComplexNumber x2) { // evaluate this
+														// expression for
+			// this value of the variable
+			try {
+				int top = 0;
+				for (int i = 0; i < codeSize; i++) {
+					if (code[i] >= 0)
+						stack[top++] = constants[code[i]];
+					else if (code[i] >= POWER) {
+						ComplexNumber y = stack[--top];
+						ComplexNumber x = stack[--top];
+						ComplexNumber ans = new ComplexNumber(Double.NaN);
+						switch (code[i]) {
+						case PLUS:
+							ans = x.plus(y);
+							break;
+						case MINUS:
+							ans = x.minus(y);
+							break;
+						case TIMES:
+							ans = x.times(y);
+							break;
+						case DIVIDE:
+							ans = x.divides(y);
+							break;
+						case POWER:
+							ans = x.power((int) y.real);// Math.pow(x, y);
+							break;
+						}
+						if (Double.isNaN(ans.real))
+							return ans;
+						stack[top++] = ans;
+					} else if (code[i] == VARIABLE) {
+						stack[top++] = x2;// new ComplexNumber(x2);
+					} else {
+						ComplexNumber x = stack[--top];
+						ComplexNumber ans = new ComplexNumber(Double.NaN);
+						switch (code[i]) {
+						case SIN:
+							ans = x.sine();// Math.sin(x);
+							break;
+						case COS:
+							ans = x.cosine();// Math.cos(x);
+							break;
+						case TAN:
+							ans = x.tangent();// Math.tan(x);
+							break;
+						case COT:
+							ans = x.cosine().divides(x.sine()); // Math.cos(x) /
+																// Math.sin(x);
+							break;
+						case SEC:
+							ans = x.cosine().reciprocal();// 1.0 / Math.cos(x);
+							break;
+						case CSC:
+							ans = x.sine().reciprocal(); // 1.0 / Math.sin(x);
+							break;
+						case ARCSIN:
+							// if (Math.abs(x.real) <= 1.0)
+							ans = x.inverseSine();// Math.asin(x);
+							break;
+						case ARCCOS:
+							// if (Math.abs(x.real) <= 1.0)
+							ans = x.inverseCosine();// Math.acos(x);
+							break;
+						case ARCTAN:
+							ans = x.inverseTangent();// Math.atan(x);
+							break;
+						case EXP:
+							ans = x.exp();// Math.exp(x);
+							break;
+						case LN:
+							// if (x.real > 0.0)
+							ans = x.ln();// Math.log(x);
+							break;
+						/*
+						 * case LOG2: if (x > 0.0) ans = Math.log(x) /
+						 * Math.log(2); break; case LOG10: if (x > 0.0) ans =
+						 * Math.log(x) / Math.log(10); break;
+						 */
+						case ABS:
+							ans = new ComplexNumber(x.abs());// Math.abs(x);
+							break;
+						case SQRT:
+							// if (x.real >= 0.0)
+							ans = x.sqroot();// Math.sqrt(x);
+							break;
+						case UNARYMINUS:
+							ans = new ComplexNumber(-1.0).times(x);
+							break;
+						}
+						if (Double.isNaN(ans.real) || Double.isNaN(ans.imaginary))
+							return ans;
+						stack[top++] = ans;
+
+					}
+				}
+			} catch (Exception e) {
+				return new ComplexNumber(Double.NaN);
+			}
+			if (Double.isInfinite(stack[0].real) || Double.isInfinite(stack[0].imaginary))
+				return new ComplexNumber(Double.NaN);
+			else
+				return stack[0];
+		}
+
+		private int pos = 0, constantCt = 0, codeSize = 0; // data for use
+															// during parsing
+
+		private void error(String message) {
+			// called when an error occurs during parsing
+			throw new IllegalArgumentException("Parse error:  " + message + "  (Position in data = " + pos + ".)");
+		}
+
+		private int computeStackUsage() { // call after code[] is computed
+			int s = 0; // stack size after each operation
+			int max = 0; // maximum stack size seen
+			for (int i = 0; i < codeSize; i++) {
+				if (code[i] >= 0 || code[i] == VARIABLE) {
+					s++;
+					if (s > max)
+						max = s;
+				} else if (code[i] >= POWER)
+					s--;
+			}
+			return max;
+		}
+
+		private void parse(String definition) {
+			// Parse the definition and produce all the data that represents the
+			// expression internally; can throw IllegalArgumentException
+			if (definition == null || definition.trim().equals(""))
+				error("No data provided to Expr constructor");
+			this.definition = definition;
+			code = new byte[definition.length()];
+			constants = new ComplexNumber[definition.length()];
+			parseExpression();
+			skip();
+			if (next() != 0)
+				error("Extra data found after the end of the expression.");
+			int stackSize = computeStackUsage();
+			stack = new ComplexNumber[stackSize];
+			byte[] c = new byte[codeSize];
+			System.arraycopy(code, 0, c, 0, codeSize);
+			code = c;
+			ComplexNumber[] A = new ComplexNumber[constantCt];
+			System.arraycopy(constants, 0, A, 0, constantCt);
+			constants = A;
+		}
+
+		private char next() {
+			// return next char in data or 0 if data is all used up
+			if (pos >= definition.length())
+				return 0;
+			else
+				return definition.charAt(pos);
+		}
+
+		private void skip() { // skip over white space in data
+			while (Character.isWhitespace(next()))
+				pos++;
+		}
+
+		// remaining routines do a standard recursive parse of the expression
+		private void parseExpression() {
+			boolean neg = false;
+			skip();
+			if (next() == '+' || next() == '-') {
+				neg = (next() == '-');
+				pos++;
+				skip();
+			}
+			parseTerm();
+			if (neg)
+				code[codeSize++] = UNARYMINUS;
+			skip();
+			while (next() == '+' || next() == '-') {
+				char op = next();
+				pos++;
+				parseTerm();
+				code[codeSize++] = (op == '+') ? PLUS : MINUS;
+				skip();
+			}
+		}
+
+		private void parseTerm() {
+			parseFactor();
+			skip();
+			while (next() == '*' || next() == '/') {
+				char op = next();
+				pos++;
+				parseFactor();
+				code[codeSize++] = (op == '*') ? TIMES : DIVIDE;
+				skip();
+			}
+		}
+
+		private void parseFactor() {
+			parsePrimary();
+			skip();
+			while (next() == '^') {
+				pos++;
+				parsePrimary();
+				code[codeSize++] = POWER;
+				skip();
+			}
+		}
+
+		private void parsePrimary() {
+			skip();
+			char ch = next();
+			if (ch == 'z' || ch == 'Z') {
+				pos++;
+				code[codeSize++] = VARIABLE;
+			} else if (Character.isLetter(ch))
+				parseWord();
+			else if (Character.isDigit(ch) || ch == '.')
+				parseNumber();
+			else if (ch == '(') {
+				pos++;
+				parseExpression();
+				skip();
+				if (next() != ')')
+					error("Expected a right parenthesis.");
+				pos++;
+			} else if (ch == ')')
+				error("Unmatched right parenthesis.");
+			else if (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^')
+				error("Operator '" + ch + "' found in an unexpected position.");
+			else if (ch == 0)
+				error("Unexpected end of data in the middle of an expression.");
+			else
+				error("Illegal character '" + ch + "' found in data.");
+		}
+
+		private void parseWord() {
+			String w = "";
+			while (Character.isLetterOrDigit(next())) {
+				w += next();
+				pos++;
+			}
+			w = w.toLowerCase();
+			for (int i = 0; i < functionNames.length; i++) {
+				if (w.equals(functionNames[i])) {
+					skip();
+					if (next() != '(')
+						error("Function name '" + w + "' must be followed by its parameter in parentheses.");
+					pos++;
+					parseExpression();
+					skip();
+					if (next() != ')')
+						error("Missing right parenthesis after parameter of function '" + w + "'.");
+					pos++;
+					code[codeSize++] = (byte) (SIN - i);
+					return;
+				}
+			}
+			error("Unknown word '" + w + "' found in data.");
+		}
+
+		private void parseNumber() {
+			String w = "";
+			while (Character.isDigit(next())) {
+				w += next();
+				pos++;
+			}
+			if (next() == '.') {
+				w += next();
+				pos++;
+				while (Character.isDigit(next())) {
+					w += next();
+					pos++;
+				}
+			}
+			if (w.equals("."))
+				error("Illegal number found, consisting of decimal point only.");
+			if (next() == 'E' || next() == 'e') {
+				w += next();
+				pos++;
+				if (next() == '+' || next() == '-') {
+					w += next();
+					pos++;
+				}
+				if (!Character.isDigit(next()))
+					error("Illegal number found, with no digits in its exponent.");
+				while (Character.isDigit(next())) {
+					w += next();
+					pos++;
+				}
+			}
+			ComplexNumber d = new ComplexNumber(Double.NaN);
+			try {
+				d = new ComplexNumber(Double.valueOf(w).doubleValue());
+			} catch (Exception e) {
+			}
+			if (Double.isNaN(d.real))
+				error("Illegal number '" + w + "' found in data.");
+			code[codeSize++] = (byte) constantCt;
+			constants[constantCt++] = d;
+		}
+
+	} // end class Expr
+		
+		
+		
+		//https://math.hws.edu/javanotes/c8/ex4-ans.html
+		//uses_Expr_above
+	class FunctionEvaluator {
+
+		String line; // A line of input read from the user.
+		Expr expression; // The definition of the function f(z).
+		ComplexNumber z; // A value of z for which f(z) is to be calculated.
+		ComplexNumber val; // The value of f(z) for the specified value of x.
+
+		public FunctionEvaluator() {
+		}
+
+		public ComplexNumber evaluate(final String funcString, final ComplexNumber z0) {
+//			System.out.print("\nf(z) = " + funcString.trim());
+			if (funcString.length() == 0) {
+				System.out.println("Err___line");
+				return null;
+			}
+
+			try {
+				expression = new Expr(funcString);
+			} catch (IllegalArgumentException e) {
+				// An error was found in the input. Print an error message
+				expression.error("Error!  The definition of f(x) is not valid.");
+				System.out.println(e.getMessage());
+			}
+
+			/*
+			 * If complexNumber is not a legal complex number, print an error
+			 * message. Otherwise, compute f(x) and return the result.
+			 */
+//			System.out.print("\nz = ");
+			if (z0==null) {
+				System.out.println("Err___line2");
+				return null;
+			}
+			try {
+				z = z0;
+			} catch (NumberFormatException e) {
+				System.out.println("\"" + z0 + "\" is not a legal complexnumber.");
+			}
+			val = expression.value(z);
+			if (Double.isNaN(val.real))
+				System.out.println("f(" + z + ") is undefined.");
+			else
+				{/*System.out.println("f(" + z + ") = " + val);*/}
+			return val;
+		}
+	}
+	
+	
+	
+	
+	
+	
 	interface Formula {
 
 		
@@ -1730,6 +2317,14 @@ public abstract class FractalBase extends JFrame implements Runnable {
 
 		return info;
 
+	}
+
+	public boolean isApplyCustomFormula() {
+		return this.applyCustomFormula;
+	}
+
+	public void setApplyCustomFormula(boolean apply) {
+		this.applyCustomFormula = apply;
 	}
 	
 }

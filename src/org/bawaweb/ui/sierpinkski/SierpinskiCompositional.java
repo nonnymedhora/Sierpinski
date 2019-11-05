@@ -554,6 +554,15 @@ class SierpinskiComboPanel extends JPanel {
 	private JButton diyJuliaGenBu = new JButton("Generate Julia");
 	///////////////////////////////////////////////////////////////////////////
 	///////////ends	Generator//////////////////////////////////////////////////
+	
+	
+	/////////////////apply function julia///////////////////////////////////
+	private boolean diyJApplyFormulaZ = false;
+	private JCheckBox diyJApplyFormulaZCb = new JCheckBox("Apply Formula f(Z) = ",false);
+	private JTextField diyJApplyFormulaTf = new JTextField(10);
+	private String diyJApplyFormulaStr = "NONE";
+	
+	/////////////////ends apply function julia////////////////////////////////////
 		
 	//diy Apollo Options
 	protected int diyApolloC1;
@@ -1161,7 +1170,15 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaGenScaleSizeJumpCombo.setVisible(false);
 		this.diyJuliaPanel.add(this.diyJuliaGenScaleSizeJumpCombo);
 		
+		this.diyJApplyFormulaZCb.setVisible(true);
+		this.diyJuliaPanel.add(this.diyJApplyFormulaZCb);
+		this.diyJApplyFormulaTf.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJApplyFormulaTf);
+		
 		this.diyJuliaGenBu.setVisible(false);
+		
+		
+		
 		this.diyJuliaPanel.add(this.diyJuliaGenBu);
 	}
 
@@ -2565,6 +2582,13 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaVaryScaleSizeJumpVal = varyScaleSizeJumpVal;
 	}
 	
+
+	private void doSelectDiyJuliaApplyFormulaCommand(boolean apply) {
+		this.diyJApplyFormulaZ = apply;
+	}
+	
+	
+	
 	
 	private void doSetDiyJuliaGenCommand(boolean gen) {
 		this.diyJuliaGen = gen;
@@ -3111,7 +3135,7 @@ class SierpinskiComboPanel extends JPanel {
 	}
 
 	//realConstant
-	private double setRealConstant(final Julia aJulia, final int totalJuliaCount, final int index, final double from, final double to,
+	private double setRealConstant(final FractalBase aJulia, final int totalJuliaCount, final int index, final double from, final double to,
 			final double jump,final  int realConstantCount) {
 		if (this.diyJuliaVaryConstant && this.diyJuliaVaryGenConstantCb.isSelected()) {
 			double start = from;
@@ -3131,7 +3155,7 @@ class SierpinskiComboPanel extends JPanel {
 	}
 
 	//imagConstant
-	private double setImagConstant(final Julia aJulia, final int totalJuliaCount, final int index, final double from, final double to,
+	private double setImagConstant(final FractalBase aJulia, final int totalJuliaCount, final int index, final double from, final double to,
 			final double jump, int imagConstantCount) {
 		if (this.diyJuliaVaryConstant && this.diyJuliaVaryGenConstantCb.isSelected()) {
 			double start = from;
@@ -3151,7 +3175,7 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	//setBoundarys
-	private void setBoundarys(final Julia aJulia, final int totalJuliaCount, final int index, final double from,
+	private void setBoundarys(final FractalBase aJulia, final int totalJuliaCount, final int index, final double from,
 			final double to, final double jump, final int boundarycount) {
 		if (this.diyJuliaVaryBoundaryCb.isSelected() && this.diyJuliaVaryBoundary) {
 			double start = from;
@@ -3173,7 +3197,7 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	//setScaleSizes
-	private void setScaleSizes(final Julia aJulia, final int totalJuliaCount, final int index, final double from, final double to, final double jump, final int scaleSizecount) {
+	private void setScaleSizes(final FractalBase aJulia, final int totalJuliaCount, final int index, final double from, final double to, final double jump, final int scaleSizecount) {
 		if (this.diyJuliaVaryScaleSizeCb.isSelected() && this.diyJuliaVaryScaleSize) {
 			double start = from;
 			int indexCount = 0;
@@ -3209,7 +3233,7 @@ class SierpinskiComboPanel extends JPanel {
 	
 	
 	//	yC
-	private void setYCs(final Julia aJulia, final int totalJuliaCount, final int index, final int yCcount) {
+	private void setYCs(final FractalBase aJulia, final int totalJuliaCount, final int index, final int yCcount) {
 		if (this.diyJuliaVaryPixYCentrCb.isSelected()) {
 			//CENTER_XY
 			/*int yCcount = this.getVaryPixYCenterCount();*/
@@ -3229,7 +3253,7 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	//	xC
-	private void setXCs(final Julia aJulia, final int totalJuliaCount, final int index, final int xCcount) {
+	private void setXCs(final FractalBase aJulia, final int totalJuliaCount, final int index, final int xCcount) {
 		if (this.diyJuliaVaryPixXCentrCb.isSelected()) {
 			//CENTER_XY
 			/*int xCcount = this.getVaryPixXCenterCount();*/
@@ -3250,7 +3274,7 @@ class SierpinskiComboPanel extends JPanel {
 	
 	
 	//setLoopLimits	
-	private void setLoopLimits(final Julia aJulia, final int totalJuliaCount, final int index) {
+	private void setLoopLimits(final FractalBase aJulia, final int totalJuliaCount, final int index) {
 		if (this.diyJuliaVaryIterCb.isSelected()) {
 			//EXPONENTS
 			int itersCount = this.getVaryIterCount();
@@ -3270,7 +3294,7 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	//setPowers
-	private int setPowers(final Julia aJulia, final int totalJuliaCount, final int index, final int powersCount) {
+	private int setPowers(final FractalBase aJulia, final int totalJuliaCount, final int index, final int powersCount) {
 		if (this.diyJuliaVaryPixelPowerZCb.isSelected()) {
 			//EXPONENTS
 			/*int powersCount = this.getVaryPowerCount();*/
@@ -3291,7 +3315,7 @@ class SierpinskiComboPanel extends JPanel {
 		return 0;
 	}
 	
-	private void setUseConstFunctions(final Julia aJulia, final int totalJuliaCount, final int index, final int pixZFuncCount) {
+	private void setUseConstFunctions(final FractalBase aJulia, final int totalJuliaCount, final int index, final int pixZFuncCount) {
 		if (this.diyJuliaVaryConstCFuncCb.isSelected()) {
 			//FUNCTION_OPTIONS
 			/*int pixZFuncCount = this.getVaryConstCFuncCount();*/
@@ -3310,7 +3334,7 @@ class SierpinskiComboPanel extends JPanel {
 		}
 	}
 	
-	private String setPxConstOperations(final Julia aJulia, final int totalJuliaCount, final int index, final int pixZFuncCount) {
+	private String setPxConstOperations(final FractalBase aJulia, final int totalJuliaCount, final int index, final int pixZFuncCount) {
 		if (this.diyJuliaVaryPixelConstOpZCCb.isSelected()) {
 			//PIX_CONST_OPRNS
 			/*int pixZFuncCount = this.getVaryConstCFuncCount();*/
@@ -3332,7 +3356,7 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	
-	private String setUseFuncPixels(final Julia aJulia, final int totalJuliaCount, final int index, final int pixZFuncCount) {
+	private String setUseFuncPixels(final FractalBase aJulia, final int totalJuliaCount, final int index, final int pixZFuncCount) {
 		if (this.diyJuliaVaryPixelZFuncCb.isSelected()) {
 			//FUNCTION_OPTIONS
 			/*int pixZFuncCount = this.getVaryZFuncCount();*/
@@ -3377,7 +3401,7 @@ class SierpinskiComboPanel extends JPanel {
 //		}
 //	}
 */	
-	private String setPixXYOperations(final Julia aJulia, final int totalJuliaCount, final int index, final int pixYYOpsCount) {
+	private String setPixXYOperations(final FractalBase aJulia, final int totalJuliaCount, final int index, final int pixYYOpsCount) {
 		if (this.diyJuliaVaryIntraPixXYCb.isSelected()) {
 			// PIX_INTRA_OPRNS
 			/*int pixYYOpsCount = this.getVaryIntraPixXYOpCount();*/
@@ -3401,7 +3425,7 @@ class SierpinskiComboPanel extends JPanel {
 		return this.pixIntraXYOperation;
 	}
 	
-	private String setPxYTransformations(final Julia aJulia, final int totalJuliaCount, final int index, final int pixYTransCount) {
+	private String setPxYTransformations(final FractalBase aJulia, final int totalJuliaCount, final int index, final int pixYTransCount) {
 		if (this.diyJuliaVaryPixYTranCb.isSelected()) {
 			// PIY_TRANSFORM_OPTIONS
 			/*int pixYTransCount = this.getVaryPixYTransCount();*/
@@ -3447,7 +3471,7 @@ class SierpinskiComboPanel extends JPanel {
 //
 //	}
 */	
-	private String setPxXTransformations(final Julia aJulia, final int totalJuliaCount, final int index,final int pixXTransCount) {
+	private String setPxXTransformations(final FractalBase aJulia, final int totalJuliaCount, final int index,final int pixXTransCount) {
 		if (this.diyJuliaVaryPixXTranCb.isSelected()) {
 			// PIX_TRANSFORM_OPTIONS
 			/*int pixXTransCount = this.getVaryPixXTransCount();*/
@@ -3534,7 +3558,7 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	
-	private void setColors(final Julia aJulia, final int totalJuliaCount, final int index, final int colrCount) {
+	private void setColors(final FractalBase aJulia, final int totalJuliaCount, final int index, final int colrCount) {
 		if (this.diyJuliaVaryColorCb.isSelected()) {
 			/*int colrCount = this.getVaryColorCount();*/
 
@@ -4201,21 +4225,25 @@ class SierpinskiComboPanel extends JPanel {
 	}
 
 	private void addPixelFuncInfo(String pxFunc) {
-		switch(pxFunc){
-			case	"sine":				this.formulaArea.append("<br/><font color='black'><b>z = sin(Z)</font></b><br/>");break;
-			case	"cosine":			this.formulaArea.append("<br/><font color='black'><b>z = cos(Z)</font></b><br/>");break;
-			case	"tan":				this.formulaArea.append("<br/><font color='black'><b>z = tan(Z)</font></b><br/>");break;
-			case	"arcsine":			this.formulaArea.append("<br/><font color='black'><b>z = arcsin(Z)</font></b><br/>");break;
-			case	"arccosine":		this.formulaArea.append("<br/><font color='black'><b>z = arccos(Z)</font></b><br/>");break;
-			case	"arctan":			this.formulaArea.append("<br/><font color='black'><b>z = arctan(Z)</font></b><br/>");break;
-			case	"reciprocal":		this.formulaArea.append("<br/><font color='black'><b>z = (1 /Z)</font></b><br/>");break;
-			case	"reciprocalSquare":	this.formulaArea.append("<br/><font color='black'><b>z = (1 /Z) <sup>2</sup></font></b><br/>");break;
-			case	"square":			this.formulaArea.append("<br/><font color='black'><b>z = (Z <sup>2</sup>)</font></b><br/>");break;
-			case	"cube":				this.formulaArea.append("<br/><font color='black'><b>z = (Z <sup>3</sup>)</font></b><br/>");break;
-			case	"exponent(e)":		this.formulaArea.append("<br/><font color='black'><b>z = e<sup>(Z)</sup></font></b><br/>");break;
-			case	"root":				this.formulaArea.append("<br/><font color='black'><b>z = root(Z)</font></b><br/>");break;
-			case	"log(e)":			this.formulaArea.append("<br/><font color='black'><b>z = log(Z)</font></b><br/>");break;
-			default	:					this.formulaArea.append("<br/>");break;			
+		if (!this.diyJApplyFormulaZ) {
+			switch (pxFunc) {
+				case	"sine":				this.formulaArea.append("<br/><font color='black'><b>z = sin(Z)</font></b><br/>");break;
+				case	"cosine":			this.formulaArea.append("<br/><font color='black'><b>z = cos(Z)</font></b><br/>");break;
+				case	"tan":				this.formulaArea.append("<br/><font color='black'><b>z = tan(Z)</font></b><br/>");break;
+				case	"arcsine":			this.formulaArea.append("<br/><font color='black'><b>z = arcsin(Z)</font></b><br/>");break;
+				case	"arccosine":		this.formulaArea.append("<br/><font color='black'><b>z = arccos(Z)</font></b><br/>");break;
+				case	"arctan":			this.formulaArea.append("<br/><font color='black'><b>z = arctan(Z)</font></b><br/>");break;
+				case	"reciprocal":		this.formulaArea.append("<br/><font color='black'><b>z = (1 /Z)</font></b><br/>");break;
+				case	"reciprocalSquare":	this.formulaArea.append("<br/><font color='black'><b>z = (1 /Z) <sup>2</sup></font></b><br/>");break;
+				case	"square":			this.formulaArea.append("<br/><font color='black'><b>z = (Z <sup>2</sup>)</font></b><br/>");break;
+				case	"cube":				this.formulaArea.append("<br/><font color='black'><b>z = (Z <sup>3</sup>)</font></b><br/>");break;
+				case	"exponent(e)":		this.formulaArea.append("<br/><font color='black'><b>z = e<sup>(Z)</sup></font></b><br/>");break;
+				case	"root":				this.formulaArea.append("<br/><font color='black'><b>z = root(Z)</font></b><br/>");break;
+				case	"log(e)":			this.formulaArea.append("<br/><font color='black'><b>z = log(Z)</font></b><br/>");break;
+				default	:					this.formulaArea.append("<br/>");break;			
+			}
+		} else {
+			this.formulaArea.append("<br/><font color='black'><b>f(Z) = " + pxFunc + "</font></b><br/>");
 		}
 	}
 	private FractalBase createDIYJulia() {
@@ -4228,7 +4256,7 @@ class SierpinskiComboPanel extends JPanel {
 		
 		String pxConstOp = this.pxConstOprnChoice;
 		String func = this.constFuncChoice;
-		String pxFunc = this.pxFuncChoice;
+		String pxFunc = !this.diyJApplyFormulaZ ? this.pxFuncChoice : this.diyJApplyFormulaTf.getText();
 		double rot = this.getRotation();
 		int diyJuliaLoopLt = this.juliaSize;
 		int diyJuliaP = this.getDiyJuliaPower();
@@ -4336,6 +4364,7 @@ class SierpinskiComboPanel extends JPanel {
 		
 		ff.setPxConstOperation(pxConstOp);
 		ff.setUseFuncConst(func);
+		ff.setApplyCustomFormula(this.diyJApplyFormulaZ);
 		ff.setUseFuncPixel(pxFunc);
 		ff.setRotation(rot);
 		
@@ -6159,6 +6188,26 @@ class SierpinskiComboPanel extends JPanel {
 				Double diyJuliaImagJumpComboOption = (Double)cb.getSelectedItem();
 				doSelectDiyJuliaGenImagJumpCombosCommand(diyJuliaImagJumpComboOption);				
 			}});
+		
+		
+		this.diyJApplyFormulaZCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyJuliaApplyFormulaCommand(true);
+					diyJApplyFormulaTf.setVisible(true);
+//					diyJuliaPowerCombos.setEnabled(false);
+					pxFuncCombo.setEnabled(false);
+					
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyJuliaApplyFormulaCommand(false);
+					diyJApplyFormulaTf.setVisible(false);
+//					diyJuliaPowerCombos.setEnabled(true);
+					pxFuncCombo.setEnabled(true);
+				}
+			}
+		});
+		
 		
 		
 		this.diyJuliaGenBu.addActionListener(new ActionListener() {

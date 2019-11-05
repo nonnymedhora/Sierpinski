@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import org.bawaweb.ui.sierpinkski.FractalBase.FunctionEvaluator;
 import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
 
 
@@ -38,7 +39,6 @@ public class Julia extends FractalBase {
 	private ComplexNumber complex; 		// or this
 	private boolean useDiff = false;
 	private boolean isComplexNumConst = false;
-	
 	public final ComplexNumber C1 = new ComplexNumber(-0.74543,0.11301);	//c=-0.74543+0.11301*i
 	public final ComplexNumber C2 = new ComplexNumber(-0.75,0.11);			//c= -0.75+0.11*i
 	public final ComplexNumber C3 = new ComplexNumber(-0.1,0.651);			//c=-0.1+0.651*i
@@ -506,7 +506,8 @@ public class Julia extends FractalBase {
 	
 	
 	private ComplexNumber computePixel(String fun, ComplexNumber z0) {
-		switch (fun) {
+		if (!this.applyCustomFormula) {
+			switch (fun) {
 			case "sine":
 				z0 = z0.sine(); // z0.sin();
 				break;
@@ -549,15 +550,17 @@ public class Julia extends FractalBase {
 			case "log(e)":
 				z0 = z0.ln(); // z0.tan();
 				break;
-	
+
 			case "None":
 				z0 = z0;
 				break;
 			default:
 				z0 = z0;
 				break;
-		}// ends-switch
-
+			}// ends-switch
+		} else {
+			z0 = new FunctionEvaluator().evaluate(fun,z0);
+		}
 		return z0;
 	}
 	
