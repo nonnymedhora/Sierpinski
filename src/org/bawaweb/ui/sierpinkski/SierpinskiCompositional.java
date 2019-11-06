@@ -2751,8 +2751,8 @@ class SierpinskiComboPanel extends JPanel {
 		boolean diyJApplyLyapunovExponent = this.diyJuliaUseLyapunovExponent;
 
 		System.out.println("getTotalVaryCount=" + this.getTotalVaryCount());
-//		System.out.println("getTotalVaryCount=HARDED-2-To55== " + 55);
-		int totalVaryCount = this.getTotalVaryCount();//55;//
+//		System.out.println("getTotalVaryCount=HARDED-2-To5== " + 5);
+		int totalVaryCount = this.getTotalVaryCount();//5;
 
 
 		if (totalVaryCount > 150) {
@@ -2817,6 +2817,7 @@ class SierpinskiComboPanel extends JPanel {
 		if (this.diyJuliaVaryPixYTran)				subDirName += "F(y),";
 		if (this.diyJuliaVaryIntraPixXY)			subDirName += "I(xy),";
 		if (this.diyJuliaVaryPixelZFunc)			subDirName += "F(Z),";
+		if (this.diyJApplyFormulaZ)					subDirName += "CustFormula,";
 		if (this.diyJuliaVaryConstant)				subDirName += "Const,";
 		if (this.diyJuliaVaryConstCFunc)			subDirName += "F(C),";
 		if (this.diyJuliaVaryPixelConstOpZC)		subDirName += "O(ZC),";
@@ -3368,13 +3369,14 @@ class SierpinskiComboPanel extends JPanel {
 					start = from;
 				}
 				if (r == index) {
+					this.diyJuliaPower=start;
 					aJulia.setPower(start);
 					return start;
 				}
 				start += jump;
 			}
 		} else {
-			aJulia.setScaleSize(this.diyJuliaPower);
+			aJulia.setPower(this.diyJuliaPower);
 			return this.diyJuliaPower;
 		}
 		return 0;
@@ -3438,8 +3440,12 @@ class SierpinskiComboPanel extends JPanel {
 				}
 			}
 		} else {
+			if (this.diyJApplyFormulaZ) {
+				this.pxFuncChoice = this.diyJApplyFormulaTf.getText().trim();
+			}
 			aJulia.setUseFuncPixel(this.pxFuncChoice);
 			return this.pxFuncChoice;
+
 		}
 		return "None";
 	}
@@ -3481,7 +3487,8 @@ class SierpinskiComboPanel extends JPanel {
 				}
 				if (i == index) {
 					aJulia.setPixXYOperation(PIX_INTRA_OPRNS[indexCount]);
-					return PIX_INTRA_OPRNS[indexCount];
+					this.pixIntraXYOperation=PIX_INTRA_OPRNS[indexCount];
+					return this.pixIntraXYOperation;
 				}
 			}
 		} else {
@@ -3612,7 +3619,7 @@ class SierpinskiComboPanel extends JPanel {
 		int indexCount = 0;
 		boolean reversePix = false;
 		for (int i = 0; i < totalJuliaCount; i++, indexCount++, invertPixSwitch++) {
-			if (invertPixSwitch + 1 >= 2) {
+			if (invertPixSwitch + 1 > 2) {
 				invertPixSwitch = 0;
 				reversePix = !(reversePix);
 			}
@@ -4288,10 +4295,27 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private void addInvertPixelCalcInfo() {
 		boolean invertPix = this.invertPixelCalculation;
+		String opVal = " + ";
+		switch( this.pixIntraXYOperation ) {
+			case "Plus":	break;
+			case "Minus":		opVal = " - "; break;
+			case "Multiply":	opVal = " * "; break;
+			case "Divide":		opVal = " / "; break;
+			case "Power":		opVal = " ^ "; ;break;
+		}
+			
 		if (invertPix) {
-			this.formulaArea.append(eol+"<font color='red'>Pixel Calculation reversed  z = y + i*x + C</font>"+eol);
+			if (!this.pixIntraXYOperation.equals("Power")) {
+				this.formulaArea.append(eol + "<font color='red'>Pixel Calculation reversed  z = y " + opVal + " i*x + C</font>" + eol);
+			} else {
+				this.formulaArea.append(eol + "<font color='red'>Pixel Calculation reversed  z = y " + opVal + "<sup> i*x</sup> + C</font>" + eol);
+			}
 		} else {
-			this.formulaArea.append(eol+"<font color='red'>Pixel Calculation z = x + i*y + C</font>"+eol);
+			if (!this.pixIntraXYOperation.equals("Power")) {
+				this.formulaArea.append(eol + "<font color='red'>Pixel Calculation z = x " + opVal + " i*y + C</font>" + eol);
+			} else {
+				this.formulaArea.append(eol + "<font color='red'>Pixel Calculation z = x " + opVal + "<sup> i*y</sup> + C</font>" + eol);
+			}
 		}
 	}
 
@@ -4327,7 +4351,7 @@ class SierpinskiComboPanel extends JPanel {
 		
 		String pxConstOp = this.pxConstOprnChoice;
 		String func = this.constFuncChoice;
-		String pxFunc = !this.diyJApplyFormulaZ ? this.pxFuncChoice : this.diyJApplyFormulaTf.getText();
+		String pxFunc = !this.diyJApplyFormulaZ ? this.pxFuncChoice : this.diyJApplyFormulaTf.getText().trim();
 		double rot = this.getRotation();
 		int diyJuliaLoopLt = this.juliaSize;
 		int diyJuliaP = this.getDiyJuliaPower();
@@ -5419,6 +5443,7 @@ class SierpinskiComboPanel extends JPanel {
 				extra += "Cx(" + this.diyJuliaXC + "),";
 				extra += "Cy(" + this.diyJuliaYC + "),";
 				extra += "Sz(" + this.diyJuliaScaleSize + "),";
+				if(this.diyJApplyFormulaZ){extra+="CustFormula,";}
 				if (this.keepConst) {
 					extra += "CONST";
 				}else{
@@ -6146,19 +6171,19 @@ class SierpinskiComboPanel extends JPanel {
 			}
 		});
 		
-		this.diyJuliaVaryPixelPowerZCb.addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent event) {
-				if (event.getStateChange() == ItemEvent.SELECTED) {
-					doSelectDiyJuliaVaryPixelPowerZCommand(true);
-					diyJuliaPowerCombos.setEnabled(false);
-				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
-					doSelectDiyJuliaVaryPixelPowerZCommand(false);
-					diyJuliaPowerCombos.setEnabled(true);
-				}
-			}
-		});
-		
+//		this.diyJuliaVaryPixelPowerZCb.addItemListener(new ItemListener() {
+//			@Override
+//			public void itemStateChanged(ItemEvent event) {
+//				if (event.getStateChange() == ItemEvent.SELECTED) {
+//					doSelectDiyJuliaVaryPixelPowerZCommand(true);
+//					diyJuliaPowerCombos.setEnabled(false);
+//				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+//					doSelectDiyJuliaVaryPixelPowerZCommand(false);
+//					diyJuliaPowerCombos.setEnabled(true);
+//				}
+//			}
+//		});
+//		
 
 		this.diyJuliaVaryPixelPowerZCb.addItemListener(new ItemListener() {
 			@Override

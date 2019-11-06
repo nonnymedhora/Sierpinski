@@ -559,7 +559,7 @@ public class Julia extends FractalBase {
 				break;
 			}// ends-switch
 		} else {
-			z0 = new FunctionEvaluator().evaluate(fun,z0);
+			z0 = new FunctionEvaluator().evaluate(fun, z0);
 		}
 		return z0;
 	}
