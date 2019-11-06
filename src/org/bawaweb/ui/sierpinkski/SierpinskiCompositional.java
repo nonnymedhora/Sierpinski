@@ -1861,7 +1861,8 @@ class SierpinskiComboPanel extends JPanel {
 	
 	
 	private void addDiyJuliaUseDiffInfo() {
-		if (this.diyJuliaUseDiff || this.diyJuliaUseDiffCb.isSelected()) {
+		if (this.diyJuliaUseDiff
+				|| (this.diyJuliaUseDiffCb.isSelected() && !(this.diyJuliaGenCb.isSelected() || this.diyJuliaGen))) {
 			this.formulaArea
 					.append("<br/><br/>Calculated inverted colors based on differences in pixel values from origin</font>"+eol);
 		} else {
@@ -2749,19 +2750,6 @@ class SierpinskiComboPanel extends JPanel {
 		boolean diyJApplyZSq = this.applyZSq;
 		boolean diyJApplyClassic = this.applyClassicJulia;
 		boolean diyJApplyLyapunovExponent = this.diyJuliaUseLyapunovExponent;
-
-		System.out.println("getTotalVaryCount=" + this.getTotalVaryCount());
-//		System.out.println("getTotalVaryCount=HARDED-2-To5== " + 5);
-		int totalVaryCount = this.getTotalVaryCount();//5;
-
-
-		if (totalVaryCount > 150) {
-			int ans = JOptionPane.showConfirmDialog(null, "Are You Sure needs to generate\n"+totalVaryCount+"images", "Are_You_Sure",
-					JOptionPane.YES_NO_CANCEL_OPTION);
-			if(ans!=JOptionPane.YES_OPTION){
-				return;
-			}
-		}
 		
 		final int varyColorCount = this.getVaryColorCount();
 		final int varyPixXTransCount = this.getVaryPixXTransCount();
@@ -2774,7 +2762,7 @@ class SierpinskiComboPanel extends JPanel {
 		final int varyPixXCenterCount = this.getVaryPixXCenterCount();
 		final int varyPixYCenterCount = this.getVaryPixYCenterCount();
 		
-
+		final int varyIterCount = this.getVaryIterCount();
 		
 		final int powerFrom = this.diyJuliaVaryPixelPowerZFromVal;
 		final int powerTo = this.diyJuliaVaryPixelPowerZToVal;
@@ -2799,6 +2787,28 @@ class SierpinskiComboPanel extends JPanel {
 		final double imagJumpVal = this.diyJuliaGenImagJumpVal;
 		final int varyRealConstantCount = this.getVaryRealConstantCount();
 		final int varyImagConstantCount = this.getVaryImagConstantCount();
+		
+
+//		System.out.println("getTotalVaryCount=" + this.getTotalVaryCount());
+//		System.out.println("getTotalVaryCount=HARDED-2-To5== " + 5);
+//		int totalVaryCount = this.getTotalVaryCount();//5;
+		
+		int totalVaryCount = varyColorCount * varyPixXTransCount * varyPixYTransCount * varyIntraPixXYOpCount * 
+				varyZFuncCount * varyConstCFuncCount * varyPixelConstOpZCCount  * 
+				varyPowerCount  * varyPixXCenterCount * varyPixYCenterCount  * 
+				varyScaleSizeCount * varyBoundaryCount  * varyIterCount * 
+				varyRealConstantCount * varyImagConstantCount;
+				
+		System.out.println("getTotalVaryCount=" + totalVaryCount);
+
+		if (totalVaryCount > 150) {
+			int ans = JOptionPane.showConfirmDialog(null, "Are You Sure needs to generate\n"+totalVaryCount+"images", "Are_You_Sure",
+					JOptionPane.YES_NO_CANCEL_OPTION);
+			if(ans!=JOptionPane.YES_OPTION){
+				return;
+			}
+		}
+
 		
 		/*final*/ String subDirName;
 		/*if(!varyConst && !varyKeepConst) {
