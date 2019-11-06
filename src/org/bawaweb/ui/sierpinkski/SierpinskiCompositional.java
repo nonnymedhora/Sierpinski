@@ -2873,8 +2873,8 @@ class SierpinskiComboPanel extends JPanel {
 			String pixConstOp = this.setPxConstOperations(julies[i], totalVaryCount, i, varyPixelConstOpZCCount);
 
 			if (varyConst) {
-				double realVal = this.setRealConstant(julies[i], totalVaryCount, i, jRealFrom, jRealTO, realJumpVal, varyRealConstantCount);
-				double imagVal = this.setImagConstant(julies[i], totalVaryCount, i, jImagFrom, jImagTO, imagJumpVal, varyImagConstantCount);
+				double realVal = this.setRealConstant(totalVaryCount, i, jRealFrom, jRealTO, realJumpVal, varyRealConstantCount);
+				double imagVal = this.setImagConstant(totalVaryCount, i, jImagFrom, jImagTO, imagJumpVal, varyImagConstantCount);
 				julies[i].setComplex(realVal, imagVal);
 				julies[i].setComplexNumConst(false);
 
@@ -3200,7 +3200,7 @@ class SierpinskiComboPanel extends JPanel {
 	}
 
 	//realConstant
-	private double setRealConstant(final FractalBase aJulia, final int totalJuliaCount, final int index, final double from, final double to,
+	private double setRealConstant( final int totalJuliaCount, final int index, final double from, final double to,
 			final double jump,final  int realConstantCount) {
 		if (this.diyJuliaVaryConstant && this.diyJuliaVaryGenConstantCb.isSelected()) {
 			double start = from;
@@ -3210,17 +3210,17 @@ class SierpinskiComboPanel extends JPanel {
 					indexCount = 0;
 					start = from;
 				}
-				start += jump;
 				if (r == index) {
 					return start;
 				}
+				start += jump;
 			}
 		}
 		return 0;
 	}
 
 	//imagConstant
-	private double setImagConstant(final FractalBase aJulia, final int totalJuliaCount, final int index, final double from, final double to,
+	private double setImagConstant(final int totalJuliaCount, final int index, final double from, final double to,
 			final double jump, int imagConstantCount) {
 		if (this.diyJuliaVaryConstant && this.diyJuliaVaryGenConstantCb.isSelected()) {
 			double start = from;
@@ -3230,10 +3230,10 @@ class SierpinskiComboPanel extends JPanel {
 					indexCount = 0;
 					start = from;
 				}
-				start += jump;
 				if (r == index) {
 					return start;
 				}
+				start += jump;
 			}
 		}
 		return 0;
@@ -3250,11 +3250,11 @@ class SierpinskiComboPanel extends JPanel {
 					indexCount = 0;
 					start = from;
 				}
-				start += jump;
 				if (r == index) {
 					aJulia.setBound(start);
 					return;
 				}
+				start += jump;
 			}
 		} else {
 			aJulia.setBound(this.diyJuliaBound);
@@ -3271,11 +3271,11 @@ class SierpinskiComboPanel extends JPanel {
 					indexCount = 0;
 					start = from;
 				}
-				start += jump;
 				if (r == index) {
 					aJulia.setScaleSize(start);
 					return;
 				}
+				start += jump;
 			}
 //			this.diyJuliaVaryBoundaryFromVal = Double.parseDouble(this.diyJuliaGenBoundaryFromTf.getText());
 //			this.diyJuliaVaryBoundaryToVal = Double.parseDouble(this.diyJuliaGenBoundaryToTf.getText());
