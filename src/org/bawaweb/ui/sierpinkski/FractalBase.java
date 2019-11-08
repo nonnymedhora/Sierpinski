@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Objects;
+import java.util.Properties;
 import java.util.Random;
 
 import javax.swing.JFrame;
@@ -167,6 +168,72 @@ public abstract class FractalBase extends JFrame implements Runnable {
 *******************/		
 	}
 	
+	
+	public FractalBase(Properties p){
+		this();
+		this.setVisible(false);
+		this.setProperties(p);
+	}
+	
+	public synchronized void setProperties(Properties p) {
+		// .getClass().getName()
+		//	all keys and values of p are Strings
+		
+		if (p.getProperty("colorChoice")!=null) {
+			String cChoice = p.getProperty("colorChoice");
+			if (!cChoice.startsWith("[")) {
+				this.setColorChoice(cChoice.replaceAll(WHITESPACE,EMPTY));
+			} else {
+				cChoice = cChoice.replaceAll("[", EMPTY).replaceAll("]", EMPTY);
+				String[] cCs = cChoice.split(",");
+				this.setColorChoice(cCs);
+			} 
+		}
+		if (p.getProperty("maxIter") != null)
+			this.setMaxIter(Integer.parseInt(p.getProperty("maxIter").replaceAll(WHITESPACE,EMPTY)));
+		if (p.getProperty("areaSize") != null)
+			this.setAreaSize(Integer.parseInt(p.getProperty("areaSize").replaceAll(WHITESPACE,EMPTY)));		
+		if (p.getProperty("bound") != null)
+			this.setBound(Double.parseDouble(p.getProperty("bound").replaceAll(WHITESPACE,EMPTY)));
+		if (p.getProperty("pixXYOperation") != null)
+			this.setPixXYOperation(p.getProperty("pixXYOperation").replaceAll(WHITESPACE,EMPTY));
+		if (p.getProperty("power") != null)
+				this.setPower(Integer.parseInt(p.getProperty("power").replaceAll(WHITESPACE,EMPTY)));
+		if (p.getProperty("pxConstOperation") != null)
+				this.setPxConstOperation(p.getProperty("pxConstOperation").replaceAll(WHITESPACE,EMPTY));
+		if (p.getProperty("pxXTransformation") != null)
+				this.setPxXTransformation(p.getProperty("pxXTransformation").replaceAll(WHITESPACE,EMPTY));
+		if (p.getProperty("pxYTransformation") != null)
+				this.setPxYTransformation(p.getProperty("pxYTransformation").replaceAll(WHITESPACE,EMPTY));
+		if (p.getProperty("reversePixelCalculation") != null)
+				this.setReversePixelCalculation(Boolean.parseBoolean(p.getProperty("reversePixelCalculation").replaceAll(WHITESPACE,EMPTY)));
+		if (p.getProperty("rotation") != null)
+				this.setRotation(Double.parseDouble(p.getProperty("rotation").replaceAll(WHITESPACE,EMPTY)));
+		if (p.getProperty("rowColMixType") != null)
+				this.setRowColMixType(p.getProperty("rowColMixType").replaceAll(WHITESPACE,EMPTY));
+		if (p.getProperty("xC") != null)
+				this.setxC(Double.parseDouble(p.getProperty("xC").replaceAll(WHITESPACE,EMPTY)));
+		if (p.getProperty("yC") != null)
+				this.setyC(Double.parseDouble(p.getProperty("yC").replaceAll(WHITESPACE,EMPTY)));
+		if (p.getProperty("scaleSize") != null)
+				this.setScaleSize(Double.parseDouble(p.getProperty("scaleSize").replaceAll(WHITESPACE,EMPTY)));
+		if (p.getProperty("useFuncConst") != null)
+				this.setUseFuncConst(p.getProperty("useFuncConst").replaceAll(WHITESPACE,EMPTY));
+		if (p.getProperty("useFuncPixel") != null)
+				this.setUseFuncPixel(p.getProperty("useFuncPixel").replaceAll(WHITESPACE,EMPTY));
+
+		/*this.setZSq(Boolean.parseBoolean(p.getProperty("isZSq")));
+		this.setFatou(Boolean.parseBoolean(p.getProperty("isFatou")));
+		this.setClassicJulia(Boolean.parseBoolean(p.getProperty("isClassicJulia")));*/
+		
+		if (p.getProperty("applyCustomFormula") != null)
+			this.setApplyCustomFormula(Boolean.parseBoolean(p.getProperty("applyCustomFormula").replaceAll(WHITESPACE,EMPTY)));
+		
+		
+		
+	}
+
+
 	protected void fillEquilateralTriangle(Graphics2D g, Point center, int length, String dir, Color color) {
 		g.setColor(color);
 		this.fillEquilateralTriangle(g,center,length,dir);
@@ -457,12 +524,12 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	private ComplexNumber applyIntraPixelOperation(double x, double y) {
 		ComplexNumber z = null;
 		switch(this.getPixXYOperation()){
-		case	"Plus":		z = new ComplexNumber(x,y);	break;
-		case	"Minus":	z = new ComplexNumber(x,y*-1.0);	break;
-		case	"Multiply":	z = new ComplexNumber(x,0.0).times(new	ComplexNumber(0.0,y));	break;
-		case	"Divide":	z = new ComplexNumber(x,0.0).divides(new	ComplexNumber(0.0,y));	break;
-		case	"Power":	z = new ComplexNumber(x,0.0).power((int)y);	break;
-		default:	z = new ComplexNumber(x,y);	break;	
+			case	"Plus":		z = new ComplexNumber(x,y);	break;
+			case	"Minus":	z = new ComplexNumber(x,y*-1.0);	break;
+			case	"Multiply":	z = new ComplexNumber(x,0.0).times(new	ComplexNumber(0.0,y));	break;
+			case	"Divide":	z = new ComplexNumber(x,0.0).divides(new	ComplexNumber(0.0,y));	break;
+			case	"Power":	z = new ComplexNumber(x,0.0).power((int)y);	break;
+			default:	z = new ComplexNumber(x,y);	break;	
 		}
 		return z;
 	}
@@ -1035,15 +1102,15 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		this.useFuncPixel = ufp;
 	}
 
-	//https://en.wikipedia.org/wiki/Julia_set#Field_lines
-	private boolean isFatou = false;	//todo	-	rename to getFieldLines??
-	public boolean isFatou() {
-		return isFatou;
-	}
-
-	public void setFatou(boolean isFat) {
-		isFatou = isFat;
-	}
+//	//https://en.wikipedia.org/wiki/Julia_set#Field_lines
+//	private boolean isFatou = false;	//todo	-	rename to getFieldLines??
+//	public boolean isFatou() {
+//		return isFatou;
+//	}
+//
+//	public void setFatou(boolean isFat) {
+//		isFatou = isFat;
+//	}
 	
 	protected ComplexNumber getFatouValue(ComplexNumber z) {
 		double x = z.real();
@@ -1064,67 +1131,67 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		return z;
 	}
 	
-	/////////////////////////
-	//	z=z^2+c
-	////////////////////////
-	private boolean isZSq = false;	//todo	-	rename to getFieldLines??
-	public boolean isZSq() {
-		return isZSq;
-	}
-
-	public void setZSq(boolean iszsq) {
-		isZSq = iszsq;
-	}
-	
-
-	protected ComplexNumber getZSqValue(ComplexNumber z) {
-		double x = z.real();
-		double y = z.imaginary();
-		return this.getZSqValue(x,y);
-	}
-
-	protected ComplexNumber getZSqValue(double x, double y) {
-		return new ComplexNumber(x, y).power(2);
-	}
-	///////////
-	//endshttps://en.wikipedia.org/wiki/Julia_set#Field_lines
-	
-	
-
-	//http://paulbourke.net/fractals/juliaset/
-	/*	Julia was  interested  in  the
-	 * 	iterative properties of a more general expression, 	 * 
-	 * 	namely 
-	 * 
-	 * z^4 + z^3/(z-1) + z^2/(z^3 + 4*z^2 + 5) + c*/
-	private boolean isClassicJulia=false;
-	public boolean isClassicJulia() {
-		return isClassicJulia;
-	}
-
-	public void setClassicJulia(boolean isClassicJulia) {
-		this.isClassicJulia = isClassicJulia;
-	}
-	protected ComplexNumber getClassicJulia(ComplexNumber z) {
-		double x = z.real();
-		double y = z.imaginary();
-		return this.getClassicJulia(x,y);
-	}
-	
-	protected ComplexNumber getClassicJulia(double x, double y) {
-		ComplexNumber z = new ComplexNumber(x, y);
-		final ComplexNumber one = new ComplexNumber(1.0, 0.0);
-		final ComplexNumber four = new ComplexNumber(4.0, 0.0);
-		final ComplexNumber five = new ComplexNumber(5.0, 0.0);
-
-		final ComplexNumber first = z.power(4);
-		final ComplexNumber second = (z.power(3)).divides(z.minus(one));
-		final ComplexNumber third = (z.power(2)).divides((z.power(3)).plus(four.times(z.power(2))).plus(five));
-
-		z = first.plus(second).plus(third);
-		return z;
-	}
-	
+//	/////////////////////////
+//	//	z=z^2+c
+//	////////////////////////
+//	private boolean isZSq = false;	//todo	-	rename to getFieldLines??
+//	public boolean isZSq() {
+//		return isZSq;
+//	}
+//
+//	public void setZSq(boolean iszsq) {
+//		isZSq = iszsq;
+//	}
+//	
+//
+//	protected ComplexNumber getZSqValue(ComplexNumber z) {
+//		double x = z.real();
+//		double y = z.imaginary();
+//		return this.getZSqValue(x,y);
+//	}
+//
+//	protected ComplexNumber getZSqValue(double x, double y) {
+//		return new ComplexNumber(x, y).power(2);
+//	}
+//	///////////
+//	//endshttps://en.wikipedia.org/wiki/Julia_set#Field_lines
+//	
+//	
+//
+//	//http://paulbourke.net/fractals/juliaset/
+//	/*	Julia was  interested  in  the
+//	 * 	iterative properties of a more general expression, 	 * 
+//	 * 	namely 
+//	 * 
+//	 * z^4 + z^3/(z-1) + z^2/(z^3 + 4*z^2 + 5) + c*/
+//	private boolean isClassicJulia=false;
+//	public boolean isClassicJulia() {
+//		return isClassicJulia;
+//	}
+//
+//	public void setClassicJulia(boolean isClassicJulia) {
+//		this.isClassicJulia = isClassicJulia;
+//	}
+//	protected ComplexNumber getClassicJulia(ComplexNumber z) {
+//		double x = z.real();
+//		double y = z.imaginary();
+//		return this.getClassicJulia(x,y);
+//	}
+//	
+//	protected ComplexNumber getClassicJulia(double x, double y) {
+//		ComplexNumber z = new ComplexNumber(x, y);
+//		final ComplexNumber one = new ComplexNumber(1.0, 0.0);
+//		final ComplexNumber four = new ComplexNumber(4.0, 0.0);
+//		final ComplexNumber five = new ComplexNumber(5.0, 0.0);
+//
+//		final ComplexNumber first = z.power(4);
+//		final ComplexNumber second = (z.power(3)).divides(z.minus(one));
+//		final ComplexNumber third = (z.power(2)).divides((z.power(3)).plus(four.times(z.power(2))).plus(five));
+//
+//		z = first.plus(second).plus(third);
+//		return z;
+//	}
+//	
 	public boolean isReversePixelCalculation() {
 		return this.reversePixelCalculation;
 	}
@@ -1153,6 +1220,40 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		if(this.colorChoice.equals(BlackWhite)){
 			
 		}
+	}
+	
+	
+	public void setColorChoice(String[] choice) {
+		this.colorChoice = choice[0].replaceAll(WHITESPACE,EMPTY);
+
+		if (choice.length == 2) {
+			this.setRgbStartVals(this.intiFyRgbStartVals(choice[1].replaceAll(WHITESPACE,EMPTY)));
+			this.setRgbDivisors(this.intiFyRgbDivisors(choice[2].replaceAll(WHITESPACE,EMPTY)));
+		}
+
+	}
+
+	private int[] intiFyRgbStartVals(String startVals) {
+		switch( startVals ) {
+			case "POW2_4_200" :			return POW2_4_200;
+			case "POW2_2_128" :			return POW2_2_128;
+			case "POW2_2_F4" :			return POW2_2_F4;
+			case "POW3_3_243" :			return POW3_3_243;
+			case "EQUAL_PARTS_40" :		return EQUAL_PARTS_40;
+			case "EQUAL_PARTS_50" :		return EQUAL_PARTS_50;
+			case "EQUAL_PARTS_25" :		return EQUAL_PARTS_25;
+		}
+		return POW2_4_200;
+	}
+	
+
+	private int[] intiFyRgbDivisors(String divVals) {
+		switch( divVals ) {
+			case "FRST_SIX_PRIMES" :		return FRST_SIX_PRIMES;
+			case "FRST_SIX_ODDS" :			return FRST_SIX_ODDS;
+			case "FRST_SIX_FIBS" :			return FRST_SIX_FIBS;
+		}
+		return FRST_SIX_PRIMES;
 	}
 
 	public boolean isSavePixelInfo2File() {
@@ -2278,9 +2379,15 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
 			return null;
 		}
 	}
+
 	public void setPxConstOperation(String pxConstOp) {
-		this.pxConstOperation=pxConstOp;		
+		this.pxConstOperation = pxConstOp;
 	}
+
+	public String getPxConstOperation() {
+		return this.pxConstOperation;
+	}
+	
 
 	public final /* abstract */ String getFractalDetails() {
 		String info = "";

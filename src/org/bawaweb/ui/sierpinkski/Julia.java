@@ -5,6 +5,7 @@ package org.bawaweb.ui.sierpinkski;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.Properties;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -53,6 +54,26 @@ public class Julia extends FractalBase {
 	//wiil remove above l8r - and make all uniform
 	
 	private boolean isConstFuncApplied = false;
+	
+	public Julia(Properties p) {
+		super(p);
+		
+		if (p.getProperty("isZSq") != null)
+			this.setZSq(Boolean.parseBoolean(p.getProperty("isZSq").replaceAll(WHITESPACE,EMPTY)));
+		if (p.getProperty("isFatou") != null)
+			this.setFatou(Boolean.parseBoolean(p.getProperty("isFatou").replaceAll(WHITESPACE,EMPTY)));
+		if (p.getProperty("isClassicJulia") != null)
+			this.setClassicJulia(Boolean.parseBoolean(p.getProperty("isClassicJulia").replaceAll(WHITESPACE,EMPTY)));
+
+		if (p.getProperty("useDiff") != null)
+			this.setUseDiff(Boolean.parseBoolean(p.getProperty("useDiff").replaceAll(WHITESPACE,EMPTY)));
+		if (p.getProperty("isComplexNumConst") != null)
+			this.setComplexNumConst(Boolean.parseBoolean(p.getProperty("isComplexNumConst").replaceAll(WHITESPACE,EMPTY)));
+		if (p.getProperty("constReal") != null&&p.getProperty("constImag") != null)
+			this.setComplex(Double.parseDouble(p.getProperty("constReal").replaceAll(WHITESPACE,EMPTY)),
+					Double.parseDouble(p.getProperty("constImag").replaceAll(WHITESPACE,EMPTY)));
+	}
+	
 	
 	public Julia() {
 		super();
@@ -240,6 +261,79 @@ public class Julia extends FractalBase {
 
 	public void setPreStringComplexConstConstruct(boolean preStringCC) {
 		this.preStringComplexConstConstruct = preStringCC;
+	}
+	
+	/////////////////////////
+	// z=z^2+c
+	////////////////////////
+	private boolean isZSq = false; // todo - rename to getFieldLines??
+
+	public boolean isZSq() {
+		return isZSq;
+	}
+
+	public void setZSq(boolean iszsq) {
+		isZSq = iszsq;
+	}
+
+	protected ComplexNumber getZSqValue(ComplexNumber z) {
+		double x = z.real();
+		double y = z.imaginary();
+		return this.getZSqValue(x, y);
+	}
+
+	protected ComplexNumber getZSqValue(double x, double y) {
+		return new ComplexNumber(x, y).power(2);
+	}
+	///////////
+	// endshttps://en.wikipedia.org/wiki/Julia_set#Field_lines
+
+	// http://paulbourke.net/fractals/juliaset/
+	/*
+	 * Julia was interested in the iterative properties of a more general
+	 * expression, * namely
+	 * 
+	 * z^4 + z^3/(z-1) + z^2/(z^3 + 4*z^2 + 5) + c
+	 */
+	private boolean isClassicJulia = false;
+
+	public boolean isClassicJulia() {
+		return isClassicJulia;
+	}
+
+	public void setClassicJulia(boolean isClassicJulia) {
+		this.isClassicJulia = isClassicJulia;
+	}
+
+	protected ComplexNumber getClassicJulia(ComplexNumber z) {
+		double x = z.real();
+		double y = z.imaginary();
+		return this.getClassicJulia(x, y);
+	}
+
+	protected ComplexNumber getClassicJulia(double x, double y) {
+		ComplexNumber z = new ComplexNumber(x, y);
+		final ComplexNumber one = new ComplexNumber(1.0, 0.0);
+		final ComplexNumber four = new ComplexNumber(4.0, 0.0);
+		final ComplexNumber five = new ComplexNumber(5.0, 0.0);
+
+		final ComplexNumber first = z.power(4);
+		final ComplexNumber second = (z.power(3)).divides(z.minus(one));
+		final ComplexNumber third = (z.power(2)).divides((z.power(3)).plus(four.times(z.power(2))).plus(five));
+
+		z = first.plus(second).plus(third);
+		return z;
+	}
+
+	// https://en.wikipedia.org/wiki/Julia_set#Field_lines
+	private boolean isFatou = false; // todo - rename to getFieldLines??
+
+	public boolean isFatou() {
+		return isFatou;
+	}
+
+	public void setFatou(boolean isFat) {
+		isFatou = isFat;
 	}
 
 	/* (non-Javadoc)
