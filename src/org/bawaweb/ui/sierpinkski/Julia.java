@@ -69,9 +69,9 @@ public class Julia extends FractalBase {
 			this.setUseDiff(Boolean.parseBoolean(p.getProperty("useDiff").replaceAll(WHITESPACE,EMPTY)));
 		if (p.getProperty("isComplexNumConst") != null)
 			this.setComplexNumConst(Boolean.parseBoolean(p.getProperty("isComplexNumConst").replaceAll(WHITESPACE,EMPTY)));
-		if (p.getProperty("constReal") != null&&p.getProperty("constImag") != null)
-			this.setComplex(Double.parseDouble(p.getProperty("constReal").replaceAll(WHITESPACE,EMPTY)),
-					Double.parseDouble(p.getProperty("constImag").replaceAll(WHITESPACE,EMPTY)));
+		if (p.getProperty("constReal") != null && p.getProperty("constImag") != null && !(p.getProperty("constReal").replaceAll(WHITESPACE,EMPTY).equals("DynamicConst") || p.getProperty("constImag").replaceAll(WHITESPACE,EMPTY).equals("DynamicConst")))
+			this.setComplex(Double.parseDouble(p.getProperty("constReal").replaceAll(WHITESPACE, EMPTY)),
+					Double.parseDouble(p.getProperty("constImag").replaceAll(WHITESPACE, EMPTY)));
 	}
 	
 	

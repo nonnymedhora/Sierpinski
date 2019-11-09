@@ -2846,10 +2846,11 @@ class SierpinskiComboPanel extends JPanel {
 			}
 		}
 		
-		final List<?> allCombinationsList = this.product(varyColorList,varyPixXTrList,varyPixYTrList,varyIntraPixXYOpList,
-				varyZFuncList,varyConstCFuncList,varyPixelConstOpZCList,
-				varyPowerList,varyPixXCenterList,varyPixYCenterList,
-				varyScaleSizeList,varyBoundaryList,varyIterList,
+		final List<?> allCombinationsList = this.product(
+				varyColorList, varyPixXTrList, varyPixYTrList, varyIntraPixXYOpList,
+				varyZFuncList, varyConstCFuncList, varyPixelConstOpZCList,
+				varyPowerList, varyPixXCenterList, varyPixYCenterList,
+				varyScaleSizeList, varyBoundaryList, varyIterList,
 				varyUseDiffList, varyInvertPixelList,
 				varyConstList);
 		
@@ -2948,13 +2949,14 @@ class SierpinskiComboPanel extends JPanel {
 			this.setDiyJuliaUseDiff(julies[i].isUseDiff());
 			this.invertPixelCalculation = julies[i].isReversePixelCalculation();
 			
-			if (!julies[i].isComplexNumConst()) {
+			if (!(julies[i].isComplexNumConst() || this.diyJuliaKeepConst || this.keepConst
+					|| this.diyJuliaKeepConstRb.isSelected())) {
 				this.diyJuliaConstReal = julies[i].getComplex().real;
 				this.diyJuliaConstImg = julies[i].getComplex().imaginary;
 			} else {
 				this.keepConst = true;
-
 			}
+			
 			this.setDiyJuliaGenFormulaArea(pxFunc, this.diyJuliaPower, diyJApplyFatou, diyJApplyZSq, diyJApplyClassic,
 					pixXTr, pixYTr, pixIntraXYOp, pixConstOp);
 			this.formulaArea.append("<br/>Constant = " + this.diyJuliaConstReal + " + (" + this.diyJuliaConstImg
@@ -2999,6 +3001,8 @@ class SierpinskiComboPanel extends JPanel {
 			g.dispose();
 			julies[i].dispose();
 			julies[i] = null;
+			
+			Runtime.getRuntime().gc();//System.gc();
 		}
 		
 
@@ -3042,21 +3046,26 @@ class SierpinskiComboPanel extends JPanel {
 		this.setComplex(Double.parseDouble(p.getProperty("constReal")),Double.parseDouble(p.getProperty("constImag")));				*/
 		for (int i = 0; i < comboList.size(); i++) {
 			ps[i] = new Properties();
-			String[] iStr = comboList.get(i).toString().replaceAll(OPEN_BRACK, EMPTY).replaceAll(CLOSE_BRACK, EMPTY)
-					.split(",");
+			String[] iStr = new StringBuilder(comboList.get(i).toString()).toString()
+					.replaceAll(OPEN_BRACK, EMPTY)
+					.replaceAll(CLOSE_BRACK, EMPTY)
+					.split(",");//\\[\\]
+			
+			/*String[] iStr = this.cleanString(comboList.get(i).toString());*/
 			int nxtIndex = 0;
 
 			final boolean isSampleMixColor = iStr[0].equals("SampleMix");
 			String colorChoice = null;
 			if (isSampleMixColor) {
-				colorChoice = OPEN_BRACK + iStr[0] + COMMA + iStr[1] + COMMA + iStr[2] + CLOSE_BRACK;
+				String[] colorChoices = new String[]{iStr[0],iStr[1],iStr[2]};			//OPEN_BRACK + iStr[0] + COMMA + iStr[1] + COMMA + iStr[2] + CLOSE_BRACK;
+				ps[i].put("colorChoice", colorChoices);
 				nxtIndex = 3;
 			} else {
 				colorChoice = iStr[0];
+				ps[i].put("colorChoice", colorChoice);
 				nxtIndex = 1;
 			}
 
-			ps[i].put("colorChoice", colorChoice);
 
 			ps[i].put("pxXTransformation", iStr[nxtIndex]);
 			nxtIndex += 1;
@@ -3120,6 +3129,26 @@ class SierpinskiComboPanel extends JPanel {
 		}
 		
 		return ps;
+	}
+
+	/**
+	 * Returns a cleaned string array
+	 * [[[[[[[[[[[[[ColorPalette, absoluteSquare], reciprocalSquare], Plus], None], None], Plus], 3], absoluteSquare], reciprocalSquare], 1.0], 5.0], 1000], [-1.1, -1.1]]
+	 * to
+	 * ColorPalette absoluteSquare reciprocalSquare Plus None None Plus 3 absoluteSquare reciprocalSquare 1.0 5.0 1000 -1.1 -1.1
+	 * as an String[]
+	 * @param rawString	=	raw	string
+	 * @return	clean string[]
+	 */
+	private String[] cleanString(final String rawString) {
+		for(int i = 0; i < rawString.length();i++){
+			
+		}
+		return null;
+	}
+	
+	private String charRemoveAt(String aStr, int index) {
+		return aStr.substring(0,index)+aStr.substring(index+1);
 	}
 
 	private void doJuliaGenerateCommand_0() {
