@@ -168,6 +168,9 @@ class SierpinskiComboPanel extends JPanel {
 	private static final String OPEN_BRACK = "\\[";
 	private static final String CLOSE_BRACK = "\\]";
 	private static final String COMMA = ",";
+	private static final String BACK_SLASH = "\\\\";
+	private static final String FORWARD_SLASH = "/";
+	private static final String PIPE = "\\|";
 	
 	private final String[] comboOptions = new String[]{ DIY, FANNY_CIRCLE, FANNY_TRIANGLES, SIERPINSKI_TRIANGLES, SIERPINSKI_SQUARES, APOLLONIAN_CIRCLES, CST_FRACTAL, SAMPLE, MANDELBROT, JULIA, KOCHSNOWFLAKE, POLY };
 	private final JComboBox<String> combos = new JComboBox<String>(comboOptions);
@@ -2655,7 +2658,7 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private void doJuliaGenerateCommand() {
 		
-		if (this.diyJuliaVaryConstant) {
+		if (this.diyJuliaVaryConstant && this.diyJuliaVaryGenConstantCb.isSelected()) {
 			System.out.println("in_doJuliaGenerateCommand_this.diyJuliaVaryConstant=true");
 			try {
 				this.diyJuliaGenRealFromVal = Double.parseDouble(this.diyJuliaGenRealFromTf.getText());
@@ -2664,22 +2667,21 @@ class SierpinskiComboPanel extends JPanel {
 				this.diyJuliaGenImagToVal = Double.parseDouble(this.diyJuliaGenImagToTf.getText());
 				
 				if(this.diyJuliaGenRealFromVal>this.diyJuliaGenRealToVal||this.diyJuliaGenImagFromVal>this.diyJuliaGenImagToVal){
-					JOptionPane.showMessageDialog(null, "From > To ???", "Please enter a valid range",
+					JOptionPane.showMessageDialog(null, "From > To ???", "Please enter a valid range for Const-Real",
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				
-				
 			} catch (NumberFormatException | NullPointerException e2) {
 				e2.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal",
+				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number \n"+e2.getMessage(), "Error - Not a Decimal",
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			} 
 		}
 		
-		boolean varyConst = this.diyJuliaVaryConstant;
-		boolean varyKeepConst = this.keepConst && !varyConst;
+		boolean varyConst = this.diyJuliaVaryConstant && this.diyJuliaVaryGenConstantCb.isSelected();
+		boolean varyKeepConst = (this.keepConst && this.diyJuliaKeepConstRb.isSelected()) && !varyConst;
 		
 		if(!varyConst && !varyKeepConst) {
 			try {
@@ -2700,13 +2702,13 @@ class SierpinskiComboPanel extends JPanel {
 				this.diyJuliaVaryBoundaryToVal = Double.parseDouble(this.diyJuliaGenBoundaryToTf.getText());
 				
 				if (this.diyJuliaVaryBoundaryFromVal > this.diyJuliaVaryBoundaryToVal) {
-					JOptionPane.showMessageDialog(null, "From > To ???", "Please enter a valid range",
+					JOptionPane.showMessageDialog(null, "From > To ???", "Please enter a valid range for Boundary",
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 			} catch (NumberFormatException | NullPointerException e2) {
 				e2.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal",
+				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number for Boundary\n"+e2.getMessage(), "Error - Not a Decimal",
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			} 
@@ -2718,13 +2720,13 @@ class SierpinskiComboPanel extends JPanel {
 				this.diyJuliaVaryScaleSizeFromVal = Double.parseDouble(this.diyJuliaGenScaleSizeFromTf.getText());
 				this.diyJuliaVaryScaleSizeToVal = Double.parseDouble(this.diyJuliaGenScaleSizeToTf.getText());
 				if(this.diyJuliaVaryScaleSizeFromVal>this.diyJuliaVaryScaleSizeToVal){
-					JOptionPane.showMessageDialog(null, "From > To ???", "Please enter a valid range",
+					JOptionPane.showMessageDialog(null, "From > To ???", "Please enter a valid range for ScaleSize",
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 			} catch (NumberFormatException | NullPointerException e2) {
 				e2.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal",
+				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number for ScaleSize\n"+e2.getMessage(), "Error - Not a Decimal",
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			} 
@@ -2736,13 +2738,13 @@ class SierpinskiComboPanel extends JPanel {
 				this.diyJuliaVaryPixelPowerZFromVal = Integer.parseInt(this.diyJuliaGenPixelPowerZFromTf.getText());
 				this.diyJuliaVaryPixelPowerZToVal = Integer.parseInt(this.diyJuliaGenPixelPowerZToTf.getText());
 				if(this.diyJuliaVaryPixelPowerZFromVal>this.diyJuliaVaryPixelPowerZToVal){
-					JOptionPane.showMessageDialog(null, "From > To ???", "Please enter a valid range",
+					JOptionPane.showMessageDialog(null, "From > To ???", "Please enter a valid range for PixelPowerZ",
 							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 			} catch (NumberFormatException | NullPointerException e2) {
 				e2.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Please enter a valid Integer\n"+e2.getMessage(), "Error - Not an Integer",
+				JOptionPane.showMessageDialog(null, "Please enter a valid Integer for PixelPowerZ\n"+e2.getMessage(), "Error - Not an Integer",
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			} 
@@ -2791,10 +2793,10 @@ class SierpinskiComboPanel extends JPanel {
 		final List<?> varyIterList = this.getVaryJuliaIterList();
 		
 		final int varyUseDiffCount = 2;
-		final List<?> varyUseDiffList = this.getTrueFalseList();
+		final List<?> varyUseDiffList = this.getAppendStr2List("useDiffChoice=",this.getTrueFalseList());
 		
 		final int varyInvertPixelCount = 2;
-		final List<?> varyInvertPixelList = this.getTrueFalseList();
+		final List<?> varyInvertPixelList = this.getAppendStr2List("invertPixelCalcChoice=", this.getTrueFalseList());
 
 		final double scaleSizeFrom = this.diyJuliaVaryScaleSizeFromVal;
 		final double scaleSizeTo = this.diyJuliaVaryScaleSizeToVal;
@@ -2823,7 +2825,7 @@ class SierpinskiComboPanel extends JPanel {
 		final int varyImagConstantCount = this.getVaryJuliaImagConstantCount();
 		final List<?> varyImagConstList = this.getVaryJuliaImagConstantList(jImagFrom,jImagTO,imagJumpVal,varyImagConstantCount);
 		
-		final List<?> varyConstList = this.product(varyRealConstList,varyImagConstList);
+		final List<?> varyConstList = this.getAppendStr2List("constantChoice=", this.product(varyRealConstList,varyImagConstList));
 
 //		System.out.println("getTotalVaryCount=" + this.getTotalVaryCount());
 //		System.out.println("getTotalVaryCount=HARDED-2-To5== " + 5);
@@ -2964,11 +2966,12 @@ class SierpinskiComboPanel extends JPanel {
 			//
 			this.addJuliaConstInfo(julies[i]);
 
-			julies[i].reset();
+//			julies[i].reset();			----DOWENEEDTHIS-4-julia
 
 			/// done1---now-to-imaging
 
 			Graphics2D g = julies[i].getBufferedImage().createGraphics();
+//			System
 			julies[i].paint(g);
 
 			this.setFractalImage(julies[i].getBufferedImage());
@@ -3046,79 +3049,68 @@ class SierpinskiComboPanel extends JPanel {
 		this.setComplex(Double.parseDouble(p.getProperty("constReal")),Double.parseDouble(p.getProperty("constImag")));				*/
 		for (int i = 0; i < comboList.size(); i++) {
 			ps[i] = new Properties();
-			String[] iStr = new StringBuilder(comboList.get(i).toString()).toString()
+			final String line = comboList.get(i).toString();
+			System.out.println("i is "+i);
+			System.out.println("line is "+line);
+			String[] iStr = new StringBuilder(line).toString()
 					.replaceAll(OPEN_BRACK, EMPTY)
 					.replaceAll(CLOSE_BRACK, EMPTY)
-					.split(",");//\\[\\]
+					.replaceAll(BACK_SLASH, EMPTY)	//TODO	maybeRemove
+					.split(COMMA);//\\[\\]
 			
-			/*String[] iStr = this.cleanString(comboList.get(i).toString());*/
-			int nxtIndex = 0;
+			for(String prop : iStr) {		//startsWith replaced with java.lang.String.contains() implementation
+				if (prop.indexOf("colorChoice=") > -1) {
+					ps[i].put("colorChoice",prop.replace("colorChoice=",EMPTY));	// 		prop.substring("colorChoice=".length()));
+				} else if (prop.indexOf("pixXTransform=") > -1) {
+					ps[i].put("pxXTransformation", prop.replace("pixXTransform=",EMPTY));
+				} else if (prop.indexOf("pixYTransform=") > -1) {
+					ps[i].put("pxYTransformation", prop.replace("pixYTransform=",EMPTY));
+				} else if (prop.indexOf("pixIntraXYOperation=") > -1) {
+					ps[i].put("pixXYOperation", prop.replace("pixIntraXYOperation=",EMPTY));
+				} else if (prop.indexOf("pxFuncChoice=") > -1) {
+					ps[i].put("useFuncPixel", prop.replace("pxFuncChoice=",EMPTY));
+				} else if (prop.indexOf("constFuncChoice=") > -1) {
+					ps[i].put("useFuncConst", prop.replace("constFuncChoice=",EMPTY));
+				} else if (prop.indexOf("pxConstOprnChoice=") > -1) {
+					ps[i].put("pxConstOperation", prop.replace("pxConstOprnChoice=",EMPTY));
+				} else if (prop.indexOf("power=") > -1) {
+					ps[i].put("power", prop.replace("power=",EMPTY));
+				} else if (prop.indexOf("xCentrChoice=") > -1) {
+					ps[i].put("xC", prop.replace("xCentrChoice=",EMPTY));
+				} else if (prop.indexOf("yCentrChoice=") > -1) {
+					ps[i].put("yC", prop.replace("yCentrChoice=",EMPTY));
+				} else if (prop.indexOf("scaleSizeChoice=") > -1) {
+					ps[i].put("scaleSize", prop.replace("scaleSizeChoice=",EMPTY));
+				} else if (prop.indexOf("boundary=") > -1) {
+					ps[i].put("bound", prop.replace("boundary=",EMPTY));
+				} else if (prop.indexOf("maxIter=") > -1) {
+					ps[i].put("maxIter", prop.replace("maxIter=",EMPTY));
+				} else if (prop.indexOf("useDiffChoice=") > -1) {
+					ps[i].put("useDiff", prop.replace("useDiffChoice=",EMPTY));
+				} else if (prop.indexOf("invertPixelCalcChoice=") > -1) {
+					ps[i].put("reversePixelCalculation", prop.replace("invertPixelCalcChoice=",EMPTY));
+				} else if (prop.indexOf("constantChoice=realConstChoice=") > -1) {
+					String realConstChoice = prop.replace("constantChoice=realConstChoice=",EMPTY);
 
-			final boolean isSampleMixColor = iStr[0].equals("SampleMix");
-			String colorChoice = null;
-			if (isSampleMixColor) {
-				String[] colorChoices = new String[]{iStr[0],iStr[1],iStr[2]};			//OPEN_BRACK + iStr[0] + COMMA + iStr[1] + COMMA + iStr[2] + CLOSE_BRACK;
-				ps[i].put("colorChoice", colorChoices);
-				nxtIndex = 3;
-			} else {
-				colorChoice = iStr[0];
-				ps[i].put("colorChoice", colorChoice);
-				nxtIndex = 1;
+					if (realConstChoice.contains("DynamicConst")) {
+						ps[i].put("isComplexNumConst", "true");
+					} else {
+						ps[i].put("isComplexNumConst", "false");
+						ps[i].put("constReal", realConstChoice);
+					}
+
+				} else if (prop.indexOf("imagConstChoice=") > -1) {
+					String imagConstChoice = prop.replace("imagConstChoice=",EMPTY);
+
+					if (imagConstChoice.contains("DynamicConst")) {
+						ps[i].put("isComplexNumConst", "true");
+					} else {
+						ps[i].put("isComplexNumConst", "false");
+						ps[i].put("constImag", imagConstChoice);
+					}
+				}
 			}
-
-
-			ps[i].put("pxXTransformation", iStr[nxtIndex]);
-			nxtIndex += 1;
-
-			ps[i].put("pxYTransformation", iStr[nxtIndex]);
-			nxtIndex += 1;
-
-			ps[i].put("pixXYOperation", iStr[nxtIndex]);
-			nxtIndex += 1;
-
-			ps[i].put("useFuncPixel", iStr[nxtIndex]);
-			nxtIndex += 1;
-
-			ps[i].put("useFuncConst", iStr[nxtIndex]);
-			nxtIndex += 1;
-
-			ps[i].put("pxConstOperation", iStr[nxtIndex]);
-			nxtIndex += 1;
-
-			ps[i].put("power", iStr[nxtIndex]);
-			nxtIndex += 1;
-
-			ps[i].put("xC", iStr[nxtIndex]);
-			nxtIndex += 1;
-
-			ps[i].put("yC", iStr[nxtIndex]);
-			nxtIndex += 1;
-
-			ps[i].put("scaleSize", iStr[nxtIndex]);
-			nxtIndex += 1;
-
-			ps[i].put("bound", iStr[nxtIndex]);
-			nxtIndex += 1;
-
-			ps[i].put("maxIter", iStr[nxtIndex]);
-			nxtIndex += 1;
-
-			ps[i].put("useDiff", iStr[nxtIndex]);
-			nxtIndex += 1;
-
-			ps[i].put("reversePixelCalculation", iStr[nxtIndex]);
-			nxtIndex += 1;
-
-			if (iStr[nxtIndex].equals("DynamicConst")) {
-				ps[i].put("isComplexNumConst", "true");
-			} else {
-				ps[i].put("isComplexNumConst", "false");
-				ps[i].put("constReal", iStr[nxtIndex]);
-				nxtIndex += 1;
-				ps[i].put("constImag", iStr[nxtIndex]);
-			}
-			
-			ps[i].put("applyCustomFormula",diyJApplyFormulaZ);
+			ps[i].put("applyCustomFormula", this.diyJApplyFormulaZ);
 			
 			ps[i].put("isZSq", this.applyZSq);
 			ps[i].put("isFatou", this.applyFatou);
@@ -3126,9 +3118,98 @@ class SierpinskiComboPanel extends JPanel {
 			
 			ps[i].put("areaSize",this.juliaSize);
 			ps[i].put("rotation",this.rotation);
+				
+			
 		}
-		
+			
 		return ps;
+			
+////////////////////////nxtIndex-removd/////////////////////////////			
+/////////////////////////////////////////////////////////////////////////			
+//			
+//			/*String[] iStr = this.cleanString(comboList.get(i).toString());*/
+//			int nxtIndex = 0;
+//System.out.println("iStr[0] is "+ iStr[0]);
+//ps[i].put("colorChoice", iStr[0]);
+//
+//
+////			final boolean isSampleMixColor = iStr[0].contains("SampleMix");		//	\SampleMix
+////			String colorChoice = null;
+////			if (isSampleMixColor) {
+//////				String[] colorChoices = new String[]{iStr[0],iStr[1],iStr[2]};			//OPEN_BRACK + iStr[0] + COMMA + iStr[1] + COMMA + iStr[2] + CLOSE_BRACK;
+////				colorChoice = iStr[0]+PIPE+iStr[1]+iStr[2];
+////				ps[i].put("colorChoice", colorChoice);
+////				nxtIndex = 3;
+////			} else {
+////				colorChoice = iStr[0];
+////				ps[i].put("colorChoice", colorChoice);
+////				nxtIndex = 1;
+////			}
+//
+//
+//			ps[i].put("pxXTransformation", iStr[nxtIndex]);
+//			nxtIndex += 1;
+//
+//			ps[i].put("pxYTransformation", iStr[nxtIndex]);
+//			nxtIndex += 1;
+//
+//			ps[i].put("pixXYOperation", iStr[nxtIndex]);
+//			nxtIndex += 1;
+//
+//			ps[i].put("useFuncPixel", iStr[nxtIndex]);
+//			nxtIndex += 1;
+//
+//			ps[i].put("useFuncConst", iStr[nxtIndex]);
+//			nxtIndex += 1;
+//
+//			ps[i].put("pxConstOperation", iStr[nxtIndex]);
+//			nxtIndex += 1;
+//
+//			ps[i].put("power", iStr[nxtIndex]);
+//			nxtIndex += 1;
+//
+//			ps[i].put("xC", iStr[nxtIndex]);
+//			nxtIndex += 1;
+//
+//			ps[i].put("yC", iStr[nxtIndex]);
+//			nxtIndex += 1;
+//
+//			ps[i].put("scaleSize", iStr[nxtIndex]);
+//			nxtIndex += 1;
+//
+//			ps[i].put("bound", iStr[nxtIndex]);
+//			nxtIndex += 1;
+//
+//			ps[i].put("maxIter", iStr[nxtIndex]);
+//			nxtIndex += 1;
+//
+//			ps[i].put("useDiff", iStr[nxtIndex]);
+//			nxtIndex += 1;
+//
+//			ps[i].put("reversePixelCalculation", iStr[nxtIndex]);
+//			nxtIndex += 1;
+//
+//			if (iStr[nxtIndex].contains("DynamicConst")) {
+//				ps[i].put("isComplexNumConst", "true");
+//			} else {
+//				ps[i].put("isComplexNumConst", "false");
+//				ps[i].put("constReal", iStr[nxtIndex]);
+//				nxtIndex += 1;
+//				ps[i].put("constImag", iStr[nxtIndex]);
+//			}
+//			
+//			ps[i].put("applyCustomFormula",diyJApplyFormulaZ);
+//			
+//			ps[i].put("isZSq", this.applyZSq);
+//			ps[i].put("isFatou", this.applyFatou);
+//			ps[i].put("isClassicJulia", this.applyClassicJulia);
+//			
+//			ps[i].put("areaSize",this.juliaSize);
+//			ps[i].put("rotation",this.rotation);
+//		}
+//		
+//		return ps;
+////////////////////////nxtIndex-removd/////////////////////////////
 	}
 
 	/**
@@ -4297,14 +4378,34 @@ class SierpinskiComboPanel extends JPanel {
 ////		
 //	}
 	
+
+
+	private String[] getAppendStr2Array(final String appendStr, final String[] strArr) {
+		String[] arr2Return = new String[strArr.length];
+		for (int i = 0; i < strArr.length; i++) {
+			arr2Return[i] = appendStr + strArr[i];
+		}
+		return arr2Return;
+	}
+	
+	private List<String> getAppendStr2List(final String appendStr, final List<?> aList) {
+		List<String> returnList = new ArrayList<String>(aList.size());
+		for (int i = 0; i < aList.size(); i++) {
+			returnList.add(i, appendStr + aList.get(i));
+		}
+		return returnList;
+	}
+	
 	
 	private List<?> getVaryJuliaColorsList() {
+//		colorChoice
+		final String colorChoice = "colorChoice=";
 		if (this.diyJuliaVaryColorCb.isSelected() && this.diyJuliaVaryColor) {
-			String[] colr_options_no_sampl = new String[] { "BlackWhite", "ColorPalette", "ComputeColor" };
+			String[] colr_options_no_sampl = new String[] { colorChoice+"BlackWhite", colorChoice+"ColorPalette", colorChoice+"ComputeColor" };
 			List<String> cl1 = asList(colr_options_no_sampl);
 
 			List<?> cl2 = product(asList(COLOR_SAMPLE_STARTVAL_OPTIONS), asList(COLOR_SAMPLE_DIV_OPTIONS));
-			List<?> allSampls = product(asList(new String[] { "SampleMix" }), cl2);
+			List<?> allSampls = product(asList(new String[] { colorChoice+"SampleMix" }), cl2);
 
 			Object[] sampsArr = allSampls.toArray();
 			int s1 = sampsArr.length;
@@ -4318,7 +4419,18 @@ class SierpinskiComboPanel extends JPanel {
 
 			return allColrsList;
 		} else {
-			return asList(new String[] { (String) this.colorChoiceCombo.getSelectedItem() });
+			final String colorChosen = (String) this.colorChoiceCombo.getSelectedItem();
+			if (!colorChosen.equals("SampleMix")) {
+				return asList(new String[] { colorChoice+colorChosen });
+			} else {
+				return asList(new String[] {(String) ( 
+						colorChoice+
+						OPEN_BRACK+
+						colorChosen+PIPE+ 
+						(String) this.colorSampleMixStartValsCombo.getSelectedItem()+PIPE+
+						(String) this.colorSampleDivValsCombo.getSelectedItem() +
+						CLOSE_BRACK ).replaceAll(BACK_SLASH,EMPTY) });
+			}
 		}
 	}
 
@@ -4334,10 +4446,13 @@ class SierpinskiComboPanel extends JPanel {
 	}
 
 	private List<?> getVaryJuliaPixXTransList() {
+		// pixXTransform
+		final String pixXTransform = "pixXTransform=";
 		if (this.diyJuliaVaryPixXTranCb.isSelected() && this.diyJuliaVaryPixXTran) {
-			return asList(PIX_TRANSFORM_OPTIONS);
+			String[] pxXTrArr = this.getAppendStr2Array(pixXTransform, PIX_TRANSFORM_OPTIONS);
+			return asList(pxXTrArr);// (PIX_TRANSFORM_OPTIONS);
 		} else {
-			return asList(new String[] { (String) this.pxXTransformCombo.getSelectedItem() });
+			return asList(new String[] { pixXTransform + (String) this.pxXTransformCombo.getSelectedItem() });
 		}
 	}
 
@@ -4351,10 +4466,13 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private List<?> getVaryJuliaPixYTransList() {
+		// pixYTransform
+		final String pixYTransform = "pixYTransform=";
 		if (this.diyJuliaVaryPixYTranCb.isSelected() && this.diyJuliaVaryPixYTran) {
-			return asList(PIX_TRANSFORM_OPTIONS);
+			String[] pxYTrArr = this.getAppendStr2Array(pixYTransform, PIX_TRANSFORM_OPTIONS);
+			return asList(pxYTrArr);// (PIX_TRANSFORM_OPTIONS);
 		} else {
-			return asList(new String[] { (String) this.pxYTransformCombo.getSelectedItem() });
+			return asList(new String[] { pixYTransform + (String) this.pxYTransformCombo.getSelectedItem() });
 		}
 	}
 
@@ -4368,10 +4486,14 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private List<?> getVaryJuliaIntraPixXYOpList() {
+		// pixIntraXYOperation
+		final String pixIntraXYOperation = "pixIntraXYOperation=";
 		if (this.diyJuliaVaryIntraPixXYCb.isSelected() && this.diyJuliaVaryIntraPixXY) {
-			return asList(PIX_INTRA_OPRNS);
+			String[] intraXYOpArr = this.getAppendStr2Array(pixIntraXYOperation, PIX_INTRA_OPRNS);
+			return asList(intraXYOpArr);// asList(PIX_INTRA_OPRNS);
 		} else {
-			return asList(new String[] { (String) this.intraPixOperationCombo.getSelectedItem() });
+			return asList(
+					new String[] { pixIntraXYOperation + (String) this.intraPixOperationCombo.getSelectedItem() });
 		}
 	}
 
@@ -4385,16 +4507,17 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private List<?> getVaryJuliaZFuncList() {
+		final String pxFuncChoice = "pxFuncChoice=";
 		if (this.diyJuliaVaryPixelZFuncCb.isSelected() && this.diyJuliaVaryPixelZFunc
 				&& !(this.diyJApplyFormulaZCb.isSelected() || this.diyJApplyFormulaZ)) {
-			return asList(FUNCTION_OPTIONS);
+			String[] pxFuncArr = this.getAppendStr2Array(pxFuncChoice, FUNCTION_OPTIONS);
+			return asList(pxFuncArr);// (FUNCTION_OPTIONS);
 		} else {
 			if (this.diyJApplyFormulaZCb.isSelected() || this.diyJApplyFormulaZ) {
 				return asList(new String[] { this.diyJApplyFormulaTf.getText().trim() });
 			} else {
-				return asList(new String[] { (String) this.pxFuncCombo.getSelectedItem() });
+				return asList(new String[] { pxFuncChoice + (String) this.pxFuncCombo.getSelectedItem() });
 			}
-			
 		}
 	}
 
@@ -4408,10 +4531,12 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private List<?> getVaryJuliaConstCFuncList() {
+		final String constFuncChoice = "constFuncChoice=";
 		if (this.diyJuliaVaryConstCFuncCb.isSelected() && this.diyJuliaVaryConstCFunc) {
-			return asList(FUNCTION_OPTIONS);
+			String[] constFuncArr = this.getAppendStr2Array(constFuncChoice, FUNCTION_OPTIONS);
+			return asList(constFuncArr);
 		} else {
-			return asList(new String[] { (String) this.constFuncCombo.getSelectedItem() });
+			return asList(new String[] { constFuncChoice + (String) this.constFuncCombo.getSelectedItem() });
 		}
 	}
 
@@ -4425,10 +4550,13 @@ class SierpinskiComboPanel extends JPanel {
 	}
 
 	private List<?> getVaryJuliaPixelConstOpZCList() {
+		//pxConstOprnChoice
+		final String pxConstOprnChoice = "pxConstOprnChoice=";
 		if (this.diyJuliaVaryPixelConstOpZCCb.isSelected() && this.diyJuliaVaryPixelConstOpZC) {
-			return asList(PIX_CONST_OPRNS);
+			String[] constFuncArr = this.getAppendStr2Array(pxConstOprnChoice, PIX_CONST_OPRNS);
+			return asList(constFuncArr);
 		} else {
-			return asList(new String[] { (String) this.pxConstOprnCombo.getSelectedItem() });
+			return asList(new String[] { pxConstOprnChoice+(String) this.pxConstOprnCombo.getSelectedItem() });
 		}
 	}
 
@@ -4475,8 +4603,9 @@ class SierpinskiComboPanel extends JPanel {
 	}*/
 	
 	private List<?> getVaryJuliaPowerList(int pixelPowerZFrom,int pixelPowerZTo,int pixelPowerZJump,int powerCount) {
+		final String powerChoice = "power=";
 		if (this.diyJuliaVaryPixelPowerZCb.isSelected() && this.diyJuliaVaryPixelPowerZ) {
-			return this.getVaryIntList(pixelPowerZFrom,pixelPowerZTo,pixelPowerZJump,powerCount);
+			return this.getAppendStr2List(powerChoice,	this.getVaryIntList(pixelPowerZFrom, pixelPowerZTo, pixelPowerZJump, powerCount));
 //			double pixelPowerZFrom = this.diyJuliaVaryPixelPowerZFromVal;
 //			double pixelPowerZTo = this.diyJuliaVaryPixelPowerZToVal;
 //			double pixelPowerZJump = this.diyJuliaVaryPixelPowerZJumpVal;
@@ -4503,7 +4632,7 @@ class SierpinskiComboPanel extends JPanel {
 			List<String> list = stringListiFy(powerZVals);
 			return list;*/
 		} else {
-			return asList(new String[] { String.valueOf(this.diyJuliaPowerCombos.getSelectedItem()) });
+			return asList(new String[] { powerChoice+String.valueOf(this.diyJuliaPowerCombos.getSelectedItem()) });
 		}
 	}
 
@@ -4531,13 +4660,14 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private List<?> getVaryJuliaRealConstantList(double realFrom, double realTo, double realJump, int realCount) {
+		final String realConstChoice = "realConstChoice=";
 		if (this.diyJuliaVaryGenConstantCb.isSelected()) {
-			return this.getVaryDoubleList(realFrom, realTo, realJump, realCount);
+			return this.getAppendStr2List(realConstChoice,	this.getVaryDoubleList(realFrom, realTo, realJump, realCount) );
 		} else {
 			if (this.diyJuliaKeepConstRb.isSelected() || this.diyJuliaKeepConst) {
-				return asList(new String[] { "DynamicConst" });
+				return asList(new String[] { realConstChoice+"DynamicConst" });
 			} else {
-				return asList(new String[] { this.diyJuliaRealTf.getText() });
+				return asList(new String[] { realConstChoice+this.diyJuliaRealTf.getText() });
 			}
 		}
 	}
@@ -4554,13 +4684,14 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private List<?> getVaryJuliaImagConstantList(double imagFrom, double imagTo, double imagJump, int imagCount) {
+		final String imagConstChoice = "imagConstChoice=";
 		if (this.diyJuliaVaryGenConstantCb.isSelected()) {
-			return this.getVaryDoubleList(imagFrom, imagTo, imagJump, imagCount);
+			return this.getAppendStr2List(imagConstChoice,	this.getVaryDoubleList(imagFrom, imagTo, imagJump, imagCount));
 		} else {
 			if (this.diyJuliaKeepConstRb.isSelected() || this.diyJuliaKeepConst) {
-				return asList(new String[] { "DynamicConst" });
+				return asList(new String[] { imagConstChoice+"DynamicConst" });
 			} else {
-				return asList(new String[] { this.diyJuliaImgTf.getText() });
+				return asList(new String[] { imagConstChoice+this.diyJuliaImgTf.getText() });
 			}
 		}
 	}
@@ -4577,10 +4708,13 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private List<?> getVaryJuliaIterList() {
+		final String maxIterChoice = "maxIter=";
 		if (this.diyJuliaVaryIterCb.isSelected() && this.diyJuliaVaryIter) {
-			return asList(MAX_ITERATIONS);
+			List<String> maxIterList = this.getAppendStr2List(maxIterChoice, asList(MAX_ITERATIONS));
+			return (maxIterList);
 		} else {
-			return asList(new String[] { String.valueOf(this.diyJuliaMaxIterCombos.getSelectedItem()) });
+			return asList(
+					new String[] { maxIterChoice + String.valueOf(this.diyJuliaMaxIterCombos.getSelectedItem()) });
 		}
 	}
 
@@ -4593,11 +4727,13 @@ class SierpinskiComboPanel extends JPanel {
 		}
 	}
 	
-	private List<?> getVaryJuliaBoundaryList(double boundaryFrom,double boundaryTo,double boundaryJump,int boundaryCount) {
+	private List<?> getVaryJuliaBoundaryList(double boundaryFrom, double boundaryTo, double boundaryJump, int boundaryCount) {
+		final String boundaryChoice = "boundary=";
 		if (this.diyJuliaVaryBoundaryCb.isSelected() && this.diyJuliaVaryBoundary) {
-			return this.getVaryDoubleList(boundaryFrom,boundaryTo,boundaryJump,boundaryCount);
+			return this.getAppendStr2List(boundaryChoice,
+					this.getVaryDoubleList(boundaryFrom, boundaryTo, boundaryJump, boundaryCount));
 		} else {
-			return asList(new String[] { String.valueOf(this.diyJuliaBoundCombos.getSelectedItem()) });
+			return asList(new String[] { boundaryChoice + String.valueOf(this.diyJuliaBoundCombos.getSelectedItem()) });
 		}
 	}
 
@@ -4614,10 +4750,11 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private List<?> getVaryJuliaPixXCenterList() {
+		final String xCentrChoice = "xCentrChoice=";
 		if (this.diyJuliaVaryPixXCentrCb.isSelected() && this.diyJuliaVaryPixXCentr) {
-			return asList(CENTER_XY);
+			return this.getAppendStr2List(xCentrChoice, asList(CENTER_XY));
 		} else {
-			return asList(new String[] { String.valueOf(this.diyJuliaXCCombos.getSelectedItem()) });
+			return asList(new String[] { xCentrChoice + String.valueOf(this.diyJuliaXCCombos.getSelectedItem()) });
 		}
 	}
 
@@ -4632,10 +4769,11 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private List<?> getVaryJuliaPixYCenterList() {
+		final String yCentrChoice = "yCentrChoice=";
 		if (this.diyJuliaVaryPixYCentrCb.isSelected() && this.diyJuliaVaryPixYCentr) {
-			return asList(CENTER_XY);
+			return this.getAppendStr2List(yCentrChoice, asList(CENTER_XY));
 		} else {
-			return asList(new String[] { String.valueOf(this.diyJuliaYCCombos.getSelectedItem()) });
+			return asList(new String[] { yCentrChoice+String.valueOf(this.diyJuliaYCCombos.getSelectedItem()) });
 		}
 	}
 
@@ -4649,10 +4787,12 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private List<?> getVaryJuliaScaleSizeList(double scaleSizeFrom,double scaleSizeTo,double scaleSizeJump,int scaleSizeCount) {
+		final String scaleSizeChoice = "scaleSizeChoice=";
 		if (this.diyJuliaVaryScaleSizeCb.isSelected() && this.diyJuliaVaryScaleSize) {
-			return this.getVaryDoubleList(scaleSizeFrom,scaleSizeTo,scaleSizeJump,scaleSizeCount);
+			return this.getAppendStr2List(scaleSizeChoice,
+					this.getVaryDoubleList(scaleSizeFrom,scaleSizeTo,scaleSizeJump,scaleSizeCount));
 		} else {
-			return asList(new String[] { String.valueOf(this.diyJuliaScaleSizeCombos.getSelectedItem()) });
+			return asList(new String[] {scaleSizeChoice + String.valueOf(this.diyJuliaScaleSizeCombos.getSelectedItem()) });
 		}
 	}
 
@@ -5291,6 +5431,8 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.addJuliaConstInfo(jj);
 		ff.setSavePixelInfo2File(this.savePixelInfo2File);
+		
+		ff = null;
 
 		jj.setVisible(true);
 		
@@ -5567,6 +5709,8 @@ class SierpinskiComboPanel extends JPanel {
 
 		this.addJuliaConstInfo(jj);
 		ff.setSavePixelInfo2File(this.savePixelInfo2File);
+		
+		ff = null;
 		
 		jj.setVisible(true);
 		return jj;
@@ -6069,7 +6213,7 @@ class SierpinskiComboPanel extends JPanel {
 			case	JULIA	:
 				baseInfo += this.colorChoice + "," + eol;
 				if(this.colorChoice.equals("SampleMix")) { baseInfo += "startVals["+this.colorSampleMixStartVals+"] divVals["+this.colorSampleDivVals+"]" + eol; }
-				baseInfo += "Power: " + this.polyPower + ", ";
+				baseInfo += "Power: " + this.power + ", ";
 				if (this.getJUseDiff()) {
 					baseInfo += "Ud, ";
 				}

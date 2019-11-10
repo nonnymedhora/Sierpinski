@@ -179,15 +179,23 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		// .getClass().getName()
 		//	all keys and values of p are Strings
 		
-		if (p.getProperty("colorChoice")!=null) {
+		if (p.getProperty("colorChoice") != null) {//if (p.getProperty("colorChoice") != null) {
 			String cChoice = p.getProperty("colorChoice");
-			if (!cChoice.startsWith("[")) {
-				this.setColorChoice(cChoice.replaceAll(WHITESPACE,EMPTY));
+			if(!cChoice.contains("|")) {
+				this.setColorChoice(cChoice.replaceAll(WHITESPACE, EMPTY));
+			} else {
+//				cChoice = cChoice.replaceAll("[", EMPTY).replaceAll("]", EMPTY);
+				String[] cCs = cChoice.split(PIPE);
+				this.setColorChoice(cCs);
+			}
+			
+			/*if (!cChoice.startsWith("[")) {
+				this.setColorChoice(cChoice.replaceAll(WHITESPACE, EMPTY));
 			} else {
 				cChoice = cChoice.replaceAll("[", EMPTY).replaceAll("]", EMPTY);
 				String[] cCs = cChoice.split(",");
 				this.setColorChoice(cCs);
-			} 
+			}*/
 		}
 		if (p.getProperty("maxIter") != null)
 			this.setMaxIter(Integer.parseInt(p.getProperty("maxIter").replaceAll(WHITESPACE,EMPTY)));
@@ -1226,7 +1234,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	public void setColorChoice(String[] choice) {
 		this.colorChoice = choice[0].replaceAll(WHITESPACE,EMPTY);
 
-		if (choice.length == 2) {
+		if (choice.length == 3) {
 			this.setRgbStartVals(this.intiFyRgbStartVals(choice[1].replaceAll(WHITESPACE,EMPTY)));
 			this.setRgbDivisors(this.intiFyRgbDivisors(choice[2].replaceAll(WHITESPACE,EMPTY)));
 		}
@@ -1510,6 +1518,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	final String END_BRACKET = ")";
 	final String WHITESPACE = " ";
 	final String EMPTY = "";
+	final String PIPE = "\\|";
 	
 	final ComplexNumber i = new ComplexNumber(0.0, 1.0);
 	
