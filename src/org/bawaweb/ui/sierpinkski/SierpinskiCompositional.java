@@ -3050,8 +3050,8 @@ class SierpinskiComboPanel extends JPanel {
 		for (int i = 0; i < comboList.size(); i++) {
 			ps[i] = new Properties();
 			final String line = comboList.get(i).toString();
-			System.out.println("i is "+i);
-			System.out.println("line is "+line);
+			/*System.out.println("i is "+i);
+			System.out.println("line is "+line);*/
 			String[] iStr = new StringBuilder(line).toString()
 					.replaceAll(OPEN_BRACK, EMPTY)
 					.replaceAll(CLOSE_BRACK, EMPTY)
@@ -3061,6 +3061,10 @@ class SierpinskiComboPanel extends JPanel {
 			for(String prop : iStr) {		//startsWith replaced with java.lang.String.contains() implementation
 				if (prop.indexOf("colorChoice=") > -1) {
 					ps[i].put("colorChoice",prop.replace("colorChoice=",EMPTY));	// 		prop.substring("colorChoice=".length()));
+				} else if (prop.indexOf("startVals=") > -1) {
+					ps[i].put("startVals",prop.replace("startVals=",EMPTY));		
+				} else if (prop.indexOf("divVals=") > -1) {
+					ps[i].put("divVals",prop.replace("divVals=",EMPTY));	
 				} else if (prop.indexOf("pixXTransform=") > -1) {
 					ps[i].put("pxXTransformation", prop.replace("pixXTransform=",EMPTY));
 				} else if (prop.indexOf("pixYTransform=") > -1) {
@@ -4404,7 +4408,7 @@ class SierpinskiComboPanel extends JPanel {
 			String[] colr_options_no_sampl = new String[] { colorChoice+"BlackWhite", colorChoice+"ColorPalette", colorChoice+"ComputeColor" };
 			List<String> cl1 = asList(colr_options_no_sampl);
 
-			List<?> cl2 = product(asList(COLOR_SAMPLE_STARTVAL_OPTIONS), asList(COLOR_SAMPLE_DIV_OPTIONS));
+			List<?> cl2 = product(this.getAppendStr2List("startVals=", asList(COLOR_SAMPLE_STARTVAL_OPTIONS)), this.getAppendStr2List("divVals=",asList(COLOR_SAMPLE_DIV_OPTIONS)));
 			List<?> allSampls = product(asList(new String[] { colorChoice+"SampleMix" }), cl2);
 
 			Object[] sampsArr = allSampls.toArray();

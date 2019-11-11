@@ -197,6 +197,11 @@ public abstract class FractalBase extends JFrame implements Runnable {
 				this.setColorChoice(cCs);
 			}*/
 		}
+		
+		if (p.getProperty("startVals") != null)
+			this.setRgbStartVals(this.intiFyRgbStartVals(p.getProperty("startVals").replaceAll(WHITESPACE,EMPTY)));
+		if (p.getProperty("divVals") != null)
+			this.setRgbDivisors(this.intiFyRgbDivisors(p.getProperty("divVals").replaceAll(WHITESPACE,EMPTY)));		
 		if (p.getProperty("maxIter") != null)
 			this.setMaxIter(Integer.parseInt(p.getProperty("maxIter").replaceAll(WHITESPACE,EMPTY)));
 		if (p.getProperty("areaSize") != null)
@@ -1230,10 +1235,10 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		}
 	}
 	
-	
+	//	called when SampleMix (single) is selected, NOT when vary color selected
 	public void setColorChoice(String[] choice) {
 		this.colorChoice = choice[0].replaceAll(WHITESPACE,EMPTY);
-
+//System.out.println("choice-length is "+choice.length);
 		if (choice.length == 3) {
 			this.setRgbStartVals(this.intiFyRgbStartVals(choice[1].replaceAll(WHITESPACE,EMPTY)));
 			this.setRgbDivisors(this.intiFyRgbDivisors(choice[2].replaceAll(WHITESPACE,EMPTY)));
