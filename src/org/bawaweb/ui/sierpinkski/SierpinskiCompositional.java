@@ -6,6 +6,7 @@ package org.bawaweb.ui.sierpinkski;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
+import static java.util.Collections.shuffle;
 import static java.util.Optional.of;
 import static java.util.stream.Collectors.toList;
 
@@ -2859,7 +2860,7 @@ class SierpinskiComboPanel extends JPanel {
 		System.out.println("allCombinationsListSize==totalVaryCount  "+(allCombinationsList.size()==totalVaryCount ));
 		
 		Properties[] ps = new Properties[allCombinationsList.size()];
-		ps = this.getAllCombinationProperties(allCombinationsList);
+		shuffle(asList(this.getAllCombinationProperties(allCombinationsList)));
 		
 
 		
