@@ -6,7 +6,7 @@ package org.bawaweb.ui.sierpinkski;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
-import static java.util.Collections.shuffle;
+//import static java.util.Collections.shuffle;
 import static java.util.Optional.of;
 import static java.util.stream.Collectors.toList;
 
@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
@@ -2684,7 +2685,8 @@ class SierpinskiComboPanel extends JPanel {
 		boolean varyConst = this.diyJuliaVaryConstant && this.diyJuliaVaryGenConstantCb.isSelected();
 		boolean varyKeepConst = (this.keepConst && this.diyJuliaKeepConstRb.isSelected()) && !varyConst;
 		
-		if(!varyConst && !varyKeepConst) {
+		if (	!(varyConst && varyKeepConst) && 
+				!(this.diyJuliaVaryConstant && this.diyJuliaVaryGenConstantCb.isSelected())) {
 			try {
 				this.diyJuliaConstReal = Double.parseDouble(this.diyJuliaRealTf.getText());
 				this.diyJuliaConstImg = Double.parseDouble(this.diyJuliaImgTf.getText());
@@ -2860,8 +2862,8 @@ class SierpinskiComboPanel extends JPanel {
 		System.out.println("allCombinationsListSize==totalVaryCount  "+(allCombinationsList.size()==totalVaryCount ));
 		
 		Properties[] ps = new Properties[allCombinationsList.size()];
-		shuffle(asList(this.getAllCombinationProperties(allCombinationsList)));
-		
+		ps = shuffle(this.getAllCombinationProperties(allCombinationsList));
+//		ps = this.getAllCombinationProperties(allCombinationsList);
 
 		
 		/*final*/ String subDirName;
@@ -2952,8 +2954,8 @@ class SierpinskiComboPanel extends JPanel {
 			this.setDiyJuliaUseDiff(julies[i].isUseDiff());
 			this.invertPixelCalculation = julies[i].isReversePixelCalculation();
 			
-			if (!(julies[i].isComplexNumConst() || this.diyJuliaKeepConst || this.keepConst
-					|| this.diyJuliaKeepConstRb.isSelected())) {
+			if (!(julies[i].isComplexNumConst() || this.diyJuliaKeepConst || this.keepConst)
+					&&( this.diyJuliaKeepConstRb.isSelected() || this.diyJuliaVaryConstant) ) {
 				this.diyJuliaConstReal = julies[i].getComplex().real;
 				this.diyJuliaConstImg = julies[i].getComplex().imaginary;
 			} else {
@@ -4655,9 +4657,9 @@ class SierpinskiComboPanel extends JPanel {
 	}
 
 	private int getVaryJuliaConstantCount() {
-		if (this.diyJuliaVaryGenConstantCb.isSelected()) {
+		if (this.diyJuliaVaryGenConstantCb.isSelected() || this.diyJuliaVaryConstant) {
 			System.out.println("In_getVaryConstantCount()  realCount= "+this.getVaryJuliaRealConstantCount()+" imagCount= "+this.getVaryJuliaImagConstantCount());
-			System.out.println("TotalCount realCount*imagCount= "+(this.getVaryJuliaRealConstantCount() * this.getVaryJuliaImagConstantCount()));
+			System.out.println("TotalConstantCount realCount*imagCount= "+(this.getVaryJuliaRealConstantCount() * this.getVaryJuliaImagConstantCount()));
 			return (this.getVaryJuliaRealConstantCount() * this.getVaryJuliaImagConstantCount());
 		} else {
 			return 1;
@@ -4666,7 +4668,7 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private List<?> getVaryJuliaRealConstantList(double realFrom, double realTo, double realJump, int realCount) {
 		final String realConstChoice = "realConstChoice=";
-		if (this.diyJuliaVaryGenConstantCb.isSelected()) {
+		if (this.diyJuliaVaryGenConstantCb.isSelected() || this.diyJuliaVaryConstant) {
 			return this.getAppendStr2List(realConstChoice,	this.getVaryDoubleList(realFrom, realTo, realJump, realCount) );
 		} else {
 			if (this.diyJuliaKeepConstRb.isSelected() || this.diyJuliaKeepConst) {
@@ -4678,7 +4680,7 @@ class SierpinskiComboPanel extends JPanel {
 	}
 
 	private int getVaryJuliaRealConstantCount() {
-		if (this.diyJuliaVaryGenConstantCb.isSelected()) {
+		if (this.diyJuliaVaryGenConstantCb.isSelected() || this.diyJuliaVaryConstant) {
 			double realFrom = this.diyJuliaGenRealFromVal;
 			double realTo = this.diyJuliaGenRealToVal;
 			double realJump = this.diyJuliaGenRealJumpVal;
@@ -4690,7 +4692,7 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private List<?> getVaryJuliaImagConstantList(double imagFrom, double imagTo, double imagJump, int imagCount) {
 		final String imagConstChoice = "imagConstChoice=";
-		if (this.diyJuliaVaryGenConstantCb.isSelected()) {
+		if (this.diyJuliaVaryGenConstantCb.isSelected() || this.diyJuliaVaryConstant) {
 			return this.getAppendStr2List(imagConstChoice,	this.getVaryDoubleList(imagFrom, imagTo, imagJump, imagCount));
 		} else {
 			if (this.diyJuliaKeepConstRb.isSelected() || this.diyJuliaKeepConst) {
@@ -6276,9 +6278,10 @@ class SierpinskiComboPanel extends JPanel {
 					baseInfo += "Ud, ";
 				}
 				baseInfo += "Boundary: " + this.diyJuliaBound + ", "+eol;
-				if (this.keepConst) {
-					baseInfo += "Dynamic Constant	Z=C" + eol;
-				} else {
+			if (((this.keepConst && this.diyJuliaKeepConstRb.isSelected()))
+					&& !(this.diyJuliaVaryConstant || this.diyJuliaVaryGenConstantCb.isSelected())) {
+				baseInfo += "Dynamic Constant	Z=C" + eol;
+			} else {
 					if (!diyJuliaGen) {
 						try {
 							baseInfo += "Real Value = " + Double.parseDouble(this.diyJuliaRealTf.getText()) + "," + eol;
@@ -8412,6 +8415,41 @@ class SierpinskiComboPanel extends JPanel {
 		}
 		return stringList;
 	}
+	
+	
+	/**
+     * Swaps the two specified elements in the specified array.
+     */
+    private static void swap(Object[] arr, int i, int j) {
+        Object tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+    }
+
+@SuppressWarnings({"rawtypes", "unchecked"})
+	public static Properties[] shuffle(Properties[] props) {
+		int size = props.length;
+		Random rnd = new Random();
+		// Object arr[] = props;//list.toArray();
+
+		// Shuffle array
+		for (int i = size; i > 1; i--) {
+			swap(props, i - 1, rnd.nextInt(i));
+		}
+
+		return props;
+/*
+		// Dump array back into list
+		// instead of using a raw type here, it's possible to capture
+		// the wildcard but it will require a call to a supplementary
+		// private method
+		ListIterator it = list.listIterator();
+		for (int i = 0; i < arr.length; i++) {
+			it.next();
+			it.set(arr[i]);
+		}*/
+        
+    }
 	
 }
 
