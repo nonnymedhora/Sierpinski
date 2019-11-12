@@ -1974,26 +1974,28 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
 									// indices into constants array
 		PLUS = -1, MINUS = -2, TIMES = -3, DIVIDE = -4, POWER = -5, SIN = -6, COS = -7, TAN = -8, COT = -9, SEC = -10,
 				CSC = -11, ARCSIN = -12, ARCCOS = -13, ARCTAN = -14, EXP = -15, LN = -16, LOG10 = -17, LOG2 = -18,
-				ABS = -19, SQRT = -20, UNARYMINUS = -21, VARIABLE = -22;
+				ABS = -19, SQRT = -20, UNARYMINUS = -21, VARIABLE_Z = -22, VARIABLE_I = -23;
 
-		private /* static */ String[] functionNames = {
+		private String[] functionNames = {
 				// names of standard functions, used during parsing
 				"sin", "cos", "tan", "cot", "sec", "csc", "arcsin", "arccos", "arctan", "exp", "ln", "log10", "log2",
 				"abs", "sqrt" };
+
+		private String[] mathConstants = { "PI", "E" };		// Mathematical Constants
 
 		private ComplexNumber eval(ComplexNumber x2) { // evaluate this
 														// expression for
 			// this value of the variable
 			try {
 				int top = 0;
-				for (int i = 0; i < codeSize; i++) {
-					if (code[i] >= 0)
-						stack[top++] = constants[code[i]];
-					else if (code[i] >= POWER) {
+				for (int index = 0; index < codeSize; index++) {
+					if (code[index] >= 0)
+						stack[top++] = constants[code[index]];
+					else if (code[index] >= POWER) {
 						ComplexNumber y = stack[--top];
 						ComplexNumber x = stack[--top];
 						ComplexNumber ans = new ComplexNumber(Double.NaN);
-						switch (code[i]) {
+						switch (code[index]) {
 						case PLUS:
 							ans = x.plus(y);
 							break;
@@ -2013,12 +2015,14 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
 						if (Double.isNaN(ans.real))
 							return ans;
 						stack[top++] = ans;
-					} else if (code[i] == VARIABLE) {
-						stack[top++] = x2;// new ComplexNumber(x2);
+					} else if (code[index] == VARIABLE_Z) {
+						stack[top++] = x2;
+					} else if (code[index] == VARIABLE_I) {
+						stack[top++] = i;
 					} else {
 						ComplexNumber x = stack[--top];
 						ComplexNumber ans = new ComplexNumber(Double.NaN);
-						switch (code[i]) {
+						switch (code[index]) {
 						case SIN:
 							ans = x.sine();// Math.sin(x);
 							break;
@@ -2099,7 +2103,7 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
 			int s = 0; // stack size after each operation
 			int max = 0; // maximum stack size seen
 			for (int i = 0; i < codeSize; i++) {
-				if (code[i] >= 0 || code[i] == VARIABLE) {
+				if (code[i] >= 0 || code[i] == VARIABLE_Z || code[i] == VARIABLE_I) {
 					s++;
 					if (s > max)
 						max = s;
@@ -2194,7 +2198,12 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
 			char ch = next();
 			if (ch == 'z' || ch == 'Z' || ch == 'i' || ch == 'I') {
 				pos++;
-				code[codeSize++] = VARIABLE;
+
+				if (ch == 'z' || ch == 'Z') {
+					code[codeSize++] = VARIABLE_Z;
+				} else {
+					code[codeSize++] = VARIABLE_I;
+				}
 			} else if (Character.isLetter(ch))
 				parseWord();
 			else if (Character.isDigit(ch) || ch == '.')
@@ -2223,6 +2232,15 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
 				pos++;
 			}
 			w = w.toLowerCase();
+			
+			/*for(int i = 0; i < mathConstants.length; i++) {
+				if(w.equals(mathConstants[i])) {
+					skip();
+					parseExpression();
+					skip();
+				}
+			}*/
+			
 			for (int i = 0; i < functionNames.length; i++) {
 				if (w.equals(functionNames[i])) {
 					skip();
