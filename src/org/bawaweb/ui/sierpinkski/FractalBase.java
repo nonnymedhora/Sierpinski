@@ -239,9 +239,9 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		this.setFatou(Boolean.parseBoolean(p.getProperty("isFatou")));
 		this.setClassicJulia(Boolean.parseBoolean(p.getProperty("isClassicJulia")));*/
 		
-		if (p.getProperty("applyCustomFormula") != null)
+		if (p.getProperty("applyCustomFormula") != null) {
 			this.setApplyCustomFormula(Boolean.parseBoolean(p.getProperty("applyCustomFormula").replaceAll(WHITESPACE,EMPTY)));
-		
+		}
 		
 		
 	}
@@ -1878,7 +1878,7 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
 	    can involve:
 
 	            -- real numbers such as 2.7, 3, and 12.7e-12
-	            -- the variable x
+	            -- the variable Z / z
 	            -- arithmetic operators  +,  -,  *,  /,  and  ^ , where
 	               the last of these represents raising to a power
 	            -- the mathematical functions sin, cos, tan, sec, csc, cot,
@@ -2192,7 +2192,7 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
 		private void parsePrimary() {
 			skip();
 			char ch = next();
-			if (ch == 'z' || ch == 'Z') {
+			if (ch == 'z' || ch == 'Z' || ch == 'i' || ch == 'I') {
 				pos++;
 				code[codeSize++] = VARIABLE;
 			} else if (Character.isLetter(ch))

@@ -4521,7 +4521,7 @@ class SierpinskiComboPanel extends JPanel {
 			return asList(pxFuncArr);// (FUNCTION_OPTIONS);
 		} else {
 			if (this.diyJApplyFormulaZCb.isSelected() || this.diyJApplyFormulaZ) {
-				return asList(new String[] { this.diyJApplyFormulaTf.getText().trim() });
+				return asList(new String[] { pxFuncChoice + this.diyJApplyFormulaTf.getText().trim() });
 			} else {
 				return asList(new String[] { pxFuncChoice + (String) this.pxFuncCombo.getSelectedItem() });
 			}
