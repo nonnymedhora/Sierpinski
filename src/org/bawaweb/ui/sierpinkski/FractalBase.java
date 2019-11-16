@@ -432,10 +432,10 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		g.setColor(Color.red);
 
 /*		System.out.println("in-FB-createfractalimage");*/
-		createFractalShape(g);
+		this.createFractalShape(g);
 		
-		if (running) {
-			addDepthInfo(g);
+		if (this.running) {
+			this.addDepthInfo(g);
 		}
 		
 		return this.getBufferedImage();
@@ -645,7 +645,9 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		return pix;
 	}
 	
-	
+	protected void setPixel(int col, int row, Color color) {
+		this.setPixel(col,row,color.getRGB());
+	}
 
 	protected void setPixel(int col, int row, int rgbColor) {
 		if (validateColumnIndex(col) && validateRowIndex(row)) {
