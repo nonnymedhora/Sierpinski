@@ -70,7 +70,7 @@ public class Lorenz_Attractor extends JFrame {
 
 		public Attractor(double x, double y, double z, Color c) {
 			this.setT3d(new Tuple3d(x, y, z));
-			this.setTimeJump(0.001); // TODO externalize
+			this.setTimeJump(0.01); // TODO externalize
 			this.color = c;
 			this.setSpace();
 			this.space2d = "x-z";
@@ -438,7 +438,7 @@ public class Lorenz_Attractor extends JFrame {
 	
 	class AizawaAttractor extends Attractor {
 //		H:\temp\e2\www_algosome_com_articles_aizawa_attractor_chaos_html.pdf
-		private final double a = 0.095;
+		private final double a = 0.95;
 		private final double b = 0.7;
 		private final double c = 0.65;//0.9;
 		private final double d = 3.5;
@@ -465,7 +465,7 @@ public class Lorenz_Attractor extends JFrame {
 //		H:\temp\e2\www_algosome_com_articles_aizawa_attractor_chaos_html.pdf
 		@Override
 		protected double dx(Tuple3d tuple, double dt) {
-			return tuple.x + (dt * (((tuple.z - b) * tuple.x) - (tuple.x - (d * tuple.y))));
+			return tuple.x + (dt * (((tuple.z - b) * tuple.x) - (/*tuple.x - */(d * tuple.y))));
 		}
 
 		@Override
@@ -477,9 +477,10 @@ public class Lorenz_Attractor extends JFrame {
 		protected double dz(Tuple3d tuple, double dt) {
 			return tuple.z + (dt * (
 					c + (tuple.z * a) - (Math.pow(tuple.z, 3) / (3 * d))
-					- (Math.pow(tuple.x, 2) + Math.pow(tuple.y, 2)) * (1 + (e * tuple.z))
+					- (Math.pow(tuple.x, 2) + Math.pow(tuple.y, 2))
+					* (1 + (e * tuple.z))
 					+ (f * tuple.z * Math.pow(tuple.x, 3))
-					)
+				 )
 				);
 		}
 //		H:\temp\e2\www_algosome_com_articles_aizawa_attractor_chaos_html.pdf
@@ -606,7 +607,7 @@ public class Lorenz_Attractor extends JFrame {
 	public static final int WIDTH = 600;
 	public static final int HEIGHT = 600;
 	public static final int DEPTH = 600;
-	private static final int MAX_ITER = 50000;
+	private static final int MAX_ITER = 1500000;
 
 	private String attractor;
 
@@ -640,9 +641,9 @@ public class Lorenz_Attractor extends JFrame {
 			attr3 = new LorenzAttractor(0.0, 20.00, 25.1, Color.green.darker().darker(),"z-y");
 
 		} else if (this.attractor.equals("aizawa")) {
-			attr1 = new AizawaAttractor(0.1, 0.0, 0.0, Color.red,"y-z");
-			attr2 = new AizawaAttractor(0.1, 0.5, 0.0, Color.blue,"y-z");
-			attr3 = new AizawaAttractor(0.1, 0, 0.5, Color.green.darker().darker(),"y-z");
+			attr1 = new AizawaAttractor(0.1000, 0.0000, 0.0000, Color.red,"y-x");
+			attr2 = new AizawaAttractor(0.1000, 0.5000, 0.0000, Color.blue,"y-x");
+			attr3 = new AizawaAttractor(0.1000, 0, 0.5000, Color.green.darker().darker(),"y-x");
 
 		}
 
@@ -654,7 +655,7 @@ public class Lorenz_Attractor extends JFrame {
 			attr1.draw(g);
 			attr2.draw(g);
 			attr3.draw(g);
-			/*pause(10);*/
+			pause(10);
 		}
 
 		System.out.println("Done" + System.currentTimeMillis());
@@ -682,7 +683,7 @@ public class Lorenz_Attractor extends JFrame {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				final JFrame frame = new Lorenz_Attractor("lorenz");//("aizawa");//
+				final JFrame frame = new Lorenz_Attractor("aizawa");//("lorenz");//
 				frame.setTitle("BawazAttractor");
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setResizable(false);
