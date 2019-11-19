@@ -566,6 +566,62 @@ public class Lorenz_Attractor extends JFrame {
 	}
 	
 	
+	
+	
+	class DeJongAttractor extends Attractor {
+		/*
+		 * https://www.algosome.com/articles/strange-attractors-de-jong.html The
+		 * equations underlying the De Jong attractor follow:
+		 * 
+		 * xt+1 = sin(a * yt) - cos(b * xt)		 * 
+		 * yt+1 = sin(c * xt) - cos(d * yt)
+		 * 
+		 * Iterative calculation of the coordinates yields a set of coordinates
+		 * which can be plotted in two dimensions. Values of the constants a, b,
+		 * c, and d can be altered to generate different patterns from the
+		 * attractor.
+		 * 
+		 * 
+		 * a = -2.24, b = 0.43, c = -0.65, d = -2.43 
+		 * a = 2.01, b = -2.53, c = 1.61, d = -0.33 
+		 * a = -2, b = -2, c = -1.2, d = 2
+		 */
+		
+		private final double a = -2.24;
+		private final double b = 0.43;
+		private final double c = -0.65;
+		private final double d = -2.43;
+
+		public DeJongAttractor(double x, double y, double z, Color c) {
+			super(x, y, z, c);
+			this.setName("dejong");
+		}
+		
+		public DeJongAttractor(double x, double y, double z, Color c, String dspace) {
+			super(x, y, z, c, dspace);
+			this.setName("dejong");
+		}
+		//https://www.algosome.com/articles/strange-attractors-de-jong.html
+
+		@Override
+		protected double dx(Tuple3d tuple, double dt) {
+			// xt+1 = sin(a * yt) - cos(b * xt)
+			return tuple.x + (dt * ( Math.sin(a * tuple.y) - Math.cos(b * tuple.x) ));
+		}
+
+		@Override
+		protected double dy(Tuple3d tuple, double dt) {
+			// yt+1 = sin(c * xt) - cos(d * yt)
+			return tuple.y + (dt * ( Math.sin(c * tuple.x) - Math.cos(d * tuple.y) ));
+		}
+
+		@Override
+		protected double dz(Tuple3d tuple, double dt) {
+			// TODO Auto-generated method stub
+			return 0;
+		}
+	}
+	
 	class LorenzAttractor extends Attractor {
 		
 		private final double a_prandt 	= 10.0;					//sigma=====10
@@ -636,14 +692,26 @@ public class Lorenz_Attractor extends JFrame {
 		Attractor attr1 = null, attr2 = null, attr3 = null;
 		
 		if (this.attractor.equals("lorenz")) { // seed l1 & l2
-			attr1 = new LorenzAttractor(0.0, 20.00, 25.0, Color.blue,"z-y");
-			attr2 = new LorenzAttractor(0.0, 20.01, 25.0, Color.red,"z-y");
-			attr3 = new LorenzAttractor(0.0, 20.00, 25.1, Color.green.darker().darker(),"z-y");
+			/*attr1 = new LorenzAttractor(0.0, 20.00, 25.0, Color.blue, "z-y");
+			attr2 = new LorenzAttractor(0.0, 20.01, 25.0, Color.red, "z-y");
+			attr3 = new LorenzAttractor(0.0, 20.00, 25.1, Color.green.darker().darker(), "z-y");*/
+
+			//	all with same seeds & different 2dspace
+			attr1 = new LorenzAttractor(0.0, 20.00, 25.0, Color.blue, "z-y");
+			attr2 = new LorenzAttractor(0.0, 20.00, 25.0, Color.red, "z-x");
+			attr3 = new LorenzAttractor(0.0, 20.00, 25.0, Color.green.darker().darker(), "x-y");
 
 		} else if (this.attractor.equals("aizawa")) {
-			attr1 = new AizawaAttractor(0.1000, 0.0000, 0.0000, Color.red,"y-x");
-			attr2 = new AizawaAttractor(0.1000, 0.5000, 0.0000, Color.blue,"y-x");
-			attr3 = new AizawaAttractor(0.1000, 0, 0.5000, Color.green.darker().darker(),"y-x");
+			attr1 = new AizawaAttractor(0.1000, 0.0000, 0.0000, Color.red, "y-x");
+			attr2 = new AizawaAttractor(0.1000, 0.5000, 0.0000, Color.blue, "y-x");
+			attr3 = new AizawaAttractor(0.1000, 0, 0.5000, Color.green.darker().darker(), "y-x");
+
+		} else if (this.attractor.equals("dejong")) {
+			attr1 = new DeJongAttractor(1, 1, 1, Color.red, "x-y");
+			attr2 = new DeJongAttractor(1, 1.5, 1, Color.blue, "x-y");
+			/*attr1 = new DeJongAttractor(0.1, 0, 0, Color.red,"x-y");
+			attr2 = new AizawaAttractor(0.1, 0.5, 0, Color.blue,"x-y");*/
+			attr3 = new DeJongAttractor(1, 1, 1.5, Color.green.darker().darker(), "x-y");
 
 		}
 
@@ -683,7 +751,7 @@ public class Lorenz_Attractor extends JFrame {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				final JFrame frame = new Lorenz_Attractor("aizawa");//("lorenz");//
+				final JFrame frame = new Lorenz_Attractor("lorenz");//("dejong");//("aizawa");//
 				frame.setTitle("BawazAttractor");
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setResizable(false);
