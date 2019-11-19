@@ -12,6 +12,7 @@ import static java.util.stream.Collectors.toList;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -159,6 +160,7 @@ class SierpinskiComboPanel extends JPanel {
 	private static final String KOCHSNOWFLAKE 			= "KochSnowFlake";
 	private static final String DIY 					= "Do_It_Yourself";
 	private static final String POLY 					= "Poly_Fractals";
+	private static final String ATTRACTORS 				= "Attractors";
 	
 	
 	//= "bd";	//	others are exponent/power/magnification/scaleSize
@@ -173,8 +175,10 @@ class SierpinskiComboPanel extends JPanel {
 	private static final String BACK_SLASH = "\\\\";
 	private static final String FORWARD_SLASH = "/";
 	private static final String PIPE = "\\|";
+	private static final String[] ATTRACTOR_CHOICES = new String[]{"lorenz","aizawa","dejong","custom"};
+	private static final String[] ATTRACTOR_SPACE_CHOICES = new String[] { "x-y", "x-z", "y-z", "y-x", "z-x", "z-y" };
 	
-	private final String[] comboOptions = new String[]{ DIY, FANNY_CIRCLE, FANNY_TRIANGLES, SIERPINSKI_TRIANGLES, SIERPINSKI_SQUARES, APOLLONIAN_CIRCLES, CST_FRACTAL, SAMPLE, MANDELBROT, JULIA, KOCHSNOWFLAKE, POLY };
+	private final String[] comboOptions = new String[]{ DIY, FANNY_CIRCLE, FANNY_TRIANGLES, SIERPINSKI_TRIANGLES, SIERPINSKI_SQUARES, APOLLONIAN_CIRCLES, CST_FRACTAL, SAMPLE, MANDELBROT, JULIA, KOCHSNOWFLAKE, POLY, ATTRACTORS };
 	private final JComboBox<String> combos = new JComboBox<String>(comboOptions);
 	
 	//	for	FannyCircle & FannyTriangles
@@ -279,6 +283,9 @@ class SierpinskiComboPanel extends JPanel {
 	private JPanel diyMandPanel 		= new JPanel(new GridLayout(5,8),true);
 	private JPanel diyJuliaPanel 		= new JPanel(new GridLayout(20,15),true);
 	private JPanel diyApolloPanel 		= new JPanel(new GridLayout(4,8),true);
+	
+	private JPanel attractorsPanel 		= new JPanel(new GridLayout(10,5));
+	private JPanel attractorsSeedsPanel = new JPanel(new GridLayout(10,5));
 	
 	private JTextArea formulaArea = new JTextArea(5,20);
 	
@@ -733,6 +740,61 @@ class SierpinskiComboPanel extends JPanel {
 
 	private String fieldLines = "None";
 	
+	
+	
+//////////////////////////////ATTRACTOR////////////////////////////
+	private final String[] attractorChoiceOptions = ATTRACTOR_CHOICES;
+	private final JComboBox<String> attractorChoiceCombos = new JComboBox<String>(attractorChoiceOptions);
+
+	private String attractorSelectionChoice;
+	private JTextField attr1SeedX_tf = new JTextField(2);
+	private JTextField attr1SeedY_tf = new JTextField(2);
+	private JTextField attr1SeedZ_tf = new JTextField(2);
+	
+	private double attr1SeedXVal;	
+	private double attr1SeedYVal;	
+	private double attr1SeedZVal;
+	
+	private JTextField attr2SeedX_tf = new JTextField(2);
+	private JTextField attr2SeedY_tf = new JTextField(2);
+	private JTextField attr2SeedZ_tf = new JTextField(2);
+	
+	private double attr2SeedXVal;	
+	private double attr2SeedYVal;	
+	private double attr2SeedZVal;
+	
+
+	private JTextField attrMaxIter_tf = new JTextField(2);
+	private JTextField attrDeltaTime_tf = new JTextField(2);	
+	private double attrMaxIterVal;	
+	
+	private final String[] attractorSpace2DChoiceOptions = ATTRACTOR_SPACE_CHOICES;
+	private final JComboBox<String> attractorSpace2DChoiceCombos = new JComboBox<String>(attractorSpace2DChoiceOptions);
+	private String attractorSpace2DSelectionChoice;
+	
+	/*private JTextField attrCustomSeedX_tf = new JTextField(2);
+	private JTextField attrCustomSeedY_tf = new JTextField(2);
+	private JTextField attrCustomSeedZ_tf = new JTextField(2);
+	
+	private double attrCustomSeedXVal;	
+	private double attrCustomSeedYVal;	
+	private double attrCustomSeedZVal;*/
+
+	private JLabel attrCustomFormulaStrLabel = new JLabel("Custom Formula: ");
+	private JLabel attrCustomFormulaStrDeltaXLabel = new JLabel("Delta X or dx: ");
+	private JLabel attrCustomFormulaStrDeltaYLabel = new JLabel("Delta Y or dy: ");
+	private JLabel attrCustomFormulaStrDeltaZLabel = new JLabel("Delta Z or dy: ");
+	private JTextField attrCustom_DeltaXFormula_tf = new JTextField(10);
+	private JTextField attrCustom_DeltaYFormula_tf = new JTextField(10);
+	private JTextField attrCustom_DeltaZFormula_tf = new JTextField(10);
+	
+	private String attrCustom_DeltaXFormula;	
+	private String attrCustom_DeltaYFormula;	
+	private String attrCustom_DeltaZFormula;
+	
+	
+	////////////////////////////////ENDS	ATTRACTOR////////////////////////////
+	
 	public SierpinskiComboPanel() {
 		super();
 		this.add(new JLabel("Choose: "));
@@ -835,7 +897,9 @@ class SierpinskiComboPanel extends JPanel {
 		this.createMandelbrotPanel();
 		
 		//poly -- does add
-		this.createPolyPanel();		
+		this.createPolyPanel();	
+		
+		this.createAttractorsPanel();
 		
 		//	diy	panel	--	does add
 		this.createDIYPanel();
@@ -943,6 +1007,79 @@ class SierpinskiComboPanel extends JPanel {
 		return bdArr;
 	}
 	
+	
+	private void createAttractorsPanel() {
+		this.rotLabel.setVisible(true);
+		this.rotateCombo.setVisible(true);
+		
+		this.colorChoiceCombo.setVisible(false);
+
+		this.constFuncCombo.setVisible(false);
+
+		this.pxFuncCombo.setVisible(false);
+		
+		this.attractorsPanel.add(new JLabel("Choose Atractor:"));
+		this.attractorsPanel.add(this.attractorChoiceCombos);	
+		
+		this.attractorsPanel.add(new JLabel("Attractor1  Seed   X:"));
+		this.attractorsPanel.add(this.attr1SeedX_tf);
+		this.attractorsPanel.add(new JLabel("   Y:"));
+		this.attractorsPanel.add(this.attr1SeedY_tf);
+		this.attractorsPanel.add(new JLabel("   Z:"));
+		this.attractorsPanel.add(this.attr1SeedZ_tf);
+		
+		this.attractorsPanel.add(new JLabel("Attractor2  Seed   X:"));
+		this.attractorsPanel.add(this.attr2SeedX_tf);
+		this.attractorsPanel.add(new JLabel("   Y:"));
+		this.attractorsPanel.add(this.attr2SeedY_tf);
+		this.attractorsPanel.add(new JLabel("   Z:"));
+		this.attractorsPanel.add(this.attr2SeedZ_tf);
+		
+		/////CUSTOM	--	staysHiden
+		this.attractorsPanel.add(this.attrCustomFormulaStrLabel );
+		this.attractorsPanel.add(this.attrCustomFormulaStrDeltaXLabel );
+		this.attractorsPanel.add(this.attrCustom_DeltaXFormula_tf );
+		this.attractorsPanel.add(this.attrCustomFormulaStrDeltaYLabel );
+		this.attractorsPanel.add(this.attrCustom_DeltaYFormula_tf );
+		this.attractorsPanel.add(this.attrCustomFormulaStrDeltaZLabel );
+		this.attractorsPanel.add(this.attrCustom_DeltaZFormula_tf );
+		
+		this.attrCustomFormulaStrLabel.setVisible(false);
+		this.attrCustomFormulaStrDeltaXLabel.setVisible(false);
+		this.attrCustom_DeltaXFormula_tf.setVisible(false);
+		this.attrCustomFormulaStrDeltaYLabel.setVisible(false);
+		this.attrCustom_DeltaYFormula_tf.setVisible(false);
+		this.attrCustomFormulaStrDeltaZLabel.setVisible(false);
+		this.attrCustom_DeltaZFormula_tf.setVisible(false);
+		
+		
+
+
+		this.attractorsPanel.add(new JLabel(" Delta Time dt :"));
+		this.attractorsPanel.add(this.attrDeltaTime_tf);
+
+		this.attractorsPanel.add(new JLabel(" Max Iterations  :"));
+		this.attractorsPanel.add(this.attrMaxIter_tf);
+
+		this.attractorsPanel.add(new JLabel(" Space(2D)  :"));
+		this.attractorsPanel.add(this.attractorSpace2DChoiceCombos);
+		
+		
+		/*this.attractorsSeedsPanel = this.createAttractorSeedsPanel();
+		this.attractorsPanel.add(this.attractorsSeedsPanel);*/
+		
+		this.attractorsPanel.setVisible(false);
+		this.add(this.attractorsPanel);
+	}
+	
+	private JPanel createAttractorSeedsPanel() {
+		JPanel panel = new JPanel(new GridLayout(10,5));
+		
+		/*panel.add(new JLabel("X_Seed: "));
+		panel.add(new JTextField())*/
+		return panel;
+	}
+
 	private void createPolyPanel() {
 		this.rotLabel.setVisible(true);
 		this.rotateCombo.setVisible(true);
@@ -1600,6 +1737,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.apolloOptionsPanel.setVisible(true);
 			this.diyOptionsPanel.setVisible(false);
 			this.polyOptionsPanel.setVisible(false);
+			this.attractorsPanel.setVisible(false);
 			this.formulaArea.setVisible(false);
 
 			if (this.curvChoices == null || this.mult == 0) {
@@ -1620,6 +1758,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.apolloOptionsPanel.setVisible(false);
 			this.diyOptionsPanel.setVisible(false);
 			this.polyOptionsPanel.setVisible(false);
+			this.attractorsPanel.setVisible(false);
 			this.formulaArea.setVisible(false);
 			if (this.sideChoice == 0 || this.ratioChoice == 0) {
 				this.buStart.setEnabled(false);
@@ -1639,6 +1778,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.apolloOptionsPanel.setVisible(false);
 			this.diyOptionsPanel.setVisible(false);
 			this.polyOptionsPanel.setVisible(false);
+			this.attractorsPanel.setVisible(false);
 			this.formulaArea.setVisible(true);
 			this.formulaArea.setText("");
 			if (this.power == 0 && (this.compConst == 0.0 || this.complex == null)) {
@@ -1659,6 +1799,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.apolloOptionsPanel.setVisible(false);
 			this.diyOptionsPanel.setVisible(false);
 			this.polyOptionsPanel.setVisible(false);
+			this.attractorsPanel.setVisible(false);
 			this.formulaArea.setVisible(true);
 			this.formulaArea.setText("");
 		} else if (this.comboChoice.equals(POLY)) {
@@ -1672,6 +1813,21 @@ class SierpinskiComboPanel extends JPanel {
 			this.apolloOptionsPanel.setVisible(false);
 			this.diyOptionsPanel.setVisible(false);
 			this.polyOptionsPanel.setVisible(true);
+			this.attractorsPanel.setVisible(false);
+			this.formulaArea.setVisible(true);
+			this.formulaArea.setText("");
+		}  else if (this.comboChoice.equals(ATTRACTORS)) {
+			this.rotLabel.setVisible(true);
+			this.rotateCombo.setVisible(true);
+			this.fannyOptionsPanel.setVisible(false);
+			this.sierpinskiTPanel.setVisible(false);
+			this.kochSnowFlakePanel.setVisible(false);
+			this.juliaOptionsPanel.setVisible(false);
+			this.mandOptionsPanel.setVisible(false);
+			this.apolloOptionsPanel.setVisible(false);
+			this.diyOptionsPanel.setVisible(false);
+			this.polyOptionsPanel.setVisible(false);
+			this.attractorsPanel.setVisible(true);
 			this.formulaArea.setVisible(true);
 			this.formulaArea.setText("");
 		} else if (this.comboChoice.equals(DIY)) {
@@ -1690,6 +1846,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.mandOptionsPanel.setVisible(false);
 			this.apolloOptionsPanel.setVisible(false);
 			this.polyOptionsPanel.setVisible(false);
+			this.attractorsPanel.setVisible(false);
 			this.diyOptionsPanel.setVisible(true);
 			this.diyMandPanel.setVisible(true);
 			this.formulaArea.setVisible(true);
@@ -1706,6 +1863,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.apolloOptionsPanel.setVisible(false);
 			this.diyOptionsPanel.setVisible(false);
 			this.polyOptionsPanel.setVisible(false);
+			this.attractorsPanel.setVisible(false);
 			this.formulaArea.setVisible(false);
 			this.buStart.setEnabled(true);
 		} else if(this.comboChoice.equals(KOCHSNOWFLAKE)){
@@ -1719,6 +1877,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.apolloOptionsPanel.setVisible(false);
 			this.diyOptionsPanel.setVisible(false);
 			this.polyOptionsPanel.setVisible(false);
+			this.attractorsPanel.setVisible(false);
 			this.formulaArea.setVisible(false);
 			this.buStart.setEnabled(true);
 		}
@@ -1733,6 +1892,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.apolloOptionsPanel.setVisible(false);
 			this.diyOptionsPanel.setVisible(false);
 			this.polyOptionsPanel.setVisible(false);
+			this.attractorsPanel.setVisible(false);
 			this.formulaArea.setVisible(false);
 			this.buStart.setEnabled(true);
 		}
@@ -5061,7 +5221,83 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setText("");
 		// fractal art choice
 		String choice = this.getComboChoice();
-//		System.out.println("choice--startC--is="+choice);
+		System.out.println("choice--startC--is="+choice);
+		
+		if (choice.equals(ATTRACTORS)) {
+			String attractorSelected = this.attractorSelectionChoice;
+
+			if (attractorSelected.equals("lorenz")) {
+				try {
+					double x1S = Double.parseDouble(this.attr1SeedX_tf.getText());
+					double y1S = Double.parseDouble(this.attr1SeedY_tf.getText());
+					double z1S = Double.parseDouble(this.attr1SeedZ_tf.getText());
+
+					double x2S = Double.parseDouble(this.attr2SeedX_tf.getText());
+					double y2S = Double.parseDouble(this.attr2SeedY_tf.getText());
+					double z2S = Double.parseDouble(this.attr2SeedZ_tf.getText());
+
+					double dt = Double.parseDouble(this.attrDeltaTime_tf.getText());
+					int maxIter = Integer.parseInt(this.attrMaxIter_tf.getText());
+					
+					String space2d = this.attractorSpace2DSelectionChoice;
+					
+					final Attractor attrL1 = new LorenzAttractor(x1S, y1S, z1S, Color.blue, space2d);
+					attrL1.setMaxIter(maxIter);
+					attrL1.setSpace();
+					attrL1.setSpace2d(space2d);
+
+					final Attractor attrL2 = new LorenzAttractor(x2S, y2S, z2S, Color.red, space2d);
+					attrL2.setMaxIter(maxIter);
+					attrL2.setSpace();
+					attrL2.setSpace2d(space2d);
+
+					final Lorenz_Attractor l_a = new Lorenz_Attractor("lorenz");
+					l_a.setAttractors(new Attractor[] { attrL1, attrL2 });
+					l_a.setMaxIter(maxIter);
+					l_a.setSpace2d(space2d);
+					
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+
+							final JFrame frame = l_a;
+							frame.setTitle("BawazAttractor");
+							frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+							frame.setResizable(false);
+							frame.setVisible(true);
+
+							frame.setDefaultCloseOperation(closeIt(frame));
+							frame.setLocation(
+									(Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth()) / 2,
+									(Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight()) / 2);
+							frame.setResizable(false);
+							frame.setVisible(true);
+
+							setFractalImage(l_a.getBufferedImage());
+							// this.setFractalBase(frame);
+
+							buClose.setEnabled(true);
+						}
+					});
+
+				} catch (NumberFormatException | NullPointerException e2) {
+					e2.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n" + e2.getMessage(),
+							"Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			} else if (attractorSelected.equals("aizawa")) {
+
+			} else if (attractorSelected.equals("dejong")) {
+
+			} else if (attractorSelected.equals("custom")) {
+
+			}
+
+			return;
+		}
+		
+		
 		// for Fanny
 		int length = this.getSideComboChoice();
 		int ratio = this.getRatioChoice();
@@ -5994,6 +6230,8 @@ class SierpinskiComboPanel extends JPanel {
 		
 		boolean staticIterativeFractalChoice = ( (!this.mandIsMotionbrot && this.comboChoice.contains(MANDELBROT)) || this.comboChoice.contains(JULIA) || this.comboChoice.contains(POLY) ||
 				(this.comboChoice.contains("self")&&!(this.diyApolloRb.isSelected() || this.getComboChoice().equals(APOLLONIAN_CIRCLES))));
+		staticIterativeFractalChoice = !this.comboChoice.equals(ATTRACTORS) ? true : staticIterativeFractalChoice;
+
 		if(!staticIterativeFractalChoice) {
 			frame.setRunning(true);
 //System.out.println("this.comboChoice--"+this.comboChoice+"isThread");
@@ -6021,7 +6259,7 @@ class SierpinskiComboPanel extends JPanel {
 //		this.endProgress();
 	}
 
-	private int closeIt(FractalBase frame) {
+	private int closeIt(/*FractalBase*/ JFrame frame) {
 		this.buStart.setEnabled(false);
 		this.buSavePxStart.setEnabled(false);
 		if (!(this.comboChoice.equals(JULIA)||this.comboChoice.equals(MANDELBROT)||this.comboChoice.equals(POLY))) {
@@ -6533,6 +6771,8 @@ class SierpinskiComboPanel extends JPanel {
 		this.setupJuliaListeners();		
 		this.setupMandelbrotListeners();
 		this.setupPolyListeners();
+		
+		this.setupAttractorsListeners();
 		
 		//DIY-Listeners
 		this.setupDIYMandelbrotListeners();
@@ -7914,6 +8154,62 @@ class SierpinskiComboPanel extends JPanel {
 			}
 		});
 	}
+	
+	
+	/////////////////////////4Attractors//////////////////////////////////////////
+
+	private void setupAttractorsListeners() {
+		this.attractorChoiceCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<String> cb = (JComboBox<String>)e.getSource();
+		        String attractorChoiceVal = (String)cb.getSelectedItem();
+				doSelectAttractorChoiceCombosCommand(attractorChoiceVal);				
+			}
+		});
+		
+		this.attractorSpace2DChoiceCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<String> cb = (JComboBox<String>)e.getSource();
+		        String attractorSpace2DChoiceVal = (String)cb.getSelectedItem();
+				doSelectAttractorSpace2DChoiceCombosCommand(attractorSpace2DChoiceVal);				
+			}
+		});
+	}
+	
+	
+	protected void doSelectAttractorSpace2DChoiceCombosCommand(String attractorSpace2DChoiceVal) {
+		this.attractorSpace2DSelectionChoice	=	attractorSpace2DChoiceVal;
+	}
+
+	protected void doSelectAttractorChoiceCombosCommand(String attractorChoiceVal) {
+		this.attractorSelectionChoice = attractorChoiceVal;
+
+		if (this.attractorSelectionChoice.equals("custom")) {
+			this.attrCustomFormulaStrLabel.setVisible(true);
+			this.attrCustomFormulaStrDeltaXLabel.setVisible(true);
+			this.attrCustom_DeltaXFormula_tf.setVisible(true);
+			this.attrCustomFormulaStrDeltaYLabel.setVisible(true);
+			this.attrCustom_DeltaYFormula_tf.setVisible(true);
+			this.attrCustomFormulaStrDeltaZLabel.setVisible(true);
+			this.attrCustom_DeltaZFormula_tf.setVisible(true);
+		} else {
+			this.attrCustomFormulaStrLabel.setVisible(false);
+			this.attrCustomFormulaStrDeltaXLabel.setVisible(false);
+			this.attrCustom_DeltaXFormula_tf.setVisible(false);
+			this.attrCustomFormulaStrDeltaYLabel.setVisible(false);
+			this.attrCustom_DeltaYFormula_tf.setVisible(false);
+			this.attrCustomFormulaStrDeltaZLabel.setVisible(false);
+			this.attrCustom_DeltaZFormula_tf.setVisible(false);
+		}
+		
+		this.buStart.setEnabled(true);
+	}
+
+	///////////////////////////////////////////////////////////////////////////////
 	
 	private ActionListener fieldLinesRBListener() {
 		return new ActionListener() {
