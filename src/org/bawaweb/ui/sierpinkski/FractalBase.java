@@ -27,7 +27,6 @@ import java.util.Random;
 
 import javax.swing.JFrame;
 
-import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
 
 /**
  * @author Navroz
@@ -1874,49 +1873,46 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
 	}
 	
 	
-	//https://math.hws.edu › javanotes › source › chapter8 › Expr
-		/*
-	    An object belonging to the class Expr is a mathematical expression that
-	    can involve:
-
-	            -- real numbers such as 2.7, 3, and 12.7e-12
-	            -- the variable Z / z
-	            -- arithmetic operators  +,  -,  *,  /,  and  ^ , where
-	               the last of these represents raising to a power
-	            -- the mathematical functions sin, cos, tan, sec, csc, cot,
-	               arcsin, arccos, arctan, exp, ln, log2, log10, abs, and sqrt,
-	               where ln is the natural log, log2 is the log to the base 2,
-	               log10 is the log to the base 10, abs is absolute value,
-	               and sqrt is the square root
-	            -- parentheses
-
-	     Some examples would be:   x^2 + x + 1
-	                               sin(2.3*x-7.1) - cos(7.1*x-2.3)
-	                               x - 1
-	                               42
-	                               exp(x^2) - 1
-
-	     The trigonometric functions work with radians, not degrees.  The parameter
-	     of a function must be enclosed in parentheses, so that "sin x" is NOT allowed.
-
-	     An Expr is constructed from a String that contains its definition.  If an
-	     error is found in this definition, the constructor will throw an
-	     IllegalArgumentException with a message that describes the error and
-	     the position of the error in the string.  After an Expr has been
-	     constructed, its defining string can be retrieved using the
-	     method getDefinition().
-
-	     The main operation on an Expr object is to find its value, given
-	     a value for the variable x.  The value is computed by the value() method.
-	     If the expression is undefined at the given value of x, then the
-	     number returned by value() method will be the special "non-a-number number",
-	     Double.NaN.  (The boolean-valued function Double.isNaN(v) can be used to
-	     test whether the double value v is the special NaN value.  For technical
-	     reasons, you can't just use the == operator to test for this value.)
-
-		 */
+	
+	// https://math.hws.edu › javanotes › source › chapter8 › Expr
+	/*
+	 * An object belonging to the class Expr is a mathematical expression that
+	 * can involve:
+	 * 
+	 * -- real numbers such as 2.7, 3, and 12.7e-12 -- the variable Z / z --
+	 * arithmetic operators +, -, *, /, and ^ , where the last of these
+	 * represents raising to a power -- the mathematical functions sin, cos,
+	 * tan, sec, csc, cot, arcsin, arccos, arctan, exp, ln, log2, log10, abs,
+	 * and sqrt, where ln is the natural log, log2 is the log to the base 2,
+	 * log10 is the log to the base 10, abs is absolute value, and sqrt is the
+	 * square root -- parentheses
+	 * 
+	 * Some examples would be: x^2 + x + 1 sin(2.3*x-7.1) - cos(7.1*x-2.3) x - 1
+	 * 42 exp(x^2) - 1
+	 * 
+	 * The trigonometric functions work with radians, not degrees. The parameter
+	 * of a function must be enclosed in parentheses, so that "sin x" is NOT
+	 * allowed.
+	 * 
+	 * An Expr is constructed from a String that contains its definition. If an
+	 * error is found in this definition, the constructor will throw an
+	 * IllegalArgumentException with a message that describes the error and the
+	 * position of the error in the string. After an Expr has been constructed,
+	 * its defining string can be retrieved using the method getDefinition().
+	 * 
+	 * The main operation on an Expr object is to find its value, given a value
+	 * for the variable x. The value is computed by the value() method. If the
+	 * expression is undefined at the given value of x, then the number returned
+	 * by value() method will be the special "non-a-number number", Double.NaN.
+	 * (The boolean-valued function Double.isNaN(v) can be used to test whether
+	 * the double value v is the special NaN value. For technical reasons, you
+	 * can't just use the == operator to test for this value.)
+	 * 
+	 */
 
 	class Expr {
+
+		private String type = "Complex";
 
 		// ----------------- public interface
 		// ---------------------------------------
@@ -1933,6 +1929,22 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
 		}
 
 		/**
+		 * 
+		 * @param definition
+		 *            ==
+		 * @param expssionType
+		 *            == "Complex","Real"
+		 * 
+		 *            Complex ==> f(Z,i) Real ==> f(x,y,z) [Real number domain
+		 *            only. tuple solvers for ODEs]
+		 */
+		public Expr(String definition, String expssionType) {
+			this.type = expssionType;
+			this.parse(definition);
+
+		}
+
+		/**
 		 * Computes the value of this expression, when the variable x has a
 		 * specified value. If the expression is undefined for the specified
 		 * value of x, then Double.NaN is returned.
@@ -1943,6 +1955,23 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
 		 */
 		public ComplexNumber value(ComplexNumber x) {
 			return eval(x);
+		}
+
+		/**
+		 * Computes the value of this expression, when the variable x has a
+		 * specified value. If the expression is undefined for the specified
+		 * value of x, then Double.NaN is returned.
+		 * 
+		 * @param x
+		 *            the value to be used for the variable x in the expression
+		 * @return the computed value of the expression
+		 */
+		public double value(final double x) {
+			return this.eval(x, 0.0, 0.0);
+		}
+
+		public double value(final double x, final double y, final double z) {
+			return eval(x, y, z);
 		}
 
 		/**
@@ -1965,29 +1994,144 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
 								// the expression.
 
 		private ComplexNumber[] stack; // A stack to be used during the
-										// evaluation of
-		// the expression.
+		private double[] realStack; // evaluation of
+									// the expression.
 
 		private ComplexNumber[] constants; // An array containing all the
-											// constants
+		private double[] realConstants; // constants
 		// found in the expression.
 
 		private static final byte // values for code array; values >= 0 are
 									// indices into constants array
 		PLUS = -1, MINUS = -2, TIMES = -3, DIVIDE = -4, POWER = -5, SIN = -6, COS = -7, TAN = -8, COT = -9, SEC = -10,
 				CSC = -11, ARCSIN = -12, ARCCOS = -13, ARCTAN = -14, EXP = -15, LN = -16, LOG10 = -17, LOG2 = -18,
-				ABS = -19, SQRT = -20, UNARYMINUS = -21, VARIABLE_Z = -22, VARIABLE_I = -23;
+				ABS = -19, SQRT = -20, UNARYMINUS = -21,
+				// x,y,z = f(real)
+				// Z,i = f(Complex_
+				VARIABLE_X = -22, VARIABLE_Y = -23, VARIABLE_Z = -24, VARIABLE_I = -25;
 
 		private String[] functionNames = {
 				// names of standard functions, used during parsing
 				"sin", "cos", "tan", "cot", "sec", "csc", "arcsin", "arccos", "arctan", "exp", "ln", "log10", "log2",
 				"abs", "sqrt" };
 
-		private String[] mathConstants = { "PI", "E" };		// Mathematical Constants
+		private String[] mathConstants = { "PI", "E" }; // Mathematical
+														// Constants
 
-		private ComplexNumber eval(ComplexNumber x2) { // evaluate this
-														// expression for
-			// this value of the variable
+		private double eval(final double variable_x, final double variable_y, final double variable_z) { 
+			// evaluate this expression for this value of these variables
+			try {
+				int top = 0;
+				for (int i = 0; i < codeSize; i++) {
+					if (code[i] >= 0)
+						realStack[top++] = realConstants[code[i]];
+					else if (code[i] >= POWER) {
+						double y = realStack[--top];
+						double x = realStack[--top];
+						double ans = Double.NaN;
+						switch (code[i]) {
+						case PLUS:
+							ans = x + y;
+							break;
+						case MINUS:
+							ans = x - y;
+							break;
+						case TIMES:
+							ans = x * y;
+							break;
+						case DIVIDE:
+							ans = x / y;
+							break;
+						case POWER:
+							ans = Math.pow(x, y);
+							break;
+						}
+						if (Double.isNaN(ans))
+							return ans;
+						realStack[top++] = ans;
+					} else if (code[i] == VARIABLE_X || code[i] == VARIABLE_Y || code[i] == VARIABLE_Z) {
+						if (code[i] == VARIABLE_X)
+							realStack[top++] = variable_x;
+						else if (code[i] == VARIABLE_Y)
+							realStack[top++] = variable_y;
+						else if (code[i] == VARIABLE_Z)
+							realStack[top++] = variable_z;
+					} else {
+						double x = realStack[--top];
+						double ans = Double.NaN;
+						switch (code[i]) {
+						case SIN:
+							ans = Math.sin(x);
+							break;
+						case COS:
+							ans = Math.cos(x);
+							break;
+						case TAN:
+							ans = Math.tan(x);
+							break;
+						case COT:
+							ans = Math.cos(x) / Math.sin(x);
+							break;
+						case SEC:
+							ans = 1.0 / Math.cos(x);
+							break;
+						case CSC:
+							ans = 1.0 / Math.sin(x);
+							break;
+						case ARCSIN:
+							if (Math.abs(x) <= 1.0)
+								ans = Math.asin(x);
+							break;
+						case ARCCOS:
+							if (Math.abs(x) <= 1.0)
+								ans = Math.acos(x);
+							break;
+						case ARCTAN:
+							ans = Math.atan(x);
+							break;
+						case EXP:
+							ans = Math.exp(x);
+							break;
+						case LN:
+							if (x > 0.0)
+								ans = Math.log(x);
+							break;
+						case LOG2:
+							if (x > 0.0)
+								ans = Math.log(x) / Math.log(2);
+							break;
+						case LOG10:
+							if (x > 0.0)
+								ans = Math.log(x) / Math.log(10);
+							break;
+						case ABS:
+							ans = Math.abs(x);
+							break;
+						case SQRT:
+							if (x >= 0.0)
+								ans = Math.sqrt(x);
+							break;
+						case UNARYMINUS:
+							ans = -x;
+							break;
+						}
+						if (Double.isNaN(ans))
+							return ans;
+						realStack[top++] = ans;
+
+					}
+				}
+			} catch (Exception e) {
+				return Double.NaN;
+			}
+			if (Double.isInfinite(realStack[0]))
+				return Double.NaN;
+			else
+				return realStack[0];
+		}
+
+		private ComplexNumber eval(ComplexNumber x2) { 
+			// evaluate this expression for this value of the variable
 			try {
 				int top = 0;
 				for (int index = 0; index < codeSize; index++) {
@@ -2105,7 +2249,8 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
 			int s = 0; // stack size after each operation
 			int max = 0; // maximum stack size seen
 			for (int i = 0; i < codeSize; i++) {
-				if (code[i] >= 0 || code[i] == VARIABLE_Z || code[i] == VARIABLE_I) {
+				if (code[i] >= 0 || code[i] == VARIABLE_Z || code[i] == VARIABLE_I || code[i] == VARIABLE_X
+						|| code[i] == VARIABLE_Y) {
 					s++;
 					if (s > max)
 						max = s;
@@ -2116,6 +2261,37 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
 		}
 
 		private void parse(String definition) {
+			if (this.type.equals("Complex")) {
+				this.parseComplex(definition);
+			} else {
+				this.parseReal(definition);
+			}
+		}
+
+		private void parseReal(String definition) {
+			// Parse the definition and produce all
+			// the data that represents the expression
+			// internally; can throw IllegalArgumentException
+			if (definition == null || definition.trim().equals(""))
+				error("No data provided to Expr constructor");
+			this.definition = definition;
+			code = new byte[definition.length()];
+			realConstants = new double[definition.length()];
+			parseExpression();
+			skip();
+			if (next() != 0)
+				error("Extra data found after the end of the expression.");
+			int stackSize = computeStackUsage();
+			realStack = new double[stackSize];
+			byte[] c = new byte[codeSize];
+			System.arraycopy(code, 0, c, 0, codeSize);
+			code = c;
+			double[] A = new double[constantCt];
+			System.arraycopy(realConstants, 0, A, 0, constantCt);
+			realConstants = A;
+		}
+
+		private void parseComplex(String definition) {
 			// Parse the definition and produce all the data that represents the
 			// expression internally; can throw IllegalArgumentException
 			if (definition == null || definition.trim().equals(""))
@@ -2198,13 +2374,17 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
 		private void parsePrimary() {
 			skip();
 			char ch = next();
-			if (ch == 'z' || ch == 'Z' || ch == 'i' || ch == 'I') {
+			if (ch == 'z' || ch == 'Z' || ch == 'i' || ch == 'I' || ch == 'x' || ch == 'X' || ch == 'y' || ch == 'Z') {
 				pos++;
 
 				if (ch == 'z' || ch == 'Z') {
 					code[codeSize++] = VARIABLE_Z;
-				} else {
+				} else if (ch == 'i' || ch == 'I') {
 					code[codeSize++] = VARIABLE_I;
+				} else if (ch == 'x' || ch == 'X') {
+					code[codeSize++] = VARIABLE_X;
+				} else if (ch == 'y' || ch == 'Y') {
+					code[codeSize++] = VARIABLE_Y;
 				}
 			} else if (Character.isLetter(ch))
 				parseWord();
@@ -2234,15 +2414,13 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
 				pos++;
 			}
 			w = w.toLowerCase();
-			
-			/*for(int i = 0; i < mathConstants.length; i++) {
-				if(w.equals(mathConstants[i])) {
-					skip();
-					parseExpression();
-					skip();
-				}
-			}*/
-			
+
+			/*
+			 * for(int i = 0; i < mathConstants.length; i++) {
+			 * if(w.equals(mathConstants[i])) { skip(); parseExpression();
+			 * skip(); } }
+			 */
+
 			for (int i = 0; i < functionNames.length; i++) {
 				if (w.equals(functionNames[i])) {
 					skip();
@@ -2291,35 +2469,95 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
 					pos++;
 				}
 			}
-			ComplexNumber d = new ComplexNumber(Double.NaN);
-			try {
-				d = new ComplexNumber(Double.valueOf(w).doubleValue());
-			} catch (Exception e) {
+
+			if (this.type.equals("Complex")) {
+				ComplexNumber d = new ComplexNumber(Double.NaN);
+				try {
+					d = new ComplexNumber(Double.valueOf(w).doubleValue());
+				} catch (Exception e) {
+				}
+				if (Double.isNaN(d.real))
+					error("Illegal number '" + w + "' found in data.");
+				code[codeSize++] = (byte) constantCt;
+				constants[constantCt++] = d;
+			} else {
+				double d = Double.NaN;
+				try {
+					d = Double.valueOf(w).doubleValue();
+				} catch (Exception e) {
+				}
+				if (Double.isNaN(d))
+					error("Illegal number '" + w + "' found in data.");
+				code[codeSize++] = (byte) constantCt;
+				realConstants[constantCt++] = d;
 			}
-			if (Double.isNaN(d.real))
-				error("Illegal number '" + w + "' found in data.");
-			code[codeSize++] = (byte) constantCt;
-			constants[constantCt++] = d;
 		}
 
 	} // end class Expr
-		
-		
-		
-		//https://math.hws.edu/javanotes/c8/ex4-ans.html
-		//uses_Expr_above
+
+	// https://math.hws.edu/javanotes/c8/ex4-ans.html
+	// uses_Expr_above
 	class FunctionEvaluator {
 
 		String line; // A line of input read from the user.
 		Expr expression; // The definition of the function f(z).
+
 		ComplexNumber z; // A value of z for which f(z) is to be calculated.
 		ComplexNumber val; // The value of f(z) for the specified value of x.
+
+		String type = "Complex"; // other is "Real"
+
+		/////////// for Real /////////////////
+		double xR; // A value of x for which f(x,y,z) is to be calculated.
+		double yR = 0.0; // in case its for lesser dimension
+		double zR = 0.0;
+
+		double valR; // The value of f(x,y,z) for the specified value of x,y,z.
 
 		public FunctionEvaluator() {
 		}
 
+		public double evaluate(final String funcString, final double x, final double y, final double z) {
+			if (funcString.length() == 0) {
+				System.out.println("Err___line");
+				return 0.0;
+			}
+
+			try {
+				expression = new Expr(funcString, "Real");
+			} catch (IllegalArgumentException e) {
+				// An error was found in the input. Print an error message
+				expression.error("Error!  The definition of f(x) is not valid.");
+				System.out.println(e.getMessage());
+			}
+			
+			/*
+			 * If complexNumber is not a legal complex number, print an error
+			 * message. Otherwise, compute f(x) and return the result.
+			 */
+			if(x==(Double.NaN)||y==(Double.NaN)||z==(Double.NaN)){
+				System.out.println("Err___line2");
+				return Double.NaN;
+			}
+			try {
+				xR = x;
+				yR = y;
+				zR = z;
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+				System.out.println("\"" +  "\" is not a legal number.");
+			}
+			valR = expression.value(xR,yR,zR);
+			if (Double.isNaN(valR))
+				System.out.println("f("+x+","+y+"," + z + ") is undefined.");
+			else {
+				/* System.out.println("f(" + z + ") = " + val); */}
+			return valR;
+
+		}
+
 		public ComplexNumber evaluate(final String funcString, final ComplexNumber z0) {
-//			System.out.print("\nf(z) = " + funcString.trim());
+			// System.out.print("\nf(z) = " + funcString.trim());
 			if (funcString.length() == 0) {
 				System.out.println("Err___line");
 				return null;
@@ -2337,8 +2575,8 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
 			 * If complexNumber is not a legal complex number, print an error
 			 * message. Otherwise, compute f(x) and return the result.
 			 */
-//			System.out.print("\nz = ");
-			if (z0==null) {
+			// System.out.print("\nz = ");
+			if (z0 == null) {
 				System.out.println("Err___line2");
 				return null;
 			}
@@ -2350,13 +2588,13 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
 			val = expression.value(z);
 			if (Double.isNaN(val.real))
 				System.out.println("f(" + z + ") is undefined.");
-			else
-				{/*System.out.println("f(" + z + ") = " + val);*/}
+			else {
+				/* System.out.println("f(" + z + ") = " + val); */}
 			return val;
 		}
 	}
-	
-	
+
+
 	
 	
 	
