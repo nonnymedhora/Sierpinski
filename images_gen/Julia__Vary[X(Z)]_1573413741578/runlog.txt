@@ -1,0 +1,309 @@
+in_doJuliaGenerateCommand_this.diyJuliaVaryPixelPowerZ=true
+In_getVaryPowerCount count = 19
+getTotalVaryCount=76
+allCombinationsListSize==totalVaryCount  true
+i is 0
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-9], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 1
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-9], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 2
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-9], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 3
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-9], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 4
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-8], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 5
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-8], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 6
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-8], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 7
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-8], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 8
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-7], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 9
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-7], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 10
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-7], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 11
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-7], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 12
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-6], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 13
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-6], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 14
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-6], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 15
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-6], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 16
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-5], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 17
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-5], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 18
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-5], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 19
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-5], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 20
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-4], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 21
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-4], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 22
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-4], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 23
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-4], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 24
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-3], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 25
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-3], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 26
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-3], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 27
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-3], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 28
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-2], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 29
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-2], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 30
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-2], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 31
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-2], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 32
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-1], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 33
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-1], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 34
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-1], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 35
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=-1], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 36
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=0], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 37
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=0], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 38
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=0], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 39
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=0], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 40
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=1], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 41
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=1], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 42
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=1], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 43
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=1], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 44
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=2], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 45
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=2], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 46
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=2], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 47
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=2], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 48
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=3], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 49
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=3], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 50
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=3], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 51
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=3], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 52
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=4], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 53
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=4], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 54
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=4], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 55
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=4], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 56
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=5], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 57
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=5], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 58
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=5], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 59
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=5], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 60
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=6], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 61
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=6], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 62
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=6], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 63
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=6], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 64
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=7], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 65
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=7], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 66
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=7], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 67
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=7], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 68
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=8], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 69
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=8], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 70
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=8], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 71
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=8], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 72
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=9], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 73
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=9], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=true], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 74
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=9], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=true], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+i is 75
+line is [[[[[[[[[[[[[[[colorChoice=[SampleMix|POW3_3_243|FRST_SIX_ODDS], pixXTransform=absolute], pixYTransform=absolute], pixIntraXYOperation=Plus], pxFuncChoice=tan], constFuncChoice=None], pxConstOprnChoice=Plus], power=9], xCentrChoice=0.0], yCentrChoice=0.0], scaleSizeChoice=5.0], boundary=4.0], maxIter=1000], useDiffChoice=false], invertPixelCalcChoice=false], constantChoice=[realConstChoice=-0.7898, imagConstChoice=-0.3699]]
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-9),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573413744277.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-9),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573413744277.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-9),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573413747413.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-9),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573413747413.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-9),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573413750441.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-9),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573413750441.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-9),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573413753468.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-9),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573413753468.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-8),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573413756480.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-8),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573413756480.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-8),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573413759804.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-8),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573413759804.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-8),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573413762878.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-8),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573413762878.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-8),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573413765921.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-8),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573413765921.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-7),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573413769073.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-7),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573413769073.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-7),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573413772303.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-7),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573413772303.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-7),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573413775721.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-7),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573413775721.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-7),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573413779154.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-7),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573413779154.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-6),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573413782774.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-6),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573413782774.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-6),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573413786254.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-6),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573413786254.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-6),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573413789687.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-6),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573413789687.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-6),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573413793151.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-6),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573413793151.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-5),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573413796802.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-5),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573413796802.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-5),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573413800345.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-5),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573413800345.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-5),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573413804090.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-5),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573413804090.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-5),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573413807585.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-5),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573413807585.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-4),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573413926021.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-4),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573413926021.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-4),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573414052819.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-4),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573414052819.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-4),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573414180444.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-4),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573414180444.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-4),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573414307617.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-4),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573414307617.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-3),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573414457050.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-3),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573414457050.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-3),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573414604487.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-3),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573414604487.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-3),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573414748149.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-3),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573414748149.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-3),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573414894463.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-3),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573414894463.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-2),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573415423110.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-2),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573415423110.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-2),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573415914886.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-2),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573415914886.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-2),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573416411984.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-2),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573416411984.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-2),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573416907395.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-2),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573416907395.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-1),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573417342889.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-1),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573417342889.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-1),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573417774621.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-1),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573417774621.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-1),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573418192126.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-1),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573418192126.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(-1),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573418611395.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(-1),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573418611395.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(0),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573419039367.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(0),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573419039367.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(0),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573419462613.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(0),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573419462613.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(0),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573419892433.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(0),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573419892433.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(0),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420313167.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(0),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420313167.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(1),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420319705.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(1),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420319705.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(1),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420326383.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(1),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420326383.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(1),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420332921.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(1),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420332921.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(1),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420338210.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(1),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420338210.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(2),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420342797.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(2),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420342797.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(2),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420347728.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(2),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420347728.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(2),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420354016.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(2),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420354016.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(2),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420360288.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(2),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420360288.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(3),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420364267.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(3),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420364267.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(3),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420368043.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(3),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420368043.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(3),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420373177.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(3),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420373177.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(3),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420376797.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(3),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420376797.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(4),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420382149.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(4),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420382149.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(4),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420389622.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(4),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420389622.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(4),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420397063.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(4),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420397063.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(4),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420403070.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(4),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420403070.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(5),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420409982.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(5),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420409982.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(5),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420417190.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(5),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420417190.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(5),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420423134.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(5),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420423134.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(5),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420428907.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(5),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420428907.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(6),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420434602.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(6),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420434602.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(6),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420438379.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(6),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420438379.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(6),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420443559.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(6),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420443559.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(6),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420448536.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(6),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420448536.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(7),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420509923.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(7),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420509923.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(7),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420572792.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(7),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420572792.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(7),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420636869.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(7),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420636869.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(7),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420703825.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(7),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420703825.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(8),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420709380.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(8),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420709380.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(8),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420714981.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(8),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420714981.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(8),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420720614.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(8),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420720614.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(8),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420724796.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(8),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420724796.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(9),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573420876788.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(9),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573420876788.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(9),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573421042587.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(9),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573421042587.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(9),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573421205359.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(9),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573421205359.png
+Generated File: images_gen\Julia__Vary[X(Z)]_1573413741578\[DIY_Julia_P(9),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_1573421373731.png
+Generated FileDetail: images_gen\Julia__Vary[X(Z)]_1573413741578\Detail\[DIY_Julia_P(9),B(4.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(5.0),Real(-0.79),Img(-0.37)]_Detail_1573421373731.png
+Done JuliaGeneration
