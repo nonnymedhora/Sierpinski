@@ -15,7 +15,7 @@ import javax.swing.SwingUtilities;
  * @author Navroz
  *
  */
-public class Lorenz_Attractor extends JFrame {
+public class AttractorsGenerator extends JFrame {
 
 	private static final long serialVersionUID = 12345543L;
 
@@ -30,17 +30,14 @@ public class Lorenz_Attractor extends JFrame {
 	private Attractor[] attractors;
 	BufferedImage bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 
-
-	public Lorenz_Attractor() {
+	public AttractorsGenerator() {
 
 	}
 
-	public Lorenz_Attractor(String p) {
+	public AttractorsGenerator(String p) {
 		this.setSize(WIDTH, HEIGHT);
 		this.attractorName = p;
 	}
-	
-
 
 	public int getMaxIter() {
 		return this.maxIter;
@@ -185,7 +182,7 @@ public class Lorenz_Attractor extends JFrame {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				final Lorenz_Attractor lorenz_Attractor = new Lorenz_Attractor("lorenz");//("dejong");//("aizawa");//
+				final AttractorsGenerator lorenz_Attractor = new AttractorsGenerator("lorenz");//("dejong");//("aizawa");//
 				
 				lorenz_Attractor.setAttractors(new Attractor[] { 
 						new LorenzAttractor(0.0, 20.00, 25.0, Color.blue),

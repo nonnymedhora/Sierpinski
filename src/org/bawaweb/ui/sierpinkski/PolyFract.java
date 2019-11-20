@@ -9,7 +9,6 @@ import java.awt.Graphics2D;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
 
 
 /**

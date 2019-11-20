@@ -61,7 +61,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
 
 /**
  * @author Navroz
@@ -783,7 +782,7 @@ class SierpinskiComboPanel extends JPanel {
 	private JLabel attrCustomFormulaStrLabel = new JLabel("Custom Formula: ");
 	private JLabel attrCustomFormulaStrDeltaXLabel = new JLabel("Delta X or dx: ");
 	private JLabel attrCustomFormulaStrDeltaYLabel = new JLabel("Delta Y or dy: ");
-	private JLabel attrCustomFormulaStrDeltaZLabel = new JLabel("Delta Z or dy: ");
+	private JLabel attrCustomFormulaStrDeltaZLabel = new JLabel("Delta Z or dz: ");
 	private JTextField attrCustom_DeltaXFormula_tf = new JTextField(10);
 	private JTextField attrCustom_DeltaYFormula_tf = new JTextField(10);
 	private JTextField attrCustom_DeltaZFormula_tf = new JTextField(10);
@@ -5251,17 +5250,17 @@ class SierpinskiComboPanel extends JPanel {
 					attrL2.setSpace();
 					attrL2.setSpace2d(space2d);
 
-					final Lorenz_Attractor l_a = new Lorenz_Attractor("lorenz");
-					l_a.setAttractors(new Attractor[] { attrL1, attrL2 });
-					l_a.setMaxIter(maxIter);
-					l_a.setSpace2d(space2d);
+					final AttractorsGenerator generator = new AttractorsGenerator("lorenz");
+					generator.setAttractors(new Attractor[] { attrL1, attrL2 });
+					generator.setMaxIter(maxIter);
+					generator.setSpace2d(space2d);
 					
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override
 						public void run() {
 
-							final JFrame frame = l_a;
-							frame.setTitle("BawazAttractor");
+							final JFrame frame = generator;
+							frame.setTitle("Bawaz__LorenzAttractor");
 							frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 							frame.setResizable(false);
 							frame.setVisible(true);
@@ -5273,7 +5272,7 @@ class SierpinskiComboPanel extends JPanel {
 							frame.setResizable(false);
 							frame.setVisible(true);
 
-							setFractalImage(l_a.getBufferedImage());
+							setFractalImage(generator.getBufferedImage());
 							// this.setFractalBase(frame);
 
 							buClose.setEnabled(true);
@@ -5291,7 +5290,78 @@ class SierpinskiComboPanel extends JPanel {
 			} else if (attractorSelected.equals("dejong")) {
 
 			} else if (attractorSelected.equals("custom")) {
+				try {
+					double x1S = Double.parseDouble(this.attr1SeedX_tf.getText());
+					double y1S = Double.parseDouble(this.attr1SeedY_tf.getText());
+					double z1S = Double.parseDouble(this.attr1SeedZ_tf.getText());
 
+					double x2S = Double.parseDouble(this.attr2SeedX_tf.getText());
+					double y2S = Double.parseDouble(this.attr2SeedY_tf.getText());
+					double z2S = Double.parseDouble(this.attr2SeedZ_tf.getText());
+
+					double dt = Double.parseDouble(this.attrDeltaTime_tf.getText());
+					int maxIter = Integer.parseInt(this.attrMaxIter_tf.getText());
+
+					String space2d = this.attractorSpace2DSelectionChoice;
+
+					String deltaXFormula = this.attrCustom_DeltaXFormula_tf.getText().trim();
+					String deltaYFormula = this.attrCustom_DeltaYFormula_tf.getText().trim();
+					String deltaZFormula = this.attrCustom_DeltaZFormula_tf.getText().trim();
+					
+					final CustomAttractor cust1 = new CustomAttractor(x1S, y1S, z1S, Color.blue, space2d);
+					cust1.setMaxIter(maxIter);
+					cust1.setDeltaXFormula(deltaXFormula);
+					cust1.setDeltaYFormula(deltaYFormula);
+					cust1.setDeltaZFormula(deltaZFormula);
+					cust1.setSpace();
+					cust1.setSpace2d(space2d);
+					
+					final CustomAttractor cust2 = new CustomAttractor(x2S, y2S, z2S, Color.red, space2d);
+					cust2.setMaxIter(maxIter);
+					cust2.setDeltaXFormula(deltaXFormula);
+					cust2.setDeltaYFormula(deltaYFormula);
+					cust2.setDeltaZFormula(deltaZFormula);
+					cust2.setSpace();
+					cust2.setSpace2d(space2d);
+
+					final Attractor attractor1 = cust1;
+					final Attractor attractor2 = cust2;
+					final AttractorsGenerator generator = new AttractorsGenerator("custom");
+					generator.setAttractors(new Attractor[] { attractor1, attractor2 });
+					generator.setMaxIter(maxIter);
+					generator.setSpace2d(space2d);
+					
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+
+							final JFrame frame = generator;
+							frame.setTitle("Bawaz___CustomizedAttractor");
+							frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+							frame.setResizable(false);
+							frame.setVisible(true);
+
+							frame.setDefaultCloseOperation(closeIt(frame));
+							frame.setLocation(
+									(Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth()) / 2,
+									(Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight()) / 2);
+							frame.setResizable(false);
+							frame.setVisible(true);
+
+							setFractalImage(generator.getBufferedImage());
+							// this.setFractalBase(frame);
+
+							buClose.setEnabled(true);
+						}
+					});
+					
+					
+				} catch (NumberFormatException | NullPointerException e2) {
+					e2.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n" + e2.getMessage(),
+							"Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 			}
 
 			return;

@@ -6,13 +6,8 @@ package org.bawaweb.ui.sierpinkski;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Properties;
-
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-
-import org.bawaweb.ui.sierpinkski.FractalBase.FunctionEvaluator;
-import org.bawaweb.ui.sierpinkski.FractalBase.ComplexNumber;
-
 
 /**
  * @author Navroz

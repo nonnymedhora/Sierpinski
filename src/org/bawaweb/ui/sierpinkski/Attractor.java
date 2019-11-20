@@ -166,9 +166,9 @@ public abstract class Attractor /*extends JFrame */{
 		}
 		
 		private void doScaleCheck(Tuple3d t) {
-			boolean xOk = t.x <= Lorenz_Attractor.WIDTH || t.x >= 0;
-			boolean yOk = t.y <= Lorenz_Attractor.HEIGHT || t.y >= 0;
-			boolean zOk = t.z <= Lorenz_Attractor.DEPTH || t.z >= 0;
+			boolean xOk = t.x <= AttractorsGenerator.WIDTH || t.x >= 0;
+			boolean yOk = t.y <= AttractorsGenerator.HEIGHT || t.y >= 0;
+			boolean zOk = t.z <= AttractorsGenerator.DEPTH || t.z >= 0;
 			
 			
 			if(!(xOk||yOk||zOk))
@@ -186,29 +186,29 @@ public abstract class Attractor /*extends JFrame */{
 
 		void drawAxes(Graphics2D g2) {
 			// 4now doing x-z axis only
-			int xCentr = Lorenz_Attractor.WIDTH / 2;
-			int yCentr = Lorenz_Attractor.HEIGHT / 2;
-			int zCentr = Lorenz_Attractor.DEPTH / 2;
+			int xCentr = AttractorsGenerator.WIDTH / 2;
+			int yCentr = AttractorsGenerator.HEIGHT / 2;
+			int zCentr = AttractorsGenerator.DEPTH / 2;
 			g2.setColor(Color.black);
 			
 			if (this.space2d.equals("x-z")) {
-				g2.drawLine(xCentr, 0, xCentr, Lorenz_Attractor.WIDTH); //horizontal
-				g2.drawLine(0, zCentr, Lorenz_Attractor.DEPTH, zCentr); //vertical(y-for-graph)
+				g2.drawLine(xCentr, 0, xCentr, AttractorsGenerator.WIDTH); //horizontal
+				g2.drawLine(0, zCentr, AttractorsGenerator.DEPTH, zCentr); //vertical(y-for-graph)
 			} else if (this.space2d.equals("x-y")) {
-				g2.drawLine(xCentr, 0, xCentr, Lorenz_Attractor.WIDTH); //horizontal
-				g2.drawLine(0, yCentr, Lorenz_Attractor.HEIGHT, yCentr); //vertical(y-for-graph)
+				g2.drawLine(xCentr, 0, xCentr, AttractorsGenerator.WIDTH); //horizontal
+				g2.drawLine(0, yCentr, AttractorsGenerator.HEIGHT, yCentr); //vertical(y-for-graph)
 			} else if (this.space2d.equals("y-z")) {
-				g2.drawLine(yCentr, 0, yCentr, Lorenz_Attractor.HEIGHT); //horizontal
-				g2.drawLine(0, zCentr, Lorenz_Attractor.DEPTH, zCentr); //vertical(y-for-graph)
+				g2.drawLine(yCentr, 0, yCentr, AttractorsGenerator.HEIGHT); //horizontal
+				g2.drawLine(0, zCentr, AttractorsGenerator.DEPTH, zCentr); //vertical(y-for-graph)
 			} else if (this.space2d.equals("z-x")) {
-				g2.drawLine(zCentr, 0, zCentr, Lorenz_Attractor.DEPTH); //horizontal
-				g2.drawLine(0, xCentr, Lorenz_Attractor.WIDTH, xCentr); //vertical(y-for-graph)
+				g2.drawLine(zCentr, 0, zCentr, AttractorsGenerator.DEPTH); //horizontal
+				g2.drawLine(0, xCentr, AttractorsGenerator.WIDTH, xCentr); //vertical(y-for-graph)
 			} else if (this.space2d.equals("y-x")) {
-				g2.drawLine(yCentr, 0, yCentr, Lorenz_Attractor.HEIGHT); //horizontal
-				g2.drawLine(0, xCentr, Lorenz_Attractor.WIDTH, xCentr); //vertical(y-for-graph)
+				g2.drawLine(yCentr, 0, yCentr, AttractorsGenerator.HEIGHT); //horizontal
+				g2.drawLine(0, xCentr, AttractorsGenerator.WIDTH, xCentr); //vertical(y-for-graph)
 			} else if (this.space2d.equals("z-y")) {
-				g2.drawLine(zCentr, 0, zCentr, Lorenz_Attractor.DEPTH); //horizontal
-				g2.drawLine(0, yCentr, Lorenz_Attractor.HEIGHT, yCentr); //vertical(y-for-graph)
+				g2.drawLine(zCentr, 0, zCentr, AttractorsGenerator.DEPTH); //horizontal
+				g2.drawLine(0, yCentr, AttractorsGenerator.HEIGHT, yCentr); //vertical(y-for-graph)
 			}
 		}	
 
@@ -247,9 +247,9 @@ public abstract class Attractor /*extends JFrame */{
 //			double z0 = zCentr + (zVal * (DEPTH / zRange));
 			
 			
-			double x0 = (xVal-xmin) * (Lorenz_Attractor.WIDTH / xRange);
-			double y0 = (yVal-ymin) * (Lorenz_Attractor.HEIGHT / yRange);
-			double z0 = (zVal-zmin) * (Lorenz_Attractor.DEPTH / zRange);
+			double x0 = (xVal-xmin) * (AttractorsGenerator.WIDTH / xRange);
+			double y0 = (yVal-ymin) * (AttractorsGenerator.HEIGHT / yRange);
+			double z0 = (zVal-zmin) * (AttractorsGenerator.DEPTH / zRange);
 			
 			
 			
