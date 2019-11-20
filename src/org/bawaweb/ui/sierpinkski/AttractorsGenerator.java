@@ -104,7 +104,7 @@ public class AttractorsGenerator extends JFrame {
 			}
 			for (int i = 0; i < maxIter; i++) {
 				for (int j = 0; j < attrs.length; j++) {
-					attrs[j].draw(g);
+					attrs[j].draw(i,g);
 					pause(10);
 				}
 			}

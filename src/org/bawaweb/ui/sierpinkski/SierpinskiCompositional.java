@@ -5242,18 +5242,18 @@ class SierpinskiComboPanel extends JPanel {
 					
 					final Attractor attrL1 = new LorenzAttractor(x1S, y1S, z1S, Color.blue, space2d);
 					attrL1.setMaxIter(maxIter);
-					attrL1.setSpace();
+					/*attrL1.setSpace();*/
 					attrL1.setSpace2d(space2d);
 
 					final Attractor attrL2 = new LorenzAttractor(x2S, y2S, z2S, Color.red, space2d);
 					attrL2.setMaxIter(maxIter);
-					attrL2.setSpace();
+					/*attrL2.setSpace();*/
 					attrL2.setSpace2d(space2d);
 
 					final AttractorsGenerator generator = new AttractorsGenerator("lorenz");
 					generator.setAttractors(new Attractor[] { attrL1, attrL2 });
-					generator.setMaxIter(maxIter);
-					generator.setSpace2d(space2d);
+					/*generator.setMaxIter(maxIter);
+					generator.setSpace2d(space2d);*/
 					
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override
@@ -5313,7 +5313,7 @@ class SierpinskiComboPanel extends JPanel {
 					cust1.setDeltaXFormula(deltaXFormula);
 					cust1.setDeltaYFormula(deltaYFormula);
 					cust1.setDeltaZFormula(deltaZFormula);
-					cust1.setSpace();
+//					cust1.setSpace();
 					cust1.setSpace2d(space2d);
 					
 					final CustomAttractor cust2 = new CustomAttractor(x2S, y2S, z2S, Color.red, space2d);
@@ -5321,7 +5321,7 @@ class SierpinskiComboPanel extends JPanel {
 					cust2.setDeltaXFormula(deltaXFormula);
 					cust2.setDeltaYFormula(deltaYFormula);
 					cust2.setDeltaZFormula(deltaZFormula);
-					cust2.setSpace();
+//					cust2.setSpace();
 					cust2.setSpace2d(space2d);
 
 					final Attractor attractor1 = cust1;
