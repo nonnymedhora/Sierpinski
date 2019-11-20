@@ -22,8 +22,8 @@ public class ComplexNumber {
 	
 	public static final ComplexNumber i = new ComplexNumber(0.0, 1.0);
 	
-	final ComplexNumber DUMMY = new ComplexNumber(Double.NaN,Double.NaN);
-	ComplexNumber Z = DUMMY;
+//	final ComplexNumber DUMMY = new ComplexNumber(Double.NaN,Double.NaN);
+//	ComplexNumber Z = DUMMY;
 
 	
 	final String I = "i";
