@@ -7,6 +7,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -81,7 +83,7 @@ public class AttractorsGenerator extends JFrame {
 		//g2.drawImage(img, 0, 0, null);
 
 		//this.setImage(img);
-
+System.out.println("Done with AttractorsGenerator - paint ^__^");
 		g2.dispose();
 	}
 	
@@ -98,17 +100,20 @@ public class AttractorsGenerator extends JFrame {
 	private void drawAttractors(Graphics2D g) {
 		Attractor[] attrs = this.attractors;
 		if (attrs != null && attrs.length > 0) {
+			Map<String, Double> rangeMap = new HashMap<String, Double>();
+
 			for (int j = 0; j < attrs.length; j++) {
-				attrs[j].setSpace();
+				Map<String, Double> attrSpaceMap = attrs[j].setSpace();
 				attrs[j].drawAxes(g);
+				rangeMap = this.setRangeMapVals(rangeMap, attrSpaceMap);
 			}
+
 			for (int i = 0; i < maxIter; i++) {
 				for (int j = 0; j < attrs.length; j++) {
-					attrs[j].draw(i,g);
+					attrs[j].draw(i, g, rangeMap);
 					pause(10);
 				}
 			}
-
 			System.out.println("Done" + System.currentTimeMillis());
 		}
 
@@ -162,6 +167,59 @@ public class AttractorsGenerator extends JFrame {
 	}
 	
 	
+	private Map<String, Double> setRangeMapVals(Map<String, Double> rangeMap, Map<String, Double> spaceMap) {
+		if (rangeMap.get("xmin") != null) {
+			if (rangeMap.get("xmin") > spaceMap.get("xmin")) {
+				rangeMap.put("xmin", spaceMap.get("xmin"));
+			}
+		} else {
+			rangeMap.put("xmin", spaceMap.get("xmin"));
+		}
+		
+		if (rangeMap.get("xmax") != null) {
+			if (rangeMap.get("xmax") < spaceMap.get("xmax")) {
+				rangeMap.put("xmax", spaceMap.get("xmax"));
+			}
+		} else {
+			rangeMap.put("xmax", spaceMap.get("xmax"));
+		}
+		
+		if (rangeMap.get("ymin") != null) {
+			if (rangeMap.get("ymin") > spaceMap.get("ymin")) {
+				rangeMap.put("ymin", spaceMap.get("ymin"));
+			}
+		} else {
+			rangeMap.put("ymin", spaceMap.get("ymin"));
+		}
+		
+		if (rangeMap.get("ymax") != null) {
+			if (rangeMap.get("ymax") < spaceMap.get("ymax")) {
+				rangeMap.put("ymax", spaceMap.get("ymax"));
+			}
+		} else {
+			rangeMap.put("ymax", spaceMap.get("ymax"));
+		}
+		
+		if (rangeMap.get("zmin") != null) {
+			if (rangeMap.get("zmin") > spaceMap.get("zmin")) {
+				rangeMap.put("zmin", spaceMap.get("zmin"));
+			}
+		} else {
+			rangeMap.put("zmin", spaceMap.get("zmin"));
+		}
+		
+		if (rangeMap.get("zmax") != null) {
+			if (rangeMap.get("zmax") < spaceMap.get("zmax")) {
+				rangeMap.put("zmax", spaceMap.get("zmax"));
+			}
+		} else {
+			rangeMap.put("zmax", spaceMap.get("zmax"));
+		}
+		return rangeMap;
+		
+		
+	}
+
 	/**
      * Pause for t milliseconds. This method is intended to support computer animations.
      * @param t number of milliseconds

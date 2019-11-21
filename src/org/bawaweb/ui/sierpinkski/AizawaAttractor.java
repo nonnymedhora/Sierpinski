@@ -4,19 +4,41 @@ import java.awt.Color;
 
 class AizawaAttractor extends Attractor {
 //		H:\temp\e2\www_algosome_com_articles_aizawa_attractor_chaos_html.pdf
-		private final double a = 0.95;
-		private final double b = 0.7;
-		private final double c = 0.65;//0.9;
-		private final double d = 3.5;
-		private final double e = 0.25;
-		private final double f = 0.1;
+		/** H:\temp\e2\www_algosome_com_articles_aizawa_attractor_chaos_html.pdf
+		 * The  Aizawa  attractor  is  a  system  of  equations  that, 
+		 * when  applied  iteratively  on three-dimensional  coordinates,  
+		 * evolves  in  such  a  way  as  to  have  the  resulting coordinates 
+		 * map out a three dimensional shape, in this case a sphere with a tube-like  
+		 * structure  penetrating  one  of  it's  axis.  
+		 * 
+		 * The  equations  themselves  are  fairly straightforward:
+		 *	  dx   =   (z-b) * x - d*y 
+		 *	  dy   =   d * x + (z-b) * y  
+		 *	  dz      c + a*z - ((z^3) /3) - x^2   + f * z * x^3
+		 */
+	
+	
+		private double a = 0.95;
+		private double b = 0.7;
+		private double c = 0.65;//0.9;
+		private double d = 3.5;
+		private double e = 0.25;
+		private double f = 0.1;
 		
 //		H:\temp\e2\alpaca_17 The Aizawa Attractor.pdf
-		private final double alpha = 0.095;
-		private final double beta = 0.7;
-		private final double gamma = 0.65;
-		private final double delta = 3.5;
-		private final double eta = 0.1;
+		/**
+		 * H:\temp\e2\alpaca_17 The Aizawa Attractor.pdf
+		 *	dx/dt	=	x *(z-B) - Dy
+		 *	dy/dt	=	Dx + y(z-B)
+		 *	dz/dt	=	C + Az - (z^3)/3 + Ez(x^3)
+		 *
+		 *	A=alpha,	B=beta,	C=gamma,	D=delta,	E=eta
+		 */
+		private double alpha = 0.095;
+		private double beta = 0.7;
+		private double gamma = 0.65;
+		private double delta = 3.5;
+		private double eta = 0.1;
 
 		public AizawaAttractor(double x, double y, double z, Color c) {
 			super(x, y, z, c);
@@ -51,7 +73,51 @@ class AizawaAttractor extends Attractor {
 		}
 //		H:\temp\e2\www_algosome_com_articles_aizawa_attractor_chaos_html.pdf
 		
-		
+		public void setA(double aval) {
+		    this.a = aval;
+		}
+
+		public void setB(double bval) {
+		    this.b = bval;
+		}
+
+		public void setC(double cval) {
+		    this.c = cval;
+		}
+
+		public void setD(double dval) {
+		    this.d = dval;
+		}
+
+		public void setE(double eval) {
+		    this.e = eval;
+		}
+
+		public void setF(double fval) {
+		    this.f = fval;
+		}
+
+		///////////////////setting-both-4-now/////////////////////////////////
+		//TODO	5,-or-6contants
+		public void setAlpha(double aval) {
+		    this.alpha = aval;
+		}
+
+		public void setBeta(double bval) {
+		    this.beta = bval;
+		}
+
+		public void setGamma(double cval) {
+		    this.gamma = cval;
+		}
+
+		public void setDelta(double dval) {
+		    this.delta = dval;
+		}
+
+		public void setEta(double eval) {
+		    this.eta = eval;
+		}
 
 //		H:\temp\e2\alpaca_17 The Aizawa Attractor.pdf
 //		@Override

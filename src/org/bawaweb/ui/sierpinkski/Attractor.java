@@ -3,6 +3,7 @@ package org.bawaweb.ui.sierpinkski;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -21,13 +22,13 @@ public abstract class Attractor /*extends JFrame */{
 	private double cumulativeTime;
 	private String name;
 
-	protected double xmin;// = -100d;
+	/*protected double xmin;// = -100d;
 	protected double xmax;// = 100d;
 	protected double ymin;// = xmin;
 	protected double ymax;// = xmax;
 	protected double zmin;// = xmin;
 	protected double zmax;// = xmax;
-
+*/
 	private String space2d = "x-z";
 	private Map<Integer,Tuple3d> updatedTuples = new LinkedHashMap<Integer,Tuple3d>();
 
@@ -100,7 +101,7 @@ public abstract class Attractor /*extends JFrame */{
 
 	protected abstract double dz(final Tuple3d tuple, final double dt);
 	
-	public void draw(int index, Graphics2D g2) {
+	public void draw(int index, Graphics2D g2, final Map<String, Double> spaceMap) {
 		Tuple3d existingTuple = null, scaledExistingTuple = null, 
 				updatedTuple = null, scaledUpdatedTuple = null;
 		if (index != 0) {
@@ -108,9 +109,9 @@ public abstract class Attractor /*extends JFrame */{
 			updatedTuple = this.updatedTuples.get(index);
 
 			if (existingTuple != null && updatedTuple != null) {
-				scaledExistingTuple = this.scale(existingTuple);
+				scaledExistingTuple = this.scale(existingTuple,spaceMap);
 				this.doScaleCheck(scaledExistingTuple);
-				scaledUpdatedTuple = this.scale(updatedTuple);
+				scaledUpdatedTuple = this.scale(updatedTuple,spaceMap);
 				this.doScaleCheck(scaledUpdatedTuple);
 			}
 
@@ -118,10 +119,10 @@ public abstract class Attractor /*extends JFrame */{
 			existingTuple = this.t3d;
 			updatedTuple = this.updatedTuples.get(0);
 
-			scaledExistingTuple = this.scale(existingTuple);
+			scaledExistingTuple = this.scale(existingTuple,spaceMap);
 			this.doScaleCheck(scaledExistingTuple);
 
-			scaledUpdatedTuple = this.scale(updatedTuple);
+			scaledUpdatedTuple = this.scale(updatedTuple,spaceMap);
 			this.doScaleCheck(scaledUpdatedTuple);
 		}
 		
@@ -202,8 +203,8 @@ public abstract class Attractor /*extends JFrame */{
 
 	}
 
-	void setSpace() {
-		this.determineRange();
+	Map<String, Double> setSpace() {
+		return this.determineRange();
 	}
 
 	void drawAxes(Graphics2D g2) {
@@ -234,18 +235,21 @@ public abstract class Attractor /*extends JFrame */{
 		}
 	}	
 
-	protected Tuple3d scale(Tuple3d tuple) {
+	protected Tuple3d scale(Tuple3d tuple, final Map<String, Double> spaceMap) {
 		double xVal = tuple.x;
 		double yVal = tuple.y;
 		double zVal = tuple.z;
 
+		Double xminVal = spaceMap.get("xmin");
+		Double yminVal = spaceMap.get("ymin");
+		Double zminVal = spaceMap.get("zmin");
 		/*final double xCentr = WIDTH / 2;
 		final double yCentr = HEIGHT / 2;
 		final double zCentr = DEPTH / 2;*/
 		
-		final double xRange = (this.xmax - this.xmin);
-		final double yRange = (this.ymax - this.ymin);
-		final double zRange = (this.zmax - this.zmin);
+		final double xRange = (spaceMap.get("xmax") - xminVal);//(this.xmax - this.xmin);
+		final double yRange = (spaceMap.get("ymax") - yminVal);
+		final double zRange = (spaceMap.get("zmax") - zminVal);
 
 //			...............x[5.958136900535692], y[259.7447851220958], z[-5.185551290427554]4blow
 //			double x0 = ((xCentr + xVal) / WIDTH) + /*(xCentr * */(WIDTH*(xVal - this.xmin) / (this.xmax - this.xmin))/*)*/ - xCentr;//	x + (xCentr /*- WIDTH / 2*/);// + (WIDTH / 2 * x);
@@ -269,9 +273,9 @@ public abstract class Attractor /*extends JFrame */{
 //			double z0 = zCentr + (zVal * (DEPTH / zRange));
 		
 		
-		double x0 = /*Math.round(*/(xVal-xmin) * (AttractorsGenerator.WIDTH / xRange)/*)*/;
-		double y0 = (yVal-ymin) * (AttractorsGenerator.HEIGHT / yRange);
-		double z0 = (zVal-zmin) * (AttractorsGenerator.DEPTH / zRange);
+		double x0 = /*Math.round(*/(xVal-xminVal) * (AttractorsGenerator.WIDTH / xRange)/*)*/;
+		double y0 = (yVal-yminVal) * (AttractorsGenerator.HEIGHT / yRange);
+		double z0 = (zVal-zminVal) * (AttractorsGenerator.DEPTH / zRange);
 		
 		
 		
@@ -316,7 +320,7 @@ public abstract class Attractor /*extends JFrame */{
 //    }
 /////////////////////ends---removed---xscale,yscale/////////////////
 	
-	protected void determineRange() {
+	protected Map<String, Double> determineRange() {
 		// do-the-calculations (it-does-get-repeated-while-displaying
 		// determine min-max values
 		double x_min_r = Double.POSITIVE_INFINITY;
@@ -356,7 +360,20 @@ public abstract class Attractor /*extends JFrame */{
 			z_max_r = tempDummyTuple.z > z_max_r ? tempDummyTuple.z : z_max_r;
 		}
 		
+		Map<String, Double> spaceMap = new HashMap<String, Double>();
+		spaceMap.put("xmin", x_min_r);//-20.0);
+		spaceMap.put("xmax", x_max_r);//20.0);
+	
+		spaceMap.put("ymin", y_min_r);//-40.0);
+		spaceMap.put("ymax", y_max_r);//40.0);
+	
+		spaceMap.put("zmin", z_min_r);//00);
+		spaceMap.put("zmax", z_max_r);//50.0);
 		
+		
+		return spaceMap;
+		
+		/************************
 		this.xmin = x_min_r;//-20.0;
 		this.xmax = x_max_r;//20.0;
 	
@@ -365,10 +382,10 @@ public abstract class Attractor /*extends JFrame */{
 	
 		this.zmin = z_min_r;//00;
 		this.zmax = z_max_r;//50.0;
-		
-		//revert
+**********************************************/		
+		/*//revert		//todo	-	do we need this
 		this.setT3d(extistingDummyTuple);
-		this.setCumulativeTime(0.0);
+		this.setCumulativeTime(0.0);*/
 	
 	}
 	

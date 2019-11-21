@@ -21,10 +21,10 @@ class DeJongAttractor extends Attractor {
 	 * a = -2, b = -2, c = -1.2, d = 2
 	 */
 	
-	private final double a = -2.24;
-	private final double b = 0.43;
-	private final double c = -0.65;
-	private final double d = -2.43;
+	private double a = -2.24;
+	private double b = 0.43;
+	private double c = -0.65;
+	private double d = -2.43;
 
 	public DeJongAttractor(double x, double y, double z, Color c) {
 		super(x, y, z, c);
@@ -54,4 +54,21 @@ class DeJongAttractor extends Attractor {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	public void setA(double aval) {
+	    this.a = aval;
+	}
+
+	public void setB(double bval) {
+	    this.b = bval;
+	}
+
+	public void setC(double cval) {
+	    this.c = cval;
+	}
+
+	public void setD(double dval) {
+	    this.d = dval;
+	}
+
 }

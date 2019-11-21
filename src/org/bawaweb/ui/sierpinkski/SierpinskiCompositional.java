@@ -750,22 +750,22 @@ class SierpinskiComboPanel extends JPanel {
 	private JTextField attr1SeedY_tf = new JTextField(2);
 	private JTextField attr1SeedZ_tf = new JTextField(2);
 	
-	private double attr1SeedXVal;	
+	/*private double attr1SeedXVal;	
 	private double attr1SeedYVal;	
-	private double attr1SeedZVal;
+	private double attr1SeedZVal;*/
 	
 	private JTextField attr2SeedX_tf = new JTextField(2);
 	private JTextField attr2SeedY_tf = new JTextField(2);
 	private JTextField attr2SeedZ_tf = new JTextField(2);
 	
-	private double attr2SeedXVal;	
+	/*private double attr2SeedXVal;	
 	private double attr2SeedYVal;	
-	private double attr2SeedZVal;
+	private double attr2SeedZVal;*/
 	
 
 	private JTextField attrMaxIter_tf = new JTextField(2);
 	private JTextField attrDeltaTime_tf = new JTextField(2);	
-	private double attrMaxIterVal;	
+	/*private double attrMaxIterVal;	*/
 	
 	private final String[] attractorSpace2DChoiceOptions = ATTRACTOR_SPACE_CHOICES;
 	private final JComboBox<String> attractorSpace2DChoiceCombos = new JComboBox<String>(attractorSpace2DChoiceOptions);
@@ -778,6 +778,40 @@ class SierpinskiComboPanel extends JPanel {
 	private double attrCustomSeedXVal;	
 	private double attrCustomSeedYVal;	
 	private double attrCustomSeedZVal;*/
+	
+	//lorenz
+	private JLabel attrLorenzSigmaLabel = new JLabel("Set sigma: ");
+	private JTextField attrLorenzSigma_tf = new JTextField(2);
+	private JLabel attrLorenzRhoLabel = new JLabel("  rho: ");
+	private JTextField attrLorenzRho_tf = new JTextField(2);
+	private JLabel attrLorenzBetaLabel = new JLabel("  beta: ");
+	private JTextField attrLorenzBeta_tf = new JTextField(2);
+	
+	//aizawa
+	private JLabel attrAizawaALabel = new JLabel("Set a: ");
+	private JTextField attrAizawaA_tf = new JTextField(2);
+	private JLabel attrAizawaBLabel = new JLabel("  b: ");
+	private JTextField attrAizawaB_tf = new JTextField(2);
+	private JLabel attrAizawaCLabel = new JLabel("  c: ");
+	private JTextField attrAizawaC_tf = new JTextField(2);
+	private JLabel attrAizawaDLabel = new JLabel("  d: ");
+	private JTextField attrAizawaD_tf = new JTextField(2);
+	private JLabel attrAizawaELabel = new JLabel("  e: ");
+	private JTextField attrAizawaE_tf = new JTextField(2);
+	private JLabel attrAizawaFLabel = new JLabel("  f: ");
+	private JTextField attrAizawaF_tf = new JTextField(2);
+	
+	
+	//dejong
+	private JLabel attrDeJongALabel = new JLabel("Set a: ");
+	private JTextField attrDeJongA_tf = new JTextField(2);
+	private JLabel attrDeJongBLabel = new JLabel("  b: ");
+	private JTextField attrDeJongB_tf = new JTextField(2);
+	private JLabel attrDeJongCLabel = new JLabel("  c: ");
+	private JTextField attrDeJongC_tf = new JTextField(2);
+	private JLabel attrDeJongDLabel = new JLabel("  d: ");
+	private JTextField attrDeJongD_tf = new JTextField(2);
+	
 
 	private JLabel attrCustomFormulaStrLabel = new JLabel("Custom Formula: ");
 	private JLabel attrCustomFormulaStrDeltaXLabel = new JLabel("Delta X or dx: ");
@@ -787,9 +821,9 @@ class SierpinskiComboPanel extends JPanel {
 	private JTextField attrCustom_DeltaYFormula_tf = new JTextField(10);
 	private JTextField attrCustom_DeltaZFormula_tf = new JTextField(10);
 	
-	private String attrCustom_DeltaXFormula;	
+	/*private String attrCustom_DeltaXFormula;	
 	private String attrCustom_DeltaYFormula;	
-	private String attrCustom_DeltaZFormula;
+	private String attrCustom_DeltaZFormula;*/
 	
 	
 	////////////////////////////////ENDS	ATTRACTOR////////////////////////////
@@ -1019,6 +1053,63 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.attractorsPanel.add(new JLabel("Choose Atractor:"));
 		this.attractorsPanel.add(this.attractorChoiceCombos);	
+		//lorenz parameters	
+		this.attrLorenzSigmaLabel.setVisible(false);
+		this.attractorsPanel.add(this.attrLorenzSigmaLabel);
+		this.attrLorenzSigma_tf.setVisible(false);
+		this.attractorsPanel.add(this.attrLorenzSigma_tf);
+		this.attrLorenzRhoLabel.setVisible(false);
+		this.attractorsPanel.add(this.attrLorenzRhoLabel);
+		this.attrLorenzRho_tf.setVisible(false);
+		this.attractorsPanel.add(this.attrLorenzRho_tf);
+		this.attrLorenzBetaLabel.setVisible(false);
+		this.attractorsPanel.add(this.attrLorenzBetaLabel);
+		this.attrLorenzBeta_tf.setVisible(false);
+		this.attractorsPanel.add(this.attrLorenzBeta_tf);
+		
+		//aizawa
+		this.attrAizawaALabel.setVisible(false);
+		this.attractorsPanel.add(this.attrAizawaALabel);
+		this.attrAizawaA_tf.setVisible(false);
+		this.attractorsPanel.add(this.attrAizawaA_tf);
+		this.attrAizawaBLabel.setVisible(false);
+		this.attractorsPanel.add(this.attrAizawaBLabel);
+		this.attrAizawaB_tf.setVisible(false);
+		this.attractorsPanel.add(this.attrAizawaB_tf);
+		this.attrAizawaCLabel.setVisible(false);
+		this.attractorsPanel.add(this.attrAizawaCLabel);
+		this.attrAizawaC_tf.setVisible(false);
+		this.attractorsPanel.add(this.attrAizawaC_tf);
+		this.attrAizawaDLabel.setVisible(false);
+		this.attractorsPanel.add(this.attrAizawaDLabel);
+		this.attrAizawaD_tf.setVisible(false);
+		this.attractorsPanel.add(this.attrAizawaD_tf);
+		this.attrAizawaELabel.setVisible(false);
+		this.attractorsPanel.add(this.attrAizawaELabel);
+		this.attrAizawaE_tf.setVisible(false);
+		this.attractorsPanel.add(this.attrAizawaE_tf);
+		this.attrAizawaFLabel.setVisible(false);
+		this.attractorsPanel.add(this.attrAizawaFLabel);
+		this.attrAizawaF_tf.setVisible(false);
+		this.attractorsPanel.add(this.attrAizawaF_tf);
+		
+		//dejong
+		this.attrDeJongALabel.setVisible(false);
+		this.attractorsPanel.add(this.attrDeJongALabel);
+		this.attrDeJongA_tf.setVisible(false);
+		this.attractorsPanel.add(this.attrDeJongA_tf);
+		this.attrDeJongBLabel.setVisible(false);
+		this.attractorsPanel.add(this.attrDeJongBLabel);
+		this.attrDeJongB_tf.setVisible(false);
+		this.attractorsPanel.add(this.attrDeJongB_tf);
+		this.attrDeJongCLabel.setVisible(false);
+		this.attractorsPanel.add(this.attrDeJongCLabel);
+		this.attrDeJongC_tf.setVisible(false);
+		this.attractorsPanel.add(this.attrDeJongC_tf);
+		this.attrDeJongDLabel.setVisible(false);
+		this.attractorsPanel.add(this.attrDeJongDLabel);
+		this.attrDeJongD_tf.setVisible(false);
+		this.attractorsPanel.add(this.attrDeJongD_tf);
 		
 		this.attractorsPanel.add(new JLabel("Attractor1  Seed   X:"));
 		this.attractorsPanel.add(this.attr1SeedX_tf);
@@ -5224,60 +5315,64 @@ class SierpinskiComboPanel extends JPanel {
 		
 		if (choice.equals(ATTRACTORS)) {
 			String attractorSelected = this.attractorSelectionChoice;
+			double x1S = Double.NaN;
+			double y1S = Double.NaN;
+			double z1S = Double.NaN;
 
+			double x2S = Double.NaN;
+			double y2S = Double.NaN;
+			double z2S = Double.NaN;
+
+			double dt = Double.NaN;
+			int maxIter = Integer.MIN_VALUE;
+			String space2d = null;
+			
+			try {
+				x1S = Double.parseDouble(this.attr1SeedX_tf.getText());
+				y1S = Double.parseDouble(this.attr1SeedY_tf.getText());
+				z1S = Double.parseDouble(this.attr1SeedZ_tf.getText());
+
+				x2S = Double.parseDouble(this.attr2SeedX_tf.getText());
+				y2S = Double.parseDouble(this.attr2SeedY_tf.getText());
+				z2S = Double.parseDouble(this.attr2SeedZ_tf.getText());
+
+				dt = Double.parseDouble(this.attrDeltaTime_tf.getText());
+				maxIter = Integer.parseInt(this.attrMaxIter_tf.getText());
+				space2d = this.attractorSpace2DSelectionChoice;
+			} catch (NumberFormatException | NullPointerException e2) {
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n" + e2.getMessage(),
+						"Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			
+			Attractor attractor1 = null, attractor2 = null;
 			if (attractorSelected.equals("lorenz")) {
+				LorenzAttractor l1 = null, l2 = null;
 				try {
-					double x1S = Double.parseDouble(this.attr1SeedX_tf.getText());
-					double y1S = Double.parseDouble(this.attr1SeedY_tf.getText());
-					double z1S = Double.parseDouble(this.attr1SeedZ_tf.getText());
+					double sigma = Double.parseDouble(this.attrLorenzSigma_tf.getText());
+					double beta = Double.parseDouble(this.attrLorenzBeta_tf.getText());
+					double rho = Double.parseDouble(this.attrLorenzRho_tf.getText());
 
-					double x2S = Double.parseDouble(this.attr2SeedX_tf.getText());
-					double y2S = Double.parseDouble(this.attr2SeedY_tf.getText());
-					double z2S = Double.parseDouble(this.attr2SeedZ_tf.getText());
+					l1 = new LorenzAttractor(x1S, y1S, z1S, Color.blue, space2d);
+					l1.setMaxIter(maxIter);
+					/*
+					 * attrL1.setSpace(); l1.setSpace2d(space2d);
+					 */
 
-					double dt = Double.parseDouble(this.attrDeltaTime_tf.getText());
-					int maxIter = Integer.parseInt(this.attrMaxIter_tf.getText());
-					
-					String space2d = this.attractorSpace2DSelectionChoice;
-					
-					final Attractor attrL1 = new LorenzAttractor(x1S, y1S, z1S, Color.blue, space2d);
-					attrL1.setMaxIter(maxIter);
-					/*attrL1.setSpace();*/
-					attrL1.setSpace2d(space2d);
+					l1.setSigma(sigma);
+					l1.setBeta(beta);
+					l1.setRho(rho);
 
-					final Attractor attrL2 = new LorenzAttractor(x2S, y2S, z2S, Color.red, space2d);
-					attrL2.setMaxIter(maxIter);
-					/*attrL2.setSpace();*/
-					attrL2.setSpace2d(space2d);
+					l2 = new LorenzAttractor(x2S, y2S, z2S, Color.red, space2d);
+					l2.setMaxIter(maxIter);
+					/*
+					 * attrL2.setSpace(); l2.setSpace2d(space2d);
+					 */
 
-					final AttractorsGenerator generator = new AttractorsGenerator("lorenz");
-					generator.setAttractors(new Attractor[] { attrL1, attrL2 });
-					/*generator.setMaxIter(maxIter);
-					generator.setSpace2d(space2d);*/
-					
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-
-							final JFrame frame = generator;
-							frame.setTitle("Bawaz__LorenzAttractor");
-							frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-							frame.setResizable(false);
-							frame.setVisible(true);
-
-							frame.setDefaultCloseOperation(closeIt(frame));
-							frame.setLocation(
-									(Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth()) / 2,
-									(Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight()) / 2);
-							frame.setResizable(false);
-							frame.setVisible(true);
-
-							setFractalImage(generator.getBufferedImage());
-							// this.setFractalBase(frame);
-
-							buClose.setEnabled(true);
-						}
-					});
+					l2.setSigma(sigma);
+					l2.setBeta(beta);
+					l2.setRho(rho);
 
 				} catch (NumberFormatException | NullPointerException e2) {
 					e2.printStackTrace();
@@ -5285,30 +5380,134 @@ class SierpinskiComboPanel extends JPanel {
 							"Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
+
+				attractor1 = l1;
+				attractor2 = l2;
+				
+					
+//					final Attractor attrL1 = l1;
+//					final Attractor attrL2 = l2;
+//
+//					final AttractorsGenerator generator = new AttractorsGenerator(attractorSelected);//("lorenz");
+//					generator.setAttractors(new Attractor[] { attrL1, attrL2 });
+//					/*generator.setMaxIter(maxIter);
+//					generator.setSpace2d(space2d);*/
+//					
+//					SwingUtilities.invokeLater(new Runnable() {
+//						@Override
+//						public void run() {
+//
+//							final JFrame frame = generator;
+//							frame.setTitle("Bawaz__LorenzAttractor");
+//							frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//							frame.setResizable(false);
+//							frame.setVisible(true);
+//
+//							frame.setDefaultCloseOperation(closeIt(frame));
+//							frame.setLocation(
+//									(Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth()) / 2,
+//									(Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight()) / 2);
+//							frame.setResizable(false);
+//							frame.setVisible(true);
+//
+//							setFractalImage(generator.getBufferedImage());
+//							// this.setFractalBase(frame);
+//
+//							buClose.setEnabled(true);
+//						}
+//					});
+
+				
 			} else if (attractorSelected.equals("aizawa")) {
+				AizawaAttractor az1=null,az2=null;
+				try{
+					double aVal = Double.parseDouble(this.attrAizawaA_tf.getText().trim());
+					double bVal = Double.parseDouble(this.attrAizawaB_tf.getText().trim());
+					double cVal = Double.parseDouble(this.attrAizawaC_tf.getText().trim());
+					double dVal = Double.parseDouble(this.attrAizawaD_tf.getText().trim());
+					double eVal = Double.parseDouble(this.attrAizawaE_tf.getText().trim());
+					double fVal = Double.parseDouble(this.attrAizawaF_tf.getText().trim());
+					
+					az1 = new AizawaAttractor(x1S, y1S, z1S, Color.blue, space2d);
+					az1.setMaxIter(maxIter);
+					az1.setA(aVal);
+					az1.setB(bVal);
+					az1.setC(cVal);
+					az1.setD(dVal);
+					az1.setE(eVal);
+					az1.setF(fVal);
+					
+					az2 = new AizawaAttractor(x2S, y2S, z2S, Color.red, space2d);
+					az2.setMaxIter(maxIter);
+					az2.setA(aVal);
+					az2.setB(bVal);
+					az2.setC(cVal);
+					az2.setD(dVal);
+					az2.setE(eVal);
+					az2.setF(fVal);
+
+					attractor1 = az1;
+					attractor2 = az2;
+					
+				} catch (NumberFormatException | NullPointerException e2) {
+					e2.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n" + e2.getMessage(),
+							"Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 
 			} else if (attractorSelected.equals("dejong")) {
+				DeJongAttractor d1 = null, d2 = null;
+				try {
+					double aVal = Double.parseDouble(this.attrDeJongA_tf.getText().trim());
+					double bVal = Double.parseDouble(this.attrDeJongB_tf.getText().trim());
+					double cVal = Double.parseDouble(this.attrDeJongC_tf.getText().trim());
+					double dVal = Double.parseDouble(this.attrDeJongD_tf.getText().trim());
+					
+					d1 = new DeJongAttractor(x1S, y1S, z1S, Color.blue, space2d);
+					d1.setMaxIter(maxIter);
+					d1.setA(aVal);
+					d1.setB(bVal);
+					d1.setC(cVal);
+					d1.setD(dVal);
+					
+					d2 = new DeJongAttractor(x2S, y2S, z2S, Color.red, space2d);
+					d2.setMaxIter(maxIter);
+					d2.setA(aVal);
+					d2.setB(bVal);
+					d2.setC(cVal);
+					d2.setD(dVal);
+
+					attractor1 = d1;
+					attractor2 = d2;
+				} catch (NumberFormatException | NullPointerException e2) {
+					e2.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n" + e2.getMessage(),
+							"Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 
 			} else if (attractorSelected.equals("custom")) {
+				CustomAttractor cust1 = null, cust2 = null;
 				try {
-					double x1S = Double.parseDouble(this.attr1SeedX_tf.getText());
-					double y1S = Double.parseDouble(this.attr1SeedY_tf.getText());
-					double z1S = Double.parseDouble(this.attr1SeedZ_tf.getText());
+					/*x1S = Double.parseDouble(this.attr1SeedX_tf.getText());
+					y1S = Double.parseDouble(this.attr1SeedY_tf.getText());
+					z1S = Double.parseDouble(this.attr1SeedZ_tf.getText());
 
-					double x2S = Double.parseDouble(this.attr2SeedX_tf.getText());
-					double y2S = Double.parseDouble(this.attr2SeedY_tf.getText());
-					double z2S = Double.parseDouble(this.attr2SeedZ_tf.getText());
+					x2S = Double.parseDouble(this.attr2SeedX_tf.getText());
+					y2S = Double.parseDouble(this.attr2SeedY_tf.getText());
+					z2S = Double.parseDouble(this.attr2SeedZ_tf.getText());
 
-					double dt = Double.parseDouble(this.attrDeltaTime_tf.getText());
-					int maxIter = Integer.parseInt(this.attrMaxIter_tf.getText());
+					dt = Double.parseDouble(this.attrDeltaTime_tf.getText());
+					maxIter = Integer.parseInt(this.attrMaxIter_tf.getText());
 
-					String space2d = this.attractorSpace2DSelectionChoice;
+					String space2d = this.attractorSpace2DSelectionChoice;*/
 
 					String deltaXFormula = this.attrCustom_DeltaXFormula_tf.getText().trim();
 					String deltaYFormula = this.attrCustom_DeltaYFormula_tf.getText().trim();
 					String deltaZFormula = this.attrCustom_DeltaZFormula_tf.getText().trim();
 					
-					final CustomAttractor cust1 = new CustomAttractor(x1S, y1S, z1S, Color.blue, space2d);
+					cust1 = new CustomAttractor(x1S, y1S, z1S, Color.blue, space2d);
 					cust1.setMaxIter(maxIter);
 					cust1.setDeltaXFormula(deltaXFormula);
 					cust1.setDeltaYFormula(deltaYFormula);
@@ -5316,7 +5515,7 @@ class SierpinskiComboPanel extends JPanel {
 //					cust1.setSpace();
 					cust1.setSpace2d(space2d);
 					
-					final CustomAttractor cust2 = new CustomAttractor(x2S, y2S, z2S, Color.red, space2d);
+					cust2 = new CustomAttractor(x2S, y2S, z2S, Color.red, space2d);
 					cust2.setMaxIter(maxIter);
 					cust2.setDeltaXFormula(deltaXFormula);
 					cust2.setDeltaYFormula(deltaYFormula);
@@ -5324,36 +5523,39 @@ class SierpinskiComboPanel extends JPanel {
 //					cust2.setSpace();
 					cust2.setSpace2d(space2d);
 
-					final Attractor attractor1 = cust1;
-					final Attractor attractor2 = cust2;
-					final AttractorsGenerator generator = new AttractorsGenerator("custom");
-					generator.setAttractors(new Attractor[] { attractor1, attractor2 });
-					generator.setMaxIter(maxIter);
-					generator.setSpace2d(space2d);
-					
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
+					attractor1 = cust1;
+					attractor2 = cust2;
 
-							final JFrame frame = generator;
-							frame.setTitle("Bawaz___CustomizedAttractor");
-							frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-							frame.setResizable(false);
-							frame.setVisible(true);
-
-							frame.setDefaultCloseOperation(closeIt(frame));
-							frame.setLocation(
-									(Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth()) / 2,
-									(Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight()) / 2);
-							frame.setResizable(false);
-							frame.setVisible(true);
-
-							setFractalImage(generator.getBufferedImage());
-							// this.setFractalBase(frame);
-
-							buClose.setEnabled(true);
-						}
-					});
+//					final Attractor attractor1 = cust1;
+//					final Attractor attractor2 = cust2;
+//					final AttractorsGenerator generator = new AttractorsGenerator("custom");
+//					generator.setAttractors(new Attractor[] { attractor1, attractor2 });
+//					generator.setMaxIter(maxIter);
+//					generator.setSpace2d(space2d);
+//					
+//					SwingUtilities.invokeLater(new Runnable() {
+//						@Override
+//						public void run() {
+//
+//							final JFrame frame = generator;
+//							frame.setTitle("Bawaz___CustomizedAttractor");
+//							frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//							frame.setResizable(false);
+//							frame.setVisible(true);
+//
+//							frame.setDefaultCloseOperation(closeIt(frame));
+//							frame.setLocation(
+//									(Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth()) / 2,
+//									(Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight()) / 2);
+//							frame.setResizable(false);
+//							frame.setVisible(true);
+//
+//							setFractalImage(generator.getBufferedImage());
+//							// this.setFractalBase(frame);
+//
+//							buClose.setEnabled(true);
+//						}
+//					});
 					
 					
 				} catch (NumberFormatException | NullPointerException e2) {
@@ -5363,6 +5565,35 @@ class SierpinskiComboPanel extends JPanel {
 					return;
 				}
 			}
+			
+			final AttractorsGenerator generator = new AttractorsGenerator(attractorSelected);
+			generator.setAttractors(new Attractor[] { attractor1, attractor2 });
+			/*generator.setMaxIter(maxIter);
+			generator.setSpace2d(space2d);*/
+			
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+
+					final JFrame frame = generator;
+					frame.setTitle("Bawaz___"+attractorSelected.toUpperCase()+"Attractor");
+					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					frame.setResizable(false);
+					frame.setVisible(true);
+
+					frame.setDefaultCloseOperation(closeIt(frame));
+					frame.setLocation(
+							(Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth()) / 2,
+							(Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight()) / 2);
+					frame.setResizable(false);
+					frame.setVisible(true);
+
+					setFractalImage(generator.getBufferedImage());
+					// this.setFractalBase(frame);
+
+					buClose.setEnabled(true);
+				}
+			});
 
 			return;
 		}
@@ -8274,6 +8505,37 @@ class SierpinskiComboPanel extends JPanel {
 			this.attrCustom_DeltaYFormula_tf.setVisible(false);
 			this.attrCustomFormulaStrDeltaZLabel.setVisible(false);
 			this.attrCustom_DeltaZFormula_tf.setVisible(false);
+			
+			if (this.attractorSelectionChoice.equals("lorenz")) {
+				this.attrLorenzSigmaLabel.setVisible(true);
+				this.attrLorenzSigma_tf.setVisible(true);
+				this.attrLorenzRhoLabel.setVisible(true);
+				this.attrLorenzRho_tf.setVisible(true);
+				this.attrLorenzBetaLabel.setVisible(true);
+				this.attrLorenzBeta_tf.setVisible(true);
+			} else if(this.attractorSelectionChoice.equals("aizawa")) {
+				this.attrAizawaALabel.setVisible(true);
+				this.attrAizawaA_tf.setVisible(true);
+				this.attrAizawaBLabel.setVisible(true);
+				this.attrAizawaB_tf.setVisible(true);
+				this.attrAizawaCLabel.setVisible(true);
+				this.attrAizawaC_tf.setVisible(true);
+				this.attrAizawaDLabel.setVisible(true);
+				this.attrAizawaD_tf.setVisible(true);
+				this.attrAizawaELabel.setVisible(true);
+				this.attrAizawaE_tf.setVisible(true);
+				this.attrAizawaFLabel.setVisible(true);
+				this.attrAizawaF_tf.setVisible(true);
+			} else if(this.attractorSelectionChoice.equals("dejong")) {
+				this.attrDeJongALabel.setVisible(true);
+				this.attrDeJongA_tf.setVisible(true);
+				this.attrDeJongBLabel.setVisible(true);
+				this.attrDeJongB_tf.setVisible(true);
+				this.attrDeJongCLabel.setVisible(true);
+				this.attrDeJongC_tf.setVisible(true);
+				this.attrDeJongDLabel.setVisible(true);
+				this.attrDeJongD_tf.setVisible(true);
+			}
 		}
 		
 		this.buStart.setEnabled(true);

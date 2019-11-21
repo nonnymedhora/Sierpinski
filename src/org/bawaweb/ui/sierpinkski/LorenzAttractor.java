@@ -4,9 +4,9 @@ import java.awt.Color;
 
 class LorenzAttractor extends Attractor {
 		
-		private final double a_prandt 	= 10.0;				//sigma=====10
-	    private final double b_rayleigh = 8.0/3;//28.0;		//beta======8/3	
-	    private final double c_rho 		= 28.0;//8.0/3;		//rho=======28		0<c_rho < Double.infinity
+		private double a_prandt 	= 10.0;				//sigma=====10
+	    private double b_rayleigh = 8.0/3;//28.0;		//beta======8/3	
+	    private double c_rho 		= 28.0;//8.0/3;		//rho=======28		0<c_rho < Double.infinity
 
 		public LorenzAttractor(double x, double y, double z, Color c) {
 			super( x, y, z, c);
@@ -40,6 +40,19 @@ class LorenzAttractor extends Attractor {
 			//princeton		dz=		x*y - 8*z/3;
 //			return tuple.z + ((tuple.x * tuple.y - (tuple.z * this.c_rho)) * dt);
 			return tuple.z + (((tuple.x * tuple.y) - (tuple.z * this.b_rayleigh)) * dt);
+		}
+		
+		
+		public void setSigma(double a){
+			this.a_prandt=a;
+		}
+		
+		public void setBeta(double b) {
+		    this.b_rayleigh = b;
+		}
+
+		public void setRho(double c) {
+		    this.c_rho = c;
 		}
 		
 	}
