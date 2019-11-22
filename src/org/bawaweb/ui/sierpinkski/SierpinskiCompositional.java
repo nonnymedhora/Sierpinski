@@ -5327,14 +5327,16 @@ class SierpinskiComboPanel extends JPanel {
 			int maxIter = Integer.MIN_VALUE;
 			String space2d = null;
 			
+			boolean isDeJong = (attractorSelected.equals("dejong"));
+			
 			try {
 				x1S = Double.parseDouble(this.attr1SeedX_tf.getText());
 				y1S = Double.parseDouble(this.attr1SeedY_tf.getText());
-				z1S = Double.parseDouble(this.attr1SeedZ_tf.getText());
+				z1S = !isDeJong ? Double.parseDouble(this.attr1SeedZ_tf.getText()) : 0;
 
 				x2S = Double.parseDouble(this.attr2SeedX_tf.getText());
 				y2S = Double.parseDouble(this.attr2SeedY_tf.getText());
-				z2S = Double.parseDouble(this.attr2SeedZ_tf.getText());
+				z2S = !isDeJong ? Double.parseDouble(this.attr2SeedZ_tf.getText()) : 0;
 
 				dt = Double.parseDouble(this.attrDeltaTime_tf.getText());
 				maxIter = Integer.parseInt(this.attrMaxIter_tf.getText());
@@ -8513,6 +8515,9 @@ class SierpinskiComboPanel extends JPanel {
 				this.attrLorenzRho_tf.setVisible(true);
 				this.attrLorenzBetaLabel.setVisible(true);
 				this.attrLorenzBeta_tf.setVisible(true);
+				
+				this.attr1SeedZ_tf.setEnabled(true);
+				this.attr2SeedZ_tf.setEnabled(true);
 			} else if(this.attractorSelectionChoice.equals("aizawa")) {
 				this.attrAizawaALabel.setVisible(true);
 				this.attrAizawaA_tf.setVisible(true);
@@ -8526,6 +8531,9 @@ class SierpinskiComboPanel extends JPanel {
 				this.attrAizawaE_tf.setVisible(true);
 				this.attrAizawaFLabel.setVisible(true);
 				this.attrAizawaF_tf.setVisible(true);
+				
+				this.attr1SeedZ_tf.setEnabled(true);
+				this.attr2SeedZ_tf.setEnabled(true);
 			} else if(this.attractorSelectionChoice.equals("dejong")) {
 				this.attrDeJongALabel.setVisible(true);
 				this.attrDeJongA_tf.setVisible(true);
@@ -8535,6 +8543,9 @@ class SierpinskiComboPanel extends JPanel {
 				this.attrDeJongC_tf.setVisible(true);
 				this.attrDeJongDLabel.setVisible(true);
 				this.attrDeJongD_tf.setVisible(true);
+				
+				this.attr1SeedZ_tf.setEnabled(false);
+				this.attr2SeedZ_tf.setEnabled(false);
 			}
 		}
 		

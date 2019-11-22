@@ -21,13 +21,13 @@ class Tuple3d {
 		this.z = z;
 	}
 
-	/*@Override
-	public String toString() {
-		return "[" + x + ":" + y + ":" + z + "]";
-	}*/
 	@Override
 	public String toString() {
-		return "[" + (int)x + ":" + (int)y + ":" + (int)z + "]";
+		return "[" + x + ":" + y + ":" + z + "]";
 	}
+	/*@Override
+	public String toString() {
+		return "[" + (int)x + ":" + (int)y + ":" + (int)z + "]";
+	}*/
 
 }
