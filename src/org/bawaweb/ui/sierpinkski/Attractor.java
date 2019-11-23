@@ -21,7 +21,6 @@ public abstract class Attractor /*extends JFrame */{
 	private double timeJump;
 	private double cumulativeTime;
 	private String name;
-	private boolean is3D = true;
 
 	/*protected double xmin;// = -100d;
 	protected double xmax;// = 100d;
@@ -30,7 +29,7 @@ public abstract class Attractor /*extends JFrame */{
 	protected double zmin;// = xmin;
 	protected double zmax;// = xmax;
 */
-	private String space2dAxes = "x-z";
+	private String space2d = "x-z";
 	private Map<Integer,Tuple3d> updatedTuples = new LinkedHashMap<Integer,Tuple3d>();
 
 	public Attractor(double x, double y, double z, Color c) {
@@ -38,12 +37,12 @@ public abstract class Attractor /*extends JFrame */{
 		this.setTimeJump(0.01); // TODO externalize
 		this.color = c;
 		/* this.setSpace(); */
-		this.space2dAxes = "x-z";
+		this.space2d = "x-z";
 	}
 
 	public Attractor(double x, double y, double z, Color c, String dspace) {
 		this(x, y, z, c);
-		this.space2dAxes = dspace;
+		this.space2d = dspace;
 	}
 
 	public Attractor(Tuple3d tuple, Color col) {
@@ -74,37 +73,18 @@ public abstract class Attractor /*extends JFrame */{
 		this.cumulativeTime = ct;
 	}
 
-	public void setSpace2dAxes(String spc2d) {
-		this.space2dAxes = spc2d;
-	}
-
-	public boolean is3D() {
-		return this.is3D;
-	}
-
-	public void setIs3D(boolean is3d) {
-		this.is3D = is3d;
-	}
-
-	public String getName() {
-		return name;
+	public void setSpace2d(String spc2d) {
+		this.space2d = spc2d;
 	}
 
 	public Tuple3d update(final Tuple3d tuple, final double dt) {
 		double newX = this.dx(tuple, dt);
 		double newY = this.dy(tuple, dt);
-		double newZ = Double.NaN;
-		if (this.is3D) {
-			newZ = this.dz(tuple, dt);
-		}
+		double newZ = this.dz(tuple, dt);
 
 		this.setCumulativeTime(this.getCumulativeTime() + dt);
 
-		if (this.is3D) {
-			return new Tuple3d(newX, newY, newZ);
-		} else {
-			return new Tuple3d(newX, newY, 0);
-		}
+		return new Tuple3d(newX, newY, newZ);
 	}
 
 	public int getMaxIter() {
@@ -185,27 +165,27 @@ public abstract class Attractor /*extends JFrame */{
 //	
 	
 	private void drawLine(Graphics2D g2, Tuple3d scaledExistingTuple, Tuple3d scaledUpdatedTuple) {
-		if (this.space2dAxes.equals("x-z")) {
+		if (this.space2d.equals("x-z")) {
 			g2.drawLine(
 					(int) scaledExistingTuple.x, (int) scaledExistingTuple.z, 
 					(int) scaledUpdatedTuple.x, (int) scaledUpdatedTuple.z);
-		} else if (this.space2dAxes.equals("x-y")) {
+		} else if (this.space2d.equals("x-y")) {
 			g2.drawLine(
 					(int) scaledExistingTuple.x, (int) scaledExistingTuple.y, 
 					(int) scaledUpdatedTuple.x, (int) scaledUpdatedTuple.y);
-		} else if (this.space2dAxes.equals("y-z")) {
+		} else if (this.space2d.equals("y-z")) {
 			g2.drawLine(
 					(int) scaledExistingTuple.y, (int) scaledExistingTuple.z, 
 					(int) scaledUpdatedTuple.y, (int) scaledUpdatedTuple.z);
-		} else if (this.space2dAxes.equals("z-x")) {
+		} else if (this.space2d.equals("z-x")) {
 			g2.drawLine(
 					(int) scaledExistingTuple.z, (int) scaledExistingTuple.x, 
 					(int) scaledUpdatedTuple.z, (int) scaledUpdatedTuple.x);
-		} else if (this.space2dAxes.equals("y-x")) {
+		} else if (this.space2d.equals("y-x")) {
 			g2.drawLine(
 					(int) scaledExistingTuple.y, (int) scaledExistingTuple.x, 
 					(int) scaledUpdatedTuple.y, (int) scaledUpdatedTuple.x);
-		} else if (this.space2dAxes.equals("z-y")) {
+		} else if (this.space2d.equals("z-y")) {
 			g2.drawLine(
 					(int) scaledExistingTuple.z, (int) scaledExistingTuple.y, 
 					(int) scaledUpdatedTuple.z, (int) scaledUpdatedTuple.y);
@@ -215,14 +195,11 @@ public abstract class Attractor /*extends JFrame */{
 	private void doScaleCheck(Tuple3d t) {
 		boolean xOk = t.x <= AttractorsGenerator.WIDTH || t.x >= 0;
 		boolean yOk = t.y <= AttractorsGenerator.HEIGHT || t.y >= 0;
-		if (this.is3D) {
-			boolean zOk = t.z <= AttractorsGenerator.DEPTH || t.z >= 0;
-			if (!(xOk || yOk || zOk))
-				System.out.println("UhOhOttaScale  x[" + t.x + "], y[" + t.y + "], z[" + t.z + "]");
-		}else{
-			if (!(xOk || yOk))
-				System.out.println("UhOhOttaScale  x[" + t.x + "], y[" + t.y + "]");
-		}
+		boolean zOk = t.z <= AttractorsGenerator.DEPTH || t.z >= 0;
+		
+		
+		if(!(xOk||yOk||zOk))
+			System.out.println("UhOhOttaScale  x["+t.x+"], y["+t.y+"], z["+t.z+"]");
 
 	}
 
@@ -234,28 +211,25 @@ public abstract class Attractor /*extends JFrame */{
 		// 4now doing x-z axis only
 		int xCentr = AttractorsGenerator.WIDTH / 2;
 		int yCentr = AttractorsGenerator.HEIGHT / 2;
-		int zCentr=Integer.MIN_VALUE;
-		if (this.is3D) {
-			zCentr = AttractorsGenerator.DEPTH / 2;
-		}
+		int zCentr = AttractorsGenerator.DEPTH / 2;
 		g2.setColor(Color.black);
 		
-		if (this.space2dAxes.equals("x-z")) {
+		if (this.space2d.equals("x-z")) {
 			g2.drawLine(xCentr, 0, xCentr, AttractorsGenerator.WIDTH); //horizontal
 			g2.drawLine(0, zCentr, AttractorsGenerator.DEPTH, zCentr); //vertical(y-for-graph)
-		} else if (this.space2dAxes.equals("x-y")) {
+		} else if (this.space2d.equals("x-y")) {
 			g2.drawLine(xCentr, 0, xCentr, AttractorsGenerator.WIDTH); //horizontal
 			g2.drawLine(0, yCentr, AttractorsGenerator.HEIGHT, yCentr); //vertical(y-for-graph)
-		} else if (this.space2dAxes.equals("y-z")) {
+		} else if (this.space2d.equals("y-z")) {
 			g2.drawLine(yCentr, 0, yCentr, AttractorsGenerator.HEIGHT); //horizontal
 			g2.drawLine(0, zCentr, AttractorsGenerator.DEPTH, zCentr); //vertical(y-for-graph)
-		} else if (this.space2dAxes.equals("z-x")) {
+		} else if (this.space2d.equals("z-x")) {
 			g2.drawLine(zCentr, 0, zCentr, AttractorsGenerator.DEPTH); //horizontal
 			g2.drawLine(0, xCentr, AttractorsGenerator.WIDTH, xCentr); //vertical(y-for-graph)
-		} else if (this.space2dAxes.equals("y-x")) {
+		} else if (this.space2d.equals("y-x")) {
 			g2.drawLine(yCentr, 0, yCentr, AttractorsGenerator.HEIGHT); //horizontal
 			g2.drawLine(0, xCentr, AttractorsGenerator.WIDTH, xCentr); //vertical(y-for-graph)
-		} else if (this.space2dAxes.equals("z-y")) {
+		} else if (this.space2d.equals("z-y")) {
 			g2.drawLine(zCentr, 0, zCentr, AttractorsGenerator.DEPTH); //horizontal
 			g2.drawLine(0, yCentr, AttractorsGenerator.HEIGHT, yCentr); //vertical(y-for-graph)
 		}
@@ -264,27 +238,18 @@ public abstract class Attractor /*extends JFrame */{
 	protected Tuple3d scale(Tuple3d tuple, final Map<String, Double> spaceMap) {
 		double xVal = tuple.x;
 		double yVal = tuple.y;
-		double zVal = Double.NaN;
-		if (this.is3D) {
-			zVal = tuple.z;
-		}
+		double zVal = tuple.z;
 
 		Double xminVal = spaceMap.get("xmin");
 		Double yminVal = spaceMap.get("ymin");
-		Double zminVal = Double.NaN;
-		if (this.is3D) {
-			zminVal = spaceMap.get("zmin");
-		}
+		Double zminVal = spaceMap.get("zmin");
 		/*final double xCentr = WIDTH / 2;
 		final double yCentr = HEIGHT / 2;
 		final double zCentr = DEPTH / 2;*/
 		
-		final double xRange = (spaceMap.get("xmax") - xminVal);// (this.xmax -  this.xmin);
+		final double xRange = (spaceMap.get("xmax") - xminVal);//(this.xmax - this.xmin);
 		final double yRange = (spaceMap.get("ymax") - yminVal);
-		double zRange = Double.NaN;
-		if (this.is3D) {
-			zRange = (spaceMap.get("zmax") - zminVal);
-		}
+		final double zRange = (spaceMap.get("zmax") - zminVal);
 
 //			...............x[5.958136900535692], y[259.7447851220958], z[-5.185551290427554]4blow
 //			double x0 = ((xCentr + xVal) / WIDTH) + /*(xCentr * */(WIDTH*(xVal - this.xmin) / (this.xmax - this.xmin))/*)*/ - xCentr;//	x + (xCentr /*- WIDTH / 2*/);// + (WIDTH / 2 * x);
@@ -310,15 +275,11 @@ public abstract class Attractor /*extends JFrame */{
 		
 		double x0 = /*Math.round(*/(xVal-xminVal) * (AttractorsGenerator.WIDTH / xRange)/*)*/;
 		double y0 = (yVal-yminVal) * (AttractorsGenerator.HEIGHT / yRange);
-		double z0 = Double.NaN;
-		if (this.is3D) {
-			z0 = (zVal - zminVal) * (AttractorsGenerator.DEPTH / zRange);
-		}
-		if (this.is3D) {
-			return new Tuple3d(x0, y0, z0);
-		} else {
-			return new Tuple3d(x0, y0, 0);
-		}
+		double z0 = (zVal-zminVal) * (AttractorsGenerator.DEPTH / zRange);
+		
+		
+		
+		return new Tuple3d(x0, y0, z0);
 	}
 
 	public void setName(String nme) {
@@ -378,10 +339,9 @@ public abstract class Attractor /*extends JFrame */{
 		y_min_r = tempDummyTuple.y < y_min_r ? tempDummyTuple.y : y_min_r;
 		y_max_r = tempDummyTuple.y > y_max_r ? tempDummyTuple.y : y_max_r;			
 	
-		if (this.is3D) {
-			z_min_r = tempDummyTuple.z < z_min_r ? tempDummyTuple.z : z_min_r;
-			z_max_r = tempDummyTuple.z > z_max_r ? tempDummyTuple.z : z_max_r;
-		}
+		z_min_r = tempDummyTuple.z < z_min_r ? tempDummyTuple.z : z_min_r;
+		z_max_r = tempDummyTuple.z > z_max_r ? tempDummyTuple.z : z_max_r;
+		
 		final double dt = this.getTimeJump();
 		
 		for (int i = 0; i < this.maxIter; i++) {
@@ -396,10 +356,8 @@ public abstract class Attractor /*extends JFrame */{
 			x_max_r = tempDummyTuple.x > x_max_r ? tempDummyTuple.x : x_max_r;
 			y_min_r = tempDummyTuple.y < y_min_r ? tempDummyTuple.y : y_min_r;
 			y_max_r = tempDummyTuple.y > y_max_r ? tempDummyTuple.y : y_max_r;
-			if (this.is3D) {
-				z_min_r = tempDummyTuple.z < z_min_r ? tempDummyTuple.z : z_min_r;
-				z_max_r = tempDummyTuple.z > z_max_r ? tempDummyTuple.z : z_max_r;
-			}
+			z_min_r = tempDummyTuple.z < z_min_r ? tempDummyTuple.z : z_min_r;
+			z_max_r = tempDummyTuple.z > z_max_r ? tempDummyTuple.z : z_max_r;
 		}
 		
 		Map<String, Double> spaceMap = new HashMap<String, Double>();
@@ -409,10 +367,10 @@ public abstract class Attractor /*extends JFrame */{
 		spaceMap.put("ymin", y_min_r);//-40.0);
 		spaceMap.put("ymax", y_max_r);//40.0);
 	
-		if (this.is3D) {
-			spaceMap.put("zmin", z_min_r);//00);
-			spaceMap.put("zmax", z_max_r);//50.0);
-		}
+		spaceMap.put("zmin", z_min_r);//00);
+		spaceMap.put("zmax", z_max_r);//50.0);
+		
+		
 		return spaceMap;
 		
 		/************************

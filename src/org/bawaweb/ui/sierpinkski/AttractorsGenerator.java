@@ -64,7 +64,7 @@ public class AttractorsGenerator extends JFrame {
 		this.space2d = sp2d;
 		if (this.attractors != null && this.attractors.length > 0) {
 			for(Attractor a: this.attractors){
-				a.setSpace2dAxes(this.space2d);
+				a.setSpace2d(this.space2d);
 			}
 		}
 
