@@ -323,7 +323,7 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
 				(a+ib)^N	=	(r^N)*(cos(N*θ)+i*sin(N*θ))
 				
 	****************************************************/		
-	public ComplexNumber power(int power) {
+	public ComplexNumber power_New123(int power) {
 		double a = this.real;
 		double b = this.imaginary;
 
@@ -333,7 +333,7 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
 		return new ComplexNumber(r * power * Math.cos(power * θ), r * power * Math.sin(power * θ));
 	}
 
-	public ComplexNumber power_0123(int power) {
+	public ComplexNumber power(int power) {
 		//TODO	l8r, try e^(iπ///θ) method
 		// instead of multiplication route
 		//	1=e^(2πi)	or		1=e^(0+2Kπi)	or
@@ -416,7 +416,7 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
 
 		System.out.println("newPowerMethod == " + cn.power(3));
 
-		System.out.println("oldPowerMethod == " + cn.power_0123(3));
+		System.out.println("oldPowerMethod == " + cn.power_New123(3));
 	}
 }
 
