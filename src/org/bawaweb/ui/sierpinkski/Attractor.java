@@ -1,43 +1,27 @@
 package org.bawaweb.ui.sierpinkski;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import javax.swing.JFrame;
-
-public abstract class Attractor /*extends JFrame */{
-/**
-		 * 
-		 */
-		/*private final Lorenz_Attractor lorenz_Attractor;*/
-		//		public static final int MAX_ITER = 50000;
+public abstract class Attractor {
+	
 	private Tuple3d t3d;
 	private Color color;
 	private int maxIter;
-	private double timeJump;
+	private double timeJump = 0.01;
 	private double cumulativeTime;
 	private String name;
 	private boolean is3D = true;
-
-	/*protected double xmin;// = -100d;
-	protected double xmax;// = 100d;
-	protected double ymin;// = xmin;
-	protected double ymax;// = xmax;
-	protected double zmin;// = xmin;
-	protected double zmax;// = xmax;
-*/
 	private String space2dAxes = "x-z";
 	private Map<Integer,Tuple3d> updatedTuples = new LinkedHashMap<Integer,Tuple3d>();
 
 	public Attractor(double x, double y, double z, Color c) {
 		this.setT3d(new Tuple3d(x, y, z));
-		this.setTimeJump(0.01); // TODO externalize
+		this.setTimeJump(this.getTimeJump());
 		this.color = c;
-		/* this.setSpace(); */
 		this.space2dAxes = "x-z";
 	}
 
@@ -152,38 +136,6 @@ public abstract class Attractor /*extends JFrame */{
 		}
 	}
 	
-//
-//	//////////////////////removing--paint././//////////////////////
-//	public void draw(Graphics2D g2) {
-//		/*this.setSpace();
-//		this.drawAxes(g2);*/
-//		/*System.out.println("xmax= "+xmax+" xmin="+xmin+" xRange="+(xmax-xmin)+" xC="+(xmin+(xmax-xmin)/2));
-//		System.out.println("ymax= "+ymax+" ymin="+ymin+" yRange="+(ymax-ymin)+" yC="+(ymin+(ymax-ymin)/2));
-//		System.out.println("zmax= "+zmax+" zmin="+zmin+" zRange="+(zmax-zmin)+" zC="+(zmin+(zmax-zmin)/2));*/
-//		double dt = this.getTimeJump();//0.001;
-//		/*for (int i = 0; i < MAX_ITER ; i++) {*/
-//			Tuple3d existingTuple = this.getT3d();
-////				System.out.println(/*i+*/" existing x["+existingTuple.x+"], y["+existingTuple.y+"], z["+existingTuple.z+"]");
-//			Tuple3d scaledExistingTuple = this.scale(existingTuple);
-//			Tuple3d updatedTuple = this.update(existingTuple/*this.t3d*/, dt);
-////				System.out.println(/*i+*/" updated x["+updatedTuple.x+"], y["+updatedTuple.y+"], z["+updatedTuple.z+"]");
-//			
-//			Tuple3d scaledUpdatedTuple = this.scale(updatedTuple);
-//			this.doScaleCheck(scaledExistingTuple);
-//			this.doScaleCheck(scaledUpdatedTuple);
-//			this.setT3d(updatedTuple);
-//			
-////				if(i<50){System.out.println(this.t3d);}
-//
-//			g2.setColor(this.color);
-////				System.out.println(/*i+*/" scaledExisting x["+scaledExistingTuple.x+"], y["+scaledExistingTuple.y+"], z["+scaledExistingTuple.z+"]");
-////				System.out.println(/*i+*/" scaledUpdated x["+scaledUpdatedTuple.x+"], y["+scaledUpdatedTuple.y+"], z["+scaledUpdatedTuple.z+"]");
-//			
-//		drawLine(g2, scaledExistingTuple, scaledUpdatedTuple);
-//	}
-//	//////////////////ends-removing-paint-4now////////////////////
-//	
-	
 	private void drawLine(Graphics2D g2, Tuple3d scaledExistingTuple, Tuple3d scaledUpdatedTuple) {
 		if (this.space2dAxes.equals("x-z")) {
 			g2.drawLine(
@@ -265,6 +217,7 @@ public abstract class Attractor /*extends JFrame */{
 		double xVal = tuple.x;
 		double yVal = tuple.y;
 		double zVal = Double.NaN;
+		
 		if (this.is3D) {
 			zVal = tuple.z;
 		}
@@ -272,48 +225,27 @@ public abstract class Attractor /*extends JFrame */{
 		Double xminVal = spaceMap.get("xmin");
 		Double yminVal = spaceMap.get("ymin");
 		Double zminVal = Double.NaN;
+		
 		if (this.is3D) {
 			zminVal = spaceMap.get("zmin");
 		}
-		/*final double xCentr = WIDTH / 2;
-		final double yCentr = HEIGHT / 2;
-		final double zCentr = DEPTH / 2;*/
 		
 		final double xRange = (spaceMap.get("xmax") - xminVal);// (this.xmax -  this.xmin);
 		final double yRange = (spaceMap.get("ymax") - yminVal);
 		double zRange = Double.NaN;
+		
 		if (this.is3D) {
 			zRange = (spaceMap.get("zmax") - zminVal);
 		}
-
-//			...............x[5.958136900535692], y[259.7447851220958], z[-5.185551290427554]4blow
-//			double x0 = ((xCentr + xVal) / WIDTH) + /*(xCentr * */(WIDTH*(xVal - this.xmin) / (this.xmax - this.xmin))/*)*/ - xCentr;//	x + (xCentr /*- WIDTH / 2*/);// + (WIDTH / 2 * x);
-//			double y0 = ((yCentr + yVal) / HEIGHT) + /*(yCentr * */(HEIGHT*(yVal - this.ymin) / (this.ymax - this.ymin))/*)*/ - yCentr;//	y + (yCentr/* - HEIGHT / 2 */);// + (HEIGHT / 2 * y);
-//			double z0 = ((zCentr + zVal) / DEPTH) + /*(zCentr * */(DEPTH*(zVal - this.zmin) / (this.zmax - this.zmin))/*)*/ - zCentr;//	z + (zCentr/* - DEPTH / 2 */);// + (DEPTH / 2 * z);
-//			...............x[300.0], y[320.0], z[325.0]4blow
-//			double x0 = xVal + (xCentr /*- WIDTH / 2*/);// + (WIDTH / 2 * x);
-//			double y0 = yVal + (yCentr/* - HEIGHT / 2 */);// + (HEIGHT / 2 * y);
-//			double z0 = zVal + (zCentr/* - DEPTH / 2 */);// + (DEPTH / 2 * z);
-		
-		/*JULIA
-		double x0 = xc - size / 2 + size * row / n;
-		double y0 = yc - size / 2 + size * col / n;*/
-//			..........x[282.127220733809], y[527.782251511457], z[657.6217390140539]4blow.................
-//			double x0 = xCentr - ((this.xmax - this.xmin)/2) + (xVal * (WIDTH / (this.xmax - this.xmin)));
-//			double y0 = xCentr - ((this.ymax - this.ymin)/2) + (yVal * (HEIGHT / (this.ymax - this.ymin)));
-//			double z0 = xCentr - ((this.zmax - this.zmin)/2) + (zVal * (DEPTH / (this.zmax - this.zmin)));
-//				................x[300.0], y[551.6270634259937], z[677.4898242401819]4blow.........................	
-//			double x0 = xCentr + (xVal * (WIDTH / xRange));
-//			double y0 = yCentr + (yVal * (HEIGHT / yRange));
-//			double z0 = zCentr + (zVal * (DEPTH / zRange));
-		
 		
 		double x0 = /*Math.round(*/(xVal-xminVal) * (AttractorsGenerator.WIDTH / xRange)/*)*/;
 		double y0 = (yVal-yminVal) * (AttractorsGenerator.HEIGHT / yRange);
 		double z0 = Double.NaN;
+		
 		if (this.is3D) {
 			z0 = (zVal - zminVal) * (AttractorsGenerator.DEPTH / zRange);
 		}
+		
 		if (this.is3D) {
 			return new Tuple3d(x0, y0, z0);
 		} else {
@@ -325,43 +257,11 @@ public abstract class Attractor /*extends JFrame */{
 		this.name = nme;
 	}
 
-/////////////////////ends---removed---xscale,yscale/////////////////
-//	/**
-//     * Sets the <em>x</em>-scale to the specified range.
-//     *
-//     * @param  min the minimum value of the <em>x</em>-scale
-//     * @param  max the maximum value of the <em>x</em>-scale
-//     * @throws IllegalArgumentException if {@code (max == min)}
-//     */
-//    public void setXscale(double min, double max) {
-//        double size = max - min;
-//        if (size == 0.0) throw new IllegalArgumentException("the min and max are the same");
-////	        synchronized (mouseLock) {
-//            xmin = min - 0.0/*BORDER*/ * size;
-//            xmax = max + 0.0/*BORDER*/ * size;
-////	        }
-//    }
-//
-//    /**
-//     * Sets the <em>y</em>-scale to the specified range.
-//     *
-//     * @param  min the minimum value of the <em>y</em>-scale
-//     * @param  max the maximum value of the <em>y</em>-scale
-//     * @throws IllegalArgumentException if {@code (max == min)}
-//     */
-//    public void setYscale(double min, double max) {
-//        double size = max - min;
-//        if (size == 0.0) throw new IllegalArgumentException("the min and max are the same");
-////	        synchronized (mouseLock) {
-//            ymin = min - 0.0/*BORDER*/ * size;
-//            ymax = max + 0.0/*BORDER*/ * size;
-////	        }
-//    }
-/////////////////////ends---removed---xscale,yscale/////////////////
 	
 	protected Map<String, Double> determineRange() {
-		// do-the-calculations (it-does-get-repeated-while-displaying
-		// determine min-max values
+		// determines range
+		// and puts tuples into map
+		// for future display
 		double x_min_r = Double.POSITIVE_INFINITY;
 		double x_max_r = Double.NEGATIVE_INFINITY;
 		double y_min_r = Double.POSITIVE_INFINITY;
@@ -382,6 +282,7 @@ public abstract class Attractor /*extends JFrame */{
 			z_min_r = tempDummyTuple.z < z_min_r ? tempDummyTuple.z : z_min_r;
 			z_max_r = tempDummyTuple.z > z_max_r ? tempDummyTuple.z : z_max_r;
 		}
+		
 		final double dt = this.getTimeJump();
 		
 		for (int i = 0; i < this.maxIter; i++) {
@@ -413,111 +314,28 @@ public abstract class Attractor /*extends JFrame */{
 			spaceMap.put("zmin", z_min_r);//00);
 			spaceMap.put("zmax", z_max_r);//50.0);
 		}
-		return spaceMap;
 		
-		/************************
-		this.xmin = x_min_r;//-20.0;
-		this.xmax = x_max_r;//20.0;
-	
-		this.ymin = y_min_r;//-40.0;
-		this.ymax = y_max_r;//40.0;
-	
-		this.zmin = z_min_r;//00;
-		this.zmax = z_max_r;//50.0;
-**********************************************/		
 		/*//revert		//todo	-	do we need this
 		this.setT3d(extistingDummyTuple);
 		this.setCumulativeTime(0.0);*/
+		return spaceMap;		
 	
 	}
 	
 	private void addUpdatedTuples(int index, Tuple3d existingTuple, Tuple3d updatedTuple) {
 		this.updatedTuples.put(index,updatedTuple);
-		
-		
 	}
 
 	/**
      * Pause for t milliseconds. This method is intended to support computer animations.
      * @param t number of milliseconds
      */
-    public static void pause(int t) {
-        try {
-            Thread.sleep(t);
-        }
-        catch (InterruptedException e) {
-            System.out.println("Error sleeping");
-        }
-    }
-		
-//		
-//		
-//		/**
-//	     * Sets the <em>x</em>-scale and <em>y</em>-scale to be the default
-//	     * (between 0.0 and 1.0).
-//	     */
-//	    public static void setScale() {
-//	        setXscale();
-//	        setYscale();
-//	    }
-//
-//	    /**
-//	     * Sets the <em>x</em>-scale to the specified range.
-//	     *
-//	     * @param  min the minimum value of the <em>x</em>-scale
-//	     * @param  max the maximum value of the <em>x</em>-scale
-//	     * @throws IllegalArgumentException if {@code (max == min)}
-//	     */
-//	    public static void setXscale(double min, double max) {
-//	        double size = max - min;
-//	        if (size == 0.0) throw new IllegalArgumentException("the min and max are the same");
-//	        synchronized (mouseLock) {
-//	            xmin = min - BORDER * size;
-//	            xmax = max + BORDER * size;
-//	        }
-//	    }
-//
-//	    /**
-//	     * Sets the <em>y</em>-scale to the specified range.
-//	     *
-//	     * @param  min the minimum value of the <em>y</em>-scale
-//	     * @param  max the maximum value of the <em>y</em>-scale
-//	     * @throws IllegalArgumentException if {@code (max == min)}
-//	     */
-//	    public static void setYscale(double min, double max) {
-//	        double size = max - min;
-//	        if (size == 0.0) throw new IllegalArgumentException("the min and max are the same");
-//	        synchronized (mouseLock) {
-//	            ymin = min - BORDER * size;
-//	            ymax = max + BORDER * size;
-//	        }
-//	    }
-//
-//	    /**
-//	     * Sets both the <em>x</em>-scale and <em>y</em>-scale to the (same) specified range.
-//	     *
-//	     * @param  min the minimum value of the <em>x</em>- and <em>y</em>-scales
-//	     * @param  max the maximum value of the <em>x</em>- and <em>y</em>-scales
-//	     * @throws IllegalArgumentException if {@code (max == min)}
-//	     */
-//	    public static void setScale(double min, double max) {
-//	        double size = max - min;
-//	        if (size == 0.0) throw new IllegalArgumentException("the min and max are the same");
-//	        synchronized (mouseLock) {
-//	            xmin = min - BORDER * size;
-//	            xmax = max + BORDER * size;
-//	            ymin = min - BORDER * size;
-//	            ymax = max + BORDER * size;
-//	        }
-//	    }
-//
-	    // helper functions that scale from user coordinates to screen coordinates and back
-	   /* private double  scaleX(double x) { return WIDTH  * (x - xmin) / (xmax - xmin); }
-	    private double  scaleY(double y) { return HEIGHT * (ymax - y) / (ymax - ymin); }*/
-//	    private static double factorX(double w) { return w * width  / Math.abs(xmax - xmin);  }
-//	    private static double factorY(double h) { return h * height / Math.abs(ymax - ymin);  }
-//	    private static double   userX(double x) { return xmin + x * (xmax - xmin) / width;    }
-//	    private static double   userY(double y) { return ymax - y * (ymax - ymin) / height;   }
-//
-
+	public static void pause(int t) {
+		try {
+			Thread.sleep(t);
+		} catch (InterruptedException e) {
+			System.out.println("Error sleeping");
+		}
 	}
+
+}

@@ -5323,308 +5323,9 @@ class SierpinskiComboPanel extends JPanel {
 		// fractal art choice
 		String choice = this.getComboChoice();
 		System.out.println("choice--startC--is="+choice);
-		boolean is3D = this.isAttractorDimSpace3D;
-		boolean isSingular = this.isSingularAttractor;
 		
-		if (choice.equals(ATTRACTORS)) {
-			String attractorSelected = this.attractorSelectionChoice;
-			double x1S = Double.NaN;
-			double y1S = Double.NaN;
-			double z1S = Double.NaN;
-
-			double x2S = Double.NaN;
-			double y2S = Double.NaN;
-			double z2S = Double.NaN;
-
-			double dt = Double.NaN;
-			int maxIter = Integer.MIN_VALUE;
-			String space2d = null;
-			
-			boolean isDeJong = (attractorSelected.equals("dejong"));
-			
-			try {
-				x1S = Double.parseDouble(this.attr1SeedX_tf.getText());
-				y1S = Double.parseDouble(this.attr1SeedY_tf.getText());
-				z1S = !(isDeJong || is3D) ? 0 : Double.parseDouble(this.attr1SeedZ_tf.getText());
-
-				if (!isSingular) {
-					x2S = Double.parseDouble(this.attr2SeedX_tf.getText());
-					y2S = Double.parseDouble(this.attr2SeedY_tf.getText());
-					z2S = !(isDeJong || is3D) ? 0 : Double.parseDouble(this.attr2SeedZ_tf.getText());
-				}
-				dt = Double.parseDouble(this.attrDeltaTime_tf.getText());
-				maxIter = Integer.parseInt(this.attrMaxIter_tf.getText());
-				space2d = this.attractorSpace2DSelectionChoice;
-			} catch (NumberFormatException | NullPointerException e2) {
-				e2.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n" + e2.getMessage(),
-						"Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-			
-			Attractor attractor1 = null, attractor2 = null;
-			if (attractorSelected.equals("lorenz")) {
-				LorenzAttractor l1 = null, l2 = null;
-				try {
-					double sigma = Double.parseDouble(this.attrLorenzSigma_tf.getText());
-					double beta = Double.parseDouble(this.attrLorenzBeta_tf.getText());
-					double rho = Double.parseDouble(this.attrLorenzRho_tf.getText());
-
-					l1 = new LorenzAttractor(x1S, y1S, z1S, Color.blue, space2d);
-					l1.setMaxIter(maxIter);
-					/*
-					 * attrL1.setSpace(); l1.setSpace2d(space2d);
-					 */
-
-					l1.setSigma(sigma);
-					l1.setBeta(beta);
-					l1.setRho(rho);
-
-					if (!isSingular) {
-						l2 = new LorenzAttractor(x2S, y2S, z2S, Color.red, space2d);
-						l2.setMaxIter(maxIter);
-						/*
-						 * attrL2.setSpace(); l2.setSpace2d(space2d);
-						 */
-						l2.setSigma(sigma);
-						l2.setBeta(beta);
-						l2.setRho(rho);
-					}
-
-				} catch (NumberFormatException | NullPointerException e2) {
-					e2.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n" + e2.getMessage(),
-							"Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-
-				attractor1 = l1;
-				attractor2 = l2;
-				
-					
-//					final Attractor attrL1 = l1;
-//					final Attractor attrL2 = l2;
-//
-//					final AttractorsGenerator generator = new AttractorsGenerator(attractorSelected);//("lorenz");
-//					generator.setAttractors(new Attractor[] { attrL1, attrL2 });
-//					/*generator.setMaxIter(maxIter);
-//					generator.setSpace2d(space2d);*/
-//					
-//					SwingUtilities.invokeLater(new Runnable() {
-//						@Override
-//						public void run() {
-//
-//							final JFrame frame = generator;
-//							frame.setTitle("Bawaz__LorenzAttractor");
-//							frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//							frame.setResizable(false);
-//							frame.setVisible(true);
-//
-//							frame.setDefaultCloseOperation(closeIt(frame));
-//							frame.setLocation(
-//									(Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth()) / 2,
-//									(Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight()) / 2);
-//							frame.setResizable(false);
-//							frame.setVisible(true);
-//
-//							setFractalImage(generator.getBufferedImage());
-//							// this.setFractalBase(frame);
-//
-//							buClose.setEnabled(true);
-//						}
-//					});
-
-				
-			} else if (attractorSelected.equals("aizawa")) {
-				AizawaAttractor az1=null,az2=null;
-				try{
-					double aVal = Double.parseDouble(this.attrAizawaA_tf.getText().trim());
-					double bVal = Double.parseDouble(this.attrAizawaB_tf.getText().trim());
-					double cVal = Double.parseDouble(this.attrAizawaC_tf.getText().trim());
-					double dVal = Double.parseDouble(this.attrAizawaD_tf.getText().trim());
-					double eVal = Double.parseDouble(this.attrAizawaE_tf.getText().trim());
-					double fVal = Double.parseDouble(this.attrAizawaF_tf.getText().trim());
-					
-					az1 = new AizawaAttractor(x1S, y1S, z1S, Color.blue, space2d);
-					az1.setMaxIter(maxIter);
-					az1.setA(aVal);
-					az1.setB(bVal);
-					az1.setC(cVal);
-					az1.setD(dVal);
-					az1.setE(eVal);
-					az1.setF(fVal);
-					
-					if (!isSingular) {
-						az2 = new AizawaAttractor(x2S, y2S, z2S, Color.red, space2d);
-						az2.setMaxIter(maxIter);
-						az2.setA(aVal);
-						az2.setB(bVal);
-						az2.setC(cVal);
-						az2.setD(dVal);
-						az2.setE(eVal);
-						az2.setF(fVal);
-					}
-					attractor1 = az1;
-					attractor2 = az2;
-					
-				} catch (NumberFormatException | NullPointerException e2) {
-					e2.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n" + e2.getMessage(),
-							"Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-
-			} else if (attractorSelected.equals("dejong")) {
-				DeJongAttractor d1 = null, d2 = null;
-				try {
-					double aVal = Double.parseDouble(this.attrDeJongA_tf.getText().trim());
-					double bVal = Double.parseDouble(this.attrDeJongB_tf.getText().trim());
-					double cVal = Double.parseDouble(this.attrDeJongC_tf.getText().trim());
-					double dVal = Double.parseDouble(this.attrDeJongD_tf.getText().trim());
-					
-					d1 = new DeJongAttractor(x1S, y1S, z1S, Color.blue, space2d);
-					d1.setMaxIter(maxIter);
-					d1.setA(aVal);
-					d1.setB(bVal);
-					d1.setC(cVal);
-					d1.setD(dVal);
-					
-					if (!isSingular) {
-						d2 = new DeJongAttractor(x2S, y2S, z2S, Color.red, space2d);
-						d2.setMaxIter(maxIter);
-						d2.setA(aVal);
-						d2.setB(bVal);
-						d2.setC(cVal);
-						d2.setD(dVal);
-					}
-					attractor1 = d1;
-					attractor2 = d2;
-				} catch (NumberFormatException | NullPointerException e2) {
-					e2.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n" + e2.getMessage(),
-							"Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-
-			} else if (attractorSelected.equals("custom")) {
-				CustomAttractor cust1 = null, cust2 = null;
-				try {
-					/*x1S = Double.parseDouble(this.attr1SeedX_tf.getText());
-					y1S = Double.parseDouble(this.attr1SeedY_tf.getText());
-					z1S = Double.parseDouble(this.attr1SeedZ_tf.getText());
-
-					x2S = Double.parseDouble(this.attr2SeedX_tf.getText());
-					y2S = Double.parseDouble(this.attr2SeedY_tf.getText());
-					z2S = Double.parseDouble(this.attr2SeedZ_tf.getText());
-
-					dt = Double.parseDouble(this.attrDeltaTime_tf.getText());
-					maxIter = Integer.parseInt(this.attrMaxIter_tf.getText());
-
-					String space2d = this.attractorSpace2DSelectionChoice;*/
-
-					String deltaXFormula = this.attrCustom_DeltaXFormula_tf.getText().trim();
-					String deltaYFormula = this.attrCustom_DeltaYFormula_tf.getText().trim();
-					String deltaZFormula = is3D?this.attrCustom_DeltaZFormula_tf.getText().trim():null;
-					
-					cust1 = new CustomAttractor(x1S, y1S, z1S, Color.blue, space2d);
-					cust1.setMaxIter(maxIter);
-					cust1.setDeltaXFormula(deltaXFormula);
-					cust1.setDeltaYFormula(deltaYFormula);
-					if (is3D) {
-						cust1.setDeltaZFormula(deltaZFormula);
-					}
-					cust1.setIs3D(is3D);
-					//					cust1.setSpace();
-					cust1.setSpace2dAxes(space2d);
-					
-					if (!isSingular) {
-						cust2 = new CustomAttractor(x2S, y2S, z2S, Color.red, space2d);
-						cust2.setMaxIter(maxIter);
-						cust2.setDeltaXFormula(deltaXFormula);
-						cust2.setDeltaYFormula(deltaYFormula);
-						if (is3D) {
-							cust2.setDeltaZFormula(deltaZFormula);
-						}
-						cust1.setIs3D(is3D);
-						//					cust2.setSpace();
-						cust2.setSpace2dAxes(space2d);
-					}
-					attractor1 = cust1;
-					attractor2 = cust2;
-
-//					final Attractor attractor1 = cust1;
-//					final Attractor attractor2 = cust2;
-//					final AttractorsGenerator generator = new AttractorsGenerator("custom");
-//					generator.setAttractors(new Attractor[] { attractor1, attractor2 });
-//					generator.setMaxIter(maxIter);
-//					generator.setSpace2d(space2d);
-//					
-//					SwingUtilities.invokeLater(new Runnable() {
-//						@Override
-//						public void run() {
-//
-//							final JFrame frame = generator;
-//							frame.setTitle("Bawaz___CustomizedAttractor");
-//							frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//							frame.setResizable(false);
-//							frame.setVisible(true);
-//
-//							frame.setDefaultCloseOperation(closeIt(frame));
-//							frame.setLocation(
-//									(Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth()) / 2,
-//									(Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight()) / 2);
-//							frame.setResizable(false);
-//							frame.setVisible(true);
-//
-//							setFractalImage(generator.getBufferedImage());
-//							// this.setFractalBase(frame);
-//
-//							buClose.setEnabled(true);
-//						}
-//					});
-					
-					
-				} catch (NumberFormatException | NullPointerException e2) {
-					e2.printStackTrace();
-					JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n" + e2.getMessage(),
-							"Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
-					return;
-				}
-			}
-			
-			final AttractorsGenerator generator = new AttractorsGenerator(attractorSelected);
-			if (!isSingular) {
-				generator.setAttractors(new Attractor[] { attractor1, attractor2 });
-				/*generator.setMaxIter(maxIter);
-				generator.setSpace2d(space2d);*/
-			} else {
-				generator.setAttractors(new Attractor[] { attractor1 });
-			}
-			
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-
-					final JFrame frame = generator;
-					frame.setTitle("Bawaz___"+attractorSelected.toUpperCase()+"Attractor");
-					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					frame.setResizable(false);
-					frame.setVisible(true);
-
-					frame.setDefaultCloseOperation(closeIt(frame));
-					frame.setLocation(
-							(Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth()) / 2,
-							(Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight()) / 2);
-					frame.setResizable(false);
-					frame.setVisible(true);
-
-					setFractalImage(generator.getBufferedImage());
-					// this.setFractalBase(frame);
-
-					buClose.setEnabled(true);
-				}
-			});
-
+		if (choice.equals(ATTRACTORS)) {		
+			this.doStartAttractorsCommand();
 			return;
 		}
 		
@@ -5687,6 +5388,288 @@ class SierpinskiComboPanel extends JPanel {
 
 		ff.reset();
 		this.startFractals(ff);
+	}
+
+	private void doStartAttractorsCommand() {
+		String attractorSelected = this.attractorSelectionChoice;
+		boolean is3D = this.isAttractorDimSpace3D;
+		boolean isSingular = this.isSingularAttractor;
+		
+		double x1S = Double.NaN;
+		double y1S = Double.NaN;
+		double z1S = Double.NaN;
+
+		double x2S = Double.NaN;
+		double y2S = Double.NaN;
+		double z2S = Double.NaN;
+
+		double dt = Double.NaN;
+		int maxIter = Integer.MIN_VALUE;
+		String space2d = null;
+		
+		boolean isDeJong = (attractorSelected.equals("dejong"));
+		
+		try {
+			x1S = Double.parseDouble(this.attr1SeedX_tf.getText());
+			y1S = Double.parseDouble(this.attr1SeedY_tf.getText());
+			z1S = !(isDeJong || is3D) ? 0 : Double.parseDouble(this.attr1SeedZ_tf.getText());
+
+			if (!isSingular) {
+				x2S = Double.parseDouble(this.attr2SeedX_tf.getText());
+				y2S = Double.parseDouble(this.attr2SeedY_tf.getText());
+				z2S = !(isDeJong || is3D) ? 0 : Double.parseDouble(this.attr2SeedZ_tf.getText());
+			}
+			
+			dt = Double.parseDouble(this.attrDeltaTime_tf.getText());
+			maxIter = Integer.parseInt(this.attrMaxIter_tf.getText());
+			space2d = this.attractorSpace2DSelectionChoice;
+			
+		} catch (NumberFormatException | NullPointerException e2) {
+			e2.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n" + e2.getMessage(),
+					"Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		
+		Attractor attractor1 = null, attractor2 = null;
+		
+		if (attractorSelected.equals("lorenz")) {
+			LorenzAttractor l1 = null, l2 = null;
+			
+			try {
+				double sigma = Double.parseDouble(this.attrLorenzSigma_tf.getText());
+				double beta = Double.parseDouble(this.attrLorenzBeta_tf.getText());
+				double rho = Double.parseDouble(this.attrLorenzRho_tf.getText());
+
+				l1 = new LorenzAttractor(x1S, y1S, z1S, Color.blue, space2d);
+				l1.setMaxIter(maxIter);
+
+				l1.setSigma(sigma);
+				l1.setBeta(beta);
+				l1.setRho(rho);
+				
+				l1.setIs3D(is3D);
+				
+				l1.setSpace2dAxes(space2d);
+
+				if (!isSingular) {
+					l2 = new LorenzAttractor(x2S, y2S, z2S, Color.red, space2d);
+					l2.setMaxIter(maxIter);
+
+					l2.setSigma(sigma);
+					l2.setBeta(beta);
+					l2.setRho(rho);
+					l2.setIs3D(is3D);
+
+					l2.setSpace2dAxes(space2d);
+					
+				}
+
+			} catch (NumberFormatException | NullPointerException e2) {
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n" + e2.getMessage(),
+						"Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+
+			attractor1 = l1;
+			attractor2 = l2;
+			
+		} else if (attractorSelected.equals("aizawa")) {
+			AizawaAttractor az1 = null, az2 = null;
+			
+			try {
+				double aVal = Double.parseDouble(this.attrAizawaA_tf.getText().trim());
+				double bVal = Double.parseDouble(this.attrAizawaB_tf.getText().trim());
+				double cVal = Double.parseDouble(this.attrAizawaC_tf.getText().trim());
+				double dVal = Double.parseDouble(this.attrAizawaD_tf.getText().trim());
+				double eVal = Double.parseDouble(this.attrAizawaE_tf.getText().trim());
+				double fVal = Double.parseDouble(this.attrAizawaF_tf.getText().trim());
+				
+				az1 = new AizawaAttractor(x1S, y1S, z1S, Color.blue, space2d);
+				az1.setMaxIter(maxIter);
+				
+				az1.setA(aVal);
+				az1.setB(bVal);
+				az1.setC(cVal);
+				az1.setD(dVal);
+				az1.setE(eVal);
+				az1.setF(fVal);
+				
+				az1.setIs3D(is3D);
+				
+				az1.setSpace2dAxes(space2d);
+				
+				if (!isSingular) {
+					az2 = new AizawaAttractor(x2S, y2S, z2S, Color.red, space2d);
+					
+					az2.setMaxIter(maxIter);
+					
+					az2.setA(aVal);
+					az2.setB(bVal);
+					az2.setC(cVal);
+					az2.setD(dVal);
+					az2.setE(eVal);
+					az2.setF(fVal);
+					
+					az2.setIs3D(is3D);
+					
+					az2.setSpace2dAxes(space2d);
+				}
+				
+				attractor1 = az1;
+				attractor2 = az2;
+				
+			} catch (NumberFormatException | NullPointerException e2) {
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n" + e2.getMessage(),
+						"Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+
+		} else if (attractorSelected.equals("dejong")) {
+			
+			DeJongAttractor d1 = null, d2 = null;
+			
+			try {
+				double aVal = Double.parseDouble(this.attrDeJongA_tf.getText().trim());
+				double bVal = Double.parseDouble(this.attrDeJongB_tf.getText().trim());
+				double cVal = Double.parseDouble(this.attrDeJongC_tf.getText().trim());
+				double dVal = Double.parseDouble(this.attrDeJongD_tf.getText().trim());
+				
+				d1 = new DeJongAttractor(x1S, y1S, z1S, Color.blue, space2d);
+				
+				d1.setMaxIter(maxIter);
+				
+				d1.setA(aVal);
+				d1.setB(bVal);
+				d1.setC(cVal);
+				d1.setD(dVal);
+				
+				d1.setIs3D(is3D);
+				
+				d1.setSpace2dAxes(space2d);
+				
+				if (!isSingular) {
+					d2 = new DeJongAttractor(x2S, y2S, z2S, Color.red, space2d);
+					
+					d2.setMaxIter(maxIter);
+					
+					d2.setA(aVal);
+					d2.setB(bVal);
+					d2.setC(cVal);
+					d2.setD(dVal);
+					
+					d2.setIs3D(is3D);
+					
+					d2.setSpace2dAxes(space2d);
+					
+				}
+				
+				attractor1 = d1;
+				attractor2 = d2;
+				
+			} catch (NumberFormatException | NullPointerException e2) {
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n" + e2.getMessage(),
+						"Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+
+		} else if (attractorSelected.equals("custom")) {
+			
+			CustomAttractor cust1 = null, cust2 = null;
+			try {
+
+				String deltaXFormula = this.attrCustom_DeltaXFormula_tf.getText().trim();
+				String deltaYFormula = this.attrCustom_DeltaYFormula_tf.getText().trim();
+				String deltaZFormula = is3D?this.attrCustom_DeltaZFormula_tf.getText().trim():null;
+				
+				cust1 = new CustomAttractor(x1S, y1S, z1S, Color.blue, space2d);
+				
+				cust1.setMaxIter(maxIter);
+				
+				cust1.setDeltaXFormula(deltaXFormula);
+				cust1.setDeltaYFormula(deltaYFormula);
+				if (is3D) {
+					cust1.setDeltaZFormula(deltaZFormula);
+				}
+				
+				cust1.setIs3D(is3D);
+
+				cust1.setSpace2dAxes(space2d);
+				
+				if (!isSingular) {
+					cust2 = new CustomAttractor(x2S, y2S, z2S, Color.red, space2d);
+					
+					cust2.setMaxIter(maxIter);
+					
+					cust2.setDeltaXFormula(deltaXFormula);
+					cust2.setDeltaYFormula(deltaYFormula);
+					if (is3D) {
+						cust2.setDeltaZFormula(deltaZFormula);
+					}
+					
+					cust1.setIs3D(is3D);
+
+					cust2.setSpace2dAxes(space2d);
+				}
+				
+				attractor1 = cust1;
+				attractor2 = cust2;
+				
+				
+			} catch (NumberFormatException | NullPointerException e2) {
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n" + e2.getMessage(),
+						"Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+		
+		this.generateAttractors(attractorSelected, attractor1, attractor2);
+
+		return;
+	}
+
+	//TODO	-	pass	array
+	private void generateAttractors(String name, Attractor a1, Attractor a2) {
+		final AttractorsGenerator generator = new AttractorsGenerator(name);
+
+		final boolean isSingular = this.isSingularAttractor;
+
+		if (!isSingular) {
+			generator.setAttractors(new Attractor[] { a1, a2 });
+			/*
+			 * generator.setMaxIter(maxIter); 
+			 * generator.setSpace2d(space2d);
+			 */
+		} else {
+			generator.setAttractors(new Attractor[] { a1 });
+		}
+
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+
+				final JFrame frame = generator;
+				frame.setTitle("Bawaz___" + name.toUpperCase() + "Attractor");
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frame.setResizable(false);
+				frame.setVisible(true);
+
+				frame.setDefaultCloseOperation(closeIt(frame));
+				frame.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth()) / 2,
+						(Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight()) / 2);
+				frame.setResizable(false);
+				frame.setVisible(true);
+
+				setFractalImage(generator.getBufferedImage());
+				// this.setFractalBase(frame);
+
+				buClose.setEnabled(true);
+			}
+		});
 	}
 
 	private FractalBase startDIYApollo() {
@@ -8570,11 +8553,11 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	
-	protected void doSelectAttractorSpace2DChoiceCombosCommand(String attractorSpace2DChoiceVal) {
+	private void doSelectAttractorSpace2DChoiceCombosCommand(String attractorSpace2DChoiceVal) {
 		this.attractorSpace2DSelectionChoice	=	attractorSpace2DChoiceVal;
 	}
 
-	protected void doSelectAttractorChoiceCombosCommand(String attractorChoiceVal) {
+	private void doSelectAttractorChoiceCombosCommand(String attractorChoiceVal) {
 		this.attractorSelectionChoice = attractorChoiceVal;
 
 		if (this.attractorSelectionChoice.equals("custom")) {
@@ -8585,6 +8568,8 @@ class SierpinskiComboPanel extends JPanel {
 			this.attrCustom_DeltaYFormula_tf.setVisible(true);
 			this.attrCustomFormulaStrDeltaZLabel.setVisible(true);
 			this.attrCustom_DeltaZFormula_tf.setVisible(true);
+			
+			this.setupAttractorParamChoices();
 		} else {
 			this.attrCustomFormulaStrLabel.setVisible(false);
 			this.attrCustomFormulaStrDeltaXLabel.setVisible(false);
