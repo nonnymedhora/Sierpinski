@@ -285,25 +285,33 @@ public abstract class Attractor {
 		
 		final double dt = this.getTimeJump();
 		
+		Map<String, Double> spaceMap = new HashMap<String, Double>();
+		
 		for (int i = 0; i < this.maxIter; i++) {
 			Tuple3d existingTuple = tempDummyTuple;
-			Tuple3d updatedTuple = this.update(existingTuple, dt);
 
-			this.addUpdatedTuples(i, existingTuple, updatedTuple);
-	
-			tempDummyTuple = updatedTuple;
-	
-			x_min_r = tempDummyTuple.x < x_min_r ? tempDummyTuple.x : x_min_r;
-			x_max_r = tempDummyTuple.x > x_max_r ? tempDummyTuple.x : x_max_r;
-			y_min_r = tempDummyTuple.y < y_min_r ? tempDummyTuple.y : y_min_r;
-			y_max_r = tempDummyTuple.y > y_max_r ? tempDummyTuple.y : y_max_r;
-			if (this.is3D) {
-				z_min_r = tempDummyTuple.z < z_min_r ? tempDummyTuple.z : z_min_r;
-				z_max_r = tempDummyTuple.z > z_max_r ? tempDummyTuple.z : z_max_r;
+			if (! (existingTuple.x == Double.NaN || existingTuple.y == Double.NaN || existingTuple.z == Double.NaN)) {
+				Tuple3d updatedTuple = this.update(existingTuple, dt);
+				
+				this.addUpdatedTuples(i, existingTuple, updatedTuple);
+				
+				tempDummyTuple = updatedTuple;
+				
+				x_min_r = tempDummyTuple.x < x_min_r ? tempDummyTuple.x : x_min_r;
+				x_max_r = tempDummyTuple.x > x_max_r ? tempDummyTuple.x : x_max_r;
+				y_min_r = tempDummyTuple.y < y_min_r ? tempDummyTuple.y : y_min_r;
+				y_max_r = tempDummyTuple.y > y_max_r ? tempDummyTuple.y : y_max_r;
+				
+				if (this.is3D) {
+					z_min_r = tempDummyTuple.z < z_min_r ? tempDummyTuple.z : z_min_r;
+					z_max_r = tempDummyTuple.z > z_max_r ? tempDummyTuple.z : z_max_r;
+				}
+				
+			} else {
+				return spaceMap;
 			}
 		}
 		
-		Map<String, Double> spaceMap = new HashMap<String, Double>();
 		spaceMap.put("xmin", x_min_r);//-20.0);
 		spaceMap.put("xmax", x_max_r);//20.0);
 	

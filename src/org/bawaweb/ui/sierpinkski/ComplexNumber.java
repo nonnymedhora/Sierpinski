@@ -301,13 +301,56 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
     }
  // return a new Complex object whose value is the reciprocal of this
     public ComplexNumber reciprocal() {
-        double scale = real*real + imaginary*imaginary;
-        return new ComplexNumber(real / scale, -imaginary / scale);
+		double scale = real * real + imaginary * imaginary;
+		return new ComplexNumber(real / scale, -imaginary / scale);
     }
+    
+    public ComplexNumber power(ComplexNumber power) {
+    	/*
+    	 * 
+    	 * */
+    	return this;			//4now
+    }
+    
+    
+	//	https://math.stackexchange.com/questions/3668/what-is-the-value-of-1i
+	/*If a & b are real: then	(a+ib) = r(cosθ+isinθ)
+			where: 
+				r^2=a^2+b^2
+			and	tanθ = (b/a)	==>	θ=Math.atan2(b,a)
 
+			Then:
+				(a+ib)^N	=	(r^N)*(cos(N*θ)+i*sin(N*θ))
+				
+	****************************************************/		
 	public ComplexNumber power(int power) {
+		double a = this.real;
+		double b = this.imaginary;
+
+		double r = Math.sqrt((a * a) + (b * b));
+		double θ = Math.toDegrees(Math.atan(b / a));
+		//TODO	check answer with original method this.power_0123
+		return new ComplexNumber(r * power * Math.cos(power * θ), r * power * Math.sin(power * θ));
+	}
+
+	public ComplexNumber power_0123(int power) {
+		//TODO	l8r, try e^(iπ///θ) method
+		// instead of multiplication route
+		//	1=e^(2πi)	or		1=e^(0+2Kπi)	or
+		//	naively	1^i	=	[e^(2πi)]^i	=	e^(2πi*i)	=	e^(-2π)
+		//	https://math.stackexchange.com/questions/3668/what-is-the-value-of-1i
+		/*If a & b are real: then	(a+ib) = r(cosθ+isinθ)
+				where: 
+					r^2=a^2+b^2
+				and	tanθ = (b/a)	==>	θ=Math.atan2(b,a)
+
+				Then:
+					(a+ib)^N	=	(r^N)*(cos(N*θ)+i*sin(N*θ))
+					
+		****************************************************/
+		
+		
 		if (power > 0) {
-			int iter = 1;
 			final ComplexNumber a = this;
 			ComplexNumber powered = a;
 			for (int i = 1; i < power; i++) {
@@ -359,6 +402,21 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
 	public ComplexNumber inverseTangent(){
 		return new ComplexNumber(1.0, 0.0).divides(this.tangent());
 	}
+
+	public boolean isNaN() {
+		return Double.isNaN(this.real) || Double.isNaN(this.imaginary) || Double.isInfinite(this.real)
+				|| Double.isInfinite(this.imaginary);
+	}
 	
+	
+	public static void main(String args[]) {
+		ComplexNumber cn = new ComplexNumber(5.6, 3.5);
+		
+		System.out.println("Number is: "+cn+", power is 3");
+
+		System.out.println("newPowerMethod == " + cn.power(3));
+
+		System.out.println("oldPowerMethod == " + cn.power_0123(3));
+	}
 }
 

@@ -372,7 +372,10 @@ public class Mandelbrot extends FractalBase {
 				double y0 = yc - size / 2 + size * col / n;
 				
 				ComplexNumber z0 = this.getZValue(func2Apply, pxFunc2Apply, x0, y0);
-				
+				if (z0.isNaN()) {
+					continue;
+				}
+
 				int res = this.mand(z0, max, this.power, this.complex, bd, row, col);
 				if(res==IM_BUDDHA){//if (res < max) { // 
 					Pixel p = new Pixel(row, col, IM_BUDDHA);
@@ -447,7 +450,10 @@ public class Mandelbrot extends FractalBase {
 				double y0 = yc - size / 2 + size * col / n;
 				
 				ComplexNumber z0 = this.getZValue(func2Apply, pxFunc2Apply, x0, y0);	
-				
+				if (z0.isNaN()) {
+					continue;
+				}
+
 
 				if (this.colorChoice.equals(BlackWhite)) {
 					int bOrW = 0;
@@ -518,6 +524,10 @@ public class Mandelbrot extends FractalBase {
 		
 		
 		z0 = this.computePixel(pxFunc2Apply, z0);
+		if (z0.isNaN()) {
+			return z0;
+		}
+
 		z0 = this.computeComplexConstant(func2Apply, z0);
 		return z0;
 	}
@@ -588,7 +598,10 @@ public class Mandelbrot extends FractalBase {
 			double y0 = yc - size / 2 + size * col / n;
 			
 			ComplexNumber z0 = this.getZValue(func2Apply, pxFunc2Apply, x0, y0);
-			
+			if (z0.isNaN()) {
+				continue;
+			}
+
 			if (this.mand(z0, max, this.power, this.complex, bd, row, col) != IM_BUDDHA) {
 				System.out.println("In+confirm+++NOTOOOOOok");
 				return false;
@@ -825,9 +838,9 @@ public class Mandelbrot extends FractalBase {
 				z = z.power(pwr).times(constant);
 			} else if (this.pxConstOperation.equals("Divide")) {
 				z = z.power(pwr).divides(constant);
-			}/* else if (this.pxConstOperation.equals("Power")) {
+			} else if (this.pxConstOperation.equals("Power")) {
 				z = z.power(pwr).power(constant);
-			}*/
+			}
 		}
 		if (!this.isBuddha) {
 			return maxIterations;

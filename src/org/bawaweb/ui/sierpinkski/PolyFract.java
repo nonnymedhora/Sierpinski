@@ -206,107 +206,117 @@ System.out.println("type---->"+(type));	*/
 						break;
 			}// ends switch
 				
-				if (this.isComplexNumConst || this.compConst == null) {
-					this.compConst = zx.plus(zy);
+
+			if (zx.isNaN()||zy.isNaN()) {
+				continue;
+			}
+				
+			if (this.isComplexNumConst || this.compConst == null) {
+				this.compConst = zx.plus(zy);
+			}
+			
+			String func2Apply = this.useFuncConst;
+			if (!this.isConstFuncApplied) {
+				switch (func2Apply) {
+					case "sine"	:
+						this.compConst = this.compConst.sine();	//z0.sin();
+						break;
+					case "cosine" :
+						this.compConst = this.compConst.cosine();	//z0.cos();
+						break;
+					case "tan" :
+						this.compConst = this.compConst.tangent();	//z0.tan();
+						break;
+					case "arcsine"	:
+						this.compConst = this.compConst.inverseSine();	//z0.sin();
+						break;
+					case "arccosine" :
+						this.compConst = this.compConst.inverseCosine();	//z0.cos();
+						break;
+					case "arctan" :
+						this.compConst = this.compConst.inverseTangent();	//z0.tan();
+						break;									
+					case "square"	:
+						this.compConst = this.compConst.power(2);	//z0.sin();
+						break;
+					case "cube" :
+						this.compConst = this.compConst.power(3);	//z0.cos();
+						break;
+					case "exponent(e)" :
+						this.compConst = this.compConst.exp();	//z0.tan();
+						break;
+					case "root"	:
+						this.compConst = this.compConst.sqroot();	//z0.sin();
+						break;
+					case "cube-root" :
+						this.compConst = this.compConst.curoot();	//z0.cos();
+						break;
+					case "log(e)" :
+						this.compConst = this.compConst.ln();	//z0.tan();
+						break;	
+					case "None" :
+						this.compConst = zx.plus(zy);
+						break;
+					default:
+						this.compConst = zx.plus(zy);
+						break;
+				}// ends switch
+				
+				if (!this.isComplexNumConst()) {
+					this.isConstFuncApplied = true;
 				}
-				
-				String func2Apply = this.useFuncConst;
-				if (!this.isConstFuncApplied) {
-					switch (func2Apply) {
-						case "sine"	:
-							this.compConst = this.compConst.sine();	//z0.sin();
-							break;
-						case "cosine" :
-							this.compConst = this.compConst.cosine();	//z0.cos();
-							break;
-						case "tan" :
-							this.compConst = this.compConst.tangent();	//z0.tan();
-							break;
-						case "arcsine"	:
-							this.compConst = this.compConst.inverseSine();	//z0.sin();
-							break;
-						case "arccosine" :
-							this.compConst = this.compConst.inverseCosine();	//z0.cos();
-							break;
-						case "arctan" :
-							this.compConst = this.compConst.inverseTangent();	//z0.tan();
-							break;									
-						case "square"	:
-							this.compConst = this.compConst.power(2);	//z0.sin();
-							break;
-						case "cube" :
-							this.compConst = this.compConst.power(3);	//z0.cos();
-							break;
-						case "exponent(e)" :
-							this.compConst = this.compConst.exp();	//z0.tan();
-							break;
-						case "root"	:
-							this.compConst = this.compConst.sqroot();	//z0.sin();
-							break;
-						case "cube-root" :
-							this.compConst = this.compConst.curoot();	//z0.cos();
-							break;
-						case "log(e)" :
-							this.compConst = this.compConst.ln();	//z0.tan();
-							break;	
-						case "None" :
-							this.compConst = zx.plus(zy);
-							break;
-						default:
-							this.compConst = zx.plus(zy);
-							break;
-					}// ends switch
-					
-					if (!this.isComplexNumConst()) {
-						this.isConstFuncApplied = true;
-					}
-				}
-				
-				
-				if (this.colorChoice.equals(BlackWhite)) {
-					int bOrW;
-					if (diff) {
-						bOrW = this.polyFract(zx,zy, max, this.power, this.compConst, bd);
-						if (bOrW != max) {
-							bOrW = 0;
-						} else {
-							bOrW = COLORMAXRGB;
-						}
+			}
+			
+
+			if (this.compConst.isNaN()) {
+				continue;
+			}
+			
+			
+			if (this.colorChoice.equals(BlackWhite)) {
+				int bOrW;
+				if (diff) {
+					bOrW = this.polyFract(zx,zy, max, this.power, this.compConst, bd);
+					if (bOrW != max) {
+						bOrW = 0;
 					} else {
-						int res = this.polyFract(zx,zy, max, this.power, this.compConst, bd);
-						bOrW = max - res;
-						if (bOrW != res) {
-							bOrW = 0;
-						} else {
-							bOrW = COLORMAXRGB;
-						}
-
+						bOrW = COLORMAXRGB;
 					}
-					
-					setPixel(row, n - 1 - col, bOrW);
-					
-					if (this.isSavePixelInfo2File()) {
-						this.appendPixelInfo2File(row, n - 1 - col, bOrW);
-					}
-
 				} else {
-
-					int colorRGB;
-	
-					if (diff) {
-						colorRGB = polyFract(zx, zy, max, pow, this.compConst, bd);
+					int res = this.polyFract(zx,zy, max, this.power, this.compConst, bd);
+					bOrW = max - res;
+					if (bOrW != res) {
+						bOrW = 0;
 					} else {
-						colorRGB = max - polyFract(zx, zy,max, pow, this.compConst,bd);
+						bOrW = COLORMAXRGB;
 					}
-					
-					Color color = this.getPixelDisplayColor(row, col, colorRGB, diff);
-	
-					setPixel(row, n - 1 - col, color.getRGB());
 
-					if (this.isSavePixelInfo2File()) {
-						this.appendPixelInfo2File(row, n - 1 - col, color.getRGB());
-					}
 				}
+				
+				setPixel(row, n - 1 - col, bOrW);
+				
+				if (this.isSavePixelInfo2File()) {
+					this.appendPixelInfo2File(row, n - 1 - col, bOrW);
+				}
+
+			} else {
+
+				int colorRGB;
+
+				if (diff) {
+					colorRGB = polyFract(zx, zy, max, pow, this.compConst, bd);
+				} else {
+					colorRGB = max - polyFract(zx, zy,max, pow, this.compConst,bd);
+				}
+				
+				Color color = this.getPixelDisplayColor(row, col, colorRGB, diff);
+
+				setPixel(row, n - 1 - col, color.getRGB());
+
+				if (this.isSavePixelInfo2File()) {
+					this.appendPixelInfo2File(row, n - 1 - col, color.getRGB());
+				}
+			}
 
 			}
 		}
@@ -316,6 +326,10 @@ System.out.println("type---->"+(type));	*/
 	private int polyFract(ComplexNumber z1, ComplexNumber z2, 
 							int maxItr, double powr, ComplexNumber constant,
 							double boundary) {
+		if (z1.isNaN() || z2.isNaN()) {
+			return 0;
+		}
+		
 		ComplexNumber z11 = z1.power(this.power).plus(constant);
 		ComplexNumber z22 = z2.power(this.power).plus(constant);
 		
@@ -333,12 +347,19 @@ System.out.println("type---->"+(type));	*/
 			case "Divide":
 				zz = z11.plus(z22).divides(constant);
 				break;
+			case "Power":
+				zz = z11.plus(z22).power(constant);
+				break;
 			default:
 				zz = z11.plus(z22).plus(constant);
 				break;
 		}
 
 		for (int t = 0; t < maxIter; t++) {
+
+			if (zz.isNaN()) {
+				return 0;
+			}
 			
 			if (zz.abs() > boundary){
 				return t;
@@ -359,6 +380,9 @@ System.out.println("type---->"+(type));	*/
 					break;
 				case "Divide":
 					zz = z11.plus(z22).divides(constant);
+					break;
+				case "Power":
+					zz = z11.plus(z22).power(constant);
 					break;
 				default:
 					zz = z11.plus(z22).plus(constant);

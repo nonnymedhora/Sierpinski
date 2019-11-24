@@ -53,10 +53,10 @@ public class FunctionEvaluator {
 		}
 		
 		/*
-		 * If complexNumber is not a legal complex number, print an error
+		 * If number is not a legal nnumber, print an error
 		 * message. Otherwise, compute f(x) and return the result.
 		 */
-		if(x==(Double.NaN)||y==(Double.NaN)||z==(Double.NaN)){
+		if (x == (Double.NaN) || y == (Double.NaN) || z == (Double.NaN)) {
 			System.out.println("Err___line2");
 			return Double.NaN;
 		}
@@ -107,7 +107,7 @@ public class FunctionEvaluator {
 			System.out.println("\"" + z0 + "\" is not a legal complexnumber.");
 		}
 		val = expression.value(z);
-		if (Double.isNaN(val.real))
+		if ( Double.isNaN(val.real) || Double.isNaN(val.imaginary) )
 			System.out.println("f(" + z + ") is undefined.");
 		else {
 			/* System.out.println("f(" + z + ") = " + val); */}

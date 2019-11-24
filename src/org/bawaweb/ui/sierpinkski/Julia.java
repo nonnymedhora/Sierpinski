@@ -396,7 +396,10 @@ public class Julia extends FractalBase {
 				}
 				
 				z0 = this.computePixel(pxFunc2Apply, z0);
-				
+				if (z0.isNaN()) {
+					continue;
+				}
+
 				if (this.isFatou()) {
 					z0 = this.getFatouValue(z0);
 				} else if (this.isZSq()) {
@@ -468,6 +471,10 @@ public class Julia extends FractalBase {
 		ComplexNumber z = zz;
 
 		ComplexNumber complexConstant = this.computeComplexConstant();
+		
+		if (complexConstant.isNaN()) {
+			return 0;		//	for now
+		}
 
 		for (int t = 0; t < max; t++) {
 			if (z.abs() > bd) {
@@ -482,9 +489,9 @@ public class Julia extends FractalBase {
 				z = z.power(this.power).times(complexConstant);
 			} else if (this.pxConstOperation.equals("Divide")) {
 				z = z.power(this.power).divides(complexConstant);
-			}/* else if (this.pxConstOperation.equals("Power")) {
+			} else if (this.pxConstOperation.equals("Power")) {
 				z = z.power(this.power).power(complexConstant);
-			}*/
+			}
 		}
 			
 		/*	============	Field lines - Fatou Domain	======================
