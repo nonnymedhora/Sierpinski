@@ -29,10 +29,14 @@ public class FunctionEvaluator {
 	public FunctionEvaluator() {
 	}
 	
-	public double evaluate(final String funcString, final Tuple3d t3d) {
+	public double evaluate(String funcString, final Tuple3d t3d) {
 		if (t3d.x == Double.NaN || t3d.y == Double.NaN || t3d.z == Double.NaN) {
 			return Double.NaN;
 		}
+		
+		funcString = funcString.replaceAll("P", String.valueOf(Math.PI))
+				.replaceAll("p", String.valueOf(Math.PI));
+		
 		return this.evaluate(funcString,
 					new BigDecimal(String.valueOf(t3d.x)).doubleValue(),
 					new BigDecimal(String.valueOf(t3d.y)).doubleValue(),
@@ -124,8 +128,13 @@ public class FunctionEvaluator {
 	}
 	
 	
-	public ComplexNumber evaluate(String fun, ComplexNumber z0, ComplexNumber compConst) {
-		return this.evaluate(fun.replaceAll("c","("+compConst.toString()+")").replaceAll("C","("+compConst.toString()+")").replaceAll("i","*i"),z0);
+	public ComplexNumber evaluate(String function, ComplexNumber z0, ComplexNumber compConst) {
+		function = function.replaceAll("P", String.valueOf(Math.PI))
+				.replaceAll("p", String.valueOf(Math.PI));
+		function = function.replaceAll("c", "(" + compConst.toString().replaceAll("i", "*i") + ")")
+				.replaceAll("C", "(" + compConst.toString().replaceAll("i", "*i") + ")");
+
+		return this.evaluate(function, z0);
 	}
 	
 	

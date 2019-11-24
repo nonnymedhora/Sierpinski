@@ -150,8 +150,8 @@ public class Expr {
 			"sin", "cos", "tan", "cot", "sec", "csc", "arcsin", "arccos", "arctan", "exp", "ln", "log10", "log2",
 			"abs", "sqrt" };
 
-	private String[] mathConstants = { "PI", "E" }; // Mathematical
-													// Constants
+	/*private String[] mathConstants = { "PI", "E" }; // Mathematical
+													// Constants*/	
 	private double eval(final Tuple3d t3d) { 
 		return this.eval(t3d.x,t3d.y,t3d.z);
 	}
