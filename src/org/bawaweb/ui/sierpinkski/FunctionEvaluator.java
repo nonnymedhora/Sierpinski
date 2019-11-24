@@ -30,6 +30,9 @@ public class FunctionEvaluator {
 	}
 	
 	public double evaluate(final String funcString, final Tuple3d t3d) {
+		if (t3d.x == Double.NaN || t3d.y == Double.NaN || t3d.z == Double.NaN) {
+			return Double.NaN;
+		}
 		return this.evaluate(funcString,
 					new BigDecimal(String.valueOf(t3d.x)).doubleValue(),
 					new BigDecimal(String.valueOf(t3d.y)).doubleValue(),
@@ -78,10 +81,15 @@ public class FunctionEvaluator {
 	}
 
 	public ComplexNumber evaluate(final String funcString, final ComplexNumber z0) {
-		// System.out.print("\nf(z) = " + funcString.trim());
+		//	System.out.println("\nf(z) = " + funcString.trim());
 		if (funcString.length() == 0) {
 			System.out.println("Err___line");
 			return null;
+		}
+
+		if (z0.isNaN() || z0 == null) {
+			System.out.println("Err___line2");
+			return new ComplexNumber(Double.NaN, Double.NaN);
 		}
 
 		try {
@@ -92,15 +100,16 @@ public class FunctionEvaluator {
 			System.out.println(e.getMessage());
 		}
 
-		/*
-		 * If complexNumber is not a legal complex number, print an error
-		 * message. Otherwise, compute f(x) and return the result.
-		 */
-		// System.out.print("\nz = ");
-		if (z0 == null) {
-			System.out.println("Err___line2");
-			return null;
-		}
+//		/*
+//		 * If complexNumber is not a legal complex number, print an error
+//		 * message. Otherwise, compute f(x) and return the result.
+//		 */
+//		// System.out.print("\nz = ");
+//		if (z0 == null) {
+//			System.out.println("Err___line2");
+//			return null;
+//		}
+		
 		try {
 			z = z0;
 		} catch (NumberFormatException e) {
@@ -115,6 +124,9 @@ public class FunctionEvaluator {
 	}
 	
 	
+	public ComplexNumber evaluate(String fun, ComplexNumber z0, ComplexNumber compConst) {
+		return this.evaluate(fun.replaceAll("c","("+compConst.toString()+")").replaceAll("C","("+compConst.toString()+")").replaceAll("i","*i"),z0);
+	}
 	
 	
 	public static void main(String[] args) {
@@ -153,6 +165,17 @@ public class FunctionEvaluator {
 		}
 		
 		
+		//3
+		String formula = "(z-C)/(z+C)";
+		ComplexNumber compConst = new ComplexNumber(5,-1.5);		
+		ComplexNumber zz = new ComplexNumber(3,4);
+		System.out.println("z is: "+zz);
+		System.out.println("C is: "+compConst);
+		System.out.println("Formula is:-- "+formula);
+		System.out.println("Result is: "+funcEval.evaluate(formula,zz,compConst));
+		
+		
 	}
+
 }
 

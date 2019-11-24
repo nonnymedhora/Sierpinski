@@ -352,6 +352,8 @@ public class Julia extends FractalBase {
 		String func2Apply = this.useFuncConst;
 		String pxFunc2Apply = this.useFuncPixel;
 		
+		boolean pxFuncHasConst = (pxFunc2Apply.indexOf('c') > -1 || pxFunc2Apply.indexOf('C') > -1);
+		
 		if (this.isSavePixelInfo2File()) {
 			if (!this.isComplexNumConst) {
 				if (func2Apply.equals("None")) {
@@ -395,7 +397,24 @@ public class Julia extends FractalBase {
 					z0 = this.getPixelComplexValue(y0, x0);
 				}
 				
-				z0 = this.computePixel(pxFunc2Apply, z0);
+				if (!pxFuncHasConst) {
+					z0 = this.computePixel(pxFunc2Apply, z0);
+				} else {
+					ComplexNumber cConst;
+
+					if (isComplexNumConst || this.complex == null) {
+						if (!preStringComplexConstConstruct) {
+							cConst = new ComplexNumber(this.complexConst, 0);
+						} else {
+							cConst = this.complex;
+						}
+					} else {
+						cConst = this.complex;
+					}
+
+					z0 = this.computePixel(pxFunc2Apply, z0, cConst);
+				}
+				
 				if (z0.isNaN()) {
 					continue;
 				}
@@ -600,7 +619,13 @@ public class Julia extends FractalBase {
 		return cConst;
 	}
 	
-	
+	private ComplexNumber computePixel(String fun, ComplexNumber z0, ComplexNumber compConst) {
+		if (this.applyCustomFormula) {
+			return new FunctionEvaluator().evaluate(fun, z0, compConst);
+		}
+		return null;
+	}
+
 	private ComplexNumber computePixel(String fun, ComplexNumber z0) {
 		if (!this.applyCustomFormula) {
 			switch (fun) {

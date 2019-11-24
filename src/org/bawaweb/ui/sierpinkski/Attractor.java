@@ -293,6 +293,10 @@ public abstract class Attractor {
 			if (! (existingTuple.x == Double.NaN || existingTuple.y == Double.NaN || existingTuple.z == Double.NaN)) {
 				Tuple3d updatedTuple = this.update(existingTuple, dt);
 				
+				if (updatedTuple.x == Double.NaN || updatedTuple.y == Double.NaN || updatedTuple.z == Double.NaN) {
+					return spaceMap;
+				}
+
 				this.addUpdatedTuples(i, existingTuple, updatedTuple);
 				
 				tempDummyTuple = updatedTuple;
