@@ -24,7 +24,7 @@ public class AttractorsGenerator extends JFrame {
 	public static final int WIDTH = 600;
 	public static final int HEIGHT = 600;
 	public static final int DEPTH = 600;
-	/*static final*/ int maxIter = 1500000;
+	private int maxIter = 1500000;
 	private String space2d = "z-x";
 
 	private String attractorName;
@@ -108,10 +108,10 @@ System.out.println("Done with AttractorsGenerator - paint ^__^");
 				rangeMap = this.setRangeMapVals(rangeMap, attrSpaceMap);
 			}
 
-			for (int i = 0; i < maxIter; i++) {
+			for (int i = 0; i < this.maxIter; i++) {
 				for (int j = 0; j < attrs.length; j++) {
 					attrs[j].draw(i, g, rangeMap);
-					pause(10);
+					/*pause(10);*/
 				}
 			}
 			System.out.println("Done" + System.currentTimeMillis());
