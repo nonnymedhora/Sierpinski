@@ -39,8 +39,8 @@ public class Julia extends FractalBase {
 	public final ComplexNumber C2 = new ComplexNumber(-0.75,0.11);			//c= -0.75+0.11*i
 	public final ComplexNumber C3 = new ComplexNumber(-0.1,0.651);			//c=-0.1+0.651*i
 
-	public final ComplexNumber M1 = new ComplexNumber((Math.PI/2),(Math.PI/2)*(0.6));			//[pi/2*(1.0 + 0.6i)]";	//f(z) = z^2 + ...
-	public final ComplexNumber M2 = new ComplexNumber((Math.PI/2),(Math.PI/2)*(0.4));			//[pi/2*(1.0 + 0.4i)]";	//f(z) = z^2 + ...
+	public final ComplexNumber M1 = new ComplexNumber((Math.PI/2),(Math.PI/2)*(0.6));			//[π/2*(1.0 + 0.6i)]";	//f(z) = z^2 + ...
+	public final ComplexNumber M2 = new ComplexNumber((Math.PI/2),(Math.PI/2)*(0.4));			//[π/2*(1.0 + 0.4i)]";	//f(z) = z^2 + ...
 	
 	
 
@@ -549,8 +549,8 @@ public class Julia extends FractalBase {
 		if (isComplexNumConst || this.complex == null) {
 			if (!preStringComplexConstConstruct) {
 				cConst = new ComplexNumber(this.complexConst, 0);
-			}else{
-				cConst=this.complex;
+			} else {
+				cConst = this.complex;
 			}
 		} else {
 			cConst = this.complex;
@@ -621,7 +621,10 @@ public class Julia extends FractalBase {
 	
 	private ComplexNumber computePixel(String fun, ComplexNumber z0, ComplexNumber compConst) {
 		if (this.applyCustomFormula) {
-			return new FunctionEvaluator().evaluate(fun, z0, compConst);
+			fun = fun.replaceAll("c", "(" + compConst.toString().replaceAll("i", "*i") + ")")
+					.replaceAll("C", "(" + compConst.toString().replaceAll("i", "*i") + ")");
+
+			return new FunctionEvaluator().evaluate(fun, z0);//, compConst);
 		}
 		return null;
 	}

@@ -404,8 +404,9 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
 	}
 
 	public boolean isNaN() {
-		return Double.isNaN(this.real) || Double.isNaN(this.imaginary) || Double.isInfinite(this.real)
-				|| Double.isInfinite(this.imaginary);
+		boolean isNan = Double.isNaN(this.real) || Double.isNaN(this.imaginary);
+		boolean isInfinite = Double.isInfinite(this.real) || Double.isInfinite(this.imaginary);
+		return isNan || isInfinite;
 	}
 	
 	
