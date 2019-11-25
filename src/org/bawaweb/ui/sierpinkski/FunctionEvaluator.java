@@ -20,7 +20,7 @@ public class FunctionEvaluator {
 	String type = "Complex"; // other is "Real"
 
 	/////////// for Real /////////////////
-	double xR; // A value of x for which f(x,y,z) is to be calculated.
+	double xR = 0.0; // A value of x for which f(x,y,z) is to be calculated.
 	double yR = 0.0; // in case its for lesser dimension
 	double zR = 0.0;
 
@@ -75,8 +75,7 @@ public class FunctionEvaluator {
 			if (funcString.indexOf('i') == -1) {
 				expression = new Expr(funcString, "Real");
 			} else {
-				/*return 0.0;//*/
-				expression = new Expr(this.processForI(funcString),"Complex");
+				return 0.0;// expression = new Expr(this.processForI(funcString),"Complex");
 			}
 		} catch (IllegalArgumentException e) {
 			// An error was found in the input. Print an error message
@@ -156,12 +155,12 @@ public class FunctionEvaluator {
 		for (int i = 0; i < iSplits.length; i++) {
 			String aSplit = iSplits[i];
 			funcString += aSplit;
-			if ( (aSplit.length() == 0) && (i == 0) && funcString.equals(aSplit))  {
+			if ((aSplit.length() == 0) && (i == 0) && funcString.equals(aSplit)) {
 				funcString += "i*";
 				continue;
 			}
-			
-			if (aSplit.length() != 1) {
+
+			if (aSplit.length() != 1 && i != iSplits.length - 1) {
 				boolean isPrvsCharDigit = this.isLastCharDigit(funcString);
 				boolean isPrvsCharCloseBrace = this.isLastCharCloseBrace(funcString);
 				if (isPrvsCharDigit || isPrvsCharCloseBrace) {
@@ -171,9 +170,24 @@ public class FunctionEvaluator {
 				boolean isPrvsCharOperator = this.isLastCharOperator(funcString);
 				if (isPrvsCharOperator) {
 					funcString += "i";
-				} 
+				}
+			} else {
+				if (i != iSplits.length - 1) {
+					boolean isPrvsCharDigit = this.isLastCharDigit(funcString);
+					boolean isPrvsCharCloseBrace = this.isLastCharCloseBrace(funcString);
+					if (isPrvsCharDigit || isPrvsCharCloseBrace) {
+
+						funcString += "*i";
+						continue;
+
+					}
+					boolean isPrvsCharOperator = this.isLastCharOperator(funcString);
+					if (isPrvsCharOperator) {
+						funcString += "i";
+					}
+				}
 			}
-			
+
 		}
 		return funcString;
 	}
@@ -544,7 +558,7 @@ public class FunctionEvaluator {
 		System.out.println("Formula is:-- "+formula);
 		System.out.println("Result is: "+funcEval.evaluate(formula,zz));*/
 		
-		//5
+		/*//5
 		formula="exp(z-i)";						//"i((z-i)/(z+i))+1.56i";
 		System.out.println("Formula is:-- "+formula);
 		String[] iSplits = formula.split("i");
@@ -557,9 +571,9 @@ public class FunctionEvaluator {
 		System.out.println("z is: "+zz);
 		System.out.println("C is: "+compConst);
 		System.out.println("Formula is:-- "+formula);
-		System.out.println("Result is: "+funcEval.evaluate(formula,zz));
+		System.out.println("Result is: "+funcEval.evaluate(formula,zz));*/
 		
-		//6
+		/*//6
 		formula = "(1/sqrt(2*Pi))*exp(((-Z)^2)/2)";
 		zz = new ComplexNumber("100.0 + 8.597662771285476i");
 		System.out.println("(6)z is: "+zz);
@@ -567,12 +581,20 @@ public class FunctionEvaluator {
 		System.out.println("Formula is:-- "+formula);
 		System.out.println("Result is: "+funcEval.evaluate(formula,zz));
 		
-		/*	f(z)	(1/sqrt(2*Pi))*exp(((-Z)^2)/2)
+			f(z)	(1/sqrt(2*Pi))*exp(((-Z)^2)/2)
 		 * f(100.0 + 8.597662771285476i) is undefined.
 f(100.0 + 8.564273789649416i) is undefined.
 f(100.0 + 8.530884808013356i) is undefined.
 f(100.0 + 8.497495826377296i) is undefined.
 f(100.0 + 8.464106844741234i) is undefined.*/
+		
+		//7
+		formula = "5*(y-x)+cos(y)";
+		Tuple3d tuple3d = new Tuple3d(10.0,15.0,0.0);
+		System.out.println("(7)t3d is: "+tuple3d);
+		System.out.println("Formula is:-- "+formula);
+		/*System.out.println("Processed 4 i\n"+funcEval.processForI(formula));*/
+		System.out.println("Result is: "+funcEval.evaluate(formula,tuple3d));
 		
 		
 	}
