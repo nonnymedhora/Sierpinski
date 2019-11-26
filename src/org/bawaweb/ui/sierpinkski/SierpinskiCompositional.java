@@ -3170,10 +3170,24 @@ class SierpinskiComboPanel extends JPanel {
 		Julia[] julies = new Julia[totalVaryCount];
 
 		for (int i = 0; i < totalVaryCount; i++) {
-			julies[i] = new Julia(ps[i]);
+			Runtime.getRuntime().gc();
+			
+			try {
+				julies[i] = new Julia(this.correctProperties(ps[i]));
+			} catch (IllegalArgumentException e1) {
+				e1.printStackTrace();
+				System.out.println(e1.getMessage());
+				JOptionPane.showMessageDialog(null, "BAaaAD Properties\n"+e1.getMessage(), "One key has NULL value",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 			julies[i].setVisible(false); // make invisible
 			/*julies[i].setAreaSize(this.juliaSize);
 			julies[i].setRotation(this.rotation);*/
+			/**
+			 * 
+			 * //need-to-set-4-booleans,as-properties-sends-strings-only
+			julies[i].setApplyCustomFormula(this.diyJApplyFormulaZ);*/
 
 			/////// reassign 2 UI - 4 formulaArea
 			this.constFuncChoice = julies[i].getUseFuncConst();
@@ -3232,6 +3246,7 @@ class SierpinskiComboPanel extends JPanel {
 
 //			julies[i].reset();			----DOWENEEDTHIS-4-julia
 
+			Runtime.getRuntime().gc();
 			/// done1---now-to-imaging
 
 			Graphics2D g = julies[i].getBufferedImage().createGraphics();
@@ -3282,6 +3297,22 @@ class SierpinskiComboPanel extends JPanel {
 	
 	
 	
+	private Properties correctProperties(Properties props) {
+		for (Object key : props.keySet()) {
+			Object val = props.get(key);
+
+			if (val == null) {
+				throw new IllegalArgumentException("Error, null value for key: "+key);
+			} else if (!(val instanceof String)) {
+				if (val instanceof Boolean) {
+					props.put(key, String.valueOf(val));
+				}
+			}
+
+		}
+		return props;
+	}
+
 	private List<String> getTrueFalseList(){
 		return asList( new String[]{"true","false"});
 	}
@@ -3378,14 +3409,14 @@ class SierpinskiComboPanel extends JPanel {
 					}
 				}
 			}
-			ps[i].put("applyCustomFormula", this.diyJApplyFormulaZ);
+			ps[i].put("applyCustomFormula", String.valueOf(this.diyJApplyFormulaZ));
 			
-			ps[i].put("isZSq", this.applyZSq);
-			ps[i].put("isFatou", this.applyFatou);
-			ps[i].put("isClassicJulia", this.applyClassicJulia);
+			ps[i].put("isZSq", String.valueOf(this.applyZSq));
+			ps[i].put("isFatou", String.valueOf(this.applyFatou));
+			ps[i].put("isClassicJulia", String.valueOf(this.applyClassicJulia));
 			
-			ps[i].put("areaSize",this.juliaSize);
-			ps[i].put("rotation",this.rotation);
+			ps[i].put("areaSize",String.valueOf(this.juliaSize));
+			ps[i].put("rotation",String.valueOf(this.rotation));
 				
 			
 		}
@@ -7898,6 +7929,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaGenBu.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				Runtime.getRuntime().gc();
 				doJuliaGenerateCommand();				
 			}});
 		//////////////////////////endsGeneratorListeners/////////////////////////

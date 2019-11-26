@@ -415,9 +415,9 @@ public class Julia extends FractalBase {
 					z0 = this.computePixel(pxFunc2Apply, z0, cConst);
 				}
 				
-				if (z0.isNaN()) {
+				/*if (z0.isNaN()) {
 					continue;
-				}
+				}*/
 
 				if (this.isFatou()) {
 					z0 = this.getFatouValue(z0);
