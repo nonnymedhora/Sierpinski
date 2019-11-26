@@ -76,15 +76,13 @@ public class AttractorsGenerator extends JFrame {
 	@Override
 	public void paint(Graphics g1) {
 		super.paint(g1);
-		//BufferedImage img = this.getBufferedImage();
-		//Graphics2D g2 = img.createGraphics();
 		Graphics2D g2 = (Graphics2D) g1;
-		this.drawAttractors(g2);
-		//g2.drawImage(img, 0, 0, null);
-
-		//this.setImage(img);
-System.out.println("Done with AttractorsGenerator - paint ^__^");
+		Graphics2D offScreenGraphics = this.getBufferedImage().createGraphics();
+		this.setImage(this.drawAttractors(offScreenGraphics));
+		g2.drawImage(this.getBufferedImage(), 0, 0, null);
+		System.out.println("Done with AttractorsGenerator - paint ^__^");
 		g2.dispose();
+		offScreenGraphics.dispose();
 	}
 	
 
@@ -97,7 +95,7 @@ System.out.println("Done with AttractorsGenerator - paint ^__^");
 		return this.bufferedImage;
 	}
 
-	private void drawAttractors(Graphics2D g) {
+	private BufferedImage drawAttractors(Graphics2D g) {
 		Attractor[] attrs = this.attractors;
 		if (attrs != null && attrs.length > 0) {
 			Map<String, Double> rangeMap = new HashMap<String, Double>();
@@ -116,6 +114,7 @@ System.out.println("Done with AttractorsGenerator - paint ^__^");
 			}
 			System.out.println("Done" + System.currentTimeMillis());
 		}
+		return this.getBufferedImage();
 
 //		
 //		

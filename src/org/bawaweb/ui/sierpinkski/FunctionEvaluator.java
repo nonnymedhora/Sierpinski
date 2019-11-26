@@ -45,11 +45,12 @@ public class FunctionEvaluator {
 		funcString = funcString.replaceAll("pi", String.valueOf(Math.PI));
 		funcString = funcString.replaceAll("π", String.valueOf(Math.PI));
 		
-		return this.evaluate(funcString,
-					new BigDecimal(String.valueOf(t3d.x)).doubleValue(),
+		if (!(t3d.x == Double.NaN || t3d.y == Double.NaN || t3d.z == Double.NaN)) {
+			return this.evaluate(funcString, new BigDecimal(String.valueOf(t3d.x)).doubleValue(),
 					new BigDecimal(String.valueOf(t3d.y)).doubleValue(),
-							new BigDecimal(String.valueOf(t3d.z)).doubleValue()
-			);
+					new BigDecimal(String.valueOf(t3d.z)).doubleValue());
+		}
+		return  Double.NaN;
 	}
 		
 
