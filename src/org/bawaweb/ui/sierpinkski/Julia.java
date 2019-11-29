@@ -52,14 +52,18 @@ public class Julia extends FractalBase {
 	
 	public Julia(Properties p) {
 		super(p);
-		
-		if (p.getProperty("isZSq") != null)
+//		new String[] { "None", "Fatou", "Z-Sq", "ClassicJ" });
+		if(p.getProperty("fieldType")!=null){
+			String fieldType = p.getProperty("fieldType").replaceAll(WHITESPACE,EMPTY);
+			this.setFieldType(fieldType);
+		}
+		/*if (p.getProperty("isZSq") != null)
 			this.setZSq(Boolean.parseBoolean(p.getProperty("isZSq").replaceAll(WHITESPACE,EMPTY)));
 		if (p.getProperty("isFatou") != null)
 			this.setFatou(Boolean.parseBoolean(p.getProperty("isFatou").replaceAll(WHITESPACE,EMPTY)));
 		if (p.getProperty("isClassicJulia") != null)
 			this.setClassicJulia(Boolean.parseBoolean(p.getProperty("isClassicJulia").replaceAll(WHITESPACE,EMPTY)));
-
+*/
 		if (p.getProperty("useDiff") != null)
 			this.setUseDiff(Boolean.parseBoolean(p.getProperty("useDiff").replaceAll(WHITESPACE,EMPTY)));
 		if (p.getProperty("isComplexNumConst") != null)
@@ -330,6 +334,36 @@ public class Julia extends FractalBase {
 	public void setFatou(boolean isFat) {
 		isFatou = isFat;
 	}
+
+	private String fieldType;
+	
+	public String getFieldType() {
+		return fieldType;
+	}
+
+
+	public void setFieldType(String fieldType) {
+		this.fieldType = fieldType;
+
+		if (this.fieldType.equals("None")) {
+			this.isFatou = false;
+			this.isZSq = false;
+			this.isClassicJulia = false;
+		} else if (this.fieldType.equals("Fatou")) {
+			this.isFatou = true;
+			this.isZSq = false;
+			this.isClassicJulia = false;
+		} else if (this.fieldType.equals("Z-Sq")) {
+			this.isFatou = false;
+			this.isZSq = true;
+			this.isClassicJulia = false;
+		} else if (this.fieldType.equals("ClassicJ")) {
+			this.isFatou = false;
+			this.isZSq = false;
+			this.isClassicJulia = true;
+		}
+	}
+	
 
 	/* (non-Javadoc)
 	 * @see org.bawaweb.ui.sierpinkski.FractalBase#createFractalShape(java.awt.Graphics2D)
