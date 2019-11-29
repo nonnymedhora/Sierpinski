@@ -3139,8 +3139,8 @@ class SierpinskiComboPanel extends JPanel {
 		
 		System.out.println("allCombinationsListSize==totalVaryCount  "+(allCombinationsList.size()==totalVaryCount ));
 		
-		Properties[] ps = new Properties[allCombinationsList.size()];
-		ps = shuffle(this.getAllCombinationProperties(allCombinationsList));
+		Properties[] props = new Properties[allCombinationsList.size()];
+		props = shuffle(this.getAllCombinationProperties(allCombinationsList));
 //		ps = this.getAllCombinationProperties(allCombinationsList);
 
 		
@@ -3190,7 +3190,7 @@ class SierpinskiComboPanel extends JPanel {
 			Runtime.getRuntime().gc();
 			
 			try {
-				julies[i] = new Julia(this.correctProperties(ps[i]));
+				julies[i] = new Julia(this.correctProperties(props[i]));
 			} catch (IllegalArgumentException e1) {
 				e1.printStackTrace();
 				System.out.println(e1.getMessage());
@@ -7035,11 +7035,13 @@ class SierpinskiComboPanel extends JPanel {
 				break;
 			case JULIA:
 				extra += ""+JULIA+"_";
-				extra += "P("+this.power+"),";
-				if(this.compConst!=0.0)
-					extra+="C("+this.compConst+"),";
+				extra += "P(" + this.power + "),";
+				if (this.compConst != 0.0)
+					extra += "C(" + this.compConst + "),";
 				else
-					extra+="C("+this.complex+"),";
+					extra += "C(" + this.complex + "),";
+				if (!this.fieldLines.equals("None")) 
+					extra += this.fieldLines + ",";			
 				extra += "B(" + this.juliaBound + "),";
 				extra += "MxIt(" + this.juliaMaxIter + "),";
 				extra += "Cx(" + this.juliaXC + "),";
@@ -7065,6 +7067,8 @@ class SierpinskiComboPanel extends JPanel {
 			case diyJulia:
 				extra += "DIY_"+JULIA+"_";
 				extra += "P("+this.diyJuliaPower+"),";
+				if (!this.fieldLines.equals("None")) 
+					extra += this.fieldLines + ",";			
 				
 				extra += "B(" + this.diyJuliaBound + "),";
 				extra += "MxIt(" + this.diyJuliaMaxIter + "),";
