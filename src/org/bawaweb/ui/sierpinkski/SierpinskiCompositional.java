@@ -1304,7 +1304,7 @@ class SierpinskiComboPanel extends JPanel {
 		
 
 
-		this.diyJuliaPanel.add(this.diyJuliaUseLyapunovExpCb);
+//		this.diyJuliaPanel.add(this.diyJuliaUseLyapunovExpCb);
 		
 		this.diyJuliaFieldLinesBG.add(diyJuliaFieldNoneRB);
 		this.diyJuliaFieldLinesBG.add(diyJuliaFieldFatouRB);
@@ -1587,7 +1587,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.juliaOptionsPanel.add(this.juliaCombos);		
 		this.juliaOptionsPanel.add(this.juliaUseDiffCb);
 
-		this.juliaOptionsPanel.add(this.juliaUseLyapunovExpCb);
+//		this.juliaOptionsPanel.add(this.juliaUseLyapunovExpCb);
 		
 		this.juliaFieldLinesBG.add(this.juliaFieldNoneRB);
 		this.juliaFieldLinesBG.add(this.juliaFieldFatouRB);
