@@ -102,7 +102,8 @@ class SierpinskiComboPanel extends JPanel {
 	private static final int[][] COLOR_SAMPLE_STARTVAL_ARRAYS = new int[][] {FractalBase.POW2_4_200, FractalBase.POW2_2_128, FractalBase.POW2_2_F4, FractalBase.POW3_3_243, FractalBase.EQUAL_PARTS_40, FractalBase.EQUAL_PARTS_50, FractalBase.EQUAL_PARTS_25};
 	private static final int[][] COLOR_SAMPLE_DIV_ARRAYS = new int[][] {FractalBase.FRST_SIX_PRIMES, FractalBase.FRST_SIX_ODDS, FractalBase.FRST_SIX_FIBS};
 	
-	private static final String[] COLOR_OPTIONS = new String[]{"BlackWhite","ColorPalette","ComputeColor"/*,"Random"*/,"SampleMix"};
+	private static final String[] COLOR_OPTIONS = new String[] { "ColorPalette", "ComputeColor" };
+	private static final String[] COLOR_OPTIONS_ALL = new String[]{"BlackWhite","ColorPalette","ComputeColor"/*,"Random"*/,"SampleMix"};
 	private static final String[] FUNCTION_OPTIONS = {"None","sine","cosine","tan","arcsine","arccosine","arctan","reciprocal", "reciprocalSquare","square","cube","exponent(e)","root",/*"cube-root",*/"log(e)"};
 	private static final String[] PIX_TRANSFORM_OPTIONS = {"none", "absolute", "absoluteSquare","reciprocal", "reciprocalSquare", "square", "cube","root", "exponent", "log(10)", "log(e)", "sine", "cosine", "tangent", "arcsine", "arccosine", "arctangent"};
 	
@@ -683,7 +684,8 @@ class SierpinskiComboPanel extends JPanel {
 	protected JComboBox<Double> rotateCombo;
 
 	private JComboBox<String> colorChoiceCombo = new JComboBox<String>(COLOR_OPTIONS);
-	private String colorChoice = "BlackWhite";
+	private String colorChoice = "ColorPalette";
+	private final JCheckBox showAllColorsCb = new JCheckBox("Show All Colors", false);
 	private JButton buColorChooser = new JButton("ColorChooser");
 	
 	
@@ -855,6 +857,7 @@ class SierpinskiComboPanel extends JPanel {
 		// creates-color-choice-options
 		this.add(new JLabel("Choose Color:"));
 		this.add(this.colorChoiceCombo);
+		this.add(this.showAllColorsCb);
 //		this.add(this.buColorChooser);
 		
 		this.add(this.colorSampleMixStartValsLabel);
@@ -1053,6 +1056,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.rotateCombo.setVisible(true);
 		
 		this.colorChoiceCombo.setVisible(false);
+		this.showAllColorsCb.setVisible(false);
 
 		this.constFuncCombo.setVisible(false);
 
@@ -1186,6 +1190,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.rotateCombo.setVisible(true);
 		
 		this.colorChoiceCombo.setVisible(true);
+		this.showAllColorsCb.setVisible(true);
 
 		this.constFuncCombo.setVisible(true);
 
@@ -1269,6 +1274,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.rotateCombo.setVisible(false);
 
 		this.colorChoiceCombo.setVisible(true);
+		this.showAllColorsCb.setVisible(true);
 
 		this.diyApolloPanel.add(new JLabel("C1"));
 		this.diyApolloPanel.add(this.diyApolloC1Combos);
@@ -1283,6 +1289,7 @@ class SierpinskiComboPanel extends JPanel {
 
 	private void createDiyJuliaPanel() {
 		this.colorChoiceCombo.setVisible(true);
+		this.showAllColorsCb.setVisible(true);
 
 		this.constFuncCombo.setVisible(true);
 		
@@ -1467,6 +1474,7 @@ class SierpinskiComboPanel extends JPanel {
 
 	private void createDiyMandelbrotPanel() {
 		this.colorChoiceCombo.setVisible(true);
+		this.showAllColorsCb.setVisible(true);
 		
 		this.constFuncCombo.setVisible(true);
 		
@@ -1519,6 +1527,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.rotLabel.setVisible(true);
 		this.rotateCombo.setVisible(true);
 		this.colorChoiceCombo.setVisible(true);
+		this.showAllColorsCb.setVisible(true);
 
 		this.constFuncCombo.setVisible(true);
 
@@ -1568,6 +1577,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.rotLabel.setVisible(true);
 		this.rotateCombo.setVisible(true);
 		this.colorChoiceCombo.setVisible(true);
+		this.showAllColorsCb.setVisible(true);
 		
 		this.constFuncCombo.setVisible(true);
 
@@ -1613,6 +1623,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.rotateCombo.setVisible(false);
 		}
 		this.colorChoiceCombo.setVisible(false);
+		this.showAllColorsCb.setVisible(false);
 
 		this.apolloOptionsPanel.add(new JLabel("CurvatureOptions:"));
 		this.apolloOptionsPanel.add(this.curvCombos);
@@ -1627,6 +1638,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.rotateCombo.setVisible(false);
 		}
 		this.colorChoiceCombo.setVisible(false);
+		this.showAllColorsCb.setVisible(false);
 
 		this.fannyOptionsPanel.add(new JLabel("Dimension Size:"));
 		this.fannyOptionsPanel.add(this.sideCombos);
@@ -1638,8 +1650,9 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(this.fannyOptionsPanel);
 	}
 	
-	private void createKochSnowFlakePanel(){
+	private void createKochSnowFlakePanel() {
 		this.colorChoiceCombo.setVisible(false);
+		this.showAllColorsCb.setVisible(false);
 		
 		this.kochSnowFlakePanel.add(this.kochFillExternalCb);
 		this.kochSnowFlakePanel.add(this.kochMixColorsCb);
@@ -1651,6 +1664,7 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private void createSierpinskiTPanel() {
 		this.colorChoiceCombo.setVisible(false);
+		this.showAllColorsCb.setVisible(false);
 		
 		this.sierpinskiTPanel.add(this.sierpinskiTFillInnerCb);
 		
@@ -4700,10 +4714,10 @@ class SierpinskiComboPanel extends JPanel {
 //		colorChoice
 		final String colorChoice = "colorChoice=";
 		if (this.diyJuliaVaryColorCb.isSelected() && this.diyJuliaVaryColor) {
-			String[] colr_options_no_sampl = new String[] { colorChoice+"BlackWhite", colorChoice+"ColorPalette", colorChoice+"ComputeColor" };
-			List<String> cl1 = asList(colr_options_no_sampl);
+			String[] colr_options_no_sampl = new String[] { /*colorChoice+"BlackWhite", */colorChoice+"ColorPalette", colorChoice+"ComputeColor" };
+			/*List<String> cl1 =*/return asList(colr_options_no_sampl);
 
-			List<?> cl2 = product(this.getAppendStr2List("startVals=", asList(COLOR_SAMPLE_STARTVAL_OPTIONS)), this.getAppendStr2List("divVals=",asList(COLOR_SAMPLE_DIV_OPTIONS)));
+			/*List<?> cl2 = product(this.getAppendStr2List("startVals=", asList(COLOR_SAMPLE_STARTVAL_OPTIONS)), this.getAppendStr2List("divVals=",asList(COLOR_SAMPLE_DIV_OPTIONS)));
 			List<?> allSampls = product(asList(new String[] { colorChoice+"SampleMix" }), cl2);
 
 			Object[] sampsArr = allSampls.toArray();
@@ -4716,7 +4730,7 @@ class SierpinskiComboPanel extends JPanel {
 
 			List<?> allColrsList = asList(allColrsArr);
 
-			return allColrsList;
+			return allColrsList;*/
 		} else {
 			final String colorChosen = (String) this.colorChoiceCombo.getSelectedItem();
 			if (!colorChosen.equals("SampleMix")) {
@@ -4735,10 +4749,11 @@ class SierpinskiComboPanel extends JPanel {
 
 	private int getVaryJuliaColorCount() {
 		if (this.diyJuliaVaryColorCb.isSelected()) {
-			int count = COLOR_OPTIONS.length - 1;
+			/*int count = COLOR_OPTIONS.length - 1;
 			count += (COLOR_SAMPLE_STARTVAL_OPTIONS.length * COLOR_SAMPLE_DIV_OPTIONS.length);
 			System.out.println("In_getVaryColorCount count = " + count);
-			return count;
+			return count;*/
+			return COLOR_OPTIONS.length;
 		} else {
 			return 1;
 		}
@@ -7027,7 +7042,7 @@ class SierpinskiComboPanel extends JPanel {
 		return extra;
 	}
 
-	private void doPrintCommand(){
+	private void doPrintCommand() {
 		PrinterJob printJob = PrinterJob.getPrinterJob();
 		BufferedImage image = this.getFractalImage();
 		printJob.setPrintable(new Printable() {
@@ -7081,6 +7096,18 @@ class SierpinskiComboPanel extends JPanel {
 					
 				}
 			}});
+		
+		this.showAllColorsCb.setActionCommand("ShowAllColors");
+		this.showAllColorsCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					colorChoiceCombo.setModel(new DefaultComboBoxModel<String>(COLOR_OPTIONS_ALL));
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					colorChoiceCombo.setModel(new DefaultComboBoxModel<String>(COLOR_OPTIONS));
+				}
+			}
+        });
 		
 		this.colorSampleMixStartValsCombo.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
@@ -7581,11 +7608,13 @@ class SierpinskiComboPanel extends JPanel {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyJuliaVaryColorCommand(true);
 					colorChoiceCombo.setEnabled(false);
+					showAllColorsCb.setEnabled(false);
 					colorSampleMixStartValsCombo.setEnabled(false);
 					colorSampleDivValsCombo.setEnabled(false);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
 					doSelectDiyJuliaVaryColorCommand(false);
 					colorChoiceCombo.setEnabled(true);
+					showAllColorsCb.setEnabled(true);
 
 					if (colorChoiceCombo.getSelectedItem().equals("SampleMix")) {
 						colorSampleMixStartValsCombo.setVisible(true);
