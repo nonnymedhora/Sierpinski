@@ -1,0 +1,8 @@
+DeJong		(Peter DeJong)
+2D
+// xt+1 = sin(a * yt) - cos(b * xt)
+// yt+1 = sin(c * xt) - cos(d * yt)
+
+sin(a * y) - cos(b *x)
+sin(c * x) - cos(d * y)
+

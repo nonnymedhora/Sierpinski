@@ -1,0 +1,22 @@
+ExtractFrom	3252
+Graphics2D g = julies[i].getBufferedImage().createGraphics();
+ExtractTo		3287
+Runtime.getRuntime().gc();//System.gc();
+
+3273
+final BufferedImage joinedFractalDataImage = FractalBase.joinBufferedImage(julies[i].getBufferedImage(),
+						dataInfoImg);
+
+
+OutOfMemoryError___SierpinskiComboPanel
+Generated File: images_gen\Julia__Vary[Colr,CustFormula,F(C),Sz]_1574801776018\[DIY_Julia_P(2),B(2.0),MxIt(1000),Cx(0.0),Cy(0.0),Sz(7.0),CustFormula,CONST]_1574862565380.png
+Exception in thread "AWT-EventQueue-0" java.lang.OutOfMemoryError: Java heap space
+	at java.awt.image.DataBufferInt.<init>(DataBufferInt.java:75)
+	at java.awt.image.Raster.createPackedRaster(Raster.java:467)
+	at java.awt.image.DirectColorModel.createCompatibleWritableRaster(DirectColorModel.java:1032)
+	at java.awt.image.BufferedImage.<init>(BufferedImage.java:333)
+	at org.bawaweb.ui.sierpinkski.FractalBase.joinBufferedImage(FractalBase.java:452)
+	at org.bawaweb.ui.sierpinkski.SierpinskiComboPanel.doJuliaGenerateCommand(SierpinskiCompositional.java:3273)
+	at org.bawaweb.ui.sierpinkski.SierpinskiComboPanel.access$126(SierpinskiCompositional.java:2922)
+	at org.bawaweb.ui.sierpinkski.SierpinskiComboPanel$59.actionPerformed(SierpinskiCompositional.java:7933)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2022)

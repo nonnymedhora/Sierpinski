@@ -17,6 +17,7 @@ public abstract class Attractor {
 	private boolean is3D = true;
 	private String space2dAxes = "x-z";
 	private Map<Integer,Tuple3d> updatedTuples = new LinkedHashMap<Integer,Tuple3d>();
+	private boolean isPixellated = false;		//	Fractal rendered by lines, or pixels
 
 	public Attractor(double x, double y, double z, Color c) {
 		this.setT3d(new Tuple3d(x, y, z));
@@ -72,6 +73,14 @@ public abstract class Attractor {
 
 	public String getName() {
 		return name;
+	}
+
+	public boolean isPixellated() {
+		return this.isPixellated;
+	}
+
+	public void setPixellated(boolean toPixellate) {
+		this.isPixellated = toPixellate;
 	}
 
 	public Tuple3d update(final Tuple3d tuple, final double dt) {
@@ -132,10 +141,37 @@ public abstract class Attractor {
 		
 		if (scaledExistingTuple != null && scaledUpdatedTuple != null) {
 			g2.setColor(this.color);
-			drawLine(g2, scaledExistingTuple, scaledUpdatedTuple);
+
+			if (this.isPixellated) {
+				drawRect(g2, scaledExistingTuple, scaledUpdatedTuple);
+			} else {
+				drawLine(g2, scaledExistingTuple, scaledUpdatedTuple);
+			}
 		}
 	}
 	
+	private void drawRect(Graphics2D g, Tuple3d existing, Tuple3d updated) {
+		if (this.space2dAxes.equals("x-z")) {
+			g.drawRect((int) existing.x, (int) existing.z, 0, 0);
+			g.drawRect((int) updated.x, (int) updated.z, 0, 0);
+		} else if (this.space2dAxes.equals("x-y")) {
+			g.drawRect((int) existing.x, (int) existing.y, 0, 0);
+			g.drawRect((int) updated.x, (int) updated.y, 0, 0);
+		} else if (this.space2dAxes.equals("y-z")) {
+			g.drawRect((int) existing.y, (int) existing.z, 0, 0);
+			g.drawRect((int) updated.y, (int) updated.z, 0, 0);
+		} else if (this.space2dAxes.equals("z-x")) {
+			g.drawRect((int) existing.z, (int) existing.x, 0, 0);
+			g.drawRect((int) updated.z, (int) updated.x, 0, 0);
+		} else if (this.space2dAxes.equals("y-x")) {
+			g.drawRect((int) existing.y, (int) existing.x, 0, 0);
+			g.drawRect((int) updated.y, (int) updated.x, 0, 0);
+		} else if (this.space2dAxes.equals("z-y")) {
+			g.drawRect((int) existing.z, (int) existing.y, 0, 0);
+			g.drawRect((int) updated.z, (int) updated.y, 0, 0);
+		}
+	}
+
 	private void drawLine(Graphics2D g2, Tuple3d scaledExistingTuple, Tuple3d scaledUpdatedTuple) {
 		if (this.space2dAxes.equals("x-z")) {
 			g2.drawLine(
@@ -171,7 +207,7 @@ public abstract class Attractor {
 			boolean zOk = t.z <= AttractorsGenerator.DEPTH || t.z >= 0;
 			if (!(xOk || yOk || zOk))
 				System.out.println("UhOhOttaScale  x[" + t.x + "], y[" + t.y + "], z[" + t.z + "]");
-		}else{
+		} else {
 			if (!(xOk || yOk))
 				System.out.println("UhOhOttaScale  x[" + t.x + "], y[" + t.y + "]");
 		}
@@ -183,7 +219,6 @@ public abstract class Attractor {
 	}
 
 	void drawAxes(Graphics2D g2) {
-		// 4now doing x-z axis only
 		int xCentr = AttractorsGenerator.WIDTH / 2;
 		int yCentr = AttractorsGenerator.HEIGHT / 2;
 		int zCentr=Integer.MIN_VALUE;
