@@ -48,6 +48,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
@@ -753,14 +754,19 @@ class SierpinskiComboPanel extends JPanel {
 	private final JComboBox<String> attractorChoiceCombos = new JComboBox<String>(attractorChoiceOptions);
 	private final JCheckBox attractorDimChoiceCb = new JCheckBox("3D",true);
 	private boolean isAttractorDimSpace3D = true;
+	private final JCheckBox attractorPixellateChoiceCb = new JCheckBox("Pixellate",true);
+	private boolean isAttractorPixellated = true;
 	
 	private final JCheckBox attractorSingularChoiceCb = new JCheckBox("Plot Single Attractor",false);
 	private boolean isSingularAttractor = false;
 	
 	private String attractorSelectionChoice;
+	
 	private JTextField attr1SeedX_tf = new JTextField(2);
 	private JTextField attr1SeedY_tf = new JTextField(2);
 	private JTextField attr1SeedZ_tf = new JTextField(2);
+	private JButton attr1ColorChooserBu = new JButton();
+	private Color attractor1Color;
 	
 	/*private double attr1SeedXVal;	
 	private double attr1SeedYVal;	
@@ -769,10 +775,17 @@ class SierpinskiComboPanel extends JPanel {
 	private JTextField attr2SeedX_tf = new JTextField(2);
 	private JTextField attr2SeedY_tf = new JTextField(2);
 	private JTextField attr2SeedZ_tf = new JTextField(2);
+	private JButton attr2ColorChooserBu = new JButton();
+	private Color attractor2Color;
 	
 	/*private double attr2SeedXVal;	
 	private double attr2SeedYVal;	
 	private double attr2SeedZVal;*/
+	private List<JTextField> attrSeed_X_tfList = new ArrayList<JTextField>();
+	private List<JTextField> attrSeed_Y_tfList = new ArrayList<JTextField>();
+	private List<JTextField> attrSeed_Z_tfList = new ArrayList<JTextField>();
+	
+	JButton addAttrBu = new JButton("Add", new ImageIcon("res/add.gif"));
 	
 
 	private JTextField attrMaxIter_tf = new JTextField(2);
@@ -1064,11 +1077,19 @@ class SierpinskiComboPanel extends JPanel {
 		this.constFuncCombo.setVisible(false);
 
 		this.pxFuncCombo.setVisible(false);
+		
+		this.attrSeed_X_tfList.add(this.attr1SeedX_tf);
+		this.attrSeed_X_tfList.add(this.attr2SeedX_tf);
+		this.attrSeed_Y_tfList.add(this.attr1SeedY_tf);
+		this.attrSeed_Y_tfList.add(this.attr2SeedY_tf);
+		this.attrSeed_Z_tfList.add(this.attr1SeedZ_tf);
+		this.attrSeed_Z_tfList.add(this.attr2SeedZ_tf);
 
 		this.attractorsPanel.add(new JLabel("Choose Atractor:"));
 		this.attractorsPanel.add(this.attractorChoiceCombos);	
 		
 		this.attractorsPanel.add(this.attractorDimChoiceCb);
+		this.attractorsPanel.add(this.attractorPixellateChoiceCb);
 		
 		this.attractorsPanel.add(this.attractorSingularChoiceCb);
 		//lorenz parameters	
@@ -1135,6 +1156,8 @@ class SierpinskiComboPanel extends JPanel {
 		this.attractorsPanel.add(this.attr1SeedY_tf);
 		this.attractorsPanel.add(new JLabel("   Z:"));
 		this.attractorsPanel.add(this.attr1SeedZ_tf);
+		this.attr1ColorChooserBu./*createToolTip().*/setToolTipText("Choose Attractor1 color");
+		this.attractorsPanel.add(this.attr1ColorChooserBu);
 		
 		this.attractorsPanel.add(new JLabel("Attractor2  Seed   X:"));
 		this.attractorsPanel.add(this.attr2SeedX_tf);
@@ -1142,6 +1165,12 @@ class SierpinskiComboPanel extends JPanel {
 		this.attractorsPanel.add(this.attr2SeedY_tf);
 		this.attractorsPanel.add(new JLabel("   Z:"));
 		this.attractorsPanel.add(this.attr2SeedZ_tf);
+		this.attr2ColorChooserBu/*.createToolTip()*/.setToolTipText("Choose Attractor2 color");
+		this.attractorsPanel.add(this.attr2ColorChooserBu);
+
+		this.addAttrBu.setSize(20, 20);
+		this.attractorsPanel.add(this.addAttrBu);
+		
 		
 		/////CUSTOM	--	staysHiden
 		this.attractorsPanel.add(this.attrCustomFormulaStrLabel );
@@ -5504,10 +5533,13 @@ class SierpinskiComboPanel extends JPanel {
 		String attractorSelected = this.attractorSelectionChoice;
 		boolean is3D = this.isAttractorDimSpace3D;
 		boolean isSingular = this.isSingularAttractor;
+		boolean isPixellated = this.isAttractorPixellated;
 		
 		double x1S = Double.NaN;
 		double y1S = Double.NaN;
 		double z1S = Double.NaN;
+		Color color1 = this.attractor1Color;
+		Color color2 = this.attractor2Color;
 
 		double x2S = Double.NaN;
 		double y2S = Double.NaN;
@@ -5551,7 +5583,7 @@ class SierpinskiComboPanel extends JPanel {
 				double beta = Double.parseDouble(this.attrLorenzBeta_tf.getText());
 				double rho = Double.parseDouble(this.attrLorenzRho_tf.getText());
 
-				l1 = new LorenzAttractor(x1S, y1S, z1S, Color.blue, space2d);
+				l1 = new LorenzAttractor(x1S, y1S, z1S, color1, space2d);
 				l1.setMaxIter(maxIter);
 
 				l1.setSigma(sigma);
@@ -5559,17 +5591,19 @@ class SierpinskiComboPanel extends JPanel {
 				l1.setRho(rho);
 				
 				l1.setIs3D(is3D);
+				l1.setPixellated(isPixellated);
 				
 				l1.setSpace2dAxes(space2d);
 
 				if (!isSingular) {
-					l2 = new LorenzAttractor(x2S, y2S, z2S, Color.red, space2d);
+					l2 = new LorenzAttractor(x2S, y2S, z2S, color2, space2d);
 					l2.setMaxIter(maxIter);
 
 					l2.setSigma(sigma);
 					l2.setBeta(beta);
 					l2.setRho(rho);
 					l2.setIs3D(is3D);
+					l2.setPixellated(isPixellated);
 
 					l2.setSpace2dAxes(space2d);
 					
@@ -5596,7 +5630,7 @@ class SierpinskiComboPanel extends JPanel {
 				double eVal = Double.parseDouble(this.attrAizawaE_tf.getText().trim());
 				double fVal = Double.parseDouble(this.attrAizawaF_tf.getText().trim());
 				
-				az1 = new AizawaAttractor(x1S, y1S, z1S, Color.blue, space2d);
+				az1 = new AizawaAttractor(x1S, y1S, z1S, color1, space2d);
 				az1.setMaxIter(maxIter);
 				
 				az1.setA(aVal);
@@ -5607,11 +5641,12 @@ class SierpinskiComboPanel extends JPanel {
 				az1.setF(fVal);
 				
 				az1.setIs3D(is3D);
+				az1.setPixellated(isPixellated);
 				
 				az1.setSpace2dAxes(space2d);
 				
 				if (!isSingular) {
-					az2 = new AizawaAttractor(x2S, y2S, z2S, Color.red, space2d);
+					az2 = new AizawaAttractor(x2S, y2S, z2S, color2, space2d);
 					
 					az2.setMaxIter(maxIter);
 					
@@ -5623,6 +5658,7 @@ class SierpinskiComboPanel extends JPanel {
 					az2.setF(fVal);
 					
 					az2.setIs3D(is3D);
+					az2.setPixellated(isPixellated);
 					
 					az2.setSpace2dAxes(space2d);
 				}
@@ -5647,7 +5683,7 @@ class SierpinskiComboPanel extends JPanel {
 				double cVal = Double.parseDouble(this.attrDeJongC_tf.getText().trim());
 				double dVal = Double.parseDouble(this.attrDeJongD_tf.getText().trim());
 				
-				d1 = new DeJongAttractor(x1S, y1S, z1S, Color.blue, space2d);
+				d1 = new DeJongAttractor(x1S, y1S, z1S, color1, space2d);
 				
 				d1.setMaxIter(maxIter);
 				
@@ -5657,11 +5693,12 @@ class SierpinskiComboPanel extends JPanel {
 				d1.setD(dVal);
 				
 				d1.setIs3D(is3D);
+				d1.setPixellated(isPixellated);
 				
 				d1.setSpace2dAxes(space2d);
 				
 				if (!isSingular) {
-					d2 = new DeJongAttractor(x2S, y2S, z2S, Color.red, space2d);
+					d2 = new DeJongAttractor(x2S, y2S, z2S, color2, space2d);
 					
 					d2.setMaxIter(maxIter);
 					
@@ -5671,6 +5708,7 @@ class SierpinskiComboPanel extends JPanel {
 					d2.setD(dVal);
 					
 					d2.setIs3D(is3D);
+					d2.setPixellated(isPixellated);
 					
 					d2.setSpace2dAxes(space2d);
 					
@@ -5695,7 +5733,7 @@ class SierpinskiComboPanel extends JPanel {
 				String deltaYFormula = this.attrCustom_DeltaYFormula_tf.getText().trim();
 				String deltaZFormula = is3D?this.attrCustom_DeltaZFormula_tf.getText().trim():null;
 				
-				cust1 = new CustomAttractor(x1S, y1S, z1S, Color.blue, space2d);
+				cust1 = new CustomAttractor(x1S, y1S, z1S, color1, space2d);
 				
 				cust1.setMaxIter(maxIter);
 				
@@ -5706,11 +5744,12 @@ class SierpinskiComboPanel extends JPanel {
 				}
 				
 				cust1.setIs3D(is3D);
+				cust1.setPixellated(isPixellated);
 
 				cust1.setSpace2dAxes(space2d);
 				
 				if (!isSingular) {
-					cust2 = new CustomAttractor(x2S, y2S, z2S, Color.red, space2d);
+					cust2 = new CustomAttractor(x2S, y2S, z2S, color2, space2d);
 					
 					cust2.setMaxIter(maxIter);
 					
@@ -5721,6 +5760,7 @@ class SierpinskiComboPanel extends JPanel {
 					}
 					
 					cust1.setIs3D(is3D);
+					cust2.setPixellated(isPixellated);
 
 					cust2.setSpace2dAxes(space2d);
 				}
@@ -8632,7 +8672,7 @@ class SierpinskiComboPanel extends JPanel {
 				doSelectAttractorChoiceCombosCommand(attractorChoiceVal);				
 			}
 		});
-		
+
 		this.attractorDimChoiceCb.addItemListener(new ItemListener() {
             @Override
 			public void itemStateChanged(ItemEvent event) {
@@ -8640,6 +8680,17 @@ class SierpinskiComboPanel extends JPanel {
 					doSelectAttractorDimChoiceCommand(true);
 				} else if(event.getStateChange()==ItemEvent.DESELECTED){
 					doSelectAttractorDimChoiceCommand(false);
+				}
+			}
+        });
+
+		this.attractorPixellateChoiceCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectAttractorPixellateChoiceCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSelectAttractorPixellateChoiceCommand(false);
 				}
 			}
         });
@@ -8664,6 +8715,26 @@ class SierpinskiComboPanel extends JPanel {
 				doSelectAttractorSpace2DChoiceCombosCommand(attractorSpace2DChoiceVal);				
 			}
 		});
+		
+		this.attr1ColorChooserBu.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				attractor1Color = JColorChooser.showDialog(null, "Choose Attractor1 Color", Color.black);
+				attr1ColorChooserBu.setForeground(attractor1Color);
+				attr1ColorChooserBu.setBackground(attractor1Color);
+			}
+		});
+
+		this.attr2ColorChooserBu.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				attractor2Color = JColorChooser.showDialog(null, "Choose Attractor2 Color", Color.black);
+				attr2ColorChooserBu.setForeground(attractor2Color);	
+				attr2ColorChooserBu.setBackground(attractor2Color);
+			}
+		});
 	}
 
 	protected void doSelectSingularAttractorChoiceCommand(boolean isSingular) {
@@ -8679,6 +8750,10 @@ class SierpinskiComboPanel extends JPanel {
 			this.attr2SeedY_tf.setEnabled(true);
 			this.attr2SeedZ_tf.setEnabled(true);
 		}
+	}
+
+	private void doSelectAttractorPixellateChoiceCommand(boolean pixellateChoice) {
+		this.isAttractorPixellated = pixellateChoice;
 	}
 
 	private void doSelectAttractorDimChoiceCommand(boolean dimChoice) {
