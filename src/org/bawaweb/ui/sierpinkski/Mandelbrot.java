@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
 
@@ -126,6 +127,18 @@ public class Mandelbrot extends FractalBase {
 	public Mandelbrot(int mg, int ep, boolean useD, double bd, boolean complexNumIsConst) {
 		this(mg,ep,useD,complexNumIsConst);
 		this.setBound(bd);
+	}
+
+	public Mandelbrot(Properties p) {
+
+		if (p.getProperty("useDiff") != null)
+			this.setUseDiff(Boolean.parseBoolean(p.getProperty("useDiff").replaceAll(WHITESPACE,EMPTY)));
+		if (p.getProperty("isComplexNumConst") != null)
+			this.setComplexNumConst(Boolean.parseBoolean(p.getProperty("isComplexNumConst").replaceAll(WHITESPACE,EMPTY)));
+		if (p.getProperty("constReal") != null && p.getProperty("constImag") != null && !(p.getProperty("constReal").replaceAll(WHITESPACE,EMPTY).equals("DynamicConst") || p.getProperty("constImag").replaceAll(WHITESPACE,EMPTY).equals("DynamicConst")))
+			this.setComplex(Double.parseDouble(p.getProperty("constReal").replaceAll(WHITESPACE, EMPTY)),
+					Double.parseDouble(p.getProperty("constImag").replaceAll(WHITESPACE, EMPTY)));
+	
 	}
 
 	private static final long serialVersionUID = 13456L;
@@ -912,6 +925,13 @@ public class Mandelbrot extends FractalBase {
 	public void setComplex(ComplexNumber comp) {
 		this.complex = comp;
 	}
+	
+	/**
+	 * @param complex the complex to set
+	 */
+	public void setComplex(double realVal,double imagVal) {
+		this.complex = new ComplexNumber(realVal,imagVal);
+	}
 
 	public boolean isBuddha() {
 		return this.isBuddha;
@@ -943,6 +963,30 @@ public class Mandelbrot extends FractalBase {
 
 	public void setMotionParamJumpVal(double mpJumpVal) {
 		this.motionParamJumpVal = mpJumpVal;
+	}
+	
+	/**
+	 * @param useDiff the useDiff to set
+	 */
+	public void setUseDiff(boolean useDiff) {
+		this.useDiff = useDiff;
+	}
+
+
+	/**
+	 * @return the useDiff
+	 */
+	public boolean isUseDiff() {
+		return useDiff;
+	}
+
+	
+	public boolean isComplexNumConst() {
+		return this.isComplexNumConst;
+	}
+
+	public void setComplexNumConst(boolean isComplexNumConst) {
+		this.isComplexNumConst = isComplexNumConst;
 	}
 
 }

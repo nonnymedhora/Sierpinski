@@ -92,32 +92,30 @@ import javax.swing.SwingUtilities;
 class SierpinskiComboPanel extends JPanel {
 	private static final long serialVersionUID = 156478L;
 	private static final String eol = "<br/>";
-	
-	
-	
+
 	private static final String[] OPERATIONS = getOperations();
 
-	private static final Double[] BOUNDARIES = getBoundaryOptions();
-	private static final String[] COLOR_SAMPLE_STARTVAL_OPTIONS = new String[] {"POW2_4_200", "POW2_2_128", "POW2_2_F4", "POW3_3_243", "EQUAL_PARTS_40", "EQUAL_PARTS_50", "EQUAL_PARTS_25"};
-	private static final String[] COLOR_SAMPLE_DIV_OPTIONS = new String[] {"FRST_SIX_PRIMES", "FRST_SIX_ODDS", "FRST_SIX_FIBS"};
-	private static final int[][] COLOR_SAMPLE_STARTVAL_ARRAYS = new int[][] {FractalBase.POW2_4_200, FractalBase.POW2_2_128, FractalBase.POW2_2_F4, FractalBase.POW3_3_243, FractalBase.EQUAL_PARTS_40, FractalBase.EQUAL_PARTS_50, FractalBase.EQUAL_PARTS_25};
-	private static final int[][] COLOR_SAMPLE_DIV_ARRAYS = new int[][] {FractalBase.FRST_SIX_PRIMES, FractalBase.FRST_SIX_ODDS, FractalBase.FRST_SIX_FIBS};
+	private static final Double[] 	BOUNDARIES = getBoundaryOptions();
+	private static final String[] 	COLOR_SAMPLE_STARTVAL_OPTIONS 	= new String[] {"POW2_4_200", "POW2_2_128", "POW2_2_F4", "POW3_3_243", "EQUAL_PARTS_40", "EQUAL_PARTS_50", "EQUAL_PARTS_25"};
+	private static final String[] 	COLOR_SAMPLE_DIV_OPTIONS 		= new String[] {"FRST_SIX_PRIMES", "FRST_SIX_ODDS", "FRST_SIX_FIBS"};
+	private static final int[][] 	COLOR_SAMPLE_STARTVAL_ARRAYS 	= new int[][] {FractalBase.POW2_4_200, FractalBase.POW2_2_128, FractalBase.POW2_2_F4, FractalBase.POW3_3_243, FractalBase.EQUAL_PARTS_40, FractalBase.EQUAL_PARTS_50, FractalBase.EQUAL_PARTS_25};
+	private static final int[][] 	COLOR_SAMPLE_DIV_ARRAYS 		= new int[][] {FractalBase.FRST_SIX_PRIMES, FractalBase.FRST_SIX_ODDS, FractalBase.FRST_SIX_FIBS};
 	
-	private static final String[] COLOR_OPTIONS = new String[] { "ColorPalette", "ComputeColor" };
-	private static final String[] COLOR_OPTIONS_ALL = new String[]{"BlackWhite","ColorPalette","ComputeColor"/*,"Random"*/,"SampleMix"};
-	private static final String[] FUNCTION_OPTIONS = {"None","sine","cosine","tan","arcsine","arccosine","arctan","reciprocal", "reciprocalSquare","square","cube","exponent(e)","root",/*"cube-root",*/"log(e)"};
+	private static final String[] COLOR_OPTIONS 		= new String[] { "ColorPalette", "ComputeColor" };
+	private static final String[] COLOR_OPTIONS_ALL 	= new String[]{"BlackWhite","ColorPalette","ComputeColor"/*,"Random"*/,"SampleMix"};
+	private static final String[] FUNCTION_OPTIONS 		= {"None","sine","cosine","tan","arcsine","arccosine","arctan","reciprocal", "reciprocalSquare","square","cube","exponent(e)","root",/*"cube-root",*/"log(e)"};
 	private static final String[] PIX_TRANSFORM_OPTIONS = {"none", "absolute", "absoluteSquare","reciprocal", "reciprocalSquare", "square", "cube","root", "exponent", "log(10)", "log(e)", "sine", "cosine", "tangent", "arcsine", "arccosine", "arctangent"};
 	
-	private static final Integer[] EXPONENTS = new Integer[] { -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-	private static final Integer[] MAX_ITERATIONS = new Integer[] { 10, 50, 100, 200, 225, 255, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 2000, 3000, 5000, 7500, 10000 };
-	private static final Integer[] AREA_SIZES = new Integer[] { 10, 50, 100, 200, 225, 255, 500, 512, 599, 800, Integer.MAX_VALUE };
-	private static final Double[] CENTER_XY = new Double[] { -5.0, -4.5, -4.0, -3.5, -3.0, -2.5, -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0 };
-	private static final Double[] SCALE_SIZES = getScaleSizeOptions();//new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
-	private static final String[] POLY_RCMT_TYPES = new String[] { "Reverse", "Exchange", "Single", "Duplicate", "Exponent", "Power", "Default" };
-	private static final Integer[] FANNY_RATIOS = new Integer[] { 1, 2, 3, 4, 5, 6, 7 };
-	private static final Integer[] FANNY_SIZE_OPTIONS = new Integer[] { 50, 60, 70, 80, 90, 100, 120, 150, 170, 200, 250, 300, 350 };
-	private static final Integer[] APOLLO_MULTS = new Integer[]{ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
-	private static final Integer[] APOLLO_CURVES = new Integer[]{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 };
+	private static final Integer[] EXPONENTS 			= new Integer[] { -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	private static final Integer[] MAX_ITERATIONS 		= new Integer[] { 10, 50, 100, 200, 225, 255, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 2000, 3000, 5000, 7500, 10000 };
+	private static final Integer[] AREA_SIZES 			= new Integer[] { 10, 50, 100, 200, 225, 255, 500, 512, 599, 800, Integer.MAX_VALUE };
+	private static final Double[] CENTER_XY 			= new Double[] { -5.0, -4.5, -4.0, -3.5, -3.0, -2.5, -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0 };
+	private static final Double[] SCALE_SIZES 			= getScaleSizeOptions();//new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
+	private static final String[] POLY_RCMT_TYPES 		= new String[] { "Reverse", "Exchange", "Single", "Duplicate", "Exponent", "Power", "Default" };
+	private static final Integer[] FANNY_RATIOS 		= new Integer[] { 1, 2, 3, 4, 5, 6, 7 };
+	private static final Integer[] FANNY_SIZE_OPTIONS 	= new Integer[] { 50, 60, 70, 80, 90, 100, 120, 150, 170, 200, 250, 300, 350 };
+	private static final Integer[] APOLLO_MULTS 		= new Integer[]{ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
+	private static final Integer[] APOLLO_CURVES 		= new Integer[]{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 };
 	
 	//	for	z+C, z-C, z*C, z/C, z^C
 	private static final String[] PIX_CONST_OPRNS = OPERATIONS;
@@ -216,9 +214,9 @@ class SierpinskiComboPanel extends JPanel {
 	private final String[] juliaOptions = new String[] { J1, J2, J3, J4, J5, J6, J7, J8, J9, J10, J11};
 	private final JComboBox<String> juliaCombos = new JComboBox<String>(juliaOptions);
 	
-	//lyapunov exponent for set determination
-	private final JCheckBox juliaUseLyapunovExpCb = new JCheckBox("UseLyapunovExponentOnly", /*false*/true);
-	private boolean juliaUseLyapunovExponent=true;
+	// lyapunov exponent for set determination
+	private final JCheckBox juliaUseLyapunovExpCb = new JCheckBox("UseLyapunovExponentOnly", false );
+	private boolean juliaUseLyapunovExponent = false;
 	
 	//or use iterative escape algorithm
 	private final JCheckBox juliaUseDiffCb = new JCheckBox("UseDifferencesOnly", true);
@@ -245,9 +243,9 @@ class SierpinskiComboPanel extends JPanel {
 
 	// for Mandelbrot
 
-	//lyapunov exponent for set determination
-	private final JCheckBox mandUseLyapunovExpCb = new JCheckBox("UseLyapunovExponentOnly", /*false*/true);
-	private boolean mandUseLyapunovExponent=true;
+	// lyapunov exponent for set determination
+	private final JCheckBox mandUseLyapunovExpCb = new JCheckBox("UseLyapunovExponentOnly", false);
+	private boolean mandUseLyapunovExponent = false;
 	
 	private final Integer[] mandOptions = EXPONENTS;	//TODO	-	ok for now
 	private final JComboBox<Integer> mandCombos = new JComboBox<Integer>(mandOptions);
@@ -357,10 +355,7 @@ class SierpinskiComboPanel extends JPanel {
 
 	private double mandMotionParamJumpVal = 0.5;
 	
-	
-	
-	
-	
+	//////////////////////////////////////////////////////////////
 	// for DIY
 	//radioButton
 	protected JRadioButton diyMandRb = new JRadioButton(MANDELBROT,true);
@@ -377,11 +372,11 @@ class SierpinskiComboPanel extends JPanel {
 	private String diyFractChoice;
 	
 	//diy Mandelbrot options
-	protected int diyMandMagnification;		//v	mandOptions
-	protected int diyMandExponent;			//v	mandExpOptions
+	protected int diyMandMagnification;		//		mandOptions
+	protected int diyMandExponent;			//		mandExpOptions
 	protected double diyMandConstReal;
 	protected double diyMandConstImg;
-	protected boolean diyMandUseDiff;		//v	mandUseDiffCb
+	protected boolean diyMandUseDiff;		//		mandUseDiffCb
 	protected boolean diyMandKeepConst;
 	protected int diyMandMaxIter;
 	protected int diyMandSize;
@@ -392,12 +387,10 @@ class SierpinskiComboPanel extends JPanel {
 	protected double diyMandScaleSize;
 	
 	private final Integer[] diyMandMagOptions = EXPONENTS;
-	
 
-	//lyapunov exponent for set determination
-	private final JCheckBox diyMandUseLyapunovExpCb = new JCheckBox("UseLyapunovExponentOnly", /*false*/true);
-	private boolean diyMandUseLyapunovExponent=true;
-	
+	// lyapunov exponent for set determination
+	private final JCheckBox diyMandUseLyapunovExpCb = new JCheckBox("UseLyapunovExponentOnly", false);
+	private boolean diyMandUseLyapunovExponent = false;
 	
 	private final JComboBox<Integer> diyMandMagCombos = new JComboBox<Integer>(diyMandMagOptions);
 	private final Integer[] diyMandExpOptions = EXPONENTS;
@@ -445,10 +438,9 @@ class SierpinskiComboPanel extends JPanel {
 	protected double diyJuliaXC;
 	protected double diyJuliaYC;
 	protected double diyJuliaScaleSize;
-	
 
 	//lyapunov exponent for set determination
-	private final JCheckBox diyJuliaUseLyapunovExpCb = new JCheckBox("UseLyapunovExponentOnly", /*false*/true);
+	private final JCheckBox diyJuliaUseLyapunovExpCb = new JCheckBox("UseLyapunovExponentOnly", false);
 	private boolean diyJuliaUseLyapunovExponent=true;
 	
 	private final Integer[] diyJuliaPowerOptions = EXPONENTS;
@@ -486,7 +478,7 @@ class SierpinskiComboPanel extends JPanel {
 	private final JComboBox<Double> diyJuliaScaleSizeCombos = new JComboBox<Double>(diyJuliaScaleSizeOptions);
 	
 	/////////////////////////////////////////////////////////////////////////////
-	//Generator
+	//Generator	Julia
 	private final JCheckBox diyJuliaGenCb = new JCheckBox("Generate", false);
 
 	private JCheckBox diyJuliaVaryColorCb = new JCheckBox("Vary Color", false);
@@ -592,6 +584,114 @@ class SierpinskiComboPanel extends JPanel {
 	private boolean diyJuliaGen = false;
 	private JButton diyJuliaGenBu = new JButton("Generate Julia");
 	///////////////////////////////////////////////////////////////////////////
+	//	Generator	Mandelbrot
+
+private final JCheckBox diyMandGenCb = new JCheckBox("Generate", false);
+
+	private JCheckBox diyMandVaryColorCb = new JCheckBox("Vary Color", false);
+	private JCheckBox diyMandVaryPixXTranCb = new JCheckBox("Vary Pixel_X_Trans f(x)", false);
+	private JCheckBox diyMandVaryPixYTranCb = new JCheckBox("Vary Pixel_Y_Tran f(y)", false);
+	private JCheckBox diyMandVaryIntraPixXYCb = new JCheckBox("Vary Intra_Pixel_Op f(x,y)", false);
+	private JCheckBox diyMandVaryPixelZFuncCb = new JCheckBox("Vary Pixel_Complex f(Z)", false);
+	private JCheckBox diyMandVaryConstCFuncCb = new JCheckBox("Vary Constant Function f(C)", false);
+	private JCheckBox diyMandVaryPixelConstOpZCCb = new JCheckBox("Vary Pixel(Z)_Constant(C) Op O(Z,C)", false);
+	private JCheckBox diyMandVaryGenConstantCb = new JCheckBox("Vary Constant Value  C", false);
+	private JCheckBox diyMandVaryPixelPowerZCb = new JCheckBox("Vary Power Z^n", false);
+	private JCheckBox diyMandVaryIterCb = new JCheckBox("Vary MaxIterations", false);
+	private JCheckBox diyMandVaryBoundaryCb = new JCheckBox("Vary Boundary", false);
+	private JCheckBox diyMandVaryPixXCentrCb = new JCheckBox("Vary PixelCenter_X", false);
+	private JCheckBox diyMandVaryPixYCentrCb = new JCheckBox("Vary PixelCenter_Y", false);
+	private JCheckBox diyMandVaryScaleSizeCb = new JCheckBox("Vary Scale", false);
+	
+	private boolean diyMandVaryColor 		= false;			//diyMandVaryColorCb
+	private boolean diyMandVaryPixXTran 	= false;			//diyMandVaryPixXTranCb
+	private boolean diyMandVaryPixYTran 	= false;			//diyMandVaryPixYTranCb
+	private boolean diyMandVaryIntraPixXY 	= false;			//diyMandVaryIntraPixXYCb
+	private boolean diyMandVaryPixelZFunc 	= false;			//diyMandVaryPixelZFuncCb
+	private boolean diyMandVaryConstCFunc 	= false;			//diyMandVaryConstCFuncCb
+	private boolean diyMandVaryPixelConstOpZC 	= false;		//diyMandVaryPixelConstOpZCCb
+	private boolean diyMandVaryPixelPowerZ = false;			//diyMandVaryPixelPowerZCb
+	
+
+	private boolean diyMandVaryIter 		= false;			//diyMandVaryIterCb
+	private boolean diyMandVaryPixXCentr 	= false;			//diyMandVaryPixXCentrCb
+	private boolean diyMandVaryPixYCentr 	= false;			//diyMandVaryPixYCentrCb
+	
+	// diyMandVaryPixelPowerZCb applies here
+	private JLabel diyMandGenPixelPowerZFromLabel = new JLabel("PixelPowerZ [From]:");
+	private final JTextField diyMandGenPixelPowerZFromTf = new JTextField(2);
+	private JLabel diyMandGenPixelPowerZToLabel = new JLabel(" [To]:");
+	private final JTextField diyMandGenPixelPowerZToTf = new JTextField(2);
+	private JLabel diyMandGenPixelPowerZJumpLabel = new JLabel(" [Jump]");
+	private JComboBox<Integer> diyMandGenPixelPowerZJumpCombo = new JComboBox<Integer>(getPixelPowerZJumpOptions());
+
+	private int diyMandVaryPixelPowerZFromVal;
+	private int diyMandVaryPixelPowerZToVal;
+	private int diyMandVaryPixelPowerZJumpVal;
+	// ends
+	// diyMandVaryPixelPowerZCb applies here
+	
+	
+	//diyMandVaryScaleSizeCb applies here
+	private JLabel diyMandGenScaleSizeFromLabel = new JLabel("ScaleSize [From]:");
+	private final JTextField diyMandGenScaleSizeFromTf = new JTextField(5);
+	private JLabel diyMandGenScaleSizeToLabel = new JLabel(" [To]:");
+	private final JTextField diyMandGenScaleSizeToTf = new JTextField(5);
+	private JLabel diyMandGenScaleSizeJumpLabel = new JLabel(" [Jump]");	
+	private JComboBox<Double> diyMandGenScaleSizeJumpCombo = new JComboBox<Double>(getScaleSizeJumpOptions());
+	
+	private boolean diyMandVaryScaleSize = false;
+	private double diyMandVaryScaleSizeFromVal;
+	private double diyMandVaryScaleSizeToVal;
+	private double diyMandVaryScaleSizeJumpVal;
+	//ends
+	//diyMandVaryScaleSizeCb applies here
+	
+	//diyMandVaryBoundaryCb applies here
+	private JLabel diyMandGenBoundaryFromLabel = new JLabel("Boundary [From]:");
+	private final JTextField diyMandGenBoundaryFromTf = new JTextField(5);
+	private JLabel diyMandGenBoundaryToLabel = new JLabel(" [To]:");
+	private final JTextField diyMandGenBoundaryToTf = new JTextField(5);
+	private JLabel diyMandGenBoundaryJumpLabel = new JLabel(" [Jump]");	
+	private JComboBox<Double> diyMandGenBoundaryJumpCombo = new JComboBox<Double>(getBoundaryJumpOptions());
+	
+	private boolean diyMandVaryBoundary = false;
+	private double diyMandVaryBoundaryFromVal;
+	private double diyMandVaryBoundaryToVal;
+	private double diyMandVaryBoundaryJumpVal;
+	//ends
+	//diyMandVaryBoundaryCCb applies here
+	
+	//diyMandVaryGenConstantCb applies here
+	private JLabel diyMandGenRealFromLabel = new JLabel("Constant - Real [From]");
+	private final JTextField diyMandGenRealFromTf = new JTextField(5);
+	private JLabel diyMandGenRealToLabel = new JLabel(" Real [To]");
+	private final JTextField diyMandGenRealToTf = new JTextField(5);
+	private JLabel diyMandGenRealJumpLabel = new JLabel(" Real [Jump]");	
+	private JComboBox<Double> diyMandGenRealJumpCombo = new JComboBox<Double>(getConstantJumpOptions());
+	
+	private JLabel diyMandGenImagFromLabel = new JLabel(" Img [From]");
+	private final JTextField diyMandGenImagFromTf = new JTextField(5);
+	private JLabel diyMandGenImagToLabel = new JLabel(" Img [To]");
+	private final JTextField diyMandGenImagToTf = new JTextField(5);
+	private JLabel diyMandGenImagJumpLabel = new JLabel(" Img [Jump]");
+	private JComboBox<Double> diyMandGenImagJumpCombo = new JComboBox<Double>(getConstantJumpOptions());	
+	
+	private boolean diyMandVaryConstant = false;
+	private double diyMandGenRealFromVal;
+	private double diyMandGenRealToVal;
+	private double diyMandGenRealJumpVal;
+	private double diyMandGenImagFromVal;
+	private double diyMandGenImagToVal;
+	private double diyMandGenImagJumpVal;
+	
+	//ends
+	//diyMandVaryGenConstantCb applies here
+	
+	private boolean diyMandGen = false;
+	private JButton diyMandGenBu = new JButton("Generate Mandelbrot");
+	///////////////////////////////////////////////////////////////////////////
+	
 	///////////ends	Generator//////////////////////////////////////////////////
 	
 	
@@ -602,6 +702,16 @@ class SierpinskiComboPanel extends JPanel {
 	private String diyJApplyFormulaStr = "NONE";
 	
 	/////////////////ends apply function julia////////////////////////////////////
+
+	///////////////// apply function
+	///////////////// Mandelbrot///////////////////////////////////
+	private boolean diyMandApplyFormulaZ = false;
+	private JCheckBox diyMandApplyFormulaZCb = new JCheckBox("Apply Formula f(Z) = ", false);
+	private JTextField diyMandApplyFormulaTf = new JTextField(10);
+	private String diyMandApplyFormulaStr = "NONE";
+
+	///////////////// ends apply function
+	///////////////// Mandelbrot////////////////////////////////////
 		
 	//diy Apollo Options
 	protected int diyApolloC1;
@@ -621,8 +731,8 @@ class SierpinskiComboPanel extends JPanel {
 		
 	//POLY
 	private final Integer[] polyExpOptions = EXPONENTS;
-	private final JCheckBox polyUseLyapunovExpCb = new JCheckBox("UseLyapunovExponentOnly", /*false*/true);
-	private boolean polyUseLyapunovExponent=true;
+	private final JCheckBox polyUseLyapunovExpCb = new JCheckBox("UseLyapunovExponentOnly", false );
+	private boolean polyUseLyapunovExponent = false;
 	
 	private final JComboBox<Integer> polyExpCombos = new JComboBox<Integer>(polyExpOptions);
 	private final JCheckBox polyUseDiffCb = new JCheckBox("UseDifferencesOnly",true);
@@ -699,10 +809,6 @@ class SierpinskiComboPanel extends JPanel {
 	private final JLabel colorSampleDivValsLabel = new JLabel("Divisor Vals:");
 	private final JComboBox<String> colorSampleDivValsCombo = new JComboBox<String>(COLOR_SAMPLE_DIV_OPTIONS);
 	private String colorSampleDivVals = "FRST_SIX_PRIMES";
-	
-	
-	
-	
 	
 	
 	//for complexNumber z	= xtranformed operation ytrasnform
@@ -1233,7 +1339,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.polyOptionsPanel.add(this.polyUseDiffCb);
 		
 		
-		this.polyOptionsPanel.add(this.polyUseLyapunovExpCb);
+//		this.polyOptionsPanel.add(this.polyUseLyapunovExpCb);
 		
 		this.polyConstBg.add(this.polyKeepConstRb);
 		this.polyConstBg.add(this.polyCreateConstRb);
@@ -1522,7 +1628,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyMandPanel.add(this.diyMandUseDiffCb);
 		this.diyMandPanel.add(this.diyMandIsBuddhaCb);
 
-		this.diyMandPanel.add(this.diyMandUseLyapunovExpCb);
+//		this.diyMandPanel.add(this.diyMandUseLyapunovExpCb);
 		
 		this.diyMandelbrotConstBg.add(this.diyMandelbrotKeepConstRb);
 		this.diyMandelbrotConstBg.add(this.diyMandelbrotCreateConstRb);
@@ -1552,7 +1658,130 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyMandPanel.add(new JLabel("ScaleSize:"));
 		this.diyMandPanel.add(this.diyMandScaleSizeCombos);
 		
+		this.setupDiyMandGeneratorPanel();
+		
 		this.diyMandPanel.setVisible(false);
+	}
+
+	private void setupDiyMandGeneratorPanel() {
+		this.diyMandPanel.add(this.diyMandGenCb);
+		
+		this.diyMandVaryColorCb.setVisible(false);
+		this.diyMandPanel.add(this.diyMandVaryColorCb);
+		this.diyMandVaryPixXTranCb.setVisible(false);
+		this.diyMandPanel.add(this.diyMandVaryPixXTranCb);
+		this.diyMandVaryPixYTranCb.setVisible(false);
+		this.diyMandPanel.add(this.diyMandVaryPixYTranCb);
+		this.diyMandVaryIntraPixXYCb.setVisible(false);
+		this.diyMandPanel.add(this.diyMandVaryIntraPixXYCb);
+		
+		this.diyMandVaryPixelZFuncCb.setVisible(false);
+		this.diyMandPanel.add(this.diyMandVaryPixelZFuncCb);
+
+		this.diyMandVaryPixelPowerZCb.setVisible(false);
+		this.diyMandPanel.add(this.diyMandVaryPixelPowerZCb);
+
+		this.diyMandGenPixelPowerZFromLabel.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenPixelPowerZFromLabel);
+		this.diyMandGenPixelPowerZFromTf.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenPixelPowerZFromTf);
+		this.diyMandGenPixelPowerZToLabel.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenPixelPowerZToLabel);
+		this.diyMandGenPixelPowerZToTf.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenPixelPowerZToTf);
+		this.diyMandGenPixelPowerZJumpLabel.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenPixelPowerZJumpLabel);
+		this.diyMandGenPixelPowerZJumpCombo.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenPixelPowerZJumpCombo);
+
+		this.diyMandVaryConstCFuncCb.setVisible(false);
+		this.diyMandPanel.add(this.diyMandVaryConstCFuncCb);
+		this.diyMandVaryPixelConstOpZCCb.setVisible(false);
+		this.diyMandPanel.add(this.diyMandVaryPixelConstOpZCCb);
+		
+		this.diyMandVaryGenConstantCb.setVisible(false);
+		this.diyMandPanel.add(this.diyMandVaryGenConstantCb);		
+		
+		this.diyMandGenRealFromLabel.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenRealFromLabel);
+		this.diyMandGenRealFromTf.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenRealFromTf);
+		this.diyMandGenRealToLabel.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenRealToLabel);
+		this.diyMandGenRealToTf.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenRealToTf);
+		
+		this.diyMandGenRealJumpLabel.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenRealJumpLabel);
+		this.diyMandGenRealJumpCombo.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenRealJumpCombo);
+		
+
+		this.diyMandGenImagFromLabel.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenImagFromLabel);
+		this.diyMandGenImagFromTf.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenImagFromTf);
+		this.diyMandGenImagToLabel.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenImagToLabel);
+		this.diyMandGenImagToTf.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenImagToTf);
+		
+		this.diyMandGenImagJumpLabel.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenImagJumpLabel);
+		this.diyMandGenImagJumpCombo.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenImagJumpCombo);	
+
+		this.diyMandVaryIterCb.setVisible(false);
+		this.diyMandPanel.add(this.diyMandVaryIterCb);
+		
+		this.diyMandVaryBoundaryCb.setVisible(false);
+		this.diyMandPanel.add(this.diyMandVaryBoundaryCb);
+		this.diyMandGenBoundaryFromLabel.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenBoundaryFromLabel);
+		this.diyMandGenBoundaryFromTf.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenBoundaryFromTf);
+		this.diyMandGenBoundaryToLabel.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenBoundaryToLabel);
+		this.diyMandGenBoundaryToTf.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenBoundaryToTf);
+		this.diyMandGenBoundaryJumpLabel.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenBoundaryJumpLabel);	
+		this.diyMandGenBoundaryJumpCombo.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenBoundaryJumpCombo);
+		
+
+		this.diyMandVaryPixXCentrCb.setVisible(false);
+		this.diyMandPanel.add(this.diyMandVaryPixXCentrCb);
+
+		this.diyMandVaryPixYCentrCb.setVisible(false);
+		this.diyMandPanel.add(this.diyMandVaryPixYCentrCb);
+
+		this.diyMandVaryScaleSizeCb.setVisible(false);
+		this.diyMandPanel.add(this.diyMandVaryScaleSizeCb);
+		
+		this.diyMandGenScaleSizeFromLabel.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenScaleSizeFromLabel);
+		this.diyMandGenScaleSizeFromTf.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenScaleSizeFromTf);
+		this.diyMandGenScaleSizeToLabel.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenScaleSizeToLabel);
+		this.diyMandGenScaleSizeToTf.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenScaleSizeToTf);
+		this.diyMandGenScaleSizeJumpLabel.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenScaleSizeJumpLabel);	
+		this.diyMandGenScaleSizeJumpCombo.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenScaleSizeJumpCombo);
+		
+		this.diyMandApplyFormulaZCb.setVisible(true);
+		this.diyMandPanel.add(this.diyMandApplyFormulaZCb);
+		this.diyMandApplyFormulaTf.setVisible(false);
+		this.diyMandPanel.add(this.diyMandApplyFormulaTf);
+		
+		this.diyMandGenBu.setVisible(false);
+		
+		
+		
+		this.diyMandPanel.add(this.diyMandGenBu);
 	}
 
 	private void createMandelbrotPanel() {
@@ -1585,7 +1814,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.mandOptionsPanel.add(this.mandMotionParamJumpCombo);
 		this.mandMotionParamJumpCombo.setVisible(false);
 		
-		this.mandOptionsPanel.add(this.mandUseLyapunovExpCb);
+//		this.mandOptionsPanel.add(this.mandUseLyapunovExpCb);
 		
 		
 		this.mandOptionsPanel.add(new JLabel("Max Iterations:"));
@@ -2878,7 +3107,473 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaScaleSize = size;
 	}
 	///////////////////////////////////generator-methods///////////////////
+	//////////////	generator	Mandelbrot
+	private void doSelectDiyMandVaryColorCommand(boolean varyColor) {
+		this.diyMandVaryColor = varyColor;
+	}	
 
+	private void doSelectDiyMandVaryIntraPixXYCommand(boolean varyaryIntraPixXY) {
+		this.diyMandVaryIntraPixXY = varyaryIntraPixXY;
+	}
+	
+	private void doSelectDiyMandVaryPixYTranCommand(boolean varyPixYTran) {
+		this.diyMandVaryPixYTran = varyPixYTran;
+	}	
+
+	private void doSelectDiyMandVaryPixXTranCommand(boolean varyPixXTran) {
+		this.diyMandVaryPixXTran = varyPixXTran;
+	}	
+
+	private void doSelectDiyMandVaryPixelZFuncCommand(boolean varyPixelZFunc) {
+		this.diyMandVaryPixelZFunc = varyPixelZFunc;
+	}
+
+	private void doSelectDiyMandVaryConstCFuncCommand(boolean varyConstCFunc) {
+		this.diyMandVaryConstCFunc = varyConstCFunc;
+	}
+
+	private void doSelectDiyMandVaryPixelConstOpZCCommand(boolean varyPixelConstOpZC) {
+		this.diyMandVaryPixelConstOpZC = varyPixelConstOpZC;
+	}
+
+	private void doSelectDiyMandVaryGenConstantCommand(boolean varyGenConstant) {
+		this.diyMandVaryConstant = varyGenConstant;
+	}
+
+	private void doSelectDiyMandVaryPixelPowerZCommand(boolean varyPixelPowerZ) {
+		this.diyMandVaryPixelPowerZ = varyPixelPowerZ;
+	}
+	
+	private void doSelectDiyMandVaryIterCommand(boolean varyIter) {
+		this.diyMandVaryIter = varyIter;
+	}
+	
+	private void doSelectDiyMandVaryBoundaryCommand(boolean varyBoundary) {
+		this.diyMandVaryBoundary = varyBoundary;
+	}
+	
+	private void doSelectDiyMandVaryPixXCentrCommand(boolean varyPixXCentr) {
+		this.diyMandVaryPixXCentr = varyPixXCentr;
+	}
+	private void doSelectDiyMandVaryPixYCentrCommand(boolean varyPixYCentr) {
+		this.diyMandVaryPixYCentr = varyPixYCentr;
+	}
+	
+	private void doSelectDiyMandVaryScaleSizeCommand(boolean varyScaleSize) {
+		this.diyMandVaryScaleSize = varyScaleSize;
+	}
+	
+	private void doSelectDiyMandVaryPixelPowerZCombosCommand(Integer varyPixelPowerZJumpVal) {
+		this.diyMandVaryPixelPowerZJumpVal = varyPixelPowerZJumpVal;
+	}
+	
+	private void doSelectDiyMandVaryBoundaryJumpCombosCommand(Double varyBoundaryJumpVal) {
+		this.diyMandVaryBoundaryJumpVal = varyBoundaryJumpVal;
+	}
+	private void doSelectDiyMandVaryScaleSizeCombosCommand(Double varyScaleSizeJumpVal) {
+		this.diyMandVaryScaleSizeJumpVal = varyScaleSizeJumpVal;
+	}
+	
+	private void doSelectDiyMandApplyFormulaCommand(boolean apply) {
+		this.diyMandApplyFormulaZ = apply;
+	}
+
+	
+	private void doSetDiyMandGenCommand(boolean gen) {
+		this.diyMandGen = gen;
+		if (gen) {
+			this.keepConst = false;
+			this.buStart.setEnabled(false);
+			this.buSavePxStart.setEnabled(false);
+		}
+		this.formulaArea.setVisible(true);
+		this.doMandelbrotChoicesCheck();
+	}
+	
+	private void doSelectDiyMandGenRealJumpCombosCommand(Double realJump) {
+		this.diyMandGenRealJumpVal = realJump;
+	}
+	private void doSelectDiyMandGenImagJumpCombosCommand(Double imagJump) {
+		this.diyMandGenImagJumpVal = imagJump;
+	}
+	
+	private void doMandelbrotGenerateCommand() {
+		
+		if (this.diyMandVaryConstant && this.diyMandVaryGenConstantCb.isSelected()) {
+			System.out.println("in_doMandelbrotGenerateCommand_this.diyMandVaryConstant=true");
+			try {
+				this.diyMandGenRealFromVal = Double.parseDouble(this.diyMandGenRealFromTf.getText());
+				this.diyMandGenImagFromVal = Double.parseDouble(this.diyMandGenImagFromTf.getText());
+				this.diyMandGenRealToVal = Double.parseDouble(this.diyMandGenRealToTf.getText());
+				this.diyMandGenImagToVal = Double.parseDouble(this.diyMandGenImagToTf.getText());
+				
+				if(this.diyMandGenRealFromVal>this.diyMandGenRealToVal||this.diyMandGenImagFromVal>this.diyMandGenImagToVal){
+					JOptionPane.showMessageDialog(null, "From > To ???", "Please enter a valid range for Const-Real",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				
+			} catch (NumberFormatException | NullPointerException e2) {
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number \n"+e2.getMessage(), "Error - Not a Decimal",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			} 
+		}
+		
+		boolean varyConst = this.diyMandVaryConstant && this.diyMandVaryGenConstantCb.isSelected();
+		boolean varyKeepConst = (this.keepConst && this.diyMandelbrotKeepConstRb.isSelected()) && !varyConst;
+		
+		if (	!(varyConst && varyKeepConst) && 
+				!(this.diyMandVaryConstant && this.diyMandVaryGenConstantCb.isSelected())) {
+			try {
+				this.diyMandConstReal = Double.parseDouble(this.diyMandRealTf.getText());
+				this.diyMandConstImg = Double.parseDouble(this.diyMandImgTf.getText());
+			} catch (NumberFormatException | NullPointerException e2) {
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+		
+		if (this.diyMandVaryBoundary) {
+			System.out.println("in_doMandGenerateCommand_this.diyMandVaryBoundary=true");
+			try {
+				this.diyMandVaryBoundaryFromVal = Double.parseDouble(this.diyMandGenBoundaryFromTf.getText());
+				this.diyMandVaryBoundaryToVal = Double.parseDouble(this.diyMandGenBoundaryToTf.getText());
+				
+				if (this.diyMandVaryBoundaryFromVal > this.diyMandVaryBoundaryToVal) {
+					JOptionPane.showMessageDialog(null, "From > To ???", "Please enter a valid range for Boundary",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			} catch (NumberFormatException | NullPointerException e2) {
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number for Boundary\n"+e2.getMessage(), "Error - Not a Decimal",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			} 
+		}
+		
+		if (this.diyMandVaryScaleSize) {
+			System.out.println("in_doMandGenerateCommand_this.diyMandVaryScaleSize=true");
+			try {
+				this.diyMandVaryScaleSizeFromVal = Double.parseDouble(this.diyMandGenScaleSizeFromTf.getText());
+				this.diyMandVaryScaleSizeToVal = Double.parseDouble(this.diyMandGenScaleSizeToTf.getText());
+				if(this.diyMandVaryScaleSizeFromVal>this.diyMandVaryScaleSizeToVal){
+					JOptionPane.showMessageDialog(null, "From > To ???", "Please enter a valid range for ScaleSize",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			} catch (NumberFormatException | NullPointerException e2) {
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number for ScaleSize\n"+e2.getMessage(), "Error - Not a Decimal",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			} 
+		}
+
+		if (this.diyMandVaryPixelPowerZ) {
+			System.out.println("in_doMandGenerateCommand_this.diyMandVaryPixelPowerZ=true");
+			try {
+				this.diyMandVaryPixelPowerZFromVal = Integer.parseInt(this.diyMandGenPixelPowerZFromTf.getText());
+				this.diyMandVaryPixelPowerZToVal = Integer.parseInt(this.diyMandGenPixelPowerZToTf.getText());
+				if(this.diyMandVaryPixelPowerZFromVal>this.diyMandVaryPixelPowerZToVal){
+					JOptionPane.showMessageDialog(null, "From > To ???", "Please enter a valid range for PixelPowerZ",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			} catch (NumberFormatException | NullPointerException e2) {
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Please enter a valid Integer for PixelPowerZ\n"+e2.getMessage(), "Error - Not an Integer",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			} 
+		}
+		
+		final int varyColorCount = this.getVaryMandColorCount();
+		final List<?> varyColorList = this.getVaryMandColorsList();
+		
+		final int varyPixXTransCount = this.getVaryMandPixXTransCount();
+		final List<?> varyPixXTrList = this.getVaryMandPixXTransList();
+		
+		final int varyPixYTransCount = this.getVaryMandPixYTransCount();
+		final List<?> varyPixYTrList = this.getVaryMandPixYTransList();
+		
+		final int varyIntraPixXYOpCount = this.getVaryMandIntraPixXYOpCount();
+		final List<?> varyIntraPixXYOpList = this.getVaryMandIntraPixXYOpList();		
+		
+		final int varyZFuncCount = this.getVaryMandZFuncCount();
+		final List<?> varyZFuncList = this.getVaryMandZFuncList();
+		
+		final int varyConstCFuncCount = this.getVaryMandConstCFuncCount();
+		final List<?> varyConstCFuncList = this.getVaryMandConstCFuncList();
+		
+		final int varyPixelConstOpZCCount = this.getVaryMandPixelConstOpZCCount();
+		final List<?> varyPixelConstOpZCList = this.getVaryMandPixelConstOpZCList();
+		
+		final int powerFrom = this.diyMandVaryPixelPowerZFromVal;
+		final int powerTo = this.diyMandVaryPixelPowerZToVal;
+		final int powerJump = this.diyMandVaryPixelPowerZJumpVal;
+		final int varyPowerCount = this.getVaryMandPowerCount();		
+		final List<?> varyPowerList = this.getVaryMandPowerList(powerFrom, powerTo, powerJump, varyPowerCount);
+		
+		final int varyPixXCenterCount = this.getVaryMandPixXCenterCount();
+		final List<?> varyPixXCenterList = this.getVaryMandPixXCenterList();
+		
+		final int varyPixYCenterCount = this.getVaryMandPixYCenterCount();
+		final List<?> varyPixYCenterList = this.getVaryMandPixYCenterList();
+		
+		final int varyIterCount = this.getVaryMandIterCount();
+		final List<?> varyIterList = this.getVaryMandIterList();
+		
+		final int varyUseDiffCount = 2;
+		final List<?> varyUseDiffList = this.getAppendStr2List("useDiffChoice=",this.getTrueFalseList());
+		
+		final int varyInvertPixelCount = 2;
+		final List<?> varyInvertPixelList = this.getAppendStr2List("invertPixelCalcChoice=", this.getTrueFalseList());
+
+		final double scaleSizeFrom = this.diyMandVaryScaleSizeFromVal;
+		final double scaleSizeTo = this.diyMandVaryScaleSizeToVal;
+		final double scaleSizeJump = this.diyMandVaryScaleSizeJumpVal;
+		final int varyScaleSizeCount = this.getVaryMandScaleSizeCount();		
+		final List<?> varyScaleSizeList = this.getVaryMandScaleSizeList(scaleSizeFrom, scaleSizeTo, scaleSizeJump, varyScaleSizeCount);
+		
+		
+		final double boundaryFrom = this.diyMandVaryBoundaryFromVal;
+		final double boundaryTo = this.diyMandVaryBoundaryToVal;
+		final double boundaryJump = this.diyMandVaryBoundaryJumpVal;
+		final int varyBoundaryCount = this.getVaryMandBoundaryCount();
+		final List<?> varyBoundaryList = this.getVaryMandBoundaryList(boundaryFrom, boundaryTo, boundaryJump, varyBoundaryCount);
+		
+		
+		final double jRealFrom = this.diyMandGenRealFromVal;
+		final double jImagFrom = this.diyMandGenImagFromVal;
+		final double jRealTO = this.diyMandGenRealToVal;
+		final double jImagTO = this.diyMandGenImagToVal;		
+		final double realJumpVal = this.diyMandGenRealJumpVal;
+		final double imagJumpVal = this.diyMandGenImagJumpVal;
+		
+		final int varyRealConstantCount = this.getVaryMandRealConstantCount();
+		final List<?> varyRealConstList = this.getVaryMandRealConstantList(jRealFrom,jRealTO,realJumpVal,varyRealConstantCount);
+		
+		final int varyImagConstantCount = this.getVaryMandImagConstantCount();
+		final List<?> varyImagConstList = this.getVaryMandImagConstantList(jImagFrom,jImagTO,imagJumpVal,varyImagConstantCount);
+		
+		final List<?> varyConstList = this.getAppendStr2List("constantChoice=", this.product(varyRealConstList,varyImagConstList));
+
+//		System.out.println("getTotalVaryCount=" + this.getTotalVaryCount());
+//		System.out.println("getTotalVaryCount=HARDED-2-To5== " + 5);
+//		int totalVaryCount = this.getTotalVaryCount();//5;
+		
+		int totalVaryCount = varyColorCount * varyPixXTransCount * varyPixYTransCount * varyIntraPixXYOpCount * 
+				varyZFuncCount * varyConstCFuncCount * varyPixelConstOpZCCount  * 
+				varyPowerCount  * varyPixXCenterCount * varyPixYCenterCount  * 
+				varyScaleSizeCount * varyBoundaryCount  * varyIterCount * 
+				varyUseDiffCount * varyInvertPixelCount *
+				varyRealConstantCount * varyImagConstantCount;
+				
+		System.out.println("getTotalVaryCount=" + totalVaryCount);
+
+		if (totalVaryCount > 150) {
+			int ans = JOptionPane.showConfirmDialog(null, "Are You Sure needs to generate\n"+totalVaryCount+"images", "Are_You_Sure",
+					JOptionPane.YES_NO_CANCEL_OPTION);
+			if(ans!=JOptionPane.YES_OPTION){
+				return;
+			}
+		}
+		
+		final List<?> allCombinationsList = this.product(
+				varyColorList, varyPixXTrList, varyPixYTrList, varyIntraPixXYOpList,
+				varyZFuncList, varyConstCFuncList, varyPixelConstOpZCList,
+				varyPowerList, varyPixXCenterList, varyPixYCenterList,
+				varyScaleSizeList, varyBoundaryList, varyIterList,
+				varyUseDiffList, varyInvertPixelList,
+				varyConstList);
+		
+		System.out.println("allCombinationsListSize==totalVaryCount  "+(allCombinationsList.size()==totalVaryCount ));
+		
+		Properties[] props = new Properties[allCombinationsList.size()];
+		props = shuffle(this.getAllCombinationProperties(allCombinationsList));
+//		ps = this.getAllCombinationProperties(allCombinationsList);
+
+		
+		/*final*/ String subDirName;
+		/*if(!varyConst && !varyKeepConst) {
+			subDirName = "Mand_{(R)[" + String.format("%.2f", this.diyMandGenRealFromVal) + "_to_"
+					+ String.format("%.2f", this.diyMandGenRealToVal) + "],(I)["
+					+ String.format("%.2f", this.diyMandGenImagFromVal) + "_to_"
+					+ String.format("%.2f", this.diyMandGenImagToVal) + "]" + System.currentTimeMillis() + "}";
+		} else {
+			subDirName = "Mand_" + System.currentTimeMillis();
+		}*/
+
+		subDirName = MANDELBROT + "__Vary[";
+		
+		if (this.diyMandVaryColor)					subDirName += "Colr,";
+		if (this.diyMandVaryPixXTran)				subDirName += "F(x),";
+		if (this.diyMandVaryPixYTran)				subDirName += "F(y),";
+		if (this.diyMandVaryIntraPixXY)				subDirName += "I(xy),";
+		if (this.diyMandVaryPixelZFunc)				subDirName += "F(Z),";
+		if (this.diyMandApplyFormulaZ)				subDirName += "CustFormula,";
+		if (this.diyMandVaryConstant)				subDirName += "Const,";
+		if (this.diyMandVaryConstCFunc)				subDirName += "F(C),";
+		if (this.diyMandVaryPixelConstOpZC)			subDirName += "O(ZC),";
+		if (this.diyMandVaryPixelPowerZ)			subDirName += "X(Z),";
+		if (this.diyMandVaryIter)					subDirName += "M(It),";
+		if (this.diyMandVaryPixXCentr)				subDirName += "Cx,";
+		if (this.diyMandVaryPixYCentr)				subDirName += "Cy,";
+		if (this.diyMandVaryBoundary)				subDirName += "Bd,";
+		if (this.diyMandVaryScaleSize)				subDirName += "Sz,";
+		
+		subDirName = subDirName.substring(0, subDirName.length() - 1) + "]_" + System.currentTimeMillis();
+		
+		File subDir = new File("images_gen\\" + subDirName);
+		if (!subDir.exists()) {
+			subDir.mkdir();
+		}
+
+		File subDirDetail = new File(subDir, "Detail");
+		if (!subDirDetail.exists()) {
+			subDirDetail.mkdir();
+		}
+		
+		Mandelbrot[] mands = new Mandelbrot[totalVaryCount];
+
+		for (int i = 0; i < totalVaryCount; i++) {
+			Runtime.getRuntime().gc();
+			
+			try {
+				mands[i] = new Mandelbrot(this.correctProperties(props[i]));
+			} catch (IllegalArgumentException e1) {
+				e1.printStackTrace();
+				System.out.println(e1.getMessage());
+				JOptionPane.showMessageDialog(null, "BAaaAD Properties\n"+e1.getMessage(), "One key has NULL value",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			mands[i].setVisible(false); // make invisible
+
+			/**
+			 * 
+			 * //need-to-set-4-booleans,as-properties-sends-strings-only
+			mands[i].setApplyCustomFormula(this.diyMApplyFormulaZ);*/
+
+			/////// reassign 2 UI - 4 formulaArea
+			this.constFuncChoice = mands[i].getUseFuncConst();
+
+			// 4_getExtraInfo
+			this.diyMandExponent = mands[i].getPower();
+			this.diyMandBound = mands[i].getBound();
+			this.diyMandMaxIter = mands[i].getMaxIter();
+			this.diyMandXC = mands[i].getxC();
+			this.diyMandYC = mands[i].getyC();
+			this.diyMandScaleSize = mands[i].getScaleSize();
+
+			// 4_img_Base_Info
+			this.colorChoice = mands[i].getColorChoice();
+			if (this.colorChoice.equals("SampleMix")) {
+				/* this.setSampleColorMix(julies[i]); */
+
+				this.setSampleStart_DivVals(mands[i]);
+			}
+
+			String extraInfo = this.getExtraInfo();
+
+			String pxFunc = mands[i].getUseFuncPixel();
+			this.pxFuncChoice = pxFunc;
+
+			String pixXTr = mands[i].getPxXTransformation();
+			this.pixXTransform = pixXTr;
+			
+			String pixYTr = mands[i].getPxYTransformation();
+			this.pixYTransform = pixYTr;
+			
+			String pixIntraXYOp = mands[i].getPixXYOperation();
+			this.pixIntraXYOperation=pixIntraXYOp;
+			
+			String pixConstOp = mands[i].getPxConstOperation();
+			this.pxConstOprnChoice=pixConstOp;
+			
+
+			this.setDiyMandUseDiff(mands[i].isUseDiff());
+			this.invertPixelCalculation = mands[i].isReversePixelCalculation();
+			
+			if (!(mands[i].isComplexNumConst() || this.diyMandKeepConst || this.keepConst)
+					&&( this.diyMandelbrotKeepConstRb.isSelected() || this.diyMandVaryConstant) ) {
+				this.diyMandConstReal = mands[i].getComplex().real;
+				this.diyMandConstImg = mands[i].getComplex().imaginary;
+			} else {
+				this.keepConst = true;
+			}
+
+			
+			this.setDiyMandGenFormulaArea(pxFunc, this.diyMandExponent,pixXTr, pixYTr, pixIntraXYOp, pixConstOp);
+			this.formulaArea.append("<br/>Constant = " + this.diyMandConstReal + " + (" + this.diyMandConstImg
+					+ " * i)</font>" + eol);
+			//
+			this.addMandelbrotConstInfo(mands[i]);
+			Runtime.getRuntime().gc();
+			/// done1---now-to-imaging
+
+			Graphics2D g = mands[i].getBufferedImage().createGraphics();
+//			System
+			try {
+				mands[i].paint(g);
+			} catch (NullPointerException e1) {
+				e1.printStackTrace();
+				System.out.println(e1.getMessage());
+				JOptionPane.showMessageDialog(null, "BAaaAD Formula\n"+this.diyMandApplyFormulaStr, "IncorrectFormula",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+
+			this.setFractalImage(mands[i].getBufferedImage());
+
+			String imgBaseInfo = this.getImgBaseInfo();
+			BufferedImage dataInfoImg = this.createStringImage(imgBaseInfo);
+
+			String imageFilePath = "images_gen\\" + subDirName + "\\" + "[" + extraInfo + "]_"
+					+ System.currentTimeMillis() + ".png";
+			File outputfile = new File(imageFilePath);
+
+			String imageDetailFilePath = "images_gen\\" + subDirName + "\\Detail\\" + "[" + extraInfo + "]_Detail_"
+					+ System.currentTimeMillis() + ".png";
+			File outputDetailfile = new File(imageDetailFilePath);
+
+			try {
+				ImageIO.write(mands[i].getBufferedImage(), "png", outputfile);
+				System.out.println("Generated File: " + imageFilePath);
+
+				final BufferedImage joinedFractalDataImage = FractalBase.joinBufferedImage(mands[i].getBufferedImage(),
+						dataInfoImg);
+				ImageIO.write(joinedFractalDataImage, "png", outputDetailfile);
+				System.out.println("Generated FileDetail: " + imageDetailFilePath);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			this.formulaArea.setText("");
+
+			g.dispose();
+			mands[i].dispose();
+			mands[i] = null;
+			
+			Runtime.getRuntime().gc();//System.gc();
+		}
+		
+
+		System.out.println("Done MandelbrotGeneration");
+		JOptionPane.showMessageDialog(null, "Dir created: "+subDirName, "Mand Generated", JOptionPane.INFORMATION_MESSAGE);
+		
+		return;
+
+	}
+
+	
+	
+	///////////////generator	Julia
 	private void doSelectDiyJuliaVaryColorCommand(boolean varyColor) {
 		this.diyJuliaVaryColor = varyColor;
 	}	
@@ -3308,7 +4003,15 @@ class SierpinskiComboPanel extends JPanel {
 
 			Graphics2D g = julies[i].getBufferedImage().createGraphics();
 //			System
-			julies[i].paint(g);
+			try {
+				julies[i].paint(g);
+			} catch (NullPointerException e1) {
+				e1.printStackTrace();
+				System.out.println(e1.getMessage());
+				JOptionPane.showMessageDialog(null, "BAaaAD Formula\n"+this.diyJApplyFormulaStr, "IncorrectFormula",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 
 			this.setFractalImage(julies[i].getBufferedImage());
 
@@ -3375,8 +4078,12 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private synchronized Properties[] getAllCombinationProperties(List<?> comboList) {
-		
-		boolean varyConst = this.diyJuliaVaryConstant;
+		boolean varyConst = false;
+		if (this.diyJuliaGen) {
+			varyConst = this.diyJuliaVaryConstant;
+		} else if (this.diyMandGen) {
+			varyConst = this.diyMandVaryConstant;
+		}
 		boolean varyKeepConst = this.keepConst && !varyConst;
 		
 		Properties[] ps = new Properties[comboList.size()];
@@ -3470,14 +4177,17 @@ class SierpinskiComboPanel extends JPanel {
 			}
 			
 			
-			
-			ps[i].put("applyCustomFormula", String.valueOf(this.diyJApplyFormulaZ));
-			
+			if (this.diyJuliaGen) {
+				ps[i].put("applyCustomFormula", String.valueOf(this.diyJApplyFormulaZ));
+				ps[i].put("areaSize",String.valueOf(this.juliaSize));
+			} else if (this.diyMandGen) {
+				ps[i].put("applyCustomFormula", String.valueOf(this.diyMandApplyFormulaZ));
+				ps[i].put("areaSize",String.valueOf(this.mandSize));
+			}
 			/*ps[i].put("isZSq", String.valueOf(this.applyZSq));
 			ps[i].put("isFatou", String.valueOf(this.applyFatou));
 			ps[i].put("isClassicJulia", String.valueOf(this.applyClassicJulia));*/
 			
-			ps[i].put("areaSize",String.valueOf(this.juliaSize));
 			ps[i].put("rotation",String.valueOf(this.rotation));
 				
 			
@@ -4758,6 +5468,38 @@ class SierpinskiComboPanel extends JPanel {
 		return returnList;
 	}
 	
+	private List<?> getVaryMandColorsList() {
+//		colorChoice
+		final String colorChoice = "colorChoice=";
+		if (this.diyMandVaryColorCb.isSelected() && this.diyMandVaryColor) {
+			String[] colr_options_no_sampl = new String[] { colorChoice+"ColorPalette", colorChoice+"ComputeColor" };
+			
+			return asList(colr_options_no_sampl);
+
+		} else {
+			final String colorChosen = (String) this.colorChoiceCombo.getSelectedItem();
+			if (!colorChosen.equals("SampleMix")) {
+				return asList(new String[] { colorChoice+colorChosen });
+			} else {
+				return asList(new String[] {(String) ( 
+						colorChoice+
+						OPEN_BRACK+
+						colorChosen+PIPE+ 
+						(String) this.colorSampleMixStartValsCombo.getSelectedItem()+PIPE+
+						(String) this.colorSampleDivValsCombo.getSelectedItem() +
+						CLOSE_BRACK ).replaceAll(BACK_SLASH,EMPTY) });
+			}
+		}
+	}
+
+	private int getVaryMandColorCount() {
+		if (this.diyMandVaryColorCb.isSelected()) {
+			return COLOR_OPTIONS.length;
+		} else {
+			return 1;
+		}
+	}
+	
 	
 	private List<?> getVaryJuliaColorsList() {
 //		colorChoice
@@ -4844,6 +5586,27 @@ class SierpinskiComboPanel extends JPanel {
 			return 1;
 		}
 	}
+	
+	private List<?> getVaryMandPixXTransList() {
+		// pixXTransform
+		final String pixXTransform = "pixXTransform=";
+		if (this.diyMandVaryPixXTranCb.isSelected() && this.diyMandVaryPixXTran) {
+			String[] pxXTrArr = this.getAppendStr2Array(pixXTransform, PIX_TRANSFORM_OPTIONS);
+			return asList(pxXTrArr);// (PIX_TRANSFORM_OPTIONS);
+		} else {
+			return asList(new String[] { pixXTransform + (String) this.pxXTransformCombo.getSelectedItem() });
+		}
+	}
+
+	private int getVaryMandPixXTransCount() {
+		if (this.diyMandVaryPixXTranCb.isSelected()) {
+			System.out.println("In_getVaryPixXTransCount count = " + PIX_TRANSFORM_OPTIONS.length);
+			return PIX_TRANSFORM_OPTIONS.length;
+		} else {
+			return 1;
+		}
+	}
+	
 
 	private List<?> getVaryJuliaPixXTransList() {
 		// pixXTransform
@@ -4859,6 +5622,26 @@ class SierpinskiComboPanel extends JPanel {
 	private int getVaryJuliaPixXTransCount() {
 		if (this.diyJuliaVaryPixXTranCb.isSelected()) {
 			System.out.println("In_getVaryPixXTransCount count = " + PIX_TRANSFORM_OPTIONS.length);
+			return PIX_TRANSFORM_OPTIONS.length;
+		} else {
+			return 1;
+		}
+	}
+	
+	private List<?> getVaryMandPixYTransList() {
+		// pixYTransform
+		final String pixYTransform = "pixYTransform=";
+		if (this.diyMandVaryPixYTranCb.isSelected() && this.diyMandVaryPixYTran) {
+			String[] pxYTrArr = this.getAppendStr2Array(pixYTransform, PIX_TRANSFORM_OPTIONS);
+			return asList(pxYTrArr);// (PIX_TRANSFORM_OPTIONS);
+		} else {
+			return asList(new String[] { pixYTransform + (String) this.pxYTransformCombo.getSelectedItem() });
+		}
+	}
+
+	private int getVaryMandPixYTransCount() {
+		if (this.diyMandVaryPixYTranCb.isSelected()) {
+			System.out.println("In_getVaryPixYTransCount count = " + PIX_TRANSFORM_OPTIONS.length);
 			return PIX_TRANSFORM_OPTIONS.length;
 		} else {
 			return 1;
@@ -4885,6 +5668,28 @@ class SierpinskiComboPanel extends JPanel {
 		}
 	}
 	
+	private List<?> getVaryMandIntraPixXYOpList() {
+		// pixIntraXYOperation
+		final String pixIntraXYOperation = "pixIntraXYOperation=";
+		if (this.diyMandVaryIntraPixXYCb.isSelected() && this.diyMandVaryIntraPixXY) {
+			String[] intraXYOpArr = this.getAppendStr2Array(pixIntraXYOperation, PIX_INTRA_OPRNS);
+			return asList(intraXYOpArr);// asList(PIX_INTRA_OPRNS);
+		} else {
+			return asList(
+					new String[] { pixIntraXYOperation + (String) this.intraPixOperationCombo.getSelectedItem() });
+		}
+	}
+
+	private int getVaryMandIntraPixXYOpCount() {
+		if (this.diyMandVaryIntraPixXYCb.isSelected()) {
+			System.out.println("In_getVaryIntraPixXYOpCount count = "+PIX_INTRA_OPRNS.length);
+			return PIX_INTRA_OPRNS.length;
+		} else {
+			return 1;
+		}
+	}
+	
+	
 	private List<?> getVaryJuliaIntraPixXYOpList() {
 		// pixIntraXYOperation
 		final String pixIntraXYOperation = "pixIntraXYOperation=";
@@ -4905,6 +5710,31 @@ class SierpinskiComboPanel extends JPanel {
 			return 1;
 		}
 	}
+	
+	private List<?> getVaryMandZFuncList() {
+		final String pxFuncChoice = "pxFuncChoice=";
+		if (this.diyMandVaryPixelZFuncCb.isSelected() && this.diyMandVaryPixelZFunc
+				&& !(this.diyJApplyFormulaZCb.isSelected() || this.diyJApplyFormulaZ)) {
+			String[] pxFuncArr = this.getAppendStr2Array(pxFuncChoice, FUNCTION_OPTIONS);
+			return asList(pxFuncArr);// (FUNCTION_OPTIONS);
+		} else {
+			if (this.diyJApplyFormulaZCb.isSelected() || this.diyJApplyFormulaZ) {
+				return asList(new String[] { pxFuncChoice + this.diyJApplyFormulaTf.getText().trim() });
+			} else {
+				return asList(new String[] { pxFuncChoice + (String) this.pxFuncCombo.getSelectedItem() });
+			}
+		}
+	}
+
+	private int getVaryMandZFuncCount() {
+		if (this.diyMandVaryPixelZFuncCb.isSelected() && !this.diyJApplyFormulaZCb.isSelected()) {
+			System.out.println("In_getVaryZFuncCount count = " + FUNCTION_OPTIONS.length);
+			return FUNCTION_OPTIONS.length;
+		} else {
+			return 1;
+		}
+	}
+	
 	
 	private List<?> getVaryJuliaZFuncList() {
 		final String pxFuncChoice = "pxFuncChoice=";
@@ -4930,6 +5760,26 @@ class SierpinskiComboPanel extends JPanel {
 		}
 	}
 	
+	private List<?> getVaryMandConstCFuncList() {
+		final String constFuncChoice = "constFuncChoice=";
+		if (this.diyMandVaryConstCFuncCb.isSelected() && this.diyMandVaryConstCFunc) {
+			String[] constFuncArr = this.getAppendStr2Array(constFuncChoice, FUNCTION_OPTIONS);
+			return asList(constFuncArr);
+		} else {
+			return asList(new String[] { constFuncChoice + (String) this.constFuncCombo.getSelectedItem() });
+		}
+	}
+
+	private int getVaryMandConstCFuncCount() {
+		if (this.diyMandVaryConstCFuncCb.isSelected()) {
+			System.out.println("In_getVaryConstCFuncCount count = "+FUNCTION_OPTIONS.length);
+			return FUNCTION_OPTIONS.length;
+		} else {
+			return 1;
+		}
+	}
+
+	
 	private List<?> getVaryJuliaConstCFuncList() {
 		final String constFuncChoice = "constFuncChoice=";
 		if (this.diyJuliaVaryConstCFuncCb.isSelected() && this.diyJuliaVaryConstCFunc) {
@@ -4944,6 +5794,26 @@ class SierpinskiComboPanel extends JPanel {
 		if (this.diyJuliaVaryConstCFuncCb.isSelected()) {
 			System.out.println("In_getVaryConstCFuncCount count = "+FUNCTION_OPTIONS.length);
 			return FUNCTION_OPTIONS.length;
+		} else {
+			return 1;
+		}
+	}
+	
+	private List<?> getVaryMandPixelConstOpZCList() {
+		//pxConstOprnChoice
+		final String pxConstOprnChoice = "pxConstOprnChoice=";
+		if (this.diyMandVaryPixelConstOpZCCb.isSelected() && this.diyMandVaryPixelConstOpZC) {
+			String[] constFuncArr = this.getAppendStr2Array(pxConstOprnChoice, PIX_CONST_OPRNS);
+			return asList(constFuncArr);
+		} else {
+			return asList(new String[] { pxConstOprnChoice+(String) this.pxConstOprnCombo.getSelectedItem() });
+		}
+	}
+
+	private int getVaryMandPixelConstOpZCCount() {
+		if (this.diyMandVaryPixelConstOpZCCb.isSelected()) {
+			System.out.println("In_getVaryPixelConstOpZCCount count = "+PIX_CONST_OPRNS.length);
+			return PIX_CONST_OPRNS.length;
 		} else {
 			return 1;
 		}
@@ -5002,6 +5872,29 @@ class SierpinskiComboPanel extends JPanel {
 		}
 	}*/
 	
+	private List<?> getVaryMandPowerList(int pixelPowerZFrom,int pixelPowerZTo,int pixelPowerZJump,int powerCount) {
+		final String powerChoice = "power=";
+		if (this.diyMandVaryPixelPowerZCb.isSelected() && this.diyMandVaryPixelPowerZ) {
+			return this.getAppendStr2List(powerChoice,	this.getVaryIntList(pixelPowerZFrom, pixelPowerZTo, pixelPowerZJump, powerCount));
+		} else {
+			return asList(new String[] { powerChoice+String.valueOf(this.diyMandExpCombos.getSelectedItem()) });
+		}
+	}
+
+	private int getVaryMandPowerCount() {
+		if (this.diyMandVaryPixelPowerZCb.isSelected()) {
+			double pixelPowerZFrom = this.diyMandVaryPixelPowerZFromVal;
+			double pixelPowerZTo = this.diyMandVaryPixelPowerZToVal;
+			double pixelPowerZJump = this.diyMandVaryPixelPowerZJumpVal;
+			System.out.println("In_getVaryPowerCount count = "
+					+ this.getJumpCount(pixelPowerZFrom, pixelPowerZTo, pixelPowerZJump));
+			return this.getJumpCount(pixelPowerZFrom, pixelPowerZTo, pixelPowerZJump);
+		} else {
+			return 1;
+		}
+	}
+
+	
 	private List<?> getVaryJuliaPowerList(int pixelPowerZFrom,int pixelPowerZTo,int pixelPowerZJump,int powerCount) {
 		final String powerChoice = "power=";
 		if (this.diyJuliaVaryPixelPowerZCb.isSelected() && this.diyJuliaVaryPixelPowerZ) {
@@ -5048,6 +5941,65 @@ class SierpinskiComboPanel extends JPanel {
 			return 1;
 		}
 	}
+	
+	private int getVaryMandConstantCount() {
+		if (this.diyMandVaryGenConstantCb.isSelected() || this.diyMandVaryConstant) {
+			System.out.println("In_getVaryConstantCount()  realCount= "+this.getVaryMandRealConstantCount()+" imagCount= "+this.getVaryMandImagConstantCount());
+			System.out.println("TotalConstantCount realCount*imagCount= "+(this.getVaryMandRealConstantCount() * this.getVaryMandImagConstantCount()));
+			return (this.getVaryMandRealConstantCount() * this.getVaryMandImagConstantCount());
+		} else {
+			return 1;
+		}
+	}
+	
+	private List<?> getVaryMandRealConstantList(double realFrom, double realTo, double realJump, int realCount) {
+		final String realConstChoice = "realConstChoice=";
+		if (this.diyMandVaryGenConstantCb.isSelected() || this.diyMandVaryConstant) {
+			return this.getAppendStr2List(realConstChoice,	this.getVaryDoubleList(realFrom, realTo, realJump, realCount) );
+		} else {
+			if (this.diyMandelbrotKeepConstRb.isSelected() || this.diyMandKeepConst) {
+				return asList(new String[] { realConstChoice+"DynamicConst" });
+			} else {
+				return asList(new String[] { realConstChoice+this.diyMandRealTf.getText() });
+			}
+		}
+	}
+
+	private int getVaryMandRealConstantCount() {
+		if (this.diyMandVaryGenConstantCb.isSelected() || this.diyMandVaryConstant) {
+			double realFrom = this.diyMandGenRealFromVal;
+			double realTo = this.diyMandGenRealToVal;
+			double realJump = this.diyMandGenRealJumpVal;
+			return this.getJumpCount(realFrom, realTo, realJump);
+		} else {
+			return 1;
+		}
+	}
+	
+	private List<?> getVaryMandImagConstantList(double imagFrom, double imagTo, double imagJump, int imagCount) {
+		final String imagConstChoice = "imagConstChoice=";
+		if (this.diyMandVaryGenConstantCb.isSelected() || this.diyMandVaryConstant) {
+			return this.getAppendStr2List(imagConstChoice,	this.getVaryDoubleList(imagFrom, imagTo, imagJump, imagCount));
+		} else {
+			if (this.diyMandelbrotKeepConstRb.isSelected() || this.diyMandKeepConst) {
+				return asList(new String[] { imagConstChoice+"DynamicConst" });
+			} else {
+				return asList(new String[] { imagConstChoice+this.diyMandImgTf.getText() });
+			}
+		}
+	}
+
+	private int getVaryMandImagConstantCount() {
+		if (this.diyMandVaryGenConstantCb.isSelected()) {
+			double imagFrom = this.diyMandGenImagFromVal;
+			double imagTo = this.diyMandGenImagToVal;
+			double imagJump = this.diyMandGenImagJumpVal;
+			return this.getJumpCount(imagFrom, imagTo, imagJump);
+		} else {
+			return 1;
+		}
+	}
+	
 
 	private int getVaryJuliaConstantCount() {
 		if (this.diyJuliaVaryGenConstantCb.isSelected() || this.diyJuliaVaryConstant) {
@@ -5107,6 +6059,28 @@ class SierpinskiComboPanel extends JPanel {
 		}
 	}
 	
+
+	private List<?> getVaryMandIterList() {
+		final String maxIterChoice = "maxIter=";
+		if (this.diyMandVaryIterCb.isSelected() && this.diyMandVaryIter) {
+			List<String> maxIterList = this.getAppendStr2List(maxIterChoice, asList(MAX_ITERATIONS));
+			return (maxIterList);
+		} else {
+			return asList(
+					new String[] { maxIterChoice + String.valueOf(this.diyMandMaxIterCombos.getSelectedItem()) });
+		}
+	}
+
+	private int getVaryMandIterCount() {
+		if (this.diyMandVaryIterCb.isSelected()) {
+			System.out.println("In_getVaryIterCount count = "+MAX_ITERATIONS.length);
+			return MAX_ITERATIONS.length;
+		} else {
+			return 1;
+		}
+	}
+	
+	
 	private List<?> getVaryJuliaIterList() {
 		final String maxIterChoice = "maxIter=";
 		if (this.diyJuliaVaryIterCb.isSelected() && this.diyJuliaVaryIter) {
@@ -5126,6 +6100,29 @@ class SierpinskiComboPanel extends JPanel {
 			return 1;
 		}
 	}
+
+	private List<?> getVaryMandBoundaryList(double boundaryFrom, double boundaryTo, double boundaryJump, int boundaryCount) {
+		final String boundaryChoice = "boundary=";
+		if (this.diyMandVaryBoundaryCb.isSelected() && this.diyMandVaryBoundary) {
+			return this.getAppendStr2List(boundaryChoice,
+					this.getVaryDoubleList(boundaryFrom, boundaryTo, boundaryJump, boundaryCount));
+		} else {
+			return asList(new String[] { boundaryChoice + String.valueOf(this.diyMandBoundCombos.getSelectedItem()) });
+		}
+	}
+
+	private int getVaryMandBoundaryCount() {
+		if (this.diyMandVaryBoundaryCb.isSelected()) {
+			double boundaryFrom = this.diyMandVaryBoundaryFromVal;
+			double boundaryTo = this.diyMandVaryBoundaryToVal;
+			double boundaryJump = this.diyMandVaryBoundaryJumpVal;
+			System.out.println("In_getVaryBoundaryCount count = "+this.getJumpCount(boundaryFrom, boundaryTo, boundaryJump));
+			return this.getJumpCount(boundaryFrom, boundaryTo, boundaryJump);
+		} else {
+			return 1;
+		}
+	}
+	
 	
 	private List<?> getVaryJuliaBoundaryList(double boundaryFrom, double boundaryTo, double boundaryJump, int boundaryCount) {
 		final String boundaryChoice = "boundary=";
@@ -5148,6 +6145,45 @@ class SierpinskiComboPanel extends JPanel {
 			return 1;
 		}
 	}
+	
+
+	private List<?> getVaryMandPixXCenterList() {
+		final String xCentrChoice = "xCentrChoice=";
+		if (this.diyMandVaryPixXCentrCb.isSelected() && this.diyMandVaryPixXCentr) {
+			return this.getAppendStr2List(xCentrChoice, asList(CENTER_XY));
+		} else {
+			return asList(new String[] { xCentrChoice + String.valueOf(this.diyMandXCCombos.getSelectedItem()) });
+		}
+	}
+
+
+	private int getVaryMandPixXCenterCount() {
+		if (this.diyMandVaryPixXCentrCb.isSelected()) {
+			System.out.println("In_getVaryPixXCenterCount count = "+CENTER_XY.length);
+			return CENTER_XY.length;
+		} else {
+			return 1;
+		}
+	}
+	
+	private List<?> getVaryMandPixYCenterList() {
+		final String yCentrChoice = "yCentrChoice=";
+		if (this.diyMandVaryPixYCentrCb.isSelected() && this.diyMandVaryPixYCentr) {
+			return this.getAppendStr2List(yCentrChoice, asList(CENTER_XY));
+		} else {
+			return asList(new String[] { yCentrChoice+String.valueOf(this.diyMandYCCombos.getSelectedItem()) });
+		}
+	}
+
+	private int getVaryMandPixYCenterCount() {
+		if (this.diyMandVaryPixYCentrCb.isSelected()) {
+			System.out.println("In_getVaryPixYCenterCount count = "+CENTER_XY.length);
+			return CENTER_XY.length;
+		} else {
+			return 1;
+		}
+	}
+	
 	
 	private List<?> getVaryJuliaPixXCenterList() {
 		final String xCentrChoice = "xCentrChoice=";
@@ -5185,6 +6221,30 @@ class SierpinskiComboPanel extends JPanel {
 			return 1;
 		}
 	}
+	
+
+	private List<?> getVaryMandScaleSizeList(double scaleSizeFrom,double scaleSizeTo,double scaleSizeJump,int scaleSizeCount) {
+		final String scaleSizeChoice = "scaleSizeChoice=";
+		if (this.diyMandVaryScaleSizeCb.isSelected() && this.diyMandVaryScaleSize) {
+			return this.getAppendStr2List(scaleSizeChoice,
+					this.getVaryDoubleList(scaleSizeFrom,scaleSizeTo,scaleSizeJump,scaleSizeCount));
+		} else {
+			return asList(new String[] {scaleSizeChoice + String.valueOf(this.diyMandScaleSizeCombos.getSelectedItem()) });
+		}
+	}
+
+	private int getVaryMandScaleSizeCount() {
+		if (this.diyMandVaryScaleSizeCb.isSelected()) {
+			double scaleSizeFrom = this.diyMandVaryScaleSizeFromVal;
+			double scaleSizeTo = this.diyMandVaryScaleSizeToVal;
+			double scaleSizeJump = this.diyMandVaryScaleSizeJumpVal;
+			System.out.println("In_getVaryScaleSizeCount count = "+this.getJumpCount(scaleSizeFrom, scaleSizeTo, scaleSizeJump));
+			return this.getJumpCount(scaleSizeFrom, scaleSizeTo, scaleSizeJump);
+		} else {
+			return 1;
+		}
+	}
+	
 	
 	private List<?> getVaryJuliaScaleSizeList(double scaleSizeFrom,double scaleSizeTo,double scaleSizeJump,int scaleSizeCount) {
 		final String scaleSizeChoice = "scaleSizeChoice=";
@@ -5295,6 +6355,44 @@ class SierpinskiComboPanel extends JPanel {
 		return count;
 	}*/
 
+	private void setDiyMandGenFormulaArea(String pixelFunction, int mandPower, String pixXTransform,String pixYTransform,String pixIntraXYOperation,String pxConstOprnChoice) {
+		this.formulaArea.setVisible(true);
+		this.formulaArea.setText("");
+		this.formulaArea.setText("<font color='blue'>(DIY)Mand Set:" + eol);
+		if (this.diyMandUseLyapunovExponent) {
+			this.addUseLyapunovInfo();
+		}
+		
+		this.addXtrYtrXYInfroInfo(pixXTransform,pixYTransform,pixIntraXYOperation);		
+		this.addInvertPixelCalcInfo();
+		this.addPixelConstantOperationInfo(pxConstOprnChoice);
+		this.addPixelFuncInfo(pixelFunction);
+
+		switch(pxConstOprnChoice){
+			case	"Plus"	:	
+				this.formulaArea.append(" + C</font>" + eol);
+				break;
+			case	"Minus"	:	
+				this.formulaArea.append(" - C</font>" + eol);
+				break;
+			case	"Multiply"	:	
+				this.formulaArea.append(" * C</font>" + eol);
+				break;
+			case	"Divide"	:	
+				this.formulaArea.append(" / C</font>" + eol);
+				break;
+			case	"Power"	:	
+				this.formulaArea.append(" ^ C</font>" + eol);
+				break;
+			default:
+				this.formulaArea.append(" + C</font>" + eol);
+				break;
+		}
+		
+		this.addDiyMandelbrotUseDiffInfo();
+	}
+	
+	
 	private void setDiyJuliaGenFormulaArea(String pixelFunction, int juliaPower, String fieldLineTypes,/*boolean applyFatou, boolean applyZSq,
 			boolean applyClassic,*/ String pixXTransform,String pixYTransform,String pixIntraXYOperation,String pxConstOprnChoice) {
 		this.formulaArea.setVisible(true);
@@ -8196,6 +9294,533 @@ class SierpinskiComboPanel extends JPanel {
 				Double diyMandScaleSizeComboOption = (Double)cb.getSelectedItem();
 				doSelectDiyMandScaleSizeCombosCommand(diyMandScaleSizeComboOption);				
 			}});
+		
+		this.setupDiyMandGeneratorListeners();
+	}
+	
+
+
+	private void setupDiyMandGeneratorListeners() {
+		///////////////////////////////////////////////////////////
+		//generatorListeners
+		this.diyMandGenCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetDiyMandGenCommand(true);
+					
+					diyMandVaryColorCb.setVisible(true);
+					diyMandVaryPixXTranCb.setVisible(true);
+					diyMandVaryPixYTranCb.setVisible(true);
+					diyMandVaryIntraPixXYCb.setVisible(true);
+					diyMandVaryPixelZFuncCb.setVisible(true);
+					diyMandVaryConstCFuncCb.setVisible(true);
+					diyMandVaryPixelConstOpZCCb.setVisible(true);
+					
+					diyMandVaryGenConstantCb.setVisible(true);					
+					diyMandGenRealFromLabel.setVisible(true);
+					diyMandGenRealFromTf.setVisible(true);
+					diyMandGenRealToLabel.setVisible(true);
+					diyMandGenRealToTf.setVisible(true);
+					diyMandGenRealJumpLabel.setVisible(true);
+					diyMandGenRealJumpCombo.setVisible(true);
+					diyMandGenImagFromLabel.setVisible(true);
+					diyMandGenImagFromTf.setVisible(true);
+					diyMandGenImagToLabel.setVisible(true);
+					diyMandGenImagToTf.setVisible(true);
+					diyMandGenImagJumpLabel.setVisible(true);
+					diyMandGenImagJumpCombo.setVisible(true);
+					
+					diyMandGenRealFromTf.setEnabled(false);
+					diyMandGenRealToTf.setEnabled(false);
+					diyMandGenRealJumpCombo.setEnabled(false);
+					diyMandGenImagFromTf.setEnabled(false);
+					diyMandGenImagToTf.setEnabled(false);
+					diyMandGenImagJumpCombo.setEnabled(false);
+					
+					diyMandVaryPixelPowerZCb.setVisible(true);
+
+					diyMandGenPixelPowerZFromLabel.setVisible(true);
+					diyMandGenPixelPowerZFromTf.setVisible(true);
+					diyMandGenPixelPowerZToLabel.setVisible(true);
+					diyMandGenPixelPowerZToTf.setVisible(true);
+					diyMandGenPixelPowerZJumpLabel.setVisible(true);
+					diyMandGenPixelPowerZJumpCombo.setVisible(true);
+
+					diyMandGenPixelPowerZFromTf.setEnabled(false);
+					diyMandGenPixelPowerZToTf.setEnabled(false);
+					diyMandGenPixelPowerZJumpCombo.setEnabled(false);
+					
+					
+					diyMandVaryIterCb.setVisible(true);
+					
+					diyMandVaryBoundaryCb.setVisible(true);
+					diyMandGenBoundaryFromLabel.setVisible(true);
+					diyMandGenBoundaryFromTf.setVisible(true);
+					diyMandGenBoundaryToLabel.setVisible(true);
+					diyMandGenBoundaryToTf.setVisible(true);
+					diyMandGenBoundaryJumpLabel.setVisible(true);	
+					diyMandGenBoundaryJumpCombo.setVisible(true);
+					
+					diyMandGenBoundaryFromTf.setEnabled(false);
+					diyMandGenBoundaryToTf.setEnabled(false);
+					diyMandGenBoundaryJumpCombo.setEnabled(false);
+					
+					diyMandVaryPixXCentrCb.setVisible(true);
+					diyMandVaryPixYCentrCb.setVisible(true);
+					
+					diyMandVaryScaleSizeCb.setVisible(true);
+					diyMandGenScaleSizeFromLabel.setVisible(true);
+					diyMandGenScaleSizeFromTf.setVisible(true);
+					diyMandGenScaleSizeToLabel.setVisible(true);
+					diyMandGenScaleSizeToTf.setVisible(true);
+					diyMandGenScaleSizeJumpLabel.setVisible(true);	
+					diyMandGenScaleSizeJumpCombo.setVisible(true);
+					
+					diyMandGenScaleSizeFromTf.setEnabled(false);
+					diyMandGenScaleSizeToTf.setEnabled(false);
+					diyMandGenScaleSizeJumpCombo.setEnabled(false);	
+					
+					diyMandUseDiffCb.setEnabled(false);
+					invertPixelsCb.setEnabled(false);
+					
+					diyMandGenBu.setVisible(true);					
+
+					/*diyMandRealTf.setEnabled(false);
+					diyMandImgTf.setEnabled(false);
+					diyMandKeepConstRb.setEnabled(false);
+					diyMandCreateConstRb.setEnabled(false);*/
+
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSetDiyMandGenCommand(false);
+
+					diyMandVaryColorCb.setVisible(false);
+					diyMandVaryPixXTranCb.setVisible(false);
+					diyMandVaryPixYTranCb.setVisible(false);
+					diyMandVaryIntraPixXYCb.setVisible(false);
+					diyMandVaryPixelZFuncCb.setVisible(false);
+					diyMandVaryConstCFuncCb.setVisible(false);
+					diyMandVaryPixelConstOpZCCb.setVisible(false);
+					
+					diyMandVaryGenConstantCb.setVisible(false);					
+					diyMandGenRealFromLabel.setVisible(false);
+					diyMandGenRealFromTf.setVisible(false);
+					diyMandGenRealToLabel.setVisible(false);
+					diyMandGenRealToTf.setVisible(false);
+					diyMandGenRealJumpLabel.setVisible(false);
+					diyMandGenRealJumpCombo.setVisible(false);
+					diyMandGenImagFromLabel.setVisible(false);
+					diyMandGenImagFromTf.setVisible(false);
+					diyMandGenImagToLabel.setVisible(false);
+					diyMandGenImagToTf.setVisible(false);
+					diyMandGenImagJumpLabel.setVisible(false);
+					diyMandGenImagJumpCombo.setVisible(false);
+					
+					diyMandVaryPixelPowerZCb.setVisible(false);
+
+					diyMandGenPixelPowerZFromLabel.setVisible(false);
+					diyMandGenPixelPowerZFromTf.setVisible(false);
+					diyMandGenPixelPowerZToLabel.setVisible(false);
+					diyMandGenPixelPowerZToTf.setVisible(false);
+					diyMandGenPixelPowerZJumpLabel.setVisible(false);
+					diyMandGenPixelPowerZJumpCombo.setVisible(false);
+					diyMandVaryIterCb.setVisible(false);
+					
+					diyMandVaryBoundaryCb.setVisible(false);
+					diyMandGenBoundaryFromLabel.setVisible(false);
+					diyMandGenBoundaryFromTf.setVisible(false);
+					diyMandGenBoundaryToLabel.setVisible(false);
+					diyMandGenBoundaryToTf.setVisible(false);
+					diyMandGenBoundaryJumpLabel.setVisible(false);	
+					diyMandGenBoundaryJumpCombo.setVisible(false);					
+					
+					diyMandVaryPixXCentrCb.setVisible(false);
+					diyMandVaryPixYCentrCb.setVisible(false);
+					
+					diyMandVaryScaleSizeCb.setVisible(false);
+					diyMandGenScaleSizeFromLabel.setVisible(false);
+					diyMandGenScaleSizeFromTf.setVisible(false);
+					diyMandGenScaleSizeToLabel.setVisible(false);
+					diyMandGenScaleSizeToTf.setVisible(false);
+					diyMandGenScaleSizeJumpLabel.setVisible(false);	
+					diyMandGenScaleSizeJumpCombo.setVisible(false);
+					
+					diyMandUseDiffCb.setEnabled(true);
+					invertPixelsCb.setEnabled(true);
+					
+					diyMandGenBu.setVisible(false);
+					
+
+					/*diyMandRealTf.setEnabled(true);
+					diyMandImgTf.setEnabled(true);
+					diyMandKeepConstRb.setEnabled(true);
+					diyMandCreateConstRb.setEnabled(true);*/
+					
+				}
+			}
+        });
+		
+		this.diyMandVaryColorCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyMandVaryColorCommand(true);
+					colorChoiceCombo.setEnabled(false);
+					showAllColorsCb.setEnabled(false);
+					colorSampleMixStartValsCombo.setEnabled(false);
+					colorSampleDivValsCombo.setEnabled(false);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyMandVaryColorCommand(false);
+					colorChoiceCombo.setEnabled(true);
+					showAllColorsCb.setEnabled(true);
+
+					if (colorChoiceCombo.getSelectedItem().equals("SampleMix")) {
+						colorSampleMixStartValsCombo.setVisible(true);
+						colorSampleDivValsCombo.setVisible(true);
+						colorSampleMixStartValsCombo.setEnabled(true);
+						colorSampleDivValsCombo.setEnabled(true);
+					} else {
+						colorSampleMixStartValsCombo.setVisible(false);
+						colorSampleDivValsCombo.setVisible(false);
+						colorSampleMixStartValsCombo.setEnabled(false);
+						colorSampleDivValsCombo.setEnabled(false);
+					}
+				}
+			}
+		});
+		
+		this.diyMandVaryPixXTranCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyMandVaryPixXTranCommand(true);					
+					pxXTransformCombo.setEnabled(false);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyMandVaryPixXTranCommand(false);
+					pxXTransformCombo.setEnabled(true);
+				}
+			}
+		});
+
+		
+		this.diyMandVaryPixYTranCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyMandVaryPixYTranCommand(true);
+					pxYTransformCombo.setEnabled(false);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyMandVaryPixYTranCommand(false);
+					pxYTransformCombo.setEnabled(true);
+				}
+			}
+		});
+
+		
+		this.diyMandVaryIntraPixXYCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyMandVaryIntraPixXYCommand(true);
+					intraPixOperationCombo.setEnabled(false);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyMandVaryIntraPixXYCommand(false);
+					intraPixOperationCombo.setEnabled(true);
+				}
+			}
+		});
+		
+
+		this.diyMandVaryPixelZFuncCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyMandVaryPixelZFuncCommand(true);
+					pxFuncCombo.setEnabled(false);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyMandVaryPixelZFuncCommand(false);
+					pxFuncCombo.setEnabled(true);
+				}
+			}
+		});
+		
+
+		this.diyMandVaryConstCFuncCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyMandVaryConstCFuncCommand(true);
+					constFuncCombo.setEnabled(false);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyMandVaryConstCFuncCommand(false);
+					constFuncCombo.setEnabled(true);
+				}
+			}
+		});
+
+		this.diyMandVaryPixelConstOpZCCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyMandVaryPixelConstOpZCCommand(true);
+					pxConstOprnCombo.setEnabled(false);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyMandVaryPixelConstOpZCCommand(false);
+					pxConstOprnCombo.setEnabled(true);
+				}
+			}
+		});
+		
+
+		this.diyMandVaryGenConstantCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyMandVaryGenConstantCommand(true);
+					diyMandGenRealFromLabel.setEnabled(true);
+					diyMandGenRealFromTf.setEnabled(true);
+					diyMandGenRealToLabel.setEnabled(true);
+					diyMandGenRealToTf.setEnabled(true);
+					diyMandGenRealJumpLabel.setEnabled(true);
+					diyMandGenRealJumpCombo.setEnabled(true);
+					diyMandGenImagFromLabel.setEnabled(true);
+					diyMandGenImagFromTf.setEnabled(true);
+					diyMandGenImagToLabel.setEnabled(true);
+					diyMandGenImagToTf.setEnabled(true);
+					diyMandGenImagJumpLabel.setEnabled(true);
+					diyMandGenImagJumpCombo.setEnabled(true);
+					
+					diyMandelbrotKeepConstRb.setEnabled(false);
+					diyMandelbrotCreateConstRb.setEnabled(false);
+					diyMandRealTf.setEnabled(false);
+					diyMandImgTf.setEnabled(false);
+					
+					
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyMandVaryGenConstantCommand(false);
+					diyMandGenRealFromLabel.setEnabled(false);
+					diyMandGenRealFromTf.setEnabled(false);
+					diyMandGenRealToLabel.setEnabled(false);
+					diyMandGenRealToTf.setEnabled(false);
+					diyMandGenRealJumpLabel.setEnabled(false);
+					diyMandGenRealJumpCombo.setEnabled(false);
+					diyMandGenImagFromLabel.setEnabled(false);
+					diyMandGenImagFromTf.setEnabled(false);
+					diyMandGenImagToLabel.setEnabled(false);
+					diyMandGenImagToTf.setEnabled(false);
+					diyMandGenImagJumpLabel.setEnabled(false);
+					diyMandGenImagJumpCombo.setEnabled(false);
+					
+					diyMandelbrotKeepConstRb.setEnabled(true);
+					diyMandelbrotCreateConstRb.setEnabled(true);
+					if (diyMandelbrotKeepConstRb.isSelected()) {
+						diyMandRealTf.setEnabled(false);
+						diyMandImgTf.setEnabled(false);
+					}
+					if (diyMandelbrotCreateConstRb.isSelected()) {
+						diyMandRealTf.setEnabled(true);
+						diyMandImgTf.setEnabled(true);
+					}
+				}
+			}
+		});
+		
+//		this.diyMandVaryPixelPowerZCb.addItemListener(new ItemListener() {
+//			@Override
+//			public void itemStateChanged(ItemEvent event) {
+//				if (event.getStateChange() == ItemEvent.SELECTED) {
+//					doSelectDiyMandVaryPixelPowerZCommand(true);
+//					diyMandPowerCombos.setEnabled(false);
+//				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+//					doSelectDiyMandVaryPixelPowerZCommand(false);
+//					diyMandPowerCombos.setEnabled(true);
+//				}
+//			}
+//		});
+//		
+
+		this.diyMandVaryPixelPowerZCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyMandVaryPixelPowerZCommand(true);
+					diyMandGenPixelPowerZFromTf.setEnabled(true);
+					diyMandGenPixelPowerZToTf.setEnabled(true);
+					diyMandGenPixelPowerZJumpCombo.setEnabled(true);
+					diyMandExpCombos.setEnabled(false);
+					
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyMandVaryPixelPowerZCommand(false);
+					diyMandGenPixelPowerZFromTf.setEnabled(false);
+					diyMandGenPixelPowerZToTf.setEnabled(false);
+					diyMandGenPixelPowerZJumpCombo.setEnabled(false);
+					diyMandExpCombos.setEnabled(true);
+				}
+			}
+		});
+
+
+		this.diyMandGenPixelPowerZJumpCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Integer> cb = (JComboBox<Integer>) e.getSource();
+				Integer diyMandVaryPixelPowerZComboOption = (Integer) cb.getSelectedItem();
+				doSelectDiyMandVaryPixelPowerZCombosCommand(diyMandVaryPixelPowerZComboOption);
+			}
+		});
+
+
+		this.diyMandVaryIterCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyMandVaryIterCommand(true);
+					diyMandMaxIterCombos.setEnabled(false);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyMandVaryIterCommand(false);
+					diyMandMaxIterCombos.setEnabled(true);
+				}
+			}
+		});
+
+		this.diyMandVaryBoundaryCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyMandVaryBoundaryCommand(true);
+					diyMandGenBoundaryFromTf.setEnabled(true);
+					diyMandGenBoundaryToTf.setEnabled(true);
+					diyMandGenBoundaryJumpCombo.setEnabled(true);
+					diyMandBoundCombos.setEnabled(false);
+					
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyMandVaryBoundaryCommand(false);
+					diyMandGenBoundaryFromTf.setEnabled(false);
+					diyMandGenBoundaryToTf.setEnabled(false);
+					diyMandGenBoundaryJumpCombo.setEnabled(false);
+					diyMandBoundCombos.setEnabled(true);
+				}
+			}
+		});
+		
+		this.diyMandVaryPixXCentrCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyMandVaryPixXCentrCommand(true);
+					diyMandXCCombos.setEnabled(false);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyMandVaryPixXCentrCommand(false);
+					diyMandXCCombos.setEnabled(true);
+				}
+			}
+		});
+		
+		this.diyMandVaryPixYCentrCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyMandVaryPixYCentrCommand(true);
+					diyMandYCCombos.setEnabled(false);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyMandVaryPixYCentrCommand(false);
+					diyMandYCCombos.setEnabled(true);
+				}
+			}
+		});
+		
+
+		this.diyMandVaryScaleSizeCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyMandVaryScaleSizeCommand(true);
+					diyMandGenScaleSizeFromTf.setEnabled(true);
+					diyMandGenScaleSizeToTf.setEnabled(true);
+					diyMandGenScaleSizeJumpCombo.setEnabled(true);
+					diyMandScaleSizeCombos.setEnabled(false);
+					
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyMandVaryScaleSizeCommand(false);
+					diyMandGenScaleSizeFromTf.setEnabled(false);
+					diyMandGenScaleSizeToTf.setEnabled(false);
+					diyMandGenScaleSizeJumpCombo.setEnabled(false);
+					diyMandScaleSizeCombos.setEnabled(true);
+				}
+			}
+		});
+		
+
+		this.diyMandGenScaleSizeJumpCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>) e.getSource();
+				Double diyMandVaryScaleSizeComboOption = (Double) cb.getSelectedItem();
+				doSelectDiyMandVaryScaleSizeCombosCommand(diyMandVaryScaleSizeComboOption);
+			}
+		});
+		
+		this.diyMandGenBoundaryJumpCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>) e.getSource();
+				Double diyMandVaryBoundaryComboOption = (Double) cb.getSelectedItem();
+				doSelectDiyMandVaryBoundaryJumpCombosCommand(diyMandVaryBoundaryComboOption);
+			}
+		});
+		
+		
+		this.diyMandGenRealJumpCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double diyMandRealJumpComboOption = (Double)cb.getSelectedItem();
+				doSelectDiyMandGenRealJumpCombosCommand(diyMandRealJumpComboOption);				
+			}});
+		
+		
+		this.diyMandGenImagJumpCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double diyMandImagJumpComboOption = (Double)cb.getSelectedItem();
+				doSelectDiyMandGenImagJumpCombosCommand(diyMandImagJumpComboOption);				
+			}});
+		
+		
+		this.diyMandApplyFormulaZCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyMandApplyFormulaCommand(true);
+					diyMandApplyFormulaTf.setVisible(true);
+//					diyMandPowerCombos.setEnabled(false);
+					pxFuncCombo.setEnabled(false);
+					
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyMandApplyFormulaCommand(false);
+					diyMandApplyFormulaTf.setVisible(false);
+//					diyMandPowerCombos.setEnabled(true);
+					pxFuncCombo.setEnabled(true);
+				}
+			}
+		});
+		
+		
+		
+		this.diyMandGenBu.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Runtime.getRuntime().gc();
+				doMandelbrotGenerateCommand();				
+			}});
+		//////////////////////////endsGeneratorListeners/////////////////////////
+		/////////////////////////////////////////////////////////////////////////
 	}
 	
 	private void setupPolyListeners() {
@@ -9232,7 +10857,7 @@ class SierpinskiComboPanel extends JPanel {
 		return this.diyMandUseDiff || this.diyMandUseDiffCb.isSelected();
 	}
 
-	public void setDiyMandMUseDiff(boolean diyMUseDiff) {
+	public void setDiyMandUseDiff(boolean diyMUseDiff) {
 		this.diyMandUseDiff = diyMUseDiff;
 		this.diyMandUseDiffCb.setSelected(diyMUseDiff);
 	}
