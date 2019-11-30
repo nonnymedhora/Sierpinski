@@ -343,6 +343,15 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		g.fillRect(pu1.x, pu1.y, length, length);
 	}
 
+	public void fillSquare(Graphics2D g, int x, int y, int length, Color color) {
+		g.setColor(color);
+		this.fillSquare(g, x, y, length);
+	}
+
+	public void fillSquare(Graphics2D g, int x, int y, int length) {
+		g.fillRect(x, y, length, length);
+	}
+
 	private Point setupSquare(Point center, int length) {
 		// go-left
 		Line left = new Line(center.x, center.y, length / 2, 180.0);
@@ -2716,5 +2725,18 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	public void setApplyCustomFormula(boolean apply) {
 		this.applyCustomFormula = apply;
 	}
+	
+	/**
+     * Pause for t milliseconds. This method is intended to support computer animations.
+     * @param t number of milliseconds
+     */
+    public static void pause(int t) {
+        try {
+            Thread.sleep(t);
+        }
+        catch (InterruptedException e) {
+            System.out.println("Error sleeping");
+        }
+    }
 	
 }

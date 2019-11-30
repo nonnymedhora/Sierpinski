@@ -191,7 +191,10 @@ class SierpinskiComboPanel extends JPanel {
 	
 	// for SierpinskiTraingles
 	private final JCheckBox sierpinskiTFillInnerCb = new JCheckBox("FillInnerTriangles", true);
+	private final JCheckBox sierpinskiCreateGasketCb = new JCheckBox("CreateGasket", true);
+
 	private boolean sierpinskiFillInnerT = false;
+	private boolean sierpinskiCreateGasket = false;
 	
 	protected JRadioButton 	sierpTUpRb 	= new JRadioButton("UP", false);
 	protected JRadioButton 	sierpTDnRb 	= new JRadioButton("DOWN", true);	
@@ -1668,6 +1671,8 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.sierpinskiTPanel.add(this.sierpinskiTFillInnerCb);
 		
+		this.sierpinskiTPanel.add(this.sierpinskiCreateGasketCb);
+		
 		this.sierpTBg.add(this.sierpTUpRb);
 		this.sierpTBg.add(this.sierpTDnRb);
 		
@@ -2358,6 +2363,10 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private void doSetSierpinskiTFillInnerCommand(boolean fillInner) {
 		this.sierpinskiFillInnerT = fillInner;
+	}
+	
+	private void doSetSierpinskiCreateGasketCommand(boolean createGasket) {
+		this.sierpinskiCreateGasket = createGasket;
 	}
 	
 	private ActionListener sierpTDirRbListener() {
@@ -5439,8 +5448,15 @@ class SierpinskiComboPanel extends JPanel {
 			ff = new FannyTriangles(length, ratio);
 		} else if (choice.equals(SIERPINSKI_TRIANGLES)) {
 			boolean fillInner = this.sierpinskiFillInnerT;
+			boolean createGasket = this.sierpinskiCreateGasket;
 			String dirSierpT = this.sierpTDir;
-			ff = new SierpinskiTriangle(dirSierpT, fillInner);
+			if (createGasket) {
+				SierpinskiTriangle st = new SierpinskiTriangle();
+				st.createGasket();
+				ff = st;
+			} else {
+				ff = new SierpinskiTriangle(dirSierpT, fillInner);
+			}
 		} else if (choice.equals(SIERPINSKI_SQUARES)) {
 			ff = new SierpinskiSquare();
 		} else if (choice.equals(APOLLONIAN_CIRCLES)) {
@@ -6637,8 +6653,9 @@ class SierpinskiComboPanel extends JPanel {
 		}*/
 		
 		boolean staticIterativeFractalChoice = ( (!this.mandIsMotionbrot && this.comboChoice.contains(MANDELBROT)) || this.comboChoice.contains(JULIA) || this.comboChoice.contains(POLY) ||
-				(this.comboChoice.contains("self")&&!(this.diyApolloRb.isSelected() || this.getComboChoice().equals(APOLLONIAN_CIRCLES))));
-		staticIterativeFractalChoice = !this.comboChoice.equals(ATTRACTORS) ? true : staticIterativeFractalChoice;
+				(this.comboChoice.contains("self") && !(this.diyApolloRb.isSelected() || this.getComboChoice().equals(APOLLONIAN_CIRCLES))));
+	
+		staticIterativeFractalChoice = !this.comboChoice.equals(ATTRACTORS) ? staticIterativeFractalChoice: true;
 
 		if(!staticIterativeFractalChoice) {
 			frame.setRunning(true);
@@ -8560,6 +8577,16 @@ class SierpinskiComboPanel extends JPanel {
 					doSetSierpinskiTFillInnerCommand(true);
 				} else if(event.getStateChange()==ItemEvent.DESELECTED){
 					doSetSierpinskiTFillInnerCommand(false);
+				}
+			}
+        });
+		this.sierpinskiCreateGasketCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetSierpinskiCreateGasketCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetSierpinskiCreateGasketCommand(false);
 				}
 			}
         });
