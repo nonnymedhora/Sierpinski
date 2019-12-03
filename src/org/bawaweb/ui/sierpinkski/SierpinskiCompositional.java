@@ -5737,12 +5737,12 @@ class SierpinskiComboPanel extends JPanel {
 	private List<?> getVaryMandZFuncList() {
 		final String pxFuncChoice = "pxFuncChoice=";
 		if (this.diyMandVaryPixelZFuncCb.isSelected() && this.diyMandVaryPixelZFunc
-				&& !(this.diyJApplyFormulaZCb.isSelected() || this.diyJApplyFormulaZ)) {
+				&& !(this.diyMandApplyFormulaZCb.isSelected() || this.diyMandApplyFormulaZ)) {
 			String[] pxFuncArr = this.getAppendStr2Array(pxFuncChoice, FUNCTION_OPTIONS);
 			return asList(pxFuncArr);// (FUNCTION_OPTIONS);
 		} else {
-			if (this.diyJApplyFormulaZCb.isSelected() || this.diyJApplyFormulaZ) {
-				return asList(new String[] { pxFuncChoice + this.diyJApplyFormulaTf.getText().trim() });
+			if (this.diyMandApplyFormulaZCb.isSelected() || this.diyMandApplyFormulaZ) {
+				return asList(new String[] { pxFuncChoice + this.diyMandApplyFormulaTf.getText().trim() });
 			} else {
 				return asList(new String[] { pxFuncChoice + (String) this.pxFuncCombo.getSelectedItem() });
 			}
@@ -7085,10 +7085,11 @@ class SierpinskiComboPanel extends JPanel {
 	}
 
 	private void addPixelFuncInfo(String pxFunc) {
-		if (!this.diyJApplyFormulaZ) {
+		if ((!this.diyJApplyFormulaZ && this.diyJuliaRb.isSelected())
+				|| (!this.diyMandApplyFormulaZ && this.diyMandRb.isSelected())) {
 			switch (pxFunc) {
-				case	"sine":				this.formulaArea.append("<br/><font color='black'><b>z = sin(Z)</font></b><br/>");break;
-				case	"cosine":			this.formulaArea.append("<br/><font color='black'><b>z = cos(Z)</font></b><br/>");break;
+				case 	"sine":				this.formulaArea.append("<br/><font color='black'><b>z = sin(Z)</font></b><br/>");break;
+				case 	"cosine":			this.formulaArea.append("<br/><font color='black'><b>z = cos(Z)</font></b><br/>");break;
 				case	"tan":				this.formulaArea.append("<br/><font color='black'><b>z = tan(Z)</font></b><br/>");break;
 				case	"arcsine":			this.formulaArea.append("<br/><font color='black'><b>z = arcsin(Z)</font></b><br/>");break;
 				case	"arccosine":		this.formulaArea.append("<br/><font color='black'><b>z = arccos(Z)</font></b><br/>");break;
@@ -7332,7 +7333,7 @@ class SierpinskiComboPanel extends JPanel {
 
 		String pxConstOp = this.pxConstOprnChoice;
 		String func = this.constFuncChoice;
-		String pxFunc = this.pxFuncChoice;
+		String pxFunc = !this.diyMandApplyFormulaZ ? this.pxFuncChoice : this.diyMandApplyFormulaTf.getText().trim();
 
 		double rot = this.getRotation();
 		int diyMandLoopLt = this.mandSize;
@@ -7416,6 +7417,7 @@ class SierpinskiComboPanel extends JPanel {
 			}
 		}
 		ff.setUseFuncConst(func);
+		ff.setApplyCustomFormula(this.diyMandApplyFormulaZ);
 		ff.setUseFuncPixel(pxFunc);
 		ff.setRotation(rot);
 		ff.setMaxIter(diyMaxIt);
@@ -8235,6 +8237,7 @@ class SierpinskiComboPanel extends JPanel {
 				extra += "Cx(" + this.diyMandXC + "),";
 				extra += "Cy(" + this.diyMandYC + "),";
 				extra += "Sz(" + this.diyMandScaleSize + "),";
+				if(this.diyMandApplyFormulaZ){extra+="CustFormula,";}
 				if (this.keepConst) {
 					extra += "CONST";
 				} else {
