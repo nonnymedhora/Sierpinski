@@ -141,8 +141,10 @@ public class Mandelbrot extends FractalBase {
 			this.setComplex(Double.parseDouble(p.getProperty("constReal").replaceAll(WHITESPACE, EMPTY)),
 					Double.parseDouble(p.getProperty("constImag").replaceAll(WHITESPACE, EMPTY)));
 			this.setComplexNumConst(false);		//	redundant	=	BUT!
-		} 
-	
+		}		
+		if (p.getProperty("magnificationChoice") != null)
+			this.setMagnification(Integer.parseInt(p.getProperty("magnificationChoice").replaceAll(WHITESPACE,EMPTY)));
+		
 	}
 
 	private static final long serialVersionUID = 13456L;
@@ -991,6 +993,14 @@ public class Mandelbrot extends FractalBase {
 
 	public void setComplexNumConst(boolean isComplexNumConst) {
 		this.isComplexNumConst = isComplexNumConst;
+	}
+
+	public int getMagnification() {
+		return this.mag;
+	}
+
+	public void setMagnification(int mg) {
+		this.mag = mg;
 	}
 
 }

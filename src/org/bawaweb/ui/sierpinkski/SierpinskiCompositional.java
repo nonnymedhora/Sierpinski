@@ -12,25 +12,19 @@ import static java.util.stream.Collectors.toList;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.Image;
-import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
@@ -46,7 +40,6 @@ import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -58,7 +51,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -288,8 +280,8 @@ class SierpinskiComboPanel extends JPanel {
 	private JPanel diyJuliaPanel 		= new JPanel(new GridLayout(20,15),true);
 	private JPanel diyApolloPanel 		= new JPanel(new GridLayout(4,8),true);
 	
-	private JPanel attractorsPanel 		= new JPanel(new GridLayout(10,5));
-	private JPanel attractorsSeedsPanel = new JPanel(new GridLayout(10,5));
+	private JPanel attractorsPanel 		= new JPanel(new GridLayout(20,15));
+	private JPanel attractorsSeedsPanel/* = new JPanel(new GridLayout(10,10))*/;
 	
 	private JTextArea formulaArea = new JTextArea(5,20);
 	
@@ -441,7 +433,7 @@ class SierpinskiComboPanel extends JPanel {
 
 	//lyapunov exponent for set determination
 	private final JCheckBox diyJuliaUseLyapunovExpCb = new JCheckBox("UseLyapunovExponentOnly", false);
-	private boolean diyJuliaUseLyapunovExponent=true;
+	private boolean diyJuliaUseLyapunovExponent=false;
 	
 	private final Integer[] diyJuliaPowerOptions = EXPONENTS;
 	private final JComboBox<Integer> diyJuliaPowerCombos = new JComboBox<Integer>(diyJuliaPowerOptions);
@@ -586,7 +578,7 @@ class SierpinskiComboPanel extends JPanel {
 	///////////////////////////////////////////////////////////////////////////
 	//	Generator	Mandelbrot
 
-private final JCheckBox diyMandGenCb = new JCheckBox("Generate", false);
+	private final JCheckBox diyMandGenCb = new JCheckBox("Generate", false);
 
 	private JCheckBox diyMandVaryColorCb = new JCheckBox("Vary Color", false);
 	private JCheckBox diyMandVaryPixXTranCb = new JCheckBox("Vary Pixel_X_Trans f(x)", false);
@@ -1312,7 +1304,7 @@ private final JCheckBox diyMandGenCb = new JCheckBox("Generate", false);
 	}
 	
 	private JPanel createAttractorSeedsPanel() {
-		return this.attractorsSeedsPanel;
+		return this.attractorsSeedsPanel = new JPanel(new GridLayout(10,10));
 	}
 
 	private void createPolyPanel() {
@@ -2451,28 +2443,33 @@ private final JCheckBox diyMandGenCb = new JCheckBox("Generate", false);
 		}
 	}
 	
-	private void addMandelbrotConstInfo(FractalBase fBase){
-		Mandelbrot m = (Mandelbrot)fBase;
-		ComplexNumber	c	=m.getComplex();
-	
-		String func2Apply = m.useFuncConst;
+	private void addMandelbrotConstInfo(FractalBase fBase) {
+		Mandelbrot m = (Mandelbrot) fBase;
+		ComplexNumber c = null;
+		if ( !m.isComplexNumConst() ) {
+			c = m.getComplex();
+		}
+		String func2Apply = m.getUseFuncConst();
 		addFuncTypeConstInfo(c, func2Apply);
 	}
 	
 	
 	private void addPolyConstInfo(FractalBase fBase) {
 		PolyFract p = (PolyFract) fBase;
-		ComplexNumber c = p.getCompConst();
-
-		String func2Apply = p.useFuncConst;
+		ComplexNumber c = null;
+		if (!p.isComplexNumConst()) {
+			c = p.getCompConst();
+		}
+		String func2Apply = p.getUseFuncConst();
 		addFuncTypeConstInfo(c, func2Apply);
 	}
-	
-	private void addJuliaConstInfo(Julia j){//(FractalBase fBase){
-//		Julia j = (Julia)fBase;
-		ComplexNumber c = j.getComplex();
-		
-		String func2Apply = j.useFuncConst;
+
+	private void addJuliaConstInfo(Julia j) {
+		ComplexNumber c = null;
+		if (!j.isComplexNumConst()) {
+			c = j.getComplex();
+		}
+		String func2Apply = j.getUseFuncConst();
 		addFuncTypeConstInfo(c, func2Apply);
 	}
 
@@ -3508,10 +3505,13 @@ private final JCheckBox diyMandGenCb = new JCheckBox("Generate", false);
 
 			
 			this.setDiyMandGenFormulaArea(pxFunc, this.diyMandExponent,pixXTr, pixYTr, pixIntraXYOp, pixConstOp);
-			this.formulaArea.append("<br/>Constant = " + this.diyMandConstReal + " + (" + this.diyMandConstImg
-					+ " * i)</font>" + eol);
+			if ( !this.keepConst ) {
+				this.formulaArea.append("<br/>Constant = " + this.diyMandConstReal + " + (" + this.diyMandConstImg
+						+ " * i)</font>" + eol);
+			}/* else {*/
 			//
-			this.addMandelbrotConstInfo(mands[i]);
+				this.addMandelbrotConstInfo(mands[i]);
+			/*}*/
 			Runtime.getRuntime().gc();
 			/// done1---now-to-imaging
 
@@ -4193,6 +4193,10 @@ private final JCheckBox diyMandGenCb = new JCheckBox("Generate", false);
 				} else if (prop.indexOf("fieldType=") > -1) {
 					ps[i].put("fieldType",prop.replace("fieldType=",EMPTY));		
 				} 
+			}
+
+			if (this.diyMandGen) {
+				ps[i].put("magnificationChoice", String.valueOf(this.diyMandMagnification));
 			}
 			
 			
@@ -10384,36 +10388,85 @@ private final JCheckBox diyMandGenCb = new JCheckBox("Generate", false);
 			@SuppressWarnings("unchecked")
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JPanel anAttrSeedPanel = new JPanel(new GridLayout(1,8));
+				/*JPanel anAttrSeedPanel = new JPanel(new GridLayout(1, 8));
 				anAttrSeedPanel.setVisible(true);
-				anAttrSeedPanel.setEnabled(true);
+				anAttrSeedPanel.setEnabled(true);*/
 
 				int size = attrSeed_X_tfList.size() + 1;
-				anAttrSeedPanel.add(new JLabel("Attractor" + size + "  Seed   X:"));
+				attractorsSeedsPanel.add(new JLabel("Attractor " + size + "  Seed   X:"));
 				JTextField anAttrSeedX_tf = new JTextField(2);
-				anAttrSeedPanel.add(anAttrSeedX_tf);
+				attractorsSeedsPanel.add(anAttrSeedX_tf);
 				attrSeed_X_tfList.add(anAttrSeedX_tf);
-				anAttrSeedPanel.add(new JLabel("   Y:"));
+				attractorsSeedsPanel.add(new JLabel("   Y:"));
 				JTextField anAttrSeedY_tf = new JTextField(2);
-				anAttrSeedPanel.add(anAttrSeedY_tf);
+				attractorsSeedsPanel.add(anAttrSeedY_tf);
 				attrSeed_Y_tfList.add(anAttrSeedY_tf);
 
 				if (attractorDimChoiceCb.isSelected()) {
-					anAttrSeedPanel.add(new JLabel("   Z:"));
+					attractorsSeedsPanel.add(new JLabel("   Z:"));
 					JTextField anAttrSeedZ_tf = new JTextField(2);
-					anAttrSeedPanel.add(anAttrSeedZ_tf);
+					attractorsSeedsPanel.add(anAttrSeedZ_tf);
 					attrSeed_Z_tfList.add(anAttrSeedZ_tf);
 				}
-				anAttrSeedPanel.add(removeAttrBu);
+				attractorsSeedsPanel.add(removeAttrBu);
+				attractorsSeedsPanel.add(addAttrBu);
 
-				attractorsSeedsPanel.add(anAttrSeedPanel);
+				/*attractorsSeedsPanel.add(anAttrSeedPanel);*/
+
 				attractorsSeedsPanel.revalidate();
 				attractorsSeedsPanel.repaint();
 
 				attractorsPanel.revalidate();
 				attractorsPanel.repaint();
+
+				revalidate();
+				repaint();
 			}
 		});
+		
+//		_O_
+//		this.addAttrBu.addActionListener(new ActionListener() {
+//			@SuppressWarnings("unchecked")
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				JPanel anAttrSeedPanel = new JPanel(new GridLayout(1, 8));
+//				anAttrSeedPanel.setVisible(true);
+//				anAttrSeedPanel.setEnabled(true);
+//
+//				int size = attrSeed_X_tfList.size() + 1;
+//				anAttrSeedPanel.add(new JLabel("Attractor " + size + "  Seed   X:"));
+//				JTextField anAttrSeedX_tf = new JTextField(2);
+//				anAttrSeedPanel.add(anAttrSeedX_tf);
+//				attrSeed_X_tfList.add(anAttrSeedX_tf);
+//				anAttrSeedPanel.add(new JLabel("   Y:"));
+//				JTextField anAttrSeedY_tf = new JTextField(2);
+//				anAttrSeedPanel.add(anAttrSeedY_tf);
+//				attrSeed_Y_tfList.add(anAttrSeedY_tf);
+//
+//				if (attractorDimChoiceCb.isSelected()) {
+//					anAttrSeedPanel.add(new JLabel("   Z:"));
+//					JTextField anAttrSeedZ_tf = new JTextField(2);
+//					anAttrSeedPanel.add(anAttrSeedZ_tf);
+//					attrSeed_Z_tfList.add(anAttrSeedZ_tf);
+//				}
+//				anAttrSeedPanel.add(removeAttrBu);
+//				anAttrSeedPanel.add(addAttrBu);
+//
+//				attractorsSeedsPanel.add(anAttrSeedPanel);
+//				/*
+//				 * attractorsSeedsPanel.revalidate();
+//				 * attractorsSeedsPanel.repaint();
+//				 */
+//
+//				/*
+//				 * attractorsPanel.revalidate();
+//				 * attractorsPanel.repaint();
+//				 */
+//
+//				revalidate();
+//				repaint();
+//			}
+//		});
 	}
 
 	protected void doSelectSingularAttractorChoiceCommand(boolean isSingular) {
