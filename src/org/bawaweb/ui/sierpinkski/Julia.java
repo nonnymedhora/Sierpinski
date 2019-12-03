@@ -39,8 +39,8 @@ public class Julia extends FractalBase {
 	public final ComplexNumber C2 = new ComplexNumber(-0.75,0.11);			//c= -0.75+0.11*i
 	public final ComplexNumber C3 = new ComplexNumber(-0.1,0.651);			//c=-0.1+0.651*i
 
-	public final ComplexNumber M1 = new ComplexNumber((Math.PI/2),(Math.PI/2)*(0.6));			//[π/2*(1.0 + 0.6i)]";	//f(z) = z^2 + ...
-	public final ComplexNumber M2 = new ComplexNumber((Math.PI/2),(Math.PI/2)*(0.4));			//[π/2*(1.0 + 0.4i)]";	//f(z) = z^2 + ...
+	public final ComplexNumber M1 = new ComplexNumber((Math.PI/2),(Math.PI/2)*(0.6));			//[(π/2)*(1.0 + 0.6i)]";	//f(z) = z^2 + ...
+	public final ComplexNumber M2 = new ComplexNumber((Math.PI/2),(Math.PI/2)*(0.4));			//[(π/2)*(1.0 + 0.4i)]";	//f(z) = z^2 + ...
 	
 	
 
@@ -52,25 +52,20 @@ public class Julia extends FractalBase {
 	
 	public Julia(Properties p) {
 		super(p);
-//		new String[] { "None", "Fatou", "Z-Sq", "ClassicJ" });
-		if(p.getProperty("fieldType")!=null){
-			String fieldType = p.getProperty("fieldType").replaceAll(WHITESPACE,EMPTY);
-			this.setFieldType(fieldType);
-		}
-		/*if (p.getProperty("isZSq") != null)
-			this.setZSq(Boolean.parseBoolean(p.getProperty("isZSq").replaceAll(WHITESPACE,EMPTY)));
-		if (p.getProperty("isFatou") != null)
-			this.setFatou(Boolean.parseBoolean(p.getProperty("isFatou").replaceAll(WHITESPACE,EMPTY)));
-		if (p.getProperty("isClassicJulia") != null)
-			this.setClassicJulia(Boolean.parseBoolean(p.getProperty("isClassicJulia").replaceAll(WHITESPACE,EMPTY)));
-*/
 		if (p.getProperty("useDiff") != null)
 			this.setUseDiff(Boolean.parseBoolean(p.getProperty("useDiff").replaceAll(WHITESPACE,EMPTY)));
-		if (p.getProperty("isComplexNumConst") != null)
+		if (p.getProperty("isComplexNumConst") != null) {
 			this.setComplexNumConst(Boolean.parseBoolean(p.getProperty("isComplexNumConst").replaceAll(WHITESPACE,EMPTY)));
-		if (p.getProperty("constReal") != null && p.getProperty("constImag") != null && !(p.getProperty("constReal").replaceAll(WHITESPACE,EMPTY).equals("DynamicConst") || p.getProperty("constImag").replaceAll(WHITESPACE,EMPTY).equals("DynamicConst")))
+		} if (p.getProperty("constReal") != null && p.getProperty("constImag") != null/* && !(p.getProperty("constReal").replaceAll(WHITESPACE,EMPTY).equals("DynamicConst") || p.getProperty("constImag").replaceAll(WHITESPACE,EMPTY).equals("DynamicConst"))*/) {
 			this.setComplex(Double.parseDouble(p.getProperty("constReal").replaceAll(WHITESPACE, EMPTY)),
 					Double.parseDouble(p.getProperty("constImag").replaceAll(WHITESPACE, EMPTY)));
+			
+			this.setComplexNumConst(false);		//redundant	-	But!
+		}
+		if (p.getProperty("fieldType") != null) {
+			String fieldType = p.getProperty("fieldType").replaceAll(WHITESPACE, EMPTY);
+			this.setFieldType(fieldType);
+		}
 	}
 	
 	

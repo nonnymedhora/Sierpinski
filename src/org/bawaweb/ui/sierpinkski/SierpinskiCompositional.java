@@ -284,7 +284,7 @@ class SierpinskiComboPanel extends JPanel {
 	private JPanel polyOptionsPanel 	= new JPanel(new GridLayout(10,5),true);
 	private JPanel diyOptionsPanel		= new JPanel(new FlowLayout(),true);
 	
-	private JPanel diyMandPanel 		= new JPanel(new GridLayout(5,8),true);
+	private JPanel diyMandPanel 		= new JPanel(new GridLayout(20,15),true);
 	private JPanel diyJuliaPanel 		= new JPanel(new GridLayout(20,15),true);
 	private JPanel diyApolloPanel 		= new JPanel(new GridLayout(4,8),true);
 	
@@ -429,7 +429,7 @@ class SierpinskiComboPanel extends JPanel {
 	protected double diyJuliaConstImg;
 	protected boolean diyJuliaUseDiff;
 	protected boolean diyJuliaKeepConst;
-	protected boolean diyJuliaUseSineCalc;
+	/*protected boolean diyJuliaUseSineCalc;*/
 	protected int diyJuliaMaxIter;
 	protected double diyJuliaBound;
 
@@ -773,7 +773,7 @@ private final JCheckBox diyMandGenCb = new JCheckBox("Generate", false);
 	
 	
 	/////////
-	private boolean keepConst = true;
+	private boolean keepConst/* = true*/;
 	private boolean applyFatou = false;
 	private boolean applyZSq = false;
 	private boolean applyClassicJulia = false;
@@ -892,7 +892,7 @@ private final JCheckBox diyMandGenCb = new JCheckBox("Generate", false);
 	private List<JTextField> attrSeed_Z_tfList = new ArrayList<JTextField>();
 	
 	JButton addAttrBu = new JButton("Add", new ImageIcon("res/add.gif"));
-	
+	JButton removeAttrBu = new JButton("Remove", new ImageIcon("res/remove.gif"));
 
 	private JTextField attrMaxIter_tf = new JTextField(2);
 	private JTextField attrDeltaTime_tf = new JTextField(2);	
@@ -1295,8 +1295,8 @@ private final JCheckBox diyMandGenCb = new JCheckBox("Generate", false);
 		this.attrCustomFormulaStrDeltaZLabel.setVisible(false);
 		this.attrCustom_DeltaZFormula_tf.setVisible(false);
 		
-		
-
+		this.attractorsSeedsPanel = this.createAttractorSeedsPanel();
+		this.attractorsPanel.add(this.attractorsSeedsPanel);
 
 		this.attractorsPanel.add(new JLabel(" Delta Time dt :"));
 		this.attractorsPanel.add(this.attrDeltaTime_tf);
@@ -1307,20 +1307,12 @@ private final JCheckBox diyMandGenCb = new JCheckBox("Generate", false);
 		this.attractorsPanel.add(new JLabel(" Space(2D)  :"));
 		this.attractorsPanel.add(this.attractorSpace2DChoiceCombos);
 		
-		
-		/*this.attractorsSeedsPanel = this.createAttractorSeedsPanel();
-		this.attractorsPanel.add(this.attractorsSeedsPanel);*/
-		
 		this.attractorsPanel.setVisible(false);
 		this.add(this.attractorsPanel);
 	}
 	
 	private JPanel createAttractorSeedsPanel() {
-		JPanel panel = new JPanel(new GridLayout(10,5));
-		
-		/*panel.add(new JLabel("X_Seed: "));
-		panel.add(new JTextField())*/
-		return panel;
+		return this.attractorsSeedsPanel;
 	}
 
 	private void createPolyPanel() {
@@ -3224,8 +3216,10 @@ private final JCheckBox diyMandGenCb = new JCheckBox("Generate", false);
 		boolean varyConst = this.diyMandVaryConstant && this.diyMandVaryGenConstantCb.isSelected();
 		boolean varyKeepConst = (this.keepConst && this.diyMandelbrotKeepConstRb.isSelected()) && !varyConst;
 		
-		if (	!(varyConst && varyKeepConst) && 
-				!(this.diyMandVaryConstant && this.diyMandVaryGenConstantCb.isSelected())) {
+		/*if (	!(varyConst && varyKeepConst) && 
+				!(this.diyMandVaryConstant && this.diyMandVaryGenConstantCb.isSelected())) {*/
+			if (!(this.keepConst && this.diyMandelbrotKeepConstRb.isSelected())
+					&& !(this.diyMandVaryConstant && this.diyMandVaryGenConstantCb.isSelected())) {			
 			try {
 				this.diyMandConstReal = Double.parseDouble(this.diyMandRealTf.getText());
 				this.diyMandConstImg = Double.parseDouble(this.diyMandImgTf.getText());
@@ -3440,10 +3434,14 @@ private final JCheckBox diyMandGenCb = new JCheckBox("Generate", false);
 		}
 		
 		Mandelbrot[] mands = new Mandelbrot[totalVaryCount];
+		boolean hasOutOfMemoryError = false;
 
 		for (int i = 0; i < totalVaryCount; i++) {
 			Runtime.getRuntime().gc();
-			
+			if (hasOutOfMemoryError) {
+				i -= 1;
+			}
+
 			try {
 				mands[i] = new Mandelbrot(this.correctProperties(props[i]));
 			} catch (IllegalArgumentException e1) {
@@ -3552,6 +3550,14 @@ private final JCheckBox diyMandGenCb = new JCheckBox("Generate", false);
 				System.out.println("Generated FileDetail: " + imageDetailFilePath);
 			} catch (IOException e) {
 				e.printStackTrace();
+			} catch (OutOfMemoryError oome) {
+				oome.printStackTrace();
+				if (!hasOutOfMemoryError) {
+					hasOutOfMemoryError = true;
+				} else {
+					System.out.println("Error --- OuttaMemory ");
+					System.exit(1);
+				}
 			}
 
 			this.formulaArea.setText("");
@@ -3693,8 +3699,10 @@ private final JCheckBox diyMandGenCb = new JCheckBox("Generate", false);
 		boolean varyConst = this.diyJuliaVaryConstant && this.diyJuliaVaryGenConstantCb.isSelected();
 		boolean varyKeepConst = (this.keepConst && this.diyJuliaKeepConstRb.isSelected()) && !varyConst;
 		
-		if (	!(varyConst && varyKeepConst) && 
-				!(this.diyJuliaVaryConstant && this.diyJuliaVaryGenConstantCb.isSelected())) {
+//		if (	/*!*/(varyConst && varyKeepConst) && 
+//				/*!*/(this.diyJuliaVaryConstant && this.diyJuliaVaryGenConstantCb.isSelected()) && !this.keepConst) {
+		if (!(this.keepConst && this.diyJuliaKeepConstRb.isSelected())
+				&& !(this.diyJuliaVaryConstant && this.diyJuliaVaryGenConstantCb.isSelected())) {
 			try {
 				this.diyJuliaConstReal = Double.parseDouble(this.diyJuliaRealTf.getText());
 				this.diyJuliaConstImg = Double.parseDouble(this.diyJuliaImgTf.getText());
@@ -3918,10 +3926,13 @@ private final JCheckBox diyMandGenCb = new JCheckBox("Generate", false);
 		}
 		
 		Julia[] julies = new Julia[totalVaryCount];
+		boolean hasOutOfMemoryError = false;
 
 		for (int i = 0; i < totalVaryCount; i++) {
 			Runtime.getRuntime().gc();
-			
+			if (hasOutOfMemoryError) {
+				i -= 1;
+			}
 			try {
 				julies[i] = new Julia(this.correctProperties(props[i]));
 			} catch (IllegalArgumentException e1) {
@@ -4036,6 +4047,14 @@ private final JCheckBox diyMandGenCb = new JCheckBox("Generate", false);
 				System.out.println("Generated FileDetail: " + imageDetailFilePath);
 			} catch (IOException e) {
 				e.printStackTrace();
+			} catch (OutOfMemoryError oome) {
+				oome.printStackTrace();
+				if (!hasOutOfMemoryError) {
+					hasOutOfMemoryError = true;
+				} else {
+					System.out.println("Error --- OuttaMemory ");
+					System.exit(1);
+				}
 			}
 
 			this.formulaArea.setText("");
@@ -5557,7 +5576,7 @@ private final JCheckBox diyMandGenCb = new JCheckBox("Generate", false);
 			String[] fieldTypesArr = this.getAppendStr2Array(fieldType,
 					new String[] { "None", "Fatou", "Z-Sq", "ClassicJ" });
 			return asList(fieldTypesArr);
-		} else {
+		} else {		//redundant	-	for BUT!
 			String diyJApplyField = this.fieldLines;
 			return asList(new String[] { fieldType + diyJApplyField });
 			/*boolean diyJApplyFatou = this.applyFatou;
@@ -10358,6 +10377,41 @@ private final JCheckBox diyMandGenCb = new JCheckBox("Generate", false);
 				attractor2Color = JColorChooser.showDialog(null, "Choose Attractor2 Color", Color.black);
 				attr2ColorChooserBu.setForeground(attractor2Color);	
 				attr2ColorChooserBu.setBackground(attractor2Color);
+			}
+		});
+		
+		this.addAttrBu.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JPanel anAttrSeedPanel = new JPanel(new GridLayout(1,8));
+				anAttrSeedPanel.setVisible(true);
+				anAttrSeedPanel.setEnabled(true);
+
+				int size = attrSeed_X_tfList.size() + 1;
+				anAttrSeedPanel.add(new JLabel("Attractor" + size + "  Seed   X:"));
+				JTextField anAttrSeedX_tf = new JTextField(2);
+				anAttrSeedPanel.add(anAttrSeedX_tf);
+				attrSeed_X_tfList.add(anAttrSeedX_tf);
+				anAttrSeedPanel.add(new JLabel("   Y:"));
+				JTextField anAttrSeedY_tf = new JTextField(2);
+				anAttrSeedPanel.add(anAttrSeedY_tf);
+				attrSeed_Y_tfList.add(anAttrSeedY_tf);
+
+				if (attractorDimChoiceCb.isSelected()) {
+					anAttrSeedPanel.add(new JLabel("   Z:"));
+					JTextField anAttrSeedZ_tf = new JTextField(2);
+					anAttrSeedPanel.add(anAttrSeedZ_tf);
+					attrSeed_Z_tfList.add(anAttrSeedZ_tf);
+				}
+				anAttrSeedPanel.add(removeAttrBu);
+
+				attractorsSeedsPanel.add(anAttrSeedPanel);
+				attractorsSeedsPanel.revalidate();
+				attractorsSeedsPanel.repaint();
+
+				attractorsPanel.revalidate();
+				attractorsPanel.repaint();
 			}
 		});
 	}
