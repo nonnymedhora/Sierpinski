@@ -573,7 +573,7 @@ public class Julia extends FractalBase {
 	}*/
 
 	private ComplexNumber computeComplexConstant() {
-		ComplexNumber cConst;
+		ComplexNumber cConst = null;
 		
 		if (isComplexNumConst || this.complex == null) {
 			if (!preStringComplexConstConstruct) {
@@ -581,7 +581,7 @@ public class Julia extends FractalBase {
 			} else {
 				cConst = this.complex;
 			}
-		} else {
+		} else if (!this.isComplexNumConst) {
 			cConst = this.complex;
 		}
 

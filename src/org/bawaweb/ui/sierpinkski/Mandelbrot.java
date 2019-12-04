@@ -31,10 +31,12 @@ import javax.swing.SwingUtilities;
  *	https://en.wikipedia.org/wiki/Mandelbrot_set
  */
 public class Mandelbrot extends FractalBase {
+	
+	private static final long serialVersionUID = 13456L;
 
 	private static final int BUDDHA_START = 20;
 	private static final int IM_BUDDHA = 123;
-	private int mag;
+	private int magnification;
 	private boolean useDiff = false;
 //	private int size;		//0-599 4 ltr
 	
@@ -59,7 +61,7 @@ public class Mandelbrot extends FractalBase {
 	
 	public Mandelbrot() {
 		super();
-		this.mag = 2;
+		this.magnification = 2;
 		this.power = 2;
 	}
 
@@ -69,7 +71,7 @@ public class Mandelbrot extends FractalBase {
 	 */
 	public Mandelbrot(int mg) {
 		super();
-		this.mag = mg;
+		this.magnification = mg;
 		this.power = 2;
 		this.isComplexNumConst=true;
 		this.complex=null;
@@ -95,7 +97,7 @@ public class Mandelbrot extends FractalBase {
 	}
 
 	/**
-	 * @param mag
+	 * @param magnification
 	 * @param exp
 	 * @param useDiff
 	 * @param complexConst
@@ -132,8 +134,9 @@ public class Mandelbrot extends FractalBase {
 	public Mandelbrot(Properties p) {
 		super(p);
 
-		if (p.getProperty("useDiff") != null)
+		if (p.getProperty("useDiff") != null) {
 			this.setUseDiff(Boolean.parseBoolean(p.getProperty("useDiff").replaceAll(WHITESPACE,EMPTY)));
+		} 
 		if (p.getProperty("isComplexNumConst") != null) {
 			this.setComplexNumConst(Boolean.parseBoolean(p.getProperty("isComplexNumConst").replaceAll(WHITESPACE,EMPTY)));
 		}
@@ -142,12 +145,12 @@ public class Mandelbrot extends FractalBase {
 					Double.parseDouble(p.getProperty("constImag").replaceAll(WHITESPACE, EMPTY)));
 			this.setComplexNumConst(false);		//	redundant	=	BUT!
 		}		
-		if (p.getProperty("magnificationChoice") != null)
+		if (p.getProperty("magnificationChoice") != null) {
 			this.setMagnification(Integer.parseInt(p.getProperty("magnificationChoice").replaceAll(WHITESPACE,EMPTY)));
+		}
 		
 	}
 
-	private static final long serialVersionUID = 13456L;
 
 	/* (non-Javadoc)
 	 * @see org.bawaweb.ui.sierpinkski.FractalBase#createFractalShape(java.awt.Graphics2D)
@@ -214,7 +217,7 @@ public class Mandelbrot extends FractalBase {
 		System.out.println("here");
 		double xc = getxC();
 		double yc = getyC();
-		double size = this.mag;
+		double size = this.magnification;
 		double bd = this.getBound();		
 		int pow = this.power;
 		int max = getMaxIter();
@@ -257,9 +260,9 @@ public class Mandelbrot extends FractalBase {
 
 		if (this.motionParam.equals("scaleSize")) {
 			size+=this.getMotionParamJumpVal();	
-			this.mag=(int) size;
+			this.magnification=(int) size;
 			
-			System.out.println("  scaleSize is now "+this.mag+" and d is "+d);
+			System.out.println("  scaleSize is now "+this.magnification+" and d is "+d);
 		}
 
 		int max = getMaxIter();
@@ -292,9 +295,9 @@ public class Mandelbrot extends FractalBase {
 			
 			if (this.motionParam.equals("scaleSize")) {
 				size+=this.getMotionParamJumpVal();	
-				this.mag=(int) size;
+				this.magnification=(int) size;
 				
-				System.out.println("  scaleSize is now "+this.mag+" and d is "+d);
+				System.out.println("  scaleSize is now "+this.magnification+" and d is "+d);
 			}
 			
 			
@@ -311,7 +314,7 @@ public class Mandelbrot extends FractalBase {
 	private void createBuddhabrot(Graphics2D g, boolean diff) {
 		double xc = getxC();
 		double yc = getyC();
-		double size = this.mag;
+		double size = this.magnification;
 		double bd = this.getBound();
 		int max = getMaxIter();
 		
@@ -414,7 +417,7 @@ public class Mandelbrot extends FractalBase {
 		
 		double xc = getxC();//-0.5;//getxC();//-0.5;
 		double yc = getyC();//0;//getyC();//0;
-		double size = this.mag;//getScaleSize();//this.mag;	//10;//4;//2;
+		double size = this.magnification;//getScaleSize();//this.mag;	//10;//4;//2;
 		double bd = this.getBound();
 		int max = getMaxIter();
 //		System.out.println("in__Mandelbrot__createMandelbrot (isComplexNumConst || this.complex == null) = "+(isComplexNumConst || this.complex == null));		
@@ -541,8 +544,26 @@ public class Mandelbrot extends FractalBase {
 			z0 = this.getPixelComplexValue(y0, x0);
 		}
 		
+		boolean pxFuncHasConst = (pxFunc2Apply.indexOf('c') > -1 || pxFunc2Apply.indexOf('C') > -1);
 		
-		z0 = this.computePixel(pxFunc2Apply, z0);
+		/*z0 = this.computePixel(pxFunc2Apply, z0);*/
+
+		if (!pxFuncHasConst) {
+			z0 = this.computePixel(pxFunc2Apply, z0);
+		} else {
+			ComplexNumber cConst = null;
+
+			if (this.isComplexNumConst || this.complex == null) {
+				cConst = z0;
+				this.complex = z0;
+			} else if (!this.isComplexNumConst) {
+				if(this.complex==null){System.out.println("uh--oh  this.complex="+this.complex+" avd this.isComplexNumConst="+this.isComplexNumConst);}
+				cConst = this.complex;
+			}
+
+			z0 = this.computePixel(pxFunc2Apply, z0, cConst);
+		}
+		
 		if (z0.isNaN()) {
 			return z0;
 		}
@@ -601,7 +622,7 @@ public class Mandelbrot extends FractalBase {
 	private boolean confirmNonMFrstPass(List<Pixel> pixList) {
 		double xc = getxC();
 		double yc = getyC();
-		double size = this.mag;
+		double size = this.magnification;
 		double bd = this.getBound();
 		int n = getAreaSize();
 		int max = getMaxIter();
@@ -647,69 +668,85 @@ public class Mandelbrot extends FractalBase {
 //		}System.out.println("returning rList size=="+rList.size());
 //		return rList;
 //	}
+	
+
+	private ComplexNumber computePixel(String fun, ComplexNumber z0, ComplexNumber compConst) {
+		if (this.applyCustomFormula) {
+			fun = fun.replaceAll("c", "(" + compConst.toString().replaceAll("i", "*i") + ")")
+					.replaceAll("C", "(" + compConst.toString().replaceAll("i", "*i") + ")");
+
+			return new FunctionEvaluator().evaluate(fun, z0);//, compConst);
+		}
+		return null;
+	}
+
 
 	private ComplexNumber computePixel(String fun, ComplexNumber z0) {
-		switch (fun) {
-			case "sine":
-				z0 = z0.sine(); // z0.sin();
-				break;
-			case "coosine":
-				z0 = z0.cosine(); // z0.cos();
-				break;
-			case "tan":
-				z0 = z0.tangent(); // z0.tan();
-				break;
-			case "arcsine":
-				z0 = z0.inverseSine(); // z0.sin();
-				break;
-			case "arccosine":
-				z0 = z0.inverseCosine(); // z0.cos();
-				break;
-			case "arctan":
-				z0 = z0.inverseTangent(); // z0.tan();
-				break;
-			case "reiprocal":
-				z0 = z0.reciprocal(); // z0.sin();
-				break;
-			case "reciprocalSquare":
-				z0 = (z0.reciprocal()).power(2); // z0.sin();
-				break;
-			case "square":
-				z0 = z0.power(2); // z0.sin();
-				break;
-			case "cube":
-				z0 = z0.power(3); // z0.cos();
-				break;
-			case "exponent(e)":
-				z0 = z0.exp(); // z0.tan();
-				break;
-			case "root":
-				z0 = z0.sqroot(); // z0.sin();
-				break;
-			case "cube-root":
-				z0 = z0.curoot(); // z0.cos();
-				break;
-			case "log(e)":
-				z0 = z0.ln(); // z0.tan();
-				break;	
-			case "None":
-				z0 = z0;
-				break;
-			default:
-				z0 = z0;
-				break;
-		}// ends-switch
+		if (!this.applyCustomFormula) {
+			switch (fun) {
+				case "sine":
+					z0 = z0.sine();
+					break;
+				case "coosine":
+					z0 = z0.cosine();
+					break;
+				case "tan":
+					z0 = z0.tangent();
+					break;
+				case "arcsine":
+					z0 = z0.inverseSine();
+					break;
+				case "arccosine":
+					z0 = z0.inverseCosine(); 
+					break;
+				case "arctan":
+					z0 = z0.inverseTangent();
+					break;
+				case "reiprocal":
+					z0 = z0.reciprocal();
+					break;
+				case "reciprocalSquare":
+					z0 = (z0.reciprocal()).power(2);
+					break;
+				case "square":
+					z0 = z0.power(2);
+					break;
+				case "cube":
+					z0 = z0.power(3);
+					break;
+				case "exponent(e)":
+					z0 = z0.exp();
+					break;
+				case "root":
+					z0 = z0.sqroot();
+					break;
+				case "cube-root":
+					z0 = z0.curoot();
+					break;
+				case "log(e)":
+					z0 = z0.ln();
+					break;	
+				case "None":
+					z0 = z0;
+					break;
+				default:
+					z0 = z0;
+					break;
+			}// ends-switch
+		}	else {
+			z0 = new FunctionEvaluator().evaluate(fun, z0);
+		}
 
 		return z0;
 	}
 
 	private ComplexNumber computeComplexConstant(String func2Apply, ComplexNumber z0) {
-		ComplexNumber cConst;
+		ComplexNumber cConst = null;
 
 		if (this.isComplexNumConst || this.complex == null) {
 			cConst = z0;
 			this.complex = z0;
-		} else {
+		} else if (!this.isComplexNumConst) {
 			cConst = this.complex;
 		}
 
@@ -996,11 +1033,11 @@ public class Mandelbrot extends FractalBase {
 	}
 
 	public int getMagnification() {
-		return this.mag;
+		return this.magnification;
 	}
 
 	public void setMagnification(int mg) {
-		this.mag = mg;
+		this.magnification = mg;
 	}
 
 }
