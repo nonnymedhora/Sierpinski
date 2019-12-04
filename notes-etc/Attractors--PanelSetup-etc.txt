@@ -1,0 +1,516 @@
+	private static final String[] ATTRACTOR_CHOICES = new String[]{"lorenz","aizawa","dejong","custom"};
+	private static final String[] ATTRACTOR_SPACE_3D_CHOICES = new String[] { "x-y", "x-z", "y-z", "y-x", "z-x", "z-y" };
+	private static final String[] ATTRACTOR_SPACE_2D_CHOICES = new String[] { "x-y", "y-x" };
+	
+	private JPanel attractorsPanel 		= new JPanel(new GridLayout(20,15));
+	private JPanel attractorsSeedsPanel/* = new JPanel(new GridLayout(10,10))*/;
+	
+		
+	
+//////////////////////////////ATTRACTOR////////////////////////////
+	private final String[] attractorChoiceOptions = ATTRACTOR_CHOICES;
+	private final JComboBox<String> attractorChoiceCombos = new JComboBox<String>(attractorChoiceOptions);
+	private final JCheckBox attractorDimChoiceCb = new JCheckBox("3D",true);
+	private boolean isAttractorDimSpace3D = true;
+	private final JCheckBox attractorPixellateChoiceCb = new JCheckBox("Pixellate",true);
+	private boolean isAttractorPixellated = true;
+	
+	private final JCheckBox attractorSingularChoiceCb = new JCheckBox("Plot Single Attractor",false);
+	private boolean isSingularAttractor = false;
+	
+	private String attractorSelectionChoice;
+	
+	private JTextField attr1SeedX_tf = new JTextField(2);
+	private JTextField attr1SeedY_tf = new JTextField(2);
+	private JTextField attr1SeedZ_tf = new JTextField(2);
+	private JButton attr1ColorChooserBu = new JButton();
+	private Color attractor1Color;
+	
+	/*private double attr1SeedXVal;	
+	private double attr1SeedYVal;	
+	private double attr1SeedZVal;*/
+	
+	private JTextField attr2SeedX_tf = new JTextField(2);
+	private JTextField attr2SeedY_tf = new JTextField(2);
+	private JTextField attr2SeedZ_tf = new JTextField(2);
+	private JButton attr2ColorChooserBu = new JButton();
+	private Color attractor2Color;
+	
+	/*private double attr2SeedXVal;	
+	private double attr2SeedYVal;	
+	private double attr2SeedZVal;*/
+	private List<JTextField> attrSeed_X_tfList = new ArrayList<JTextField>();
+	private List<JTextField> attrSeed_Y_tfList = new ArrayList<JTextField>();
+	private List<JTextField> attrSeed_Z_tfList = new ArrayList<JTextField>();
+	
+	JButton addAttrBu = new JButton("Add", new ImageIcon("res/add.gif"));
+	JButton removeAttrBu = new JButton("Remove", new ImageIcon("res/remove.gif"));
+
+	private JTextField attrMaxIter_tf = new JTextField(2);
+	private JTextField attrDeltaTime_tf = new JTextField(2);	
+	/*private double attrMaxIterVal;	*/
+	
+	private final String[] attractorSpace2DChoiceOptions = ATTRACTOR_SPACE_3D_CHOICES;
+	private final JComboBox<String> attractorSpace2DChoiceCombos = new JComboBox<String>(attractorSpace2DChoiceOptions);
+	private String attractorSpace2DSelectionChoice;
+	
+	/*private JTextField attrCustomSeedX_tf = new JTextField(2);
+	private JTextField attrCustomSeedY_tf = new JTextField(2);
+	private JTextField attrCustomSeedZ_tf = new JTextField(2);
+	
+	private double attrCustomSeedXVal;	
+	private double attrCustomSeedYVal;	
+	private double attrCustomSeedZVal;*/
+	
+	//lorenz
+	private JLabel attrLorenzSigmaLabel = new JLabel("Set sigma: ");
+	private JTextField attrLorenzSigma_tf = new JTextField(2);
+	private JLabel attrLorenzRhoLabel = new JLabel("  rho: ");
+	private JTextField attrLorenzRho_tf = new JTextField(2);
+	private JLabel attrLorenzBetaLabel = new JLabel("  beta: ");
+	private JTextField attrLorenzBeta_tf = new JTextField(2);
+	
+	//aizawa
+	private JLabel attrAizawaALabel = new JLabel("Set a: ");
+	private JTextField attrAizawaA_tf = new JTextField(2);
+	private JLabel attrAizawaBLabel = new JLabel("  b: ");
+	private JTextField attrAizawaB_tf = new JTextField(2);
+	private JLabel attrAizawaCLabel = new JLabel("  c: ");
+	private JTextField attrAizawaC_tf = new JTextField(2);
+	private JLabel attrAizawaDLabel = new JLabel("  d: ");
+	private JTextField attrAizawaD_tf = new JTextField(2);
+	private JLabel attrAizawaELabel = new JLabel("  e: ");
+	private JTextField attrAizawaE_tf = new JTextField(2);
+	private JLabel attrAizawaFLabel = new JLabel("  f: ");
+	private JTextField attrAizawaF_tf = new JTextField(2);
+	
+	
+	//dejong
+	private JLabel attrDeJongALabel = new JLabel("Set a: ");
+	private JTextField attrDeJongA_tf = new JTextField(2);
+	private JLabel attrDeJongBLabel = new JLabel("  b: ");
+	private JTextField attrDeJongB_tf = new JTextField(2);
+	private JLabel attrDeJongCLabel = new JLabel("  c: ");
+	private JTextField attrDeJongC_tf = new JTextField(2);
+	private JLabel attrDeJongDLabel = new JLabel("  d: ");
+	private JTextField attrDeJongD_tf = new JTextField(2);
+	
+
+	private JLabel attrCustomFormulaStrLabel = new JLabel("Custom Formula: ");
+	private JLabel attrCustomFormulaStrDeltaXLabel = new JLabel("Delta X or dx: ");
+	private JLabel attrCustomFormulaStrDeltaYLabel = new JLabel("Delta Y or dy: ");
+	private JLabel attrCustomFormulaStrDeltaZLabel = new JLabel("Delta Z or dz: ");
+	private JTextField attrCustom_DeltaXFormula_tf = new JTextField(10);
+	private JTextField attrCustom_DeltaYFormula_tf = new JTextField(10);
+	private JTextField attrCustom_DeltaZFormula_tf = new JTextField(10);
+	
+	/*private String attrCustom_DeltaXFormula;	
+	private String attrCustom_DeltaYFormula;	
+	private String attrCustom_DeltaZFormula;*/
+
+
+
+
+
+	
+	/////////////////////////4Attractors//////////////////////////////////////////
+
+	private void setupAttractorsListeners() {
+		this.attractorChoiceCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<String> cb = (JComboBox<String>)e.getSource();
+		        String attractorChoiceVal = (String)cb.getSelectedItem();
+				doSelectAttractorChoiceCombosCommand(attractorChoiceVal);				
+			}
+		});
+
+		this.attractorDimChoiceCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectAttractorDimChoiceCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSelectAttractorDimChoiceCommand(false);
+				}
+			}
+        });
+
+		this.attractorPixellateChoiceCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectAttractorPixellateChoiceCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSelectAttractorPixellateChoiceCommand(false);
+				}
+			}
+        });
+		
+		this.attractorSingularChoiceCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectSingularAttractorChoiceCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSelectSingularAttractorChoiceCommand(false);
+				}
+			}
+        });
+		
+		this.attractorSpace2DChoiceCombos.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<String> cb = (JComboBox<String>)e.getSource();
+		        String attractorSpace2DChoiceVal = (String)cb.getSelectedItem();
+				doSelectAttractorSpace2DChoiceCombosCommand(attractorSpace2DChoiceVal);				
+			}
+		});
+		
+		this.attr1ColorChooserBu.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				attractor1Color = JColorChooser.showDialog(null, "Choose Attractor1 Color", Color.black);
+				attr1ColorChooserBu.setForeground(attractor1Color);
+				attr1ColorChooserBu.setBackground(attractor1Color);
+			}
+		});
+
+		this.attr2ColorChooserBu.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				attractor2Color = JColorChooser.showDialog(null, "Choose Attractor2 Color", Color.black);
+				attr2ColorChooserBu.setForeground(attractor2Color);	
+				attr2ColorChooserBu.setBackground(attractor2Color);
+			}
+		});
+		
+		this.addAttrBu.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				/*JPanel anAttrSeedPanel = new JPanel(new GridLayout(1, 8));
+				anAttrSeedPanel.setVisible(true);
+				anAttrSeedPanel.setEnabled(true);*/
+
+				int size = attrSeed_X_tfList.size() + 1;
+				attractorsSeedsPanel.add(new JLabel("Attractor " + size + "  Seed   X:"));
+				JTextField anAttrSeedX_tf = new JTextField(2);
+				attractorsSeedsPanel.add(anAttrSeedX_tf);
+				attrSeed_X_tfList.add(anAttrSeedX_tf);
+				attractorsSeedsPanel.add(new JLabel("   Y:"));
+				JTextField anAttrSeedY_tf = new JTextField(2);
+				attractorsSeedsPanel.add(anAttrSeedY_tf);
+				attrSeed_Y_tfList.add(anAttrSeedY_tf);
+
+				if (attractorDimChoiceCb.isSelected()) {
+					attractorsSeedsPanel.add(new JLabel("   Z:"));
+					JTextField anAttrSeedZ_tf = new JTextField(2);
+					attractorsSeedsPanel.add(anAttrSeedZ_tf);
+					attrSeed_Z_tfList.add(anAttrSeedZ_tf);
+				}
+				attractorsSeedsPanel.add(removeAttrBu);
+				attractorsSeedsPanel.add(addAttrBu);
+
+				/*attractorsSeedsPanel.add(anAttrSeedPanel);*/
+
+				attractorsSeedsPanel.revalidate();
+				attractorsSeedsPanel.repaint();
+
+				attractorsPanel.revalidate();
+				attractorsPanel.repaint();
+
+				revalidate();
+				repaint();
+			}
+		});
+		
+//		_O_
+//		this.addAttrBu.addActionListener(new ActionListener() {
+//			@SuppressWarnings("unchecked")
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				JPanel anAttrSeedPanel = new JPanel(new GridLayout(1, 8));
+//				anAttrSeedPanel.setVisible(true);
+//				anAttrSeedPanel.setEnabled(true);
+//
+//				int size = attrSeed_X_tfList.size() + 1;
+//				anAttrSeedPanel.add(new JLabel("Attractor " + size + "  Seed   X:"));
+//				JTextField anAttrSeedX_tf = new JTextField(2);
+//				anAttrSeedPanel.add(anAttrSeedX_tf);
+//				attrSeed_X_tfList.add(anAttrSeedX_tf);
+//				anAttrSeedPanel.add(new JLabel("   Y:"));
+//				JTextField anAttrSeedY_tf = new JTextField(2);
+//				anAttrSeedPanel.add(anAttrSeedY_tf);
+//				attrSeed_Y_tfList.add(anAttrSeedY_tf);
+//
+//				if (attractorDimChoiceCb.isSelected()) {
+//					anAttrSeedPanel.add(new JLabel("   Z:"));
+//					JTextField anAttrSeedZ_tf = new JTextField(2);
+//					anAttrSeedPanel.add(anAttrSeedZ_tf);
+//					attrSeed_Z_tfList.add(anAttrSeedZ_tf);
+//				}
+//				anAttrSeedPanel.add(removeAttrBu);
+//				anAttrSeedPanel.add(addAttrBu);
+//
+//				attractorsSeedsPanel.add(anAttrSeedPanel);
+//				/*
+//				 * attractorsSeedsPanel.revalidate();
+//				 * attractorsSeedsPanel.repaint();
+//				 */
+//
+//				/*
+//				 * attractorsPanel.revalidate();
+//				 * attractorsPanel.repaint();
+//				 */
+//
+//				revalidate();
+//				repaint();
+//			}
+//		});
+	}
+
+	protected void doSelectSingularAttractorChoiceCommand(boolean isSingular) {
+		this.isSingularAttractor = isSingular;
+
+		if (isSingular) {
+			this.attr2SeedX_tf.setEnabled(false);
+			this.attr2SeedY_tf.setEnabled(false);
+			this.attr2SeedZ_tf.setEnabled(false);
+
+		} else {
+			this.attr2SeedX_tf.setEnabled(true);
+			this.attr2SeedY_tf.setEnabled(true);
+			this.attr2SeedZ_tf.setEnabled(true);
+		}
+	}
+
+	private void doSelectAttractorPixellateChoiceCommand(boolean pixellateChoice) {
+		this.isAttractorPixellated = pixellateChoice;
+	}
+
+	private void doSelectAttractorDimChoiceCommand(boolean dimChoice) {
+		this.isAttractorDimSpace3D = dimChoice;
+
+		if (!this.isAttractorDimSpace3D) {
+			this.attractorSpace2DChoiceCombos.setModel(new DefaultComboBoxModel<String>(ATTRACTOR_SPACE_2D_CHOICES));
+
+			this.attr1SeedZ_tf.setEnabled(false);
+			this.attr2SeedZ_tf.setEnabled(false);
+
+			this.attrCustom_DeltaZFormula_tf.setEnabled(false);
+
+		} else {
+			this.attractorSpace2DChoiceCombos.setModel(new DefaultComboBoxModel<String>(ATTRACTOR_SPACE_3D_CHOICES));
+
+			this.attr1SeedZ_tf.setEnabled(true);
+			this.attr2SeedZ_tf.setEnabled(true);
+
+			this.attrCustom_DeltaZFormula_tf.setEnabled(true);
+		}
+	}
+	
+	
+	private void doSelectAttractorSpace2DChoiceCombosCommand(String attractorSpace2DChoiceVal) {
+		this.attractorSpace2DSelectionChoice	=	attractorSpace2DChoiceVal;
+	}
+
+	private void doSelectAttractorChoiceCombosCommand(String attractorChoiceVal) {
+		this.attractorSelectionChoice = attractorChoiceVal;
+
+		if (this.attractorSelectionChoice.equals("custom")) {
+			this.attrCustomFormulaStrLabel.setVisible(true);
+			this.attrCustomFormulaStrDeltaXLabel.setVisible(true);
+			this.attrCustom_DeltaXFormula_tf.setVisible(true);
+			this.attrCustomFormulaStrDeltaYLabel.setVisible(true);
+			this.attrCustom_DeltaYFormula_tf.setVisible(true);
+			this.attrCustomFormulaStrDeltaZLabel.setVisible(true);
+			this.attrCustom_DeltaZFormula_tf.setVisible(true);
+			
+			this.setupAttractorParamChoices();
+		} else {
+			this.attrCustomFormulaStrLabel.setVisible(false);
+			this.attrCustomFormulaStrDeltaXLabel.setVisible(false);
+			this.attrCustom_DeltaXFormula_tf.setVisible(false);
+			this.attrCustomFormulaStrDeltaYLabel.setVisible(false);
+			this.attrCustom_DeltaYFormula_tf.setVisible(false);
+			this.attrCustomFormulaStrDeltaZLabel.setVisible(false);
+			this.attrCustom_DeltaZFormula_tf.setVisible(false);
+			
+			this.setupAttractorParamChoices();
+		}
+		
+		this.buStart.setEnabled(true);
+	}
+
+	private void setupAttractorParamChoices() {
+
+		boolean isSingular = this.isSingularAttractor;
+		if (this.attractorSelectionChoice.equals("lorenz")) {
+			this.attrLorenzSigmaLabel.setVisible(true);
+			this.attrLorenzSigma_tf.setVisible(true);
+			this.attrLorenzRhoLabel.setVisible(true);
+			this.attrLorenzRho_tf.setVisible(true);
+			this.attrLorenzBetaLabel.setVisible(true);
+			this.attrLorenzBeta_tf.setVisible(true);
+
+			this.attrAizawaALabel.setVisible(false);
+			this.attrAizawaA_tf.setVisible(false);
+			this.attrAizawaBLabel.setVisible(false);
+			this.attrAizawaB_tf.setVisible(false);
+			this.attrAizawaCLabel.setVisible(false);
+			this.attrAizawaC_tf.setVisible(false);
+			this.attrAizawaDLabel.setVisible(false);
+			this.attrAizawaD_tf.setVisible(false);
+			this.attrAizawaELabel.setVisible(false);
+			this.attrAizawaE_tf.setVisible(false);
+			this.attrAizawaFLabel.setVisible(false);
+			this.attrAizawaF_tf.setVisible(false);
+
+			this.attrDeJongALabel.setVisible(false);
+			this.attrDeJongA_tf.setVisible(false);
+			this.attrDeJongBLabel.setVisible(false);
+			this.attrDeJongB_tf.setVisible(false);
+			this.attrDeJongCLabel.setVisible(false);
+			this.attrDeJongC_tf.setVisible(false);
+			this.attrDeJongDLabel.setVisible(false);
+			this.attrDeJongD_tf.setVisible(false);
+
+			this.attr1SeedZ_tf.setEnabled(true);
+			if (!isSingular) {
+				this.attr2SeedX_tf.setEnabled(true);
+				this.attr2SeedY_tf.setEnabled(true);
+				this.attr2SeedZ_tf.setEnabled(true);
+			} else {
+				this.attr2SeedX_tf.setEnabled(false);
+				this.attr2SeedY_tf.setEnabled(false);
+				this.attr2SeedZ_tf.setEnabled(false);
+			}
+		} else if (this.attractorSelectionChoice.equals("aizawa")) {
+			this.attrAizawaALabel.setVisible(true);
+			this.attrAizawaA_tf.setVisible(true);
+			this.attrAizawaBLabel.setVisible(true);
+			this.attrAizawaB_tf.setVisible(true);
+			this.attrAizawaCLabel.setVisible(true);
+			this.attrAizawaC_tf.setVisible(true);
+			this.attrAizawaDLabel.setVisible(true);
+			this.attrAizawaD_tf.setVisible(true);
+			this.attrAizawaELabel.setVisible(true);
+			this.attrAizawaE_tf.setVisible(true);
+			this.attrAizawaFLabel.setVisible(true);
+			this.attrAizawaF_tf.setVisible(true);
+
+			this.attrLorenzSigmaLabel.setVisible(false);
+			this.attrLorenzSigma_tf.setVisible(false);
+			this.attrLorenzRhoLabel.setVisible(false);
+			this.attrLorenzRho_tf.setVisible(false);
+			this.attrLorenzBetaLabel.setVisible(false);
+			this.attrLorenzBeta_tf.setVisible(false);
+
+			this.attrDeJongALabel.setVisible(false);
+			this.attrDeJongA_tf.setVisible(false);
+			this.attrDeJongBLabel.setVisible(false);
+			this.attrDeJongB_tf.setVisible(false);
+			this.attrDeJongCLabel.setVisible(false);
+			this.attrDeJongC_tf.setVisible(false);
+			this.attrDeJongDLabel.setVisible(false);
+			this.attrDeJongD_tf.setVisible(false);
+
+			this.attr1SeedZ_tf.setEnabled(true);
+
+			if (!isSingular) {
+				this.attr2SeedX_tf.setEnabled(true);
+				this.attr2SeedY_tf.setEnabled(true);
+				this.attr2SeedZ_tf.setEnabled(true);
+			} else {
+				this.attr2SeedX_tf.setEnabled(false);
+				this.attr2SeedY_tf.setEnabled(false);
+				this.attr2SeedZ_tf.setEnabled(false);
+			}
+		} else if (this.attractorSelectionChoice.equals("dejong")) {
+			this.attrDeJongALabel.setVisible(true);
+			this.attrDeJongA_tf.setVisible(true);
+			this.attrDeJongBLabel.setVisible(true);
+			this.attrDeJongB_tf.setVisible(true);
+			this.attrDeJongCLabel.setVisible(true);
+			this.attrDeJongC_tf.setVisible(true);
+			this.attrDeJongDLabel.setVisible(true);
+			this.attrDeJongD_tf.setVisible(true);
+
+			this.attrLorenzSigmaLabel.setVisible(false);
+			this.attrLorenzSigma_tf.setVisible(false);
+			this.attrLorenzRhoLabel.setVisible(false);
+			this.attrLorenzRho_tf.setVisible(false);
+			this.attrLorenzBetaLabel.setVisible(false);
+			this.attrLorenzBeta_tf.setVisible(false);
+
+			this.attrAizawaALabel.setVisible(false);
+			this.attrAizawaA_tf.setVisible(false);
+			this.attrAizawaBLabel.setVisible(false);
+			this.attrAizawaB_tf.setVisible(false);
+			this.attrAizawaCLabel.setVisible(false);
+			this.attrAizawaC_tf.setVisible(false);
+			this.attrAizawaDLabel.setVisible(false);
+			this.attrAizawaD_tf.setVisible(false);
+			this.attrAizawaELabel.setVisible(false);
+			this.attrAizawaE_tf.setVisible(false);
+			this.attrAizawaFLabel.setVisible(false);
+			this.attrAizawaF_tf.setVisible(false);
+
+			this.attr1SeedZ_tf.setEnabled(false);
+
+			if (!isSingular) {
+				this.attr2SeedX_tf.setEnabled(true);
+				this.attr2SeedY_tf.setEnabled(true);
+				this.attr2SeedZ_tf.setEnabled(true);
+			} else {
+				this.attr2SeedX_tf.setEnabled(false);
+				this.attr2SeedY_tf.setEnabled(false);
+				this.attr2SeedZ_tf.setEnabled(false);
+			}
+		} else if (this.attractorSelectionChoice.equals("custom")) {
+			this.attrLorenzSigmaLabel.setVisible(false);
+			this.attrLorenzSigma_tf.setVisible(false);
+			this.attrLorenzRhoLabel.setVisible(false);
+			this.attrLorenzRho_tf.setVisible(false);
+			this.attrLorenzBetaLabel.setVisible(false);
+			this.attrLorenzBeta_tf.setVisible(false);
+
+			this.attrAizawaALabel.setVisible(false);
+			this.attrAizawaA_tf.setVisible(false);
+			this.attrAizawaBLabel.setVisible(false);
+			this.attrAizawaB_tf.setVisible(false);
+			this.attrAizawaCLabel.setVisible(false);
+			this.attrAizawaC_tf.setVisible(false);
+			this.attrAizawaDLabel.setVisible(false);
+			this.attrAizawaD_tf.setVisible(false);
+			this.attrAizawaELabel.setVisible(false);
+			this.attrAizawaE_tf.setVisible(false);
+			this.attrAizawaFLabel.setVisible(false);
+			this.attrAizawaF_tf.setVisible(false);
+
+			this.attrDeJongALabel.setVisible(false);
+			this.attrDeJongA_tf.setVisible(false);
+			this.attrDeJongBLabel.setVisible(false);
+			this.attrDeJongB_tf.setVisible(false);
+			this.attrDeJongCLabel.setVisible(false);
+			this.attrDeJongC_tf.setVisible(false);
+			this.attrDeJongDLabel.setVisible(false);
+			this.attrDeJongD_tf.setVisible(false);
+			if (!isSingular) {
+				this.attr2SeedX_tf.setEnabled(true);
+				this.attr2SeedY_tf.setEnabled(true);
+				this.attr2SeedZ_tf.setEnabled(true);
+			} else {
+				this.attr2SeedX_tf.setEnabled(false);
+				this.attr2SeedY_tf.setEnabled(false);
+				this.attr2SeedZ_tf.setEnabled(false);
+			}
+		}
+	}
+
+	///////////////////////////////////////////////////////////////////////////////

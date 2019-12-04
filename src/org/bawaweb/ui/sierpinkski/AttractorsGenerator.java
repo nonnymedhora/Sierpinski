@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.JFrame;
@@ -261,6 +262,15 @@ public class AttractorsGenerator extends JFrame {
 
 	public void setAttractors(Attractor[] attrs) {
 		this.attractors = attrs;
+	}
+	
+	public void setAttractors(List<Attractor> attrList) {
+		final int numAttrs = attrList.size();
+		Attractor[] attractorArr = new Attractor[numAttrs];
+		for (int i = 0; i < numAttrs; i++) {
+			attractorArr[i] = attrList.get(i);
+		}
+		this.setAttractors(attractorArr);
 	}
 
 
