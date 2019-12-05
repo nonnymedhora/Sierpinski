@@ -10666,7 +10666,7 @@ class SierpinskiComboPanel extends JPanel {
 				}
 				
 				JButton nxtAttr_Clr_Bu = new JButton();
-				nxtAttr_Clr_Bu.addActionListener(addAttractorColorListener(nxtAttr_Clr_Bu));
+				nxtAttr_Clr_Bu.addActionListener(addAttractorColorListener(nxtAttr_Clr_Bu,size));
 				attractorsSeedsPanel.add(nxtAttr_Clr_Bu);
 				
 				attractorsSeedsPanel.add(removeAttrBu);
@@ -10788,18 +10788,22 @@ class SierpinskiComboPanel extends JPanel {
 //		});
 	}
 
-	protected ActionListener addAttractorColorListener(JButton nxtAttrColorBu) {
+	protected ActionListener addAttractorColorListener(JButton nxtAttrColorBu, int num) {
 		return new ActionListener() {
 			@SuppressWarnings("unchecked")
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Color nxtAttr_Color = JColorChooser.showDialog(null, "Choose AttractorN Color", Color.black);
-				nxtAttrColorBu.setForeground(attractor2Color);	
-				nxtAttrColorBu.setBackground(attractor2Color);
-				attrSeed_Clr_buList.add(nxtAttrColorBu);
-				attrSeed_ClrChList .add(nxtAttr_Color);
+				setNxtAttrColor(nxtAttrColorBu, num);
 			}
 		};
+	}
+
+	private void setNxtAttrColor(JButton nxtAttrClrBu,int attrSize) {
+		Color nxtAttr_Color = JColorChooser.showDialog(null, "Choose Attractor: "+attrSize+" Color", Color.black);
+		nxtAttrClrBu.setForeground(attractor2Color);
+		nxtAttrClrBu.setBackground(attractor2Color);
+		attrSeed_Clr_buList.add(nxtAttrClrBu);
+		attrSeed_ClrChList.add(nxtAttr_Color);
 	}
 
 	protected void doSelectSingularAttractorChoiceCommand(boolean isSingular) {
