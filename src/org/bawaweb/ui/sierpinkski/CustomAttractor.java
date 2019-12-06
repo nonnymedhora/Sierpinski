@@ -80,7 +80,11 @@ public class CustomAttractor extends Attractor {
 	 */
 	@Override//z0 = new FunctionEvaluator().evaluate(fun, z0);
 	protected double dx(Tuple3d tuple, double dt) {
-		return tuple.x + (	new FunctionEvaluator().evaluate(this.deltaXFormula,tuple) * dt);
+		if (!this.isTimeInvariant) {
+			return tuple.x + (new FunctionEvaluator().evaluate(this.deltaXFormula, tuple) * dt);
+		} else {
+			return new FunctionEvaluator().evaluate(this.deltaXFormula, tuple);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -88,7 +92,11 @@ public class CustomAttractor extends Attractor {
 	 */
 	@Override
 	protected double dy(Tuple3d tuple, double dt) {
-		return tuple.y + (	new FunctionEvaluator().evaluate(this.deltaYFormula,tuple) * dt);
+		if (!this.isTimeInvariant) {
+			return tuple.y + (new FunctionEvaluator().evaluate(this.deltaYFormula, tuple) * dt);
+		} else {
+			return new FunctionEvaluator().evaluate(this.deltaYFormula, tuple);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -96,7 +104,11 @@ public class CustomAttractor extends Attractor {
 	 */
 	@Override
 	protected double dz(Tuple3d tuple, double dt) {
-		return tuple.z + (	new FunctionEvaluator().evaluate(this.deltaZFormula,tuple) * dt);
+		if (!this.isTimeInvariant) {
+			return tuple.z + (new FunctionEvaluator().evaluate(this.deltaZFormula, tuple) * dt);
+		} else {
+			return new FunctionEvaluator().evaluate(this.deltaZFormula, tuple);
+		}
 	}
 
 }

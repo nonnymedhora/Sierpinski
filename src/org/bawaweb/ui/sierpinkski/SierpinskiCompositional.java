@@ -852,13 +852,25 @@ class SierpinskiComboPanel extends JPanel {
 //////////////////////////////ATTRACTOR////////////////////////////
 	private final String[] attractorChoiceOptions = ATTRACTOR_CHOICES;
 	private final JComboBox<String> attractorChoiceCombos = new JComboBox<String>(attractorChoiceOptions);
-	private final JCheckBox attractorDimChoiceCb = new JCheckBox("3D",true);
-	private boolean isAttractorDimSpace3D = true;
-	private final JCheckBox attractorPixellateChoiceCb = new JCheckBox("Pixellate",true);
-	private boolean isAttractorPixellated = true;
 	
-	private final JCheckBox attractorSingularChoiceCb = new JCheckBox("Plot Single Attractor",false);
+	private final JCheckBox attractorDimChoiceCb = new JCheckBox("3D", true);
+	private boolean isAttractorDimSpace3D = true;
+
+	private final JCheckBox attractorPixellateChoiceCb = new JCheckBox("Pixellate", true);
+	private boolean isAttractorPixellated = true;
+
+	private final JCheckBox attractorSingularChoiceCb = new JCheckBox("Plot Single Attractor", false);
 	private boolean isSingularAttractor = false;
+
+	private final JCheckBox attractorInstantDrawCb = new JCheckBox("InstantDraw Attractor", false);
+	private boolean isAttractorInstantDraw = false;
+
+	private final JComboBox<Integer> attractorPauseJumpCombo = new JComboBox<Integer>(new Integer[] { 10, 1, 5, 15 });
+	private int attractorPauseJump;
+	
+	private final JCheckBox attractorTimeInvariantCb = new JCheckBox("TimeInvariant Attractor",false);
+	private boolean isAttractorTimeInvariant = false;
+	
 	
 	private String attractorSelectionChoice;
 	
@@ -1200,8 +1212,13 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.attractorsPanel.add(this.attractorDimChoiceCb);
 		this.attractorsPanel.add(this.attractorPixellateChoiceCb);
-		
+
 		this.attractorsPanel.add(this.attractorSingularChoiceCb);
+		this.attractorsPanel.add(this.attractorInstantDrawCb);
+		this.attractorsPanel.add(new JLabel("AtractorPause:"));
+		this.attractorsPanel.add(this.attractorPauseJumpCombo);
+		this.attractorsPanel.add(this.attractorTimeInvariantCb);
+		
 		//lorenz parameters	
 		this.attrLorenzSigmaLabel.setVisible(false);
 		this.attractorsPanel.add(this.attrLorenzSigmaLabel);
@@ -6726,6 +6743,8 @@ class SierpinskiComboPanel extends JPanel {
 		boolean is3D = this.isAttractorDimSpace3D;
 		boolean isSingular = this.isSingularAttractor;
 		boolean isPixellated = this.isAttractorPixellated;
+		boolean isTimeInvariant = this.isAttractorTimeInvariant;
+		
 		/*////////removeblow
 		double x1S = Double.NaN;
 		double y1S = Double.NaN;
@@ -6760,6 +6779,10 @@ class SierpinskiComboPanel extends JPanel {
 					for (JTextField zField : attrSeed_Z_tfList) {
 						attr_ZSeedVals.add(Double.parseDouble(zField.getText()));
 					}
+				} else if (!is3D) {
+					for (JTextField zField : attrSeed_Z_tfList) {
+						attr_ZSeedVals.add(0.0);
+					}
 				}
 				
 				for(Color aColor:attrSeed_ClrChList){
@@ -6770,6 +6793,8 @@ class SierpinskiComboPanel extends JPanel {
 				attr_YSeedVals.add(Double.parseDouble(this.attr1SeedY_tf.getText()));
 				if (!isDeJong && is3D) {
 					attr_ZSeedVals.add(Double.parseDouble(this.attr1SeedZ_tf.getText()));
+				} else if (!is3D) {
+					attr_ZSeedVals.add(0.0);
 				}
 				attrColorVals.add(this.attractor1Color);
 			}
@@ -6785,7 +6810,7 @@ class SierpinskiComboPanel extends JPanel {
 				z2S = !(isDeJong || is3D) ? 0 : Double.parseDouble(this.attr2SeedZ_tf.getText());
 			}*/
 			
-			dt = Double.parseDouble(this.attrDeltaTime_tf.getText());
+			dt = !isTimeInvariant ? Double.parseDouble(this.attrDeltaTime_tf.getText()) : 0;
 			maxIter = Integer.parseInt(this.attrMaxIter_tf.getText());
 			space2d = this.attractorSpace2DSelectionChoice;
 			
@@ -6796,7 +6821,7 @@ class SierpinskiComboPanel extends JPanel {
 			return;
 		}
 		
-		int numAttractors = attrSeed_X_tfList.size();
+		int numAttractors = attr_XSeedVals.size();
 		List<Attractor> attractors = new ArrayList<Attractor>(numAttractors);
 		/*Attractor attractor1 = null, attractor2 = null;*/
 		
@@ -6828,7 +6853,8 @@ class SierpinskiComboPanel extends JPanel {
 					
 					aLorenzAttractor.setIs3D(is3D);
 					aLorenzAttractor.setPixellated(isPixellated);
-					
+					/*aLorenzAttractor.setInstantDraw(isInstantDraw);*/
+					aLorenzAttractor.setTimeInvariant(isTimeInvariant);
 					aLorenzAttractor.setSpace2dAxes(space2d); 
 					
 					lorenzAttractors.add( aLorenzAttractor );
@@ -6901,6 +6927,8 @@ class SierpinskiComboPanel extends JPanel {
 					
 					anAizawaAttractor.setIs3D(is3D);
 					anAizawaAttractor.setPixellated(isPixellated);
+					/*anAizawaAttractor.setInstantDraw(isInstantDraw);*/
+					anAizawaAttractor.setTimeInvariant(isTimeInvariant);
 					
 					anAizawaAttractor.setSpace2dAxes(space2d);
 					
@@ -6967,7 +6995,7 @@ class SierpinskiComboPanel extends JPanel {
 				for (int i = 0; i < numAttractors; i++) {									
 					final DeJongAttractor aDeJongAttractor = 
 							new DeJongAttractor(
-									attr_XSeedVals.get(i), attr_YSeedVals.get(i), attr_ZSeedVals.get(i), 
+									attr_XSeedVals.get(i), attr_YSeedVals.get(i), 0,//attr_ZSeedVals.get(i), 
 									attrColorVals.get(i), space2d);
 					
 					aDeJongAttractor.setMaxIter(maxIter);
@@ -6979,6 +7007,8 @@ class SierpinskiComboPanel extends JPanel {
 
 					aDeJongAttractor.setIs3D(is3D);
 					aDeJongAttractor.setPixellated(isPixellated);
+					/*aDeJongAttractor.setInstantDraw(isInstantDraw);*/
+					aDeJongAttractor.setTimeInvariant(isTimeInvariant);
 
 					aDeJongAttractor.setSpace2dAxes(space2d);
 
@@ -7053,7 +7083,9 @@ class SierpinskiComboPanel extends JPanel {
 					
 					aCustomAttractor.setIs3D(is3D);
 					aCustomAttractor.setPixellated(isPixellated);
+					/*aCustomAttractor.setInstantDraw(isInstantDraw);*/
 
+					aCustomAttractor.setTimeInvariant(isTimeInvariant);
 					aCustomAttractor.setSpace2dAxes(space2d);
 
 					customAttractors.add( aCustomAttractor);
@@ -7113,10 +7145,15 @@ class SierpinskiComboPanel extends JPanel {
 	private void generateAttractors(String name, List<Attractor> attractorsList) {
 
 		final AttractorsGenerator generator = new AttractorsGenerator(name);
+		generator.setInstantDraw(this.isAttractorInstantDraw);
+		if (!this.isAttractorInstantDraw) {
+			generator.setPauseTime(this.attractorPauseJump);
+		}
+		
 
 		/*final boolean isSingular = this.isSingularAttractor;*/
 
-			generator.setAttractors(attractorsList);
+		generator.setAttractors(attractorsList);
 		/*if (!isSingular) {
 		}else{
 			
@@ -10602,6 +10639,40 @@ class SierpinskiComboPanel extends JPanel {
 			}
         });
 		
+		this.attractorInstantDrawCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectAttractorInstantDrawCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSelectAttractorInstantDrawCommand(false);
+				}
+			}
+        });
+		
+		
+		this.attractorPauseJumpCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Integer> cb = (JComboBox<Integer>)e.getSource();
+		        Integer attractorPauseJumpVal = (Integer)cb.getSelectedItem();
+		        doSelectAttractorPauseJumpComboChoice(attractorPauseJumpVal);				
+			}
+		});
+
+		
+		this.attractorTimeInvariantCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectAttractorTimeInvariantCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSelectAttractorTimeInvariantCommand(false);
+				}
+			}
+        });
+		
 		this.attractorSpace2DChoiceCombos.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
 			@Override
@@ -10804,20 +10875,48 @@ class SierpinskiComboPanel extends JPanel {
 		nxtAttrClrBu.setBackground(attractor2Color);
 		attrSeed_Clr_buList.add(nxtAttrClrBu);
 		attrSeed_ClrChList.add(nxtAttr_Color);
+	}	
+
+	private void doSelectAttractorInstantDrawCommand(boolean instantDraw) {
+		this.isAttractorInstantDraw = instantDraw;
+
+		if (!this.isAttractorInstantDraw) {
+			this.attractorPauseJumpCombo.setEnabled(true);
+		} else {
+			this.attractorPauseJumpCombo.setEnabled(false);
+		}
+	}
+	
+	private void doSelectAttractorPauseJumpComboChoice(int jump) {
+		this.attractorPauseJump = jump;
+	}
+	
+	private void doSelectAttractorTimeInvariantCommand(boolean invariant) {
+		this.isAttractorTimeInvariant = invariant;
+
+		if (this.isAttractorTimeInvariant) {
+			this.attrDeltaTime_tf.setEnabled(false);
+		} else {
+			this.attrDeltaTime_tf.setEnabled(true);
+		}
 	}
 
-	protected void doSelectSingularAttractorChoiceCommand(boolean isSingular) {
+	private void doSelectSingularAttractorChoiceCommand(boolean isSingular) {
 		this.isSingularAttractor = isSingular;
 
 		if (isSingular) {
 			this.attr2SeedX_tf.setEnabled(false);
 			this.attr2SeedY_tf.setEnabled(false);
 			this.attr2SeedZ_tf.setEnabled(false);
+			this.attr2ColorChooserBu.setEnabled(false);
+			this.addAttrBu.setEnabled(false);
 
 		} else {
 			this.attr2SeedX_tf.setEnabled(true);
 			this.attr2SeedY_tf.setEnabled(true);
 			this.attr2SeedZ_tf.setEnabled(true);
+			this.attr2ColorChooserBu.setEnabled(true);			
+			this.addAttrBu.setEnabled(true);
 		}
 	}
 
@@ -10917,11 +11016,13 @@ class SierpinskiComboPanel extends JPanel {
 				this.attr2SeedX_tf.setEnabled(true);
 				this.attr2SeedY_tf.setEnabled(true);
 				this.attr2SeedZ_tf.setEnabled(true);
+				this.attr2ColorChooserBu.setEnabled(true);
 				this.addAttrBu.setEnabled(true);
 			} else {
 				this.attr2SeedX_tf.setEnabled(false);
 				this.attr2SeedY_tf.setEnabled(false);
 				this.attr2SeedZ_tf.setEnabled(false);
+				this.attr2ColorChooserBu.setEnabled(false);
 				this.addAttrBu.setEnabled(false);
 			}
 		} else if (this.attractorSelectionChoice.equals("aizawa")) {
@@ -10960,11 +11061,13 @@ class SierpinskiComboPanel extends JPanel {
 				this.attr2SeedX_tf.setEnabled(true);
 				this.attr2SeedY_tf.setEnabled(true);
 				this.attr2SeedZ_tf.setEnabled(true);
+				this.attr2ColorChooserBu.setEnabled(true);
 				this.addAttrBu.setEnabled(true);
 			} else {
 				this.attr2SeedX_tf.setEnabled(false);
 				this.attr2SeedY_tf.setEnabled(false);
 				this.attr2SeedZ_tf.setEnabled(false);
+				this.attr2ColorChooserBu.setEnabled(false);
 				this.addAttrBu.setEnabled(false);
 			}
 		} else if (this.attractorSelectionChoice.equals("dejong")) {
@@ -11003,13 +11106,17 @@ class SierpinskiComboPanel extends JPanel {
 				this.attr2SeedX_tf.setEnabled(true);
 				this.attr2SeedY_tf.setEnabled(true);
 				this.attr2SeedZ_tf.setEnabled(true);
+				this.attr2ColorChooserBu.setEnabled(true);
 				this.addAttrBu.setEnabled(true);
 			} else {
 				this.attr2SeedX_tf.setEnabled(false);
 				this.attr2SeedY_tf.setEnabled(false);
 				this.attr2SeedZ_tf.setEnabled(false);
+				this.attr2ColorChooserBu.setEnabled(false);
 				this.addAttrBu.setEnabled(false);
 			}
+
+			this.isAttractorTimeInvariant = true;
 		} else if (this.attractorSelectionChoice.equals("custom")) {
 			this.attrLorenzSigmaLabel.setVisible(false);
 			this.attrLorenzSigma_tf.setVisible(false);
@@ -11043,13 +11150,16 @@ class SierpinskiComboPanel extends JPanel {
 				this.attr2SeedX_tf.setEnabled(true);
 				this.attr2SeedY_tf.setEnabled(true);
 				this.attr2SeedZ_tf.setEnabled(true);
+				this.attr2ColorChooserBu.setEnabled(true);
 				this.addAttrBu.setEnabled(true);
 			} else {
 				this.attr2SeedX_tf.setEnabled(false);
 				this.attr2SeedY_tf.setEnabled(false);
 				this.attr2SeedZ_tf.setEnabled(false);
+				this.attr2ColorChooserBu.setEnabled(false);
 				this.addAttrBu.setEnabled(false);
 			}
+			
 		}
 	}
 

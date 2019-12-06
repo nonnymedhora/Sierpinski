@@ -43,33 +43,35 @@ class AizawaAttractor extends Attractor {
 		public AizawaAttractor(double x, double y, double z, Color c) {
 			super(x, y, z, c);
 			this.setName("aizawa");
+			this.setTimeInvariant(false);
 		}
 
 		public AizawaAttractor(double x, double y, double z, Color c, String dspace) {
 			super(x, y, z, c, dspace);
 			this.setName("aizawa");
+			this.setTimeInvariant(false);
 		}
 //
 //		H:\temp\e2\www_algosome_com_articles_aizawa_attractor_chaos_html.pdf
 		@Override
 		protected double dx(Tuple3d tuple, double dt) {
-			return tuple.x + (dt * (((tuple.z - b) * tuple.x) - (/*tuple.x - */(d * tuple.y))));
+			final double xTrFn = (((tuple.z - b) * tuple.x) - (d * tuple.y));
+			return tuple.x + (dt * xTrFn);
 		}
 
 		@Override
 		protected double dy(Tuple3d tuple, double dt) {
-			return tuple.y + (dt * ((d * tuple.x) + ((tuple.z - b) * tuple.y)));
+			final double yTrFn = (d * tuple.x) + ((tuple.z - b) * tuple.y);
+			return tuple.y + (dt * yTrFn);
 		}
 
 		@Override
 		protected double dz(Tuple3d tuple, double dt) {
-			return tuple.z + (dt * (
-					c + (tuple.z * a) - (Math.pow(tuple.z, 3) / (3 * d))
+			final double zTrFn = c + (tuple.z * a) - (Math.pow(tuple.z, 3) / (3 * d))
 					- (Math.pow(tuple.x, 2) + Math.pow(tuple.y, 2))
 					* (1 + (e * tuple.z))
-					+ (f * tuple.z * Math.pow(tuple.x, 3))
-				 )
-				);
+					+ f * tuple.z * (Math.pow(tuple.x, 3));
+			return tuple.z + (dt * zTrFn);
 		}
 //		H:\temp\e2\www_algosome_com_articles_aizawa_attractor_chaos_html.pdf
 		

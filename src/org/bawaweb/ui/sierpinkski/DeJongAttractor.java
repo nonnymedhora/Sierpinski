@@ -29,24 +29,26 @@ class DeJongAttractor extends Attractor {
 	public DeJongAttractor(double x, double y, double z, Color c) {
 		super(x, y, z, c);
 		this.setName("dejong");
+		this.setTimeInvariant(true);
 	}
 	
 	public DeJongAttractor(double x, double y, double z, Color c, String dspace) {
 		super(x, y, z, c, dspace);
 		this.setName("dejong");
+		this.setTimeInvariant(true);
 	}
 	//https://www.algosome.com/articles/strange-attractors-de-jong.html
 
 	@Override
 	protected double dx(Tuple3d tuple, double dt) {
 		// xt+1 = sin(a * yt) - cos(b * xt)
-		return tuple.x + (dt * ( Math.sin(a * tuple.y) - Math.cos(b * tuple.x) ));
+		return /*tuple.x + (dt * */( Math.sin(a * tuple.y) - Math.cos(b * tuple.x) )/*)*/;
 	}
 
 	@Override
 	protected double dy(Tuple3d tuple, double dt) {
 		// yt+1 = sin(c * xt) - cos(d * yt)
-		return tuple.y + (dt * ( Math.sin(c * tuple.x) - Math.cos(d * tuple.y) ));
+		return /*tuple.y + (dt * */( Math.sin(c * tuple.x) - Math.cos(d * tuple.y) )/*)*/;
 	}
 
 	@Override

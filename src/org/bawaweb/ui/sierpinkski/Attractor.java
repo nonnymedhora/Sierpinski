@@ -11,6 +11,7 @@ public abstract class Attractor {
 	private Tuple3d t3d;
 	private Color color;
 	private int maxIter;
+	protected boolean isTimeInvariant;
 	private double timeJump = 0.01;
 	private double cumulativeTime;
 	private String name;
@@ -83,21 +84,12 @@ public abstract class Attractor {
 		this.isPixellated = toPixellate;
 	}
 
-	public Tuple3d update(final Tuple3d tuple, final double dt) {
-		double newX = this.dx(tuple, dt);
-		double newY = this.dy(tuple, dt);
-		double newZ = Double.NaN;
-		if (this.is3D) {
-			newZ = this.dz(tuple, dt);
-		}
+	public boolean isTimeInvariant() {
+		return this.isTimeInvariant;
+	}
 
-		this.setCumulativeTime(this.getCumulativeTime() + dt);
-
-		if (this.is3D) {
-			return new Tuple3d(newX, newY, newZ);
-		} else {
-			return new Tuple3d(newX, newY, 0);
-		}
+	public void setTimeInvariant(boolean isInvariant) {
+		this.isTimeInvariant = isInvariant;
 	}
 
 	public int getMaxIter() {
@@ -106,6 +98,25 @@ public abstract class Attractor {
 
 	public void setMaxIter(int m) {
 		this.maxIter = m;
+	}
+
+	public Tuple3d update(final Tuple3d tuple, final double dt) {
+		double newX = this.dx(tuple, dt);
+		double newY = this.dy(tuple, dt);
+		double newZ = Double.NaN;
+		if (this.is3D) {
+			newZ = this.dz(tuple, dt);
+		}
+
+		if (!this.isTimeInvariant) {
+			this.setCumulativeTime(this.getCumulativeTime() + dt);
+		}
+		
+		if (this.is3D) {
+			return new Tuple3d(newX, newY, newZ);
+		} else {
+			return new Tuple3d(newX, newY, 0);
+		}
 	}
 
 	protected abstract double dx(final Tuple3d tuple, final double dt);
@@ -148,6 +159,11 @@ public abstract class Attractor {
 				drawLine(g2, scaledExistingTuple, scaledUpdatedTuple);
 			}
 		}
+		
+/*
+		if (!this.isInstantDraw) {
+			pause(10);
+		}*/
 	}
 	
 	private void drawRect(Graphics2D g, Tuple3d existing, Tuple3d updated) {
@@ -317,8 +333,8 @@ public abstract class Attractor {
 			z_min_r = tempDummyTuple.z < z_min_r ? tempDummyTuple.z : z_min_r;
 			z_max_r = tempDummyTuple.z > z_max_r ? tempDummyTuple.z : z_max_r;
 		}
-		
-		final double dt = this.getTimeJump();
+
+		final double dt = this.isTimeInvariant ? 0 : this.getTimeJump();
 		
 		Map<String, Double> spaceMap = new HashMap<String, Double>();
 		

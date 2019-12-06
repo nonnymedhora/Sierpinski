@@ -11,11 +11,13 @@ class LorenzAttractor extends Attractor {
 		public LorenzAttractor(double x, double y, double z, Color c) {
 			super( x, y, z, c);
 			this.setName("lorenz");
+			this.setTimeInvariant(false);
 		}
 		
 		public LorenzAttractor(double x, double y, double z, Color c, String space) {
 			super(x, y, z, c, space);
 			this.setName("lorenz");
+			this.setTimeInvariant(false);
 		}
 		
 		public LorenzAttractor(Tuple3d td, Color c, String space) {

@@ -31,6 +31,8 @@ public class AttractorsGenerator extends JFrame {
 	private String attractorName;
 
 	private Attractor[] attractors;
+	private boolean isInstantDraw;
+	private int pauseTime = 10;
 	BufferedImage bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 
 	public AttractorsGenerator() {
@@ -79,8 +81,12 @@ public class AttractorsGenerator extends JFrame {
 		super.paint(g1);
 		Graphics2D g2 = (Graphics2D) g1;
 		Graphics2D offScreenGraphics = this.getBufferedImage().createGraphics();
-		this.setImage(this.drawAttractors(offScreenGraphics));
-		g2.drawImage(this.getBufferedImage(), 0, 0, null);
+		if (this.isInstantDraw) {
+			this.setImage(this.drawAttractors(offScreenGraphics));
+			g2.drawImage(this.getBufferedImage(), 0, 0, null);
+		} else {
+			this.drawAttractors(g2, offScreenGraphics, this.pauseTime);
+		}
 		System.out.println("Done with AttractorsGenerator - paint ^__^");
 		g2.dispose();
 		offScreenGraphics.dispose();
@@ -94,6 +100,28 @@ public class AttractorsGenerator extends JFrame {
 
 	public synchronized BufferedImage getBufferedImage() {
 		return this.bufferedImage;
+	}
+	
+	private void drawAttractors(Graphics2D offScreenGraphics, Graphics2D g, int pauseInterval) {
+		Attractor[] attrs = this.attractors;
+		if (attrs != null && attrs.length > 0) {
+			Map<String, Double> rangeMap = new HashMap<String, Double>();
+
+			for (int j = 0; j < attrs.length; j++) {
+				Map<String, Double> attrSpaceMap = attrs[j].setSpace();
+				attrs[j].drawAxes(g);
+				rangeMap = this.setRangeMapVals(rangeMap, attrSpaceMap);
+			}
+
+			for (int i = 0; i < this.maxIter; i++) {
+				for (int j = 0; j < attrs.length; j++) {
+					attrs[j].draw(i, offScreenGraphics, rangeMap);
+					this.pause(g,pauseInterval);
+					/*g.drawImage(this.getBufferedImage(), 0, 0, null);*/
+				}
+			}
+			System.out.println("Done" + System.currentTimeMillis());
+		}
 	}
 
 	private BufferedImage drawAttractors(Graphics2D g) {
@@ -110,7 +138,6 @@ public class AttractorsGenerator extends JFrame {
 			for (int i = 0; i < this.maxIter; i++) {
 				for (int j = 0; j < attrs.length; j++) {
 					attrs[j].draw(i, g, rangeMap);
-					/*pause(10);*/
 				}
 			}
 			System.out.println("Done" + System.currentTimeMillis());
@@ -222,10 +249,13 @@ public class AttractorsGenerator extends JFrame {
 
 	/**
      * Pause for t milliseconds. This method is intended to support computer animations.
+	 * @param g2 
      * @param t number of milliseconds
      */
-    public static void pause(int t) {
+    public /*static */void pause(Graphics2D g2, int t) {
         try {
+
+			g2.drawImage(this.getBufferedImage(), 0, 0, null);
             Thread.sleep(t);
         }
         catch (InterruptedException e) {
@@ -271,6 +301,22 @@ public class AttractorsGenerator extends JFrame {
 			attractorArr[i] = attrList.get(i);
 		}
 		this.setAttractors(attractorArr);
+	}
+
+	public boolean isInstantDraw() {
+		return isInstantDraw;
+	}
+
+	public void setInstantDraw(boolean isInstantDraw) {
+		this.isInstantDraw = isInstantDraw;
+	}
+
+	public int getPauseTime() {
+		return pauseTime;
+	}
+
+	public void setPauseTime(int pauseTime) {
+		this.pauseTime = pauseTime;
 	}
 
 
