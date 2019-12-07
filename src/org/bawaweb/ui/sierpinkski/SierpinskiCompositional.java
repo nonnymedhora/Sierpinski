@@ -10871,8 +10871,8 @@ class SierpinskiComboPanel extends JPanel {
 
 	private void setNxtAttrColor(JButton nxtAttrClrBu,int attrSize) {
 		Color nxtAttr_Color = JColorChooser.showDialog(null, "Choose Attractor: "+attrSize+" Color", Color.black);
-		nxtAttrClrBu.setForeground(attractor2Color);
-		nxtAttrClrBu.setBackground(attractor2Color);
+		nxtAttrClrBu.setForeground(nxtAttr_Color);
+		nxtAttrClrBu.setBackground(nxtAttr_Color);
 		attrSeed_Clr_buList.add(nxtAttrClrBu);
 		attrSeed_ClrChList.add(nxtAttr_Color);
 	}	
