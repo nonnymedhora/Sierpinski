@@ -51,6 +51,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -693,6 +694,8 @@ class SierpinskiComboPanel extends JPanel {
 	private boolean diyJApplyFormulaZ = false;
 	private JCheckBox diyJApplyFormulaZCb = new JCheckBox("Apply Formula f(Z) = ",false);
 	private JTextField diyJApplyFormulaTf = new JTextField(10);
+	private JTextArea diyJuliaGenVaryApplyFormulaTxtArea = new JTextArea(1, 10);
+	private JScrollPane diyJuliaGenVaryApplyFormulaTxtAreaSpane = new JScrollPane(this.diyJuliaGenVaryApplyFormulaTxtArea);
 	private String diyJApplyFormulaStr = "NONE";
 	
 	/////////////////ends apply function julia////////////////////////////////////
@@ -702,6 +705,8 @@ class SierpinskiComboPanel extends JPanel {
 	private boolean diyMandApplyFormulaZ = false;
 	private JCheckBox diyMandApplyFormulaZCb = new JCheckBox("Apply Formula f(Z) = ", false);
 	private JTextField diyMandApplyFormulaTf = new JTextField(10);
+	private JTextArea diyMandGenVaryApplyFormulaTxtArea = new JTextArea(1, 10);
+	private JScrollPane diyMandGenVaryApplyFormulaTxtAreaSpane = new JScrollPane(this.diyMandGenVaryApplyFormulaTxtArea);
 	private String diyMandApplyFormulaStr = "NONE";
 
 	///////////////// ends apply function
@@ -1625,10 +1630,11 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaPanel.add(this.diyJApplyFormulaZCb);
 		this.diyJApplyFormulaTf.setVisible(false);
 		this.diyJuliaPanel.add(this.diyJApplyFormulaTf);
+		this.diyJuliaGenVaryApplyFormulaTxtArea.setVisible(false);
+		this.diyJuliaGenVaryApplyFormulaTxtAreaSpane.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaGenVaryApplyFormulaTxtAreaSpane);		
 		
 		this.diyJuliaGenBu.setVisible(false);
-		
-		
 		
 		this.diyJuliaPanel.add(this.diyJuliaGenBu);
 	}
@@ -1799,10 +1805,11 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyMandPanel.add(this.diyMandApplyFormulaZCb);
 		this.diyMandApplyFormulaTf.setVisible(false);
 		this.diyMandPanel.add(this.diyMandApplyFormulaTf);
+		this.diyMandGenVaryApplyFormulaTxtArea.setVisible(false);
+		this.diyMandGenVaryApplyFormulaTxtAreaSpane.setVisible(false);
+		this.diyMandPanel.add(this.diyMandGenVaryApplyFormulaTxtAreaSpane);	
 		
 		this.diyMandGenBu.setVisible(false);
-		
-		
 		
 		this.diyMandPanel.add(this.diyMandGenBu);
 	}
@@ -3968,6 +3975,12 @@ class SierpinskiComboPanel extends JPanel {
 		
 		System.out.println("allCombinationsListSize==totalVaryCount  "+(allCombinationsList.size()==totalVaryCount ));
 		
+		if(allCombinationsList.size()!=totalVaryCount){
+			JOptionPane.showMessageDialog(null, "List & Size Mimatch", "Check applyFormula", JOptionPane.ERROR_MESSAGE);
+			
+			return;
+		}
+		
 		Properties[] props = new Properties[allCombinationsList.size()];
 		props = shuffle(this.getAllCombinationProperties(allCombinationsList));
 //		ps = this.getAllCombinationProperties(allCombinationsList);
@@ -5830,19 +5843,30 @@ class SierpinskiComboPanel extends JPanel {
 			return asList(pxFuncArr);// (FUNCTION_OPTIONS);
 		} else {
 			if (this.diyMandApplyFormulaZCb.isSelected() || this.diyMandApplyFormulaZ) {
-				return asList(new String[] { pxFuncChoice + this.diyMandApplyFormulaTf.getText().trim() });
+				return asList(this.getMandGenVaryApplyFormulaZ());
 			} else {
 				return asList(new String[] { pxFuncChoice + (String) this.pxFuncCombo.getSelectedItem() });
 			}
 		}
 	}
+	
+	private String[] getMandGenVaryApplyFormulaZ() {
+		final String pxFuncChoice = "pxFuncChoice=";
+		String[] applyFormulas = this.diyMandGenVaryApplyFormulaTxtArea.getText().split("\n");
+		return this.getAppendStr2Array(pxFuncChoice, applyFormulas);
+	}
+
 
 	private int getVaryMandZFuncCount() {
 		if (this.diyMandVaryPixelZFuncCb.isSelected() && !this.diyJApplyFormulaZCb.isSelected()) {
 			System.out.println("In_getVaryZFuncCount count = " + FUNCTION_OPTIONS.length);
 			return FUNCTION_OPTIONS.length;
 		} else {
-			return 1;
+			if (this.diyMandApplyFormulaZCb.isSelected() || this.diyMandApplyFormulaZ) {
+				return this.diyMandGenVaryApplyFormulaTxtArea.getText().split("\n").length;
+			} else {
+				return 1;
+			}
 		}
 	}
 	
@@ -5855,11 +5879,17 @@ class SierpinskiComboPanel extends JPanel {
 			return asList(pxFuncArr);// (FUNCTION_OPTIONS);
 		} else {
 			if (this.diyJApplyFormulaZCb.isSelected() || this.diyJApplyFormulaZ) {
-				return asList(new String[] { pxFuncChoice + this.diyJApplyFormulaTf.getText().trim() });
+				return asList(getJuliaGenVaryApplyFormulaZ());
 			} else {
 				return asList(new String[] { pxFuncChoice + (String) this.pxFuncCombo.getSelectedItem() });
 			}
 		}
+	}
+
+	private String[] getJuliaGenVaryApplyFormulaZ() {
+		final String pxFuncChoice = "pxFuncChoice=";
+		String[] applyFormulas = this.diyJuliaGenVaryApplyFormulaTxtArea.getText().split("\n");
+		return this.getAppendStr2Array(pxFuncChoice, applyFormulas);
 	}
 
 	private int getVaryJuliaZFuncCount() {
@@ -5867,7 +5897,11 @@ class SierpinskiComboPanel extends JPanel {
 			System.out.println("In_getVaryZFuncCount count = " + FUNCTION_OPTIONS.length);
 			return FUNCTION_OPTIONS.length;
 		} else {
-			return 1;
+			if (this.diyJApplyFormulaZCb.isSelected() || this.diyJApplyFormulaZ) {
+				return this.diyJuliaGenVaryApplyFormulaTxtArea.getText().split("\n").length;
+			} else {
+				return 1;
+			}
 		}
 	}
 	
@@ -9465,8 +9499,16 @@ class SierpinskiComboPanel extends JPanel {
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyJuliaApplyFormulaCommand(true);
-					diyJApplyFormulaTf.setVisible(true);
-//					diyJuliaPowerCombos.setEnabled(false);
+					if (!diyJuliaGen) {
+						diyJApplyFormulaTf.setVisible(true);
+						diyJuliaGenVaryApplyFormulaTxtAreaSpane.setVisible(false);
+						diyJuliaGenVaryApplyFormulaTxtArea.setVisible(false);
+					} else {
+						diyJApplyFormulaTf.setVisible(false);
+						diyJuliaGenVaryApplyFormulaTxtAreaSpane.setVisible(true);
+						diyJuliaGenVaryApplyFormulaTxtArea.setVisible(true);
+					}
+					//					diyJuliaPowerCombos.setEnabled(false);
 					pxFuncCombo.setEnabled(false);
 					
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
@@ -10106,8 +10148,16 @@ class SierpinskiComboPanel extends JPanel {
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSelectDiyMandApplyFormulaCommand(true);
-					diyMandApplyFormulaTf.setVisible(true);
-//					diyMandPowerCombos.setEnabled(false);
+					if (!diyMandGen) {
+						diyMandApplyFormulaTf.setVisible(true);
+						diyMandGenVaryApplyFormulaTxtAreaSpane.setVisible(false);
+						diyMandGenVaryApplyFormulaTxtArea.setVisible(false);
+					} else {
+						diyMandApplyFormulaTf.setVisible(false);
+						diyMandGenVaryApplyFormulaTxtAreaSpane.setVisible(true);
+						diyMandGenVaryApplyFormulaTxtArea.setVisible(true);
+					}
+					//					diyMandPowerCombos.setEnabled(false);
 					pxFuncCombo.setEnabled(false);
 					
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
