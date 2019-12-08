@@ -4057,8 +4057,6 @@ class SierpinskiComboPanel extends JPanel {
 				this.setSampleStart_DivVals(julies[i]);
 			}
 
-			String extraInfo = this.getExtraInfo();
-
 			String pxFunc = julies[i].getUseFuncPixel();
 			this.pxFuncChoice = pxFunc;
 
@@ -4087,6 +4085,8 @@ class SierpinskiComboPanel extends JPanel {
 			}
 
 			this.fieldLines = julies[i].getFieldType();
+
+			String extraInfo = this.getExtraInfo();
 			
 			this.setDiyJuliaGenFormulaArea(pxFunc, this.diyJuliaPower, this.fieldLines,/*diyJApplyFatou, diyJApplyZSq, diyJApplyClassic,
 					*/pixXTr, pixYTr, pixIntraXYOp, pixConstOp);
