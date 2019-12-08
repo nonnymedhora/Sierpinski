@@ -3616,10 +3616,29 @@ class SierpinskiComboPanel extends JPanel {
 				mands[i].paint(g);
 			} catch (NullPointerException e1) {
 				e1.printStackTrace();
-				System.out.println(e1.getMessage());
-				JOptionPane.showMessageDialog(null, "BAaaAD Formula\n"+this.diyMandApplyFormulaStr, "IncorrectFormula",
-						JOptionPane.ERROR_MESSAGE);
-				return;
+				System.out.println(e1.getMessage() + "+this.pxFuncChoiceIs\n" + this.pxFuncChoice);
+
+				if (varyZFuncCount != 1) {
+					JOptionPane.showMessageDialog(null, "BAaaAD Formula - continuing\n"
+							+ this.pxFuncChoice, "IncorrectFormula",
+							JOptionPane.INFORMATION_MESSAGE);
+
+					this.formulaArea.setText("");
+
+					g.dispose();
+					mands[i].dispose();
+					mands[i] = null;
+
+					Runtime.getRuntime().gc();
+
+					continue;
+				} else {
+					JOptionPane.showMessageDialog(null, "BAaaAD Formula\n"
+							+ this.pxFuncChoice, "IncorrectFormula",
+							JOptionPane.ERROR_MESSAGE);
+
+					return;
+				}
 			}
 
 			this.setFractalImage(mands[i].getBufferedImage());
@@ -4119,10 +4138,29 @@ class SierpinskiComboPanel extends JPanel {
 				julies[i].paint(g);
 			} catch (NullPointerException e1) {
 				e1.printStackTrace();
-				System.out.println(e1.getMessage());
-				JOptionPane.showMessageDialog(null, "BAaaAD Formula\n"+this.diyJApplyFormulaStr, "IncorrectFormula",
-						JOptionPane.ERROR_MESSAGE);
-				return;
+				System.out.println(e1.getMessage() + "+this.pxFuncChoiceIs\n" + this.pxFuncChoice);
+
+				if (varyZFuncCount != 1) {
+					JOptionPane.showMessageDialog(null, "BAaaAD Formula - continuing\n"
+							+ this.pxFuncChoice, "IncorrectFormula",
+							JOptionPane.INFORMATION_MESSAGE);
+
+					this.formulaArea.setText("");
+
+					g.dispose();
+					julies[i].dispose();
+					julies[i] = null;
+
+					Runtime.getRuntime().gc();
+
+					continue;
+				} else {
+					JOptionPane.showMessageDialog(null, "BAaaAD Formula\n"
+							+ this.pxFuncChoice, "IncorrectFormula",
+							JOptionPane.ERROR_MESSAGE);
+
+					return;
+				}
 			}
 
 			this.setFractalImage(julies[i].getBufferedImage());
