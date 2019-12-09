@@ -48,6 +48,7 @@ import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -55,6 +56,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 
 /**
@@ -915,8 +918,10 @@ class SierpinskiComboPanel extends JPanel {
 	/*private double attrMaxIterVal;	*/
 	
 	private final String[] attractorSpace2DChoiceOptions = ATTRACTOR_SPACE_3D_CHOICES;
-	private final JComboBox<String> attractorSpace2DChoiceCombos = new JComboBox<String>(attractorSpace2DChoiceOptions);
-	private String attractorSpace2DSelectionChoice;
+	/*private final JComboBox<String> attractorSpace2DChoiceCombos = new JComboBox<String>(attractorSpace2DChoiceOptions);
+	private String attractorSpace2DSelectionChoice;*/
+	private final JList<String> attractorSpace2DChoiceList = new JList<String>(attractorSpace2DChoiceOptions);
+	private List<String> attractorSpace2DList;
 	
 	/*private JTextField attrCustomSeedX_tf = new JTextField(2);
 	private JTextField attrCustomSeedY_tf = new JTextField(2);
@@ -1331,7 +1336,8 @@ class SierpinskiComboPanel extends JPanel {
 		this.attractorsPanel.add(this.attrMaxIter_tf);
 
 		this.attractorsPanel.add(new JLabel(" Space(2D)  :"));
-		this.attractorsPanel.add(this.attractorSpace2DChoiceCombos);
+		/*this.attractorsPanel.add(this.attractorSpace2DChoiceCombos);*/
+		this.attractorsPanel.add(this.attractorSpace2DChoiceList);
 		
 		this.buStart.setEnabled(true);
 		this.attractorsPanel.add(this.buStart);
@@ -6835,7 +6841,7 @@ class SierpinskiComboPanel extends JPanel {
 
 		double dt = Double.NaN;
 		int maxIter = Integer.MIN_VALUE;
-		String space2d = null;
+		List<String> space2d = null;
 		
 		boolean isDeJong = (attractorSelected.equals("dejong"));
 		
@@ -6884,8 +6890,8 @@ class SierpinskiComboPanel extends JPanel {
 			
 			dt = !isTimeInvariant ? Double.parseDouble(this.attrDeltaTime_tf.getText()) : 0;
 			maxIter = Integer.parseInt(this.attrMaxIter_tf.getText());
-			space2d = this.attractorSpace2DSelectionChoice;
-			
+			/*space2d = this.attractorSpace2DList;//attractorSpace2DSelectionChoice;
+*/			
 		} catch (NumberFormatException | NullPointerException e2) {
 			e2.printStackTrace();
 			JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n" + e2.getMessage(),
@@ -6914,8 +6920,8 @@ class SierpinskiComboPanel extends JPanel {
 									attr_XSeedVals.get(i), 
 									attr_YSeedVals.get(i), 
 									attr_ZSeedVals.get(i), 
-									attrColorVals.get(i), 
-									space2d);
+									attrColorVals.get(i)/*, 
+									space2d*/);
 					
 					aLorenzAttractor.setMaxIter(maxIter);
 
@@ -6927,7 +6933,7 @@ class SierpinskiComboPanel extends JPanel {
 					aLorenzAttractor.setPixellated(isPixellated);
 					/*aLorenzAttractor.setInstantDraw(isInstantDraw);*/
 					aLorenzAttractor.setTimeInvariant(isTimeInvariant);
-					aLorenzAttractor.setSpace2dAxes(space2d); 
+					/*aLorenzAttractor.setSpace2dAxes(space2d);*/ 
 					
 					lorenzAttractors.add( aLorenzAttractor );
 				}
@@ -6986,7 +6992,7 @@ class SierpinskiComboPanel extends JPanel {
 				for (int i = 0; i < numAttractors; i++) {
 					final AizawaAttractor anAizawaAttractor  = new AizawaAttractor(
 							attr_XSeedVals.get(i), attr_YSeedVals.get(i), attr_ZSeedVals.get(i), 
-							attrColorVals.get(i), space2d);
+							attrColorVals.get(i)/*, space2d*/);
 					
 					anAizawaAttractor.setMaxIter(maxIter);
 					
@@ -7002,7 +7008,7 @@ class SierpinskiComboPanel extends JPanel {
 					/*anAizawaAttractor.setInstantDraw(isInstantDraw);*/
 					anAizawaAttractor.setTimeInvariant(isTimeInvariant);
 					
-					anAizawaAttractor.setSpace2dAxes(space2d);
+					/*anAizawaAttractor.setSpace2dAxes(space2d);*/
 					
 					aizawaAttractors.add(anAizawaAttractor);
 				}
@@ -7068,7 +7074,7 @@ class SierpinskiComboPanel extends JPanel {
 					final DeJongAttractor aDeJongAttractor = 
 							new DeJongAttractor(
 									attr_XSeedVals.get(i), attr_YSeedVals.get(i), 0,//attr_ZSeedVals.get(i), 
-									attrColorVals.get(i), space2d);
+									attrColorVals.get(i)/*, space2d*/);
 					
 					aDeJongAttractor.setMaxIter(maxIter);
 
@@ -7082,7 +7088,7 @@ class SierpinskiComboPanel extends JPanel {
 					/*aDeJongAttractor.setInstantDraw(isInstantDraw);*/
 					aDeJongAttractor.setTimeInvariant(isTimeInvariant);
 
-					aDeJongAttractor.setSpace2dAxes(space2d);
+					/*aDeJongAttractor.setSpace2dAxes(space2d);*/
 
 					deJongAttractors.add( aDeJongAttractor);
 				}
@@ -7143,7 +7149,7 @@ class SierpinskiComboPanel extends JPanel {
 				for (int i = 0; i < numAttractors; i++) {
 					final CustomAttractor aCustomAttractor = new CustomAttractor(
 							attr_XSeedVals.get(i), attr_YSeedVals.get(i), attr_ZSeedVals.get(i), 
-							attrColorVals.get(i), space2d);
+							attrColorVals.get(i)/*, space2d*/);
 					
 					aCustomAttractor.setMaxIter(maxIter);
 					
@@ -7158,7 +7164,7 @@ class SierpinskiComboPanel extends JPanel {
 					/*aCustomAttractor.setInstantDraw(isInstantDraw);*/
 
 					aCustomAttractor.setTimeInvariant(isTimeInvariant);
-					aCustomAttractor.setSpace2dAxes(space2d);
+					/*aCustomAttractor.setSpace2dAxes(space2d);*/
 
 					customAttractors.add( aCustomAttractor);
 				}
@@ -7209,9 +7215,49 @@ class SierpinskiComboPanel extends JPanel {
 				attractors.add( customAttractors.get(i));
 		}
 		
-		this.generateAttractors(attractorSelected, attractors);//attractor1, attractor2);
+		this.generateAttractors(attractorSelected, attractors, this.attractorSpace2DList);//attractor1, attractor2);
 
 		return;
+	}
+	
+	
+
+	private void generateAttractors(String attractorName, List<Attractor> attractors, List<String> space2DList) {
+		for (int i = 0; i < space2DList.size(); i++) {
+			final AttractorsGenerator generator = new AttractorsGenerator(attractorName);
+			generator.setInstantDraw(this.isAttractorInstantDraw);
+			if (!this.isAttractorInstantDraw) {
+				generator.setPauseTime(this.attractorPauseJump);
+			}
+			String spcace2D = space2DList.get(i);
+			for (Attractor attractor : attractors) {
+				attractor.setSpace2dAxes(spcace2D);
+			}
+			generator.setAttractors(attractors);
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+
+					final JFrame frame = generator;
+					frame.setTitle("Bawaz___" + attractorName.toUpperCase() + "Attractor");
+					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					frame.setResizable(false);
+					frame.setVisible(true);
+
+					frame.setDefaultCloseOperation(closeIt(frame));
+					frame.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth()) / 2,
+							(Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight()) / 2);
+					frame.setResizable(false);
+					frame.setVisible(true);
+
+					setFractalImage(generator.getBufferedImage());
+					// this.setFractalBase(frame);
+
+					buClose.setEnabled(true);
+				}
+			});
+			/*this.generateAttractors(attractorName, attractors);*/
+		}
 	}
 
 	private void generateAttractors(String name, List<Attractor> attractorsList) {
@@ -10761,13 +10807,24 @@ class SierpinskiComboPanel extends JPanel {
 			}
         });
 		
-		this.attractorSpace2DChoiceCombos.addActionListener(new ActionListener() {
+		/*this.attractorSpace2DChoiceCombos.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JComboBox<String> cb = (JComboBox<String>)e.getSource();
 		        String attractorSpace2DChoiceVal = (String)cb.getSelectedItem();
 				doSelectAttractorSpace2DChoiceCombosCommand(attractorSpace2DChoiceVal);				
+			}
+		});*/
+		
+		this.attractorSpace2DChoiceList.addListSelectionListener(new ListSelectionListener() {
+
+			@SuppressWarnings("unchecked")
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				JList<String> jl = (JList<String>)e.getSource();
+				List<String> sp2dChoices = (List<String>)jl.getSelectedValuesList();
+				doSelectAttractorSpace2DChoicesListCommand(sp2dChoices);
 			}
 		});
 		
@@ -11016,7 +11073,11 @@ class SierpinskiComboPanel extends JPanel {
 		this.isAttractorDimSpace3D = dimChoice;
 
 		if (!this.isAttractorDimSpace3D) {
-			this.attractorSpace2DChoiceCombos.setModel(new DefaultComboBoxModel<String>(ATTRACTOR_SPACE_2D_CHOICES));
+			/*
+			 * this.attractorSpace2DChoiceCombos.setModel(new
+			 * DefaultComboBoxModel<String>(ATTRACTOR_SPACE_2D_CHOICES));
+			 */
+			this.attractorSpace2DChoiceList.setModel(new DefaultComboBoxModel<String>(ATTRACTOR_SPACE_2D_CHOICES));
 
 			this.attr1SeedZ_tf.setEnabled(false);
 			this.attr2SeedZ_tf.setEnabled(false);
@@ -11024,7 +11085,11 @@ class SierpinskiComboPanel extends JPanel {
 			this.attrCustom_DeltaZFormula_tf.setEnabled(false);
 
 		} else {
-			this.attractorSpace2DChoiceCombos.setModel(new DefaultComboBoxModel<String>(ATTRACTOR_SPACE_3D_CHOICES));
+			/*
+			 * this.attractorSpace2DChoiceCombos.setModel(new
+			 * DefaultComboBoxModel<String>(ATTRACTOR_SPACE_3D_CHOICES));
+			 */
+			this.attractorSpace2DChoiceList.setModel(new DefaultComboBoxModel<String>(ATTRACTOR_SPACE_3D_CHOICES));
 
 			this.attr1SeedZ_tf.setEnabled(true);
 			this.attr2SeedZ_tf.setEnabled(true);
@@ -11033,10 +11098,14 @@ class SierpinskiComboPanel extends JPanel {
 		}
 	}
 	
-	
-	private void doSelectAttractorSpace2DChoiceCombosCommand(String attractorSpace2DChoiceVal) {
-		this.attractorSpace2DSelectionChoice	=	attractorSpace2DChoiceVal;
+	private void doSelectAttractorSpace2DChoicesListCommand(List<String> sp2dChoices) {
+		this.attractorSpace2DList	=	sp2dChoices;
 	}
+	
+	
+	/*private void doSelectAttractorSpace2DChoiceCombosCommand(String attractorSpace2DChoiceVal) {
+		this.attractorSpace2DSelectionChoice	=	attractorSpace2DChoiceVal;
+	}*/
 
 	private void doSelectAttractorChoiceCombosCommand(String attractorChoiceVal) {
 		this.attractorSelectionChoice = attractorChoiceVal;

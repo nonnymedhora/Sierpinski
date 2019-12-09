@@ -1,0 +1,22 @@
+H:\temp\e2\[Feldman_D.P.]_Chaos_and_Fractals__An_Elementary_Introduction
+So--Mandelbrot==Julia(Connected-c)
+Julia-set--is-connected---orbit/iterations-does-not-tend-to-infinity
+If-orbit-tends-to-infinity--then--not-connected
+
+connected-julia---alsway-contains-origin---0+0i
+disconected-julia-sets-never-do
+
+Pg278
+c=	0.0-0.72i
+c=	-0.1-0.88i
+c=	-0.6+0.2i		connected
+c=	-0.6+0.45i		not-connected
+c=	-1.35+0.02i	connected
+c=	0.37+0.37i	connected
+c=	0.2+0.57i		not-connected
+c=	-0.25-0.7i
+
+--------------------
+
+c=	0.+0.72i		not-connected
+c=	-0.1+0.88i		connected
