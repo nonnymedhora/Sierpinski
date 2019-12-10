@@ -29,12 +29,14 @@ class DeJongAttractor extends Attractor {
 	public DeJongAttractor(double x, double y, double z, Color c) {
 		super(x, y, z, c);
 		this.setName("dejong");
+		this.setIs3D(false);
 		this.setTimeInvariant(true);
 	}
 	
 	public DeJongAttractor(double x, double y, double z, Color c, String dspace) {
 		super(x, y, z, c, dspace);
 		this.setName("dejong");
+		this.setIs3D(false);
 		this.setTimeInvariant(true);
 	}
 	//https://www.algosome.com/articles/strange-attractors-de-jong.html

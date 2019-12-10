@@ -976,7 +976,7 @@ class SierpinskiComboPanel extends JPanel {
 	/*private String attrCustom_DeltaXFormula;	
 	private String attrCustom_DeltaYFormula;	
 	private String attrCustom_DeltaZFormula;*/
-	
+	private AttractorsGenerator[] generators;
 	
 	////////////////////////////////ENDS	ATTRACTOR////////////////////////////
 	
@@ -3652,20 +3652,17 @@ class SierpinskiComboPanel extends JPanel {
 			String imgBaseInfo = this.getImgBaseInfo();
 			BufferedImage dataInfoImg = this.createStringImage(imgBaseInfo);
 
-			String imageFilePath = "images_gen\\" + subDirName + "\\" + "[" + extraInfo + "]_"
-					+ System.currentTimeMillis() + ".png";
+			String imageFilePath = "images_gen\\" + subDirName + "\\" + "[" + extraInfo + "]_" + System.currentTimeMillis() + ".png";
 			File outputfile = new File(imageFilePath);
 
-			String imageDetailFilePath = "images_gen\\" + subDirName + "\\Detail\\" + "[" + extraInfo + "]_Detail_"
-					+ System.currentTimeMillis() + ".png";
+			String imageDetailFilePath = "images_gen\\" + subDirName + "\\Detail\\" + "[" + extraInfo + "]_Detail_" + System.currentTimeMillis() + ".png";
 			File outputDetailfile = new File(imageDetailFilePath);
 
 			try {
 				ImageIO.write(mands[i].getBufferedImage(), "png", outputfile);
 				System.out.println("Generated File: " + imageFilePath);
 
-				final BufferedImage joinedFractalDataImage = FractalBase.joinBufferedImage(mands[i].getBufferedImage(),
-						dataInfoImg);
+				final BufferedImage joinedFractalDataImage = FractalBase.joinBufferedImages(mands[i].getBufferedImage(), dataInfoImg);
 				ImageIO.write(joinedFractalDataImage, "png", outputDetailfile);
 				System.out.println("Generated FileDetail: " + imageDetailFilePath);
 			} catch (IOException e) {
@@ -4174,20 +4171,17 @@ class SierpinskiComboPanel extends JPanel {
 			String imgBaseInfo = this.getImgBaseInfo();
 			BufferedImage dataInfoImg = this.createStringImage(imgBaseInfo);
 
-			String imageFilePath = "images_gen\\" + subDirName + "\\" + "[" + extraInfo + "]_"
-					+ System.currentTimeMillis() + ".png";
+			String imageFilePath = "images_gen\\" + subDirName + "\\" + "[" + extraInfo + "]_" + System.currentTimeMillis() + ".png";
 			File outputfile = new File(imageFilePath);
 
-			String imageDetailFilePath = "images_gen\\" + subDirName + "\\Detail\\" + "[" + extraInfo + "]_Detail_"
-					+ System.currentTimeMillis() + ".png";
+			String imageDetailFilePath = "images_gen\\" + subDirName + "\\Detail\\" + "[" + extraInfo + "]_Detail_" + System.currentTimeMillis() + ".png";
 			File outputDetailfile = new File(imageDetailFilePath);
 
 			try {
 				ImageIO.write(julies[i].getBufferedImage(), "png", outputfile);
 				System.out.println("Generated File: " + imageFilePath);
 
-				final BufferedImage joinedFractalDataImage = FractalBase.joinBufferedImage(julies[i].getBufferedImage(),
-						dataInfoImg);
+				final BufferedImage joinedFractalDataImage = FractalBase.joinBufferedImages(julies[i].getBufferedImage(), dataInfoImg);
 				ImageIO.write(joinedFractalDataImage, "png", outputDetailfile);
 				System.out.println("Generated FileDetail: " + imageDetailFilePath);
 			} catch (IOException e) {
@@ -7223,41 +7217,63 @@ class SierpinskiComboPanel extends JPanel {
 	
 
 	private void generateAttractors(String attractorName, List<Attractor> attractors, List<String> space2DList) {
+		this.generators = new AttractorsGenerator[space2DList.size()];
+		/*BufferedImage[] attrImages = new BufferedImage[generators.length];
+		BufferedImage combinedAttrImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+		*/
 		for (int i = 0; i < space2DList.size(); i++) {
-			final AttractorsGenerator generator = new AttractorsGenerator(attractorName);
-			generator.setInstantDraw(this.isAttractorInstantDraw);
+			List<Attractor> attractorClones = attractors;
+			String space2D = space2DList.get(i);
+			generators[i] = new AttractorsGenerator(attractorName);
+			generators[i].setInstantDraw(this.isAttractorInstantDraw);
 			if (!this.isAttractorInstantDraw) {
-				generator.setPauseTime(this.attractorPauseJump);
+				generators[i].setPauseTime(this.attractorPauseJump);
 			}
-			String spcace2D = space2DList.get(i);
-			for (Attractor attractor : attractors) {
-				attractor.setSpace2dAxes(spcace2D);
-			}
-			generator.setAttractors(attractors);
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
 
-					final JFrame frame = generator;
-					frame.setTitle("Bawaz___" + attractorName.toUpperCase() + "Attractor");
-					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-					frame.setResizable(false);
-					frame.setVisible(true);
-
-					frame.setDefaultCloseOperation(closeIt(frame));
-					frame.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth()) / 2,
-							(Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight()) / 2);
-					frame.setResizable(false);
-					frame.setVisible(true);
-
-					setFractalImage(generator.getBufferedImage());
-					// this.setFractalBase(frame);
-
-					buClose.setEnabled(true);
-				}
-			});
+			generators[i].setAttractors(attractorClones);
+			generators[i].setSpace2d(space2D);/*
+System.out.println("space2DIs __ "+space2D);*/			
+			SwingUtilities.invokeLater(generateAndRunAttractors(generators[i], attractorName));
 			/*this.generateAttractors(attractorName, attractors);*/
-		}
+			/*attrImages[i] = generators[i].getBufferedImage();*/
+//			
+			/*combinedAttrImage = FractalBase.joinBufferedImages(attrImages[i], combinedAttrImage);*/
+		}/*
+		for (int i = 0; i < space2DList.size(); i++) {
+			attrImages[i] = generators[i].getBufferedImage();
+		}*/
+		
+		//this.setFractalImage(combinedAttrImage);
+		/*this.setFractalImage(FractalBase.joinBufferedImages(attrImages));*/
+	}
+
+	private Runnable generateAndRunAttractors(/*final */AttractorsGenerator generator, String attractorName) {
+//		System.out.println("In generate&Run space2D is -- "+generator.getSpace2d());
+		return new Runnable() {
+			@Override
+			public void run() {
+
+				final JFrame frame = generator;
+				frame.setTitle("Bawaz___" + attractorName.toUpperCase() + "Attractor  {"+generator.getSpace2d()+"}");
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frame.setResizable(false);
+				frame.setVisible(true);
+
+				frame.setDefaultCloseOperation(closeIt(frame));
+				frame.setLocation((Toolkit.getDefaultToolkit().getScreenSize().width - frame.getWidth()) / 2,
+						(Toolkit.getDefaultToolkit().getScreenSize().height - frame.getHeight()) / 2);
+				frame.setResizable(false);
+				frame.setVisible(true);
+
+				/*if (fractalImage == null) {
+					setFractalImage(generator.getBufferedImage());
+				} else {
+					setFractalImage(FractalBase.joinBufferedImages(fractalImage, generator.getBufferedImage()));
+				}*/
+				buClose.setEnabled(true);
+				buSave.setEnabled(true);
+			}
+		};
 	}
 
 	private void generateAttractors(String name, List<Attractor> attractorsList) {
@@ -8286,6 +8302,18 @@ class SierpinskiComboPanel extends JPanel {
 //		g2.drawImage(img, drawLocX, drawLocY, null);
 		
 		*/
+		String choice = this.getComboChoice();
+		if (choice.equals(ATTRACTORS)) {
+			BufferedImage[] images = new BufferedImage[this.generators.length];
+			
+			for(int i = 0; i < this.generators.length;i++) {
+				
+				images[i] = this.generators[i].getBufferedImage();
+						//FractalBase.joinBufferedImages(this.generators[i].getBufferedImage(),this.createStringImage(this.generators[i].getSpace2d()));
+			}
+			
+			this.setFractalImage(FractalBase.joinAdjacentBufferedImages(images));
+		}
 		
 		String extraInfo = this.getExtraInfo();
 		
@@ -8307,10 +8335,10 @@ class SierpinskiComboPanel extends JPanel {
 		File outputfile = new File(imageFilePath);
 	    try {
 			if (saveCommand.equals("saveWithData")) {
-				final BufferedImage joinedFractalDataImage = FractalBase.joinBufferedImage(fractalImage, dataInfoImg);
+				final BufferedImage joinedFractalDataImage = FractalBase.joinBufferedImages(fractalImage, dataInfoImg);
 				ImageIO.write(joinedFractalDataImage, "png", outputfile);
 			} else if(saveCommand.equals("saveWithDetailData")){
-				final BufferedImage joinedFractalDetailDataImage = FractalBase.joinAdjacentBufferedImage(fractalImage, detailDataImg);
+				final BufferedImage joinedFractalDetailDataImage = FractalBase.joinAdjacentBufferedImages(fractalImage, detailDataImg);
 				ImageIO.write(joinedFractalDetailDataImage, "png", outputfile);
 			} else {
 				ImageIO.write(fractalImage, "png", outputfile);
@@ -8335,9 +8363,11 @@ class SierpinskiComboPanel extends JPanel {
 
 		g2d = img.createGraphics();
         g2d.setColor(new Color(255, 255, 255, 128));
-        g2d.fillRoundRect(0, 0, this.getFractalImage().getWidth(), 300, 15, 10);
-        g2d.setColor(Color.black);
-        textLabel.paint(g2d);
+		if (this.getFractalImage() != null) {
+			g2d.fillRoundRect(0, 0, this.getFractalImage().getWidth(), 300, 15, 10);
+			g2d.setColor(Color.black);
+		}
+		textLabel.paint(g2d);
         
         g2d.dispose();
         
@@ -8504,24 +8534,24 @@ class SierpinskiComboPanel extends JPanel {
 					baseInfo += "Ud, ";
 				}
 				baseInfo += "Boundary: " + this.diyJuliaBound + ", "+eol;
-			if (((this.keepConst && this.diyJuliaKeepConstRb.isSelected()))
-					&& !(this.diyJuliaVaryConstant || this.diyJuliaVaryGenConstantCb.isSelected())) {
-				baseInfo += "Dynamic Constant	Z=C" + eol;
-			} else {
-					if (!diyJuliaGen) {
-						try {
-							baseInfo += "Real Value = " + Double.parseDouble(this.diyJuliaRealTf.getText()) + "," + eol;
-							baseInfo += "Imaginary Value = " + Double.parseDouble(this.diyJuliaImgTf.getText()) + eol;
-						} catch (NumberFormatException  | NullPointerException e2) {
-							e2.printStackTrace();
-							JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
-							return null;
+				if (((this.keepConst && this.diyJuliaKeepConstRb.isSelected()))
+						&& !(this.diyJuliaVaryConstant || this.diyJuliaVaryGenConstantCb.isSelected())) {
+					baseInfo += "Dynamic Constant	Z=C" + eol;
+				} else {
+						if (!diyJuliaGen) {
+							try {
+								baseInfo += "Real Value = " + Double.parseDouble(this.diyJuliaRealTf.getText()) + "," + eol;
+								baseInfo += "Imaginary Value = " + Double.parseDouble(this.diyJuliaImgTf.getText()) + eol;
+							} catch (NumberFormatException  | NullPointerException e2) {
+								e2.printStackTrace();
+								JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+								return null;
+							}
+						} else {
+							baseInfo += "Real Value = " + this.diyJuliaConstReal + "," + eol;
+							baseInfo += "Imaginary Value = " + this.diyJuliaConstImg + eol;
 						}
-					} else {
-						baseInfo += "Real Value = " + this.diyJuliaConstReal + "," + eol;
-						baseInfo += "Imaginary Value = " + this.diyJuliaConstImg + eol;
 					}
-				}
 
 				baseInfo = addConstFuncInfo(baseInfo);
 
@@ -8543,7 +8573,40 @@ class SierpinskiComboPanel extends JPanel {
 				baseInfo += "Radii: C1(" + c1 + "), C2(" + c2 + "), C3(" + c3 + ")";
 				baseInfo += " Multiplier(" + mult + ") }";
 				break;
+			case	ATTRACTORS :	
+				if (this.attractorSelectionChoice.equals("lorenz")) {
+					baseInfo += "<b>LorenzAttractor</b>" + eol;
+					baseInfo += "<font color='red'>Sigma: "+this.attrLorenzSigma_tf.getText()+"</font>" + eol;
+					baseInfo += "<font color='blue'>Rho: "+this.attrLorenzRho_tf.getText()+"</font>" + eol;
+					baseInfo += "<font color='green'>Beta: "+this.attrLorenzBeta_tf.getText()+"</font>" + eol;
+					baseInfo += "<font color='black'>Delta_Time: "+this.attrDeltaTime_tf.getText()+"</font>" + eol;
+					baseInfo += "<font color='blue'>NumIterations: "+this.attrMaxIter_tf.getText()+"</font>" + eol;
+					
+					
+					
+				}
 				
+
+				String seedInfo = "Seeds:" + eol;
+				int numAttr = this.attrSeed_X_tfList.size();
+				for(int i = 0; i < numAttr; i++) {
+					Color seedColor = this.attrSeed_ClrChList.get(i);
+					int red = seedColor.getRed();
+					int green =seedColor.getGreen();
+					int blue = seedColor.getBlue();
+					String seedColorStr = "'#" + red + green + blue + "'";
+					seedInfo += "<font color="+seedColorStr+">Seed "+i+": X["+this.attrSeed_X_tfList.get(i).getText()+"],"+
+								" Y["+this.attrSeed_Y_tfList.get(i).getText()+"]";
+					
+					if (this.isAttractorDimSpace3D) {
+						seedInfo += " Z[" + this.attrSeed_Z_tfList.get(i).getText() + "]";
+					}
+	
+					seedInfo += "</font>"+eol;
+				}
+	
+				baseInfo += seedInfo;
+				break;
 			default:
 				baseInfo+="}";
 		}
@@ -8667,6 +8730,17 @@ class SierpinskiComboPanel extends JPanel {
 			case diyApollo:
 				extra+="DIY_"+APOLLONIAN_CIRCLES+"_";
 				extra+="C1("+this.diyApolloC1+"),C2("+this.diyApolloC2+"),C3("+this.diyApolloC3+"),Mx("+this.diyApolloMult+")";
+				break;
+			case ATTRACTORS://= new String[]{"lorenz","aizawa","dejong","custom"};
+				if (this.attractorSelectionChoice.equals("custom")) {
+					extra+="CustomAttractor_";
+				} else if (this.attractorSelectionChoice.equals("lorenz")) {
+					extra+="LorenzAttractor_";					
+				} else if (this.attractorSelectionChoice.equals("dejong")) {
+					extra+="DeJongAttractor_";					
+				} else if (this.attractorSelectionChoice.equals("aizawa")) {
+					extra+="Aizawttractor_";
+				}
 				break;
 			default:
 				extra="";

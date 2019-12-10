@@ -26,7 +26,7 @@ public class AttractorsGenerator extends JFrame {
 	public static final int HEIGHT = 600;
 	public static final int DEPTH = 600;
 	private int maxIter = 1500000;
-	private String space2d = "z-x";
+	private String space2d/* = "z-x"*/;
 
 	private String attractorName;
 
@@ -65,12 +65,16 @@ public class AttractorsGenerator extends JFrame {
 
 	public void setSpace2d(String sp2d) {
 		this.space2d = sp2d;
+		
+
+	}
+
+	private void setAttractorsSpace2D(String space) {
 		if (this.attractors != null && this.attractors.length > 0) {
 			for(Attractor a: this.attractors){
-				a.setSpace2dAxes(this.space2d);
+				a.setSpace2dAxes(space);
 			}
 		}
-
 	}
 
 	/* (non-Javadoc)
@@ -79,14 +83,24 @@ public class AttractorsGenerator extends JFrame {
 	@Override
 	public void paint(Graphics g1) {
 		super.paint(g1);
+		/*System.out.println("AG[paint-1] space2d is = "+this.getSpace2d());
+		System.out.println("this.attractors[0].space2dAxes is = "+this.attractors[0].space2dAxes);
+		System.out.println("AG-space2d==Attr-space2D  "+(this.getSpace2d()).equals(this.attractors[0].space2dAxes));
+		*/
+		this.setAttractorsSpace2D(this.space2d);
 		Graphics2D g2 = (Graphics2D) g1;
 		Graphics2D offScreenGraphics = this.getBufferedImage().createGraphics();
+		this.setSpace2d(this.space2d);
 		if (this.isInstantDraw) {
-			this.setImage(this.drawAttractors(offScreenGraphics));
-			g2.drawImage(this.getBufferedImage(), 0, 0, null);
+			final BufferedImage attractorsImage = this.drawAttractors(offScreenGraphics);
+			this.setImage(attractorsImage);
+			g2.drawImage(attractorsImage, 0, 0, null);
 		} else {
 			this.drawAttractors(g2, offScreenGraphics, this.pauseTime);
-		}
+			
+			/*this.setImage(this.drawAttractors(offScreenGraphics));
+			g2.drawImage(this.getBufferedImage(), 0, 0, null);*/
+		}/*System.out.println("AG[paint-2] space2d is = "+this.getSpace2d());*/
 		System.out.println("Done with AttractorsGenerator - paint ^__^");
 		g2.dispose();
 		offScreenGraphics.dispose();

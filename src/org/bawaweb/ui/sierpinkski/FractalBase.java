@@ -454,7 +454,18 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		g.drawString("Depth:= " + depth, OFFSET * 2, HEIGHT - OFFSET * 9 + 10);
 	}
 	
-	public static BufferedImage joinBufferedImage(BufferedImage img1, BufferedImage img2) {
+	public static BufferedImage joinBufferedImages(BufferedImage[] images) {
+		BufferedImage startImage = images[0];
+		BufferedImage newImage = startImage;
+		for (int i = 1; i < images.length; i++) {
+			BufferedImage nxtImage = images[i];
+			newImage = joinBufferedImages(newImage, nxtImage);
+		}
+		return newImage;		
+	}
+		
+	
+	public static BufferedImage joinBufferedImages(BufferedImage img1, BufferedImage img2) {
 		// int offset = 2;
 		int width = img1.getWidth();
 		int height = img1.getHeight() + img2.getHeight();
@@ -470,20 +481,45 @@ public abstract class FractalBase extends JFrame implements Runnable {
 		return newImage;
 	}
 	
-	public static BufferedImage joinAdjacentBufferedImage(BufferedImage img1, BufferedImage img2) {
+	public static BufferedImage joinAdjacentBufferedImages(BufferedImage imgLeft, BufferedImage imgRight) {
 		// int offset = 2;
-		int width = img1.getWidth() + img2.getWidth();
-		int height = img1.getHeight();
+		int width = imgLeft.getWidth() + imgRight.getWidth();
+		int height = imgLeft.getHeight();
 		BufferedImage newImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2 = newImage.createGraphics();
 		Color oldColor = g2.getColor();
 		g2.setPaint(Color.WHITE);
 		g2.fillRect(0, 0, width, height);
 		g2.setColor(oldColor);
-		g2.drawImage(img1, null, 0, 0);
-		g2.drawImage(img2, null, img1.getWidth(), 0);//img1.getHeight());
+		g2.drawImage(imgLeft, null, 0, 0);
+		g2.drawImage(imgRight, null, imgLeft.getWidth(), 0);//img1.getHeight());
 		g2.dispose();
 		return newImage;
+	}
+	
+	public static BufferedImage joinAdjacentBufferedImages(BufferedImage[] images){
+//		int width = 0;
+		BufferedImage startImage = images[0];
+		/*int height = startImage.getHeight();*/	
+		BufferedImage newImage = startImage;
+		for (int i = 1; i < images.length; i++) {
+			BufferedImage image = images[i];
+			/* width += image.getWidth(); */
+			newImage = joinAdjacentBufferedImages(newImage, image);
+			
+					/*new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2 = newImage.createGraphics();
+			Color oldColor = g2.getColor();
+			g2.setPaint(Color.WHITE);
+			g2.fillRect(0, 0, width, height);
+			g2.setColor(oldColor);
+			g2.drawImage(img1, null, 0, 0);
+			g2.drawImage(img2, null, img1.getWidth(), 0);*/
+		}
+		
+		
+		return newImage;
+		
 	}
 	
 	protected void doPrint(Graphics2D g) {

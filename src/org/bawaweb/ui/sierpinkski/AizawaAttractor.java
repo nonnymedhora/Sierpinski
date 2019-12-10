@@ -43,12 +43,14 @@ class AizawaAttractor extends Attractor {
 		public AizawaAttractor(double x, double y, double z, Color c) {
 			super(x, y, z, c);
 			this.setName("aizawa");
+			this.setIs3D(true);
 			this.setTimeInvariant(false);
 		}
 
 		public AizawaAttractor(double x, double y, double z, Color c, String dspace) {
 			super(x, y, z, c, dspace);
 			this.setName("aizawa");
+			this.setIs3D(true);
 			this.setTimeInvariant(false);
 		}
 //

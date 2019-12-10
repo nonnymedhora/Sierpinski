@@ -16,7 +16,7 @@ public abstract class Attractor {
 	private double cumulativeTime;
 	private String name;
 	private boolean is3D = true;
-	private String space2dAxes = "x-z";
+	String space2dAxes;
 	private Map<Integer,Tuple3d> updatedTuples = new LinkedHashMap<Integer,Tuple3d>();
 	private boolean isPixellated = false;		//	Fractal rendered by lines, or pixels
 
@@ -24,7 +24,7 @@ public abstract class Attractor {
 		this.setT3d(new Tuple3d(x, y, z));
 		this.setTimeJump(this.getTimeJump());
 		this.color = c;
-		this.space2dAxes = "x-z";
+		/*this.space2dAxes = "x-z";*/
 	}
 
 	public Attractor(double x, double y, double z, Color c, String dspace) {
@@ -152,7 +152,8 @@ public abstract class Attractor {
 		
 		if (scaledExistingTuple != null && scaledUpdatedTuple != null) {
 			g2.setColor(this.color);
-
+//			System.out.println("Attractor[draw] space2d is = "+this.space2dAxes);
+			
 			if (this.isPixellated) {
 				drawRect(g2, scaledExistingTuple, scaledUpdatedTuple);
 			} else {

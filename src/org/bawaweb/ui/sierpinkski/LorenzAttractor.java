@@ -11,12 +11,14 @@ class LorenzAttractor extends Attractor {
 		public LorenzAttractor(double x, double y, double z, Color c) {
 			super( x, y, z, c);
 			this.setName("lorenz");
+			this.setIs3D(true);
 			this.setTimeInvariant(false);
 		}
 		
 		public LorenzAttractor(double x, double y, double z, Color c, String space) {
 			super(x, y, z, c, space);
 			this.setName("lorenz");
+			this.setIs3D(true);
 			this.setTimeInvariant(false);
 		}
 		
