@@ -8308,8 +8308,8 @@ System.out.println("space2DIs __ "+space2D);*/
 			
 			for(int i = 0; i < this.generators.length;i++) {
 				
-				images[i] = this.generators[i].getBufferedImage();
-						//FractalBase.joinBufferedImages(this.generators[i].getBufferedImage(),this.createStringImage(this.generators[i].getSpace2d()));
+				images[i] = //this.generators[i].getBufferedImage();
+						FractalBase.joinBufferedImages(this.generators[i].getBufferedImage(),this.createStringImage(this.generators[i].getSpace2d()));
 			}
 			
 			this.setFractalImage(FractalBase.joinAdjacentBufferedImages(images));
@@ -8365,8 +8365,10 @@ System.out.println("space2DIs __ "+space2D);*/
         g2d.setColor(new Color(255, 255, 255, 128));
 		if (this.getFractalImage() != null) {
 			g2d.fillRoundRect(0, 0, this.getFractalImage().getWidth(), 300, 15, 10);
-			g2d.setColor(Color.black);
+		} else {
+			g2d.fillRoundRect(0, 0, 100, 300, 15, 10);
 		}
+		g2d.setColor(Color.black);
 		textLabel.paint(g2d);
         
         g2d.dispose();
@@ -8590,11 +8592,12 @@ System.out.println("space2DIs __ "+space2D);*/
 				String seedInfo = "Seeds:" + eol;
 				int numAttr = this.attrSeed_X_tfList.size();
 				for(int i = 0; i < numAttr; i++) {
-					Color seedColor = this.attrSeed_ClrChList.get(i);
-					int red = seedColor.getRed();
-					int green =seedColor.getGreen();
-					int blue = seedColor.getBlue();
-					String seedColorStr = "'#" + red + green + blue + "'";
+					Color seedColor = this.attrSeed_ClrChList.get(i);	System.out.println("colorATTRIs___"+seedColor);
+					String red = Integer.toHexString(seedColor.getRed());		System.out.println("redIs___"+red);
+					String green = Integer.toHexString(seedColor.getGreen());	System.out.println("greenIs___"+green);
+					String blue =  Integer.toHexString(seedColor.getBlue());		System.out.println("blueIs___"+blue);
+					String seedColorStr = "'#" + red + EMPTY + green + EMPTY + blue + "'";
+					System.out.println("seedColorStrIs___"+seedColorStr);
 					seedInfo += "<font color="+seedColorStr+">Seed "+i+": X["+this.attrSeed_X_tfList.get(i).getText()+"],"+
 								" Y["+this.attrSeed_Y_tfList.get(i).getText()+"]";
 					
