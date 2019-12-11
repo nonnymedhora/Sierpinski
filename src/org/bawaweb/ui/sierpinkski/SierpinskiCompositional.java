@@ -7141,10 +7141,16 @@ class SierpinskiComboPanel extends JPanel {
 				String deltaZFormula = is3D?this.attrCustom_DeltaZFormula_tf.getText().trim():null;
 				
 				for (int i = 0; i < numAttractors; i++) {
-					final CustomAttractor aCustomAttractor = new CustomAttractor(
+					final CustomAttractor aCustomAttractor;
+					if (is3D) {
+						aCustomAttractor = new CustomAttractor(
 							attr_XSeedVals.get(i), attr_YSeedVals.get(i), attr_ZSeedVals.get(i), 
-							attrColorVals.get(i)/*, space2d*/);
-					
+							attrColorVals.get(i));
+					}else {
+						aCustomAttractor = new CustomAttractor(
+							attr_XSeedVals.get(i), attr_YSeedVals.get(i),0, 
+							attrColorVals.get(i));
+					}
 					aCustomAttractor.setMaxIter(maxIter);
 					
 					aCustomAttractor.setDeltaXFormula(deltaXFormula);
@@ -8575,29 +8581,86 @@ System.out.println("space2DIs __ "+space2D);*/
 				baseInfo += "Radii: C1(" + c1 + "), C2(" + c2 + "), C3(" + c3 + ")";
 				baseInfo += " Multiplier(" + mult + ") }";
 				break;
-			case	ATTRACTORS :	
+			case	ATTRACTORS :	//= new String[]{"lorenz","aizawa","dejong","custom"};
 				if (this.attractorSelectionChoice.equals("lorenz")) {
 					baseInfo += "<b>LorenzAttractor</b>" + eol;
 					baseInfo += "<font color='red'>Sigma: "+this.attrLorenzSigma_tf.getText()+"</font>" + eol;
 					baseInfo += "<font color='blue'>Rho: "+this.attrLorenzRho_tf.getText()+"</font>" + eol;
 					baseInfo += "<font color='green'>Beta: "+this.attrLorenzBeta_tf.getText()+"</font>" + eol;
-					baseInfo += "<font color='black'>Delta_Time: "+this.attrDeltaTime_tf.getText()+"</font>" + eol;
-					baseInfo += "<font color='blue'>NumIterations: "+this.attrMaxIter_tf.getText()+"</font>" + eol;
 					
+					String lorenzFormulaStr = "<b>DeltaX   = -Sigma * (X - Y)" + eol;
+					lorenzFormulaStr += "DeltaY   = (-X * Z) + (Rho * X) - Y;" + eol;
+					lorenzFormulaStr += "DeltaZ   = (X * Y) - (Beta * Z)</b>"	+ eol;
 					
+					baseInfo += lorenzFormulaStr;
 					
+				} else if(this.attractorSelectionChoice.equals("aizawa")) {
+					baseInfo += "<b>Aizawa Attractor</b>" + eol;
+					baseInfo += "<font color='red'>A: "+this.attrAizawaA_tf.getText()+"</font>" + eol;
+					baseInfo += "<font color='blue'>B: "+this.attrAizawaB_tf.getText()+"</font>" + eol;
+					baseInfo += "<font color='red'>C: "+this.attrAizawaC_tf.getText()+"</font>" + eol;
+					baseInfo += "<font color='blue'>D: "+this.attrAizawaD_tf.getText()+"</font>" + eol;
+					baseInfo += "<font color='red'>E: "+this.attrAizawaE_tf.getText()+"</font>" + eol;
+					baseInfo += "<font color='blue'>F: "+this.attrAizawaF_tf.getText()+"</font>" + eol;
+					
+					String aizawaFormulaStr = "<b>DeltaX   =   (Z - B) * X - (D * Y)" + eol;
+					aizawaFormulaStr += "DeltaY   =   D * X + (Z - B) * Y " + eol;
+					aizawaFormulaStr += "DeltaZ   = C + (A * Z) - ((Z <sup>3</sup>) /3) - (X <sup>2</sup>)   + (F * Z * X <sup>3</sup>)</b>" + eol;
+					
+					baseInfo += aizawaFormulaStr;
+					
+				} else if(this.attractorSelectionChoice.equals("dejong")) {
+					baseInfo += "<b>DeJong Attractor</b>" + eol;
+					baseInfo += "<font color='red'>A: "+this.attrDeJongA_tf.getText()+"</font>" + eol;
+					baseInfo += "<font color='blue'>B: "+this.attrDeJongB_tf.getText()+"</font>" + eol;
+					baseInfo += "<font color='red'>C: "+this.attrDeJongC_tf.getText()+"</font>" + eol;
+					baseInfo += "<font color='blue'>D: "+this.attrDeJongD_tf.getText()+"</font>" + eol;
+										
+					String deJongFormulaStr = "<b>DeltaX   =   sin(A * Y) - cos(B * X)" + eol;
+					deJongFormulaStr += "DeltaY   =   sin(C * X) - cos(D * Y) " + eol;
+					
+					baseInfo += deJongFormulaStr;
+					
+				} else if(this.attractorSelectionChoice.equals("custom")) {
+					baseInfo += "<b>Custom Attractor</b>" + eol;
+					baseInfo += "<font color='red'>DeltaX: "+this.attrCustom_DeltaXFormula_tf.getText()+"</font>" + eol;
+					baseInfo += "<font color='blue'>DeltaY: "+this.attrCustom_DeltaYFormula_tf.getText()+"</font>" + eol;
+					if (this.isAttractorDimSpace3D) {
+						baseInfo += "<font color='red'>DeltaZ: "+this.attrCustom_DeltaZFormula_tf.getText()+"</font>" + eol;
+					}
 				}
+				
+				if (this.isAttractorTimeInvariant) {
+					baseInfo += "<font color='red'>Time Invariant Attractor</font>" + eol;
+				} else {
+					baseInfo += "<font color='red'>Delta_Time: " + this.attrDeltaTime_tf.getText() + "</font>" + eol;
+				}
+				
+				if (this.isAttractorDimSpace3D) {
+					baseInfo += "<font color='green'>3D Attractor</font>" + eol;
+				} else {
+					baseInfo += "<font color='green'>2D Attractor</font>" + eol;
+				}
+				
+				baseInfo += "<font color='blue'>NumIterations: "+this.attrMaxIter_tf.getText()+"</font>" + eol;
 				
 
 				String seedInfo = "Seeds:" + eol;
 				int numAttr = this.attrSeed_X_tfList.size();
 				for(int i = 0; i < numAttr; i++) {
 					Color seedColor = this.attrSeed_ClrChList.get(i);	System.out.println("colorATTRIs___"+seedColor);
-					String red = Integer.toHexString(seedColor.getRed());		System.out.println("redIs___"+red);
-					String green = Integer.toHexString(seedColor.getGreen());	System.out.println("greenIs___"+green);
-					String blue =  Integer.toHexString(seedColor.getBlue());		System.out.println("blueIs___"+blue);
+					String red = Integer.toHexString(seedColor.getRed());
+					if(red.equals("0")){red="00";}
+					System.out.println("redIs___"+red);
+					String green = Integer.toHexString(seedColor.getGreen());
+					if(green.equals("0")){green="00";}
+					System.out.println("greenIs___"+green);
+					String blue =  Integer.toHexString(seedColor.getBlue());	
+					if(blue.equals("0")){blue="00";}	
+					System.out.println("blueIs___"+blue);
 					String seedColorStr = "'#" + red + EMPTY + green + EMPTY + blue + "'";
 					System.out.println("seedColorStrIs___"+seedColorStr);
+					
 					seedInfo += "<font color="+seedColorStr+">Seed "+i+": X["+this.attrSeed_X_tfList.get(i).getText()+"],"+
 								" Y["+this.attrSeed_Y_tfList.get(i).getText()+"]";
 					
