@@ -46,6 +46,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -58,6 +59,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.filechooser.FileSystemView;
 
 
 /**
@@ -850,6 +852,10 @@ class SierpinskiComboPanel extends JPanel {
 	private JButton buSave = new JButton("Save");
 	private JButton buSaveWithData = new JButton("SaveWithData");
 	private JButton buSaveWithDetailData = new JButton("SaveWithDetailData");
+	private JButton buSave2File = new JButton("Save2File");
+	private JButton buSaveWithData2File = new JButton("SaveWithData2File");
+	private String save2File;
+	private String save2FileWithData;
 	
 	private Thread fbf;
 
@@ -1057,6 +1063,8 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(this.buSave);
 		this.add(this.buSaveWithData);
 //		this.add(this.buSaveWithDetailData);
+		this.add(this.buSave2File);
+		this.add(this.buSaveWithData2File);
 		
 		this.buClose.setEnabled(false);
 		this.add(this.buClose);
@@ -1346,6 +1354,11 @@ class SierpinskiComboPanel extends JPanel {
 		this.buSaveWithData.setEnabled(true);
 		this.attractorsPanel.add(this.buSave);
 		this.attractorsPanel.add(this.buSaveWithData);
+
+		this.buSave2File.setEnabled(true);
+		this.buSaveWithData2File.setEnabled(true);
+		this.attractorsPanel.add(this.buSave2File);
+		this.attractorsPanel.add(this.buSaveWithData2File);
 		
 		return this.attractorsPanel;
 		
@@ -2137,6 +2150,7 @@ class SierpinskiComboPanel extends JPanel {
 	private int doCloseAttractorsFrame(JFrame aFrame) {
 		this.setEnabled(true);
 		this.buSave.setEnabled(true);
+		this.buSave2File.setEnabled(true);
 		aFrame.dispose();
 		/*aFrame = null;*/
 		return JFrame.DISPOSE_ON_CLOSE;
@@ -7278,6 +7292,7 @@ System.out.println("space2DIs __ "+space2D);*/
 				}*/
 				buClose.setEnabled(true);
 				buSave.setEnabled(true);
+				buSave2File.setEnabled(true);
 			}
 		};
 	}
@@ -8327,7 +8342,7 @@ System.out.println("space2DIs __ "+space2D);*/
 		BufferedImage dataInfoImg = null;
 //		BufferedImage dataInfoImg = null;
 		BufferedImage detailDataImg = null;
-		if (saveCommand.equals("saveWithData")||saveCommand.equals("saveWithDetailData")) {
+		if (saveCommand.equals("saveWithData")||saveCommand.equals("save2FileWithData")||saveCommand.equals("saveWithDetailData")) {
 			imgBaseInfo = this.getImgBaseInfo();
 			dataInfoImg = this.createStringImage(imgBaseInfo);
 		}
@@ -8337,10 +8352,26 @@ System.out.println("space2DIs __ "+space2D);*/
 			detailDataImg = this.createStringImage(detailDataInfo);
 		}
         
-		String imageFilePath="images_dump\\"+this.getComboChoice()+"["+extraInfo+"]"+" ____"+System.currentTimeMillis()+".png";
-		File outputfile = new File(imageFilePath);
+		File outputfile;
+		String imageFilePath = null;
+		if (saveCommand.equals("save") || saveCommand.equals("saveWithData")) {
+			imageFilePath = "images_dump\\" + this.getComboChoice() + "[" + extraInfo + "]" + " ____" + System.currentTimeMillis() + ".png";
+		} else if (saveCommand.equals("save2File") || saveCommand.equals("save2FileWithData")) {
+			if (saveCommand.equals("save2File")) {
+				imageFilePath = this.save2File;
+			}
+			if (saveCommand.equals("save2FileWithData")) {
+				imageFilePath = this.save2FileWithData;
+			}
+
+		} else if (saveCommand.equals("saveWithDetailData")) {
+			imageFilePath = null;	//NOTE	-	AintDoingThis4 now
+		}
+		
+		outputfile = new File(imageFilePath);
+		
 	    try {
-			if (saveCommand.equals("saveWithData")) {
+			if (saveCommand.equals("saveWithData") || saveCommand.equals("save2FileWithData")) {
 				final BufferedImage joinedFractalDataImage = FractalBase.joinBufferedImages(fractalImage, dataInfoImg);
 				ImageIO.write(joinedFractalDataImage, "png", outputfile);
 			} else if(saveCommand.equals("saveWithDetailData")){
@@ -9071,6 +9102,41 @@ System.out.println("space2DIs __ "+space2D);*/
 				doSaveImageCommand("saveWithDetailData");				
 			}
 		});
+		
+		this.buSave2File.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// create an object of JFileChooser class 
+				JFileChooser chooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory()); 
+
+				// invoke the showsSaveDialog function to show the save dialog
+				int r = chooser.showSaveDialog(null);
+
+				// if the user selects a file
+				if (r == JFileChooser.APPROVE_OPTION) {
+					save2File = chooser.getSelectedFile().getAbsolutePath();
+					doSaveImageCommand("save2File");
+				}			
+			}
+		});
+		
+		this.buSaveWithData2File.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// create an object of JFileChooser class 
+				JFileChooser chooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory()); 
+
+				// invoke the showsSaveDialog function to show the save dialog
+				int r = chooser.showSaveDialog(null);
+
+				// if the user selects a file
+				if (r == JFileChooser.APPROVE_OPTION) {
+					save2FileWithData = chooser.getSelectedFile().getAbsolutePath();
+					doSaveImageCommand("save2FileWithData");
+				}			
+			}
+		});
+
 	}
 
 	private void setupDIYApolloListeners() {
