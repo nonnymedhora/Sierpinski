@@ -279,7 +279,7 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private JPanel juliaOptionsPanel 	= new JPanel(new GridLayout(10,5),true);
 	private JPanel mandOptionsPanel 	= new JPanel(new GridLayout(10,5),true);
-	private JPanel polyOptionsPanel 	= new JPanel(new GridLayout(10,5),true);
+	private JPanel polyOptionsPanel 	= new JPanel(new GridLayout(20,15),true);
 	private JPanel diyOptionsPanel		= new JPanel(new FlowLayout(),true);
 	
 	private JPanel diyMandPanel 		= new JPanel(new GridLayout(20,15),true);
@@ -691,6 +691,114 @@ class SierpinskiComboPanel extends JPanel {
 	private boolean diyMandGen = false;
 	private JButton diyMandGenBu = new JButton("Generate Mandelbrot");
 	///////////////////////////////////////////////////////////////////////////
+//	Generator	PolyFract
+
+	private final JCheckBox polyGenCb = new JCheckBox("Generate", false);
+
+	private JCheckBox polyVaryColorCb = new JCheckBox("Vary Color", false);
+	private JCheckBox polyVaryPixXTranCb = new JCheckBox("Vary Pixel_X_Trans f(x)", false);
+	private JCheckBox polyVaryPixYTranCb = new JCheckBox("Vary Pixel_Y_Tran f(y)", false);
+	private JCheckBox polyVaryIntraPixXYCb = new JCheckBox("Vary Intra_Pixel_Op f(x,y)", false);
+	private JCheckBox polyVaryPixelZFuncCb = new JCheckBox("Vary Pixel_Complex f(Z)", false);
+	private JCheckBox polyVaryConstCFuncCb = new JCheckBox("Vary Constant Function f(C)", false);
+	private JCheckBox polyVaryPixelConstOpZCCb = new JCheckBox("Vary Pixel(Z)_Constant(C) Op O(Z,C)", false);
+	private JCheckBox polyVaryGenConstantCb = new JCheckBox("Vary Constant Value  C", false);
+	private JCheckBox polyVaryPixelPowerZCb = new JCheckBox("Vary Power Z^n", false);
+	private JCheckBox polyVaryIterCb = new JCheckBox("Vary MaxIterations", false);
+	private JCheckBox polyVaryRCMTCb = new JCheckBox("Vary RowColMix", false);
+	private JCheckBox polyVaryBoundaryCb = new JCheckBox("Vary Boundary", false);
+	private JCheckBox polyVaryPixXCentrCb = new JCheckBox("Vary PixelCenter_X", false);
+	private JCheckBox polyVaryPixYCentrCb = new JCheckBox("Vary PixelCenter_Y", false);
+	private JCheckBox polyVaryScaleSizeCb = new JCheckBox("Vary Scale", false);
+	
+	private boolean polyVaryColor 		= false;			//polyVaryColorCb
+	private boolean polyVaryPixXTran 	= false;			//polyVaryPixXTranCb
+	private boolean polyVaryPixYTran 	= false;			//polyVaryPixYTranCb
+	private boolean polyVaryIntraPixXY 	= false;			//polyVaryIntraPixXYCb
+	private boolean polyVaryPixelZFunc 	= false;			//polyVaryPixelZFuncCb
+	private boolean polyVaryConstCFunc 	= false;			//polyVaryConstCFuncCb
+	private boolean polyVaryPixelConstOpZC 	= false;		//polyVaryPixelConstOpZCCb
+	private boolean polyVaryPixelPowerZ = false;			//polyVaryPixelPowerZCb
+	
+	private boolean polyVaryPolyType 	= false;			//polyVaryRCMTCb
+	private boolean polyVaryIter 		= false;			//polyVaryIterCb
+	private boolean polyVaryPixXCentr 	= false;			//polyVaryPixXCentrCb
+	private boolean polyVaryPixYCentr 	= false;			//polyVaryPixYCentrCb
+	
+	// polyVaryPixelPowerZCb applies here
+	private JLabel polyGenPixelPowerZFromLabel = new JLabel("PixelPowerZ [From]:");
+	private final JTextField polyGenPixelPowerZFromTf = new JTextField(2);
+	private JLabel polyGenPixelPowerZToLabel = new JLabel(" [To]:");
+	private final JTextField polyGenPixelPowerZToTf = new JTextField(2);
+	private JLabel polyGenPixelPowerZJumpLabel = new JLabel(" [Jump]");
+	private JComboBox<Integer> polyGenPixelPowerZJumpCombo = new JComboBox<Integer>(getPixelPowerZJumpOptions());
+
+	private int polyVaryPixelPowerZFromVal;
+	private int polyVaryPixelPowerZToVal;
+	private int polyVaryPixelPowerZJumpVal;
+	// ends
+	// polyVaryPixelPowerZCb applies here
+	
+	
+	//polyVaryScaleSizeCb applies here
+	private JLabel polyGenScaleSizeFromLabel = new JLabel("ScaleSize [From]:");
+	private final JTextField polyGenScaleSizeFromTf = new JTextField(5);
+	private JLabel polyGenScaleSizeToLabel = new JLabel(" [To]:");
+	private final JTextField polyGenScaleSizeToTf = new JTextField(5);
+	private JLabel polyGenScaleSizeJumpLabel = new JLabel(" [Jump]");	
+	private JComboBox<Double> polyGenScaleSizeJumpCombo = new JComboBox<Double>(getScaleSizeJumpOptions());
+	
+	private boolean polyVaryScaleSize = false;
+	private double polyVaryScaleSizeFromVal;
+	private double polyVaryScaleSizeToVal;
+	private double polyVaryScaleSizeJumpVal;
+	//ends
+	//polyVaryScaleSizeCb applies here
+	
+	//polyVaryBoundaryCb applies here
+	private JLabel polyGenBoundaryFromLabel = new JLabel("Boundary [From]:");
+	private final JTextField polyGenBoundaryFromTf = new JTextField(5);
+	private JLabel polyGenBoundaryToLabel = new JLabel(" [To]:");
+	private final JTextField polyGenBoundaryToTf = new JTextField(5);
+	private JLabel polyGenBoundaryJumpLabel = new JLabel(" [Jump]");	
+	private JComboBox<Double> polyGenBoundaryJumpCombo = new JComboBox<Double>(getBoundaryJumpOptions());
+	
+	private boolean polyVaryBoundary = false;
+	private double polyVaryBoundaryFromVal;
+	private double polyVaryBoundaryToVal;
+	private double polyVaryBoundaryJumpVal;
+	//ends
+	//polyVaryBoundaryCCb applies here
+	
+	//polyVaryGenConstantCb applies here
+	private JLabel polyGenRealFromLabel = new JLabel("Constant - Real [From]");
+	private final JTextField polyGenRealFromTf = new JTextField(5);
+	private JLabel polyGenRealToLabel = new JLabel(" Real [To]");
+	private final JTextField polyGenRealToTf = new JTextField(5);
+	private JLabel polyGenRealJumpLabel = new JLabel(" Real [Jump]");	
+	private JComboBox<Double> polyGenRealJumpCombo = new JComboBox<Double>(getConstantJumpOptions());
+	
+	private JLabel polyGenImagFromLabel = new JLabel(" Img [From]");
+	private final JTextField polyGenImagFromTf = new JTextField(5);
+	private JLabel polyGenImagToLabel = new JLabel(" Img [To]");
+	private final JTextField polyGenImagToTf = new JTextField(5);
+	private JLabel polyGenImagJumpLabel = new JLabel(" Img [Jump]");
+	private JComboBox<Double> polyGenImagJumpCombo = new JComboBox<Double>(getConstantJumpOptions());	
+	
+	private boolean polyVaryConstant = false;
+	private double polyGenRealFromVal;
+	private double polyGenRealToVal;
+	private double polyGenRealJumpVal;
+	private double polyGenImagFromVal;
+	private double polyGenImagToVal;
+	private double polyGenImagJumpVal;
+	
+	//ends
+	//polyVaryGenConstantCb applies here
+	
+	private boolean polyGen = false;
+	private JButton polyGenBu = new JButton("Generate PolyFractal");
+	///////////////////////////////////////////////////////////////////////////
 	
 	///////////ends	Generator//////////////////////////////////////////////////
 	
@@ -716,7 +824,19 @@ class SierpinskiComboPanel extends JPanel {
 
 	///////////////// ends apply function
 	///////////////// Mandelbrot////////////////////////////////////
-		
+
+	///////////////// PolyFract///////////////////////////////////
+	private boolean polyApplyFormulaZ = false;
+	private JCheckBox polyApplyFormulaZCb = new JCheckBox("Apply Formula f(Z) = ", false);
+	private JTextField polyApplyFormulaTf = new JTextField(10);
+	private JTextArea polyGenVaryApplyFormulaTxtArea = new JTextArea(1, 10);
+	private JScrollPane polyGenVaryApplyFormulaTxtAreaSpane = new JScrollPane(this.polyGenVaryApplyFormulaTxtArea);
+	private String polyApplyFormulaStr = "NONE";
+
+	///////////////// ends apply function
+	///////////////// PolyFract////////////////////////////////////
+	
+	
 	//diy Apollo Options
 	protected int diyApolloC1;
 	protected int diyApolloC2;
@@ -735,8 +855,8 @@ class SierpinskiComboPanel extends JPanel {
 		
 	//POLY
 	private final Integer[] polyExpOptions = EXPONENTS;
-	private final JCheckBox polyUseLyapunovExpCb = new JCheckBox("UseLyapunovExponentOnly", false );
-	private boolean polyUseLyapunovExponent = false;
+//	private final JCheckBox polyUseLyapunovExpCb = new JCheckBox("UseLyapunovExponentOnly", false );
+//	private boolean polyUseLyapunovExponent = false;
 	
 	private final JComboBox<Integer> polyExpCombos = new JComboBox<Integer>(polyExpOptions);
 	private final JCheckBox polyUseDiffCb = new JCheckBox("UseDifferencesOnly",true);
@@ -769,7 +889,10 @@ class SierpinskiComboPanel extends JPanel {
 	protected boolean polyKeepConst;
 	protected int polySize;			
 	protected double polyBound;
-	protected String polyType = "Reverse";
+	protected String polyType = "Reverse";	
+	protected double polyConstReal;	
+	protected double polyConstImg;
+	
 	
 	protected double polyXC;
 	protected double polyYC;
@@ -1416,9 +1539,138 @@ class SierpinskiComboPanel extends JPanel {
 		this.polyOptionsPanel.add(new JLabel("ScaleSize:"));
 		this.polyOptionsPanel.add(this.polyScaleSizeCombos);
 		
+		this.setupPolyGeneratorPanel();
+		
 		this.polyOptionsPanel.setVisible(false);
 		this.add(this.polyOptionsPanel);
 	}
+	
+	private void setupPolyGeneratorPanel() {
+		this.polyOptionsPanel.add(this.polyGenCb);
+		
+		this.polyVaryColorCb.setVisible(false);
+		this.polyOptionsPanel.add(this.polyVaryColorCb);
+		this.polyVaryPixXTranCb.setVisible(false);
+		this.polyOptionsPanel.add(this.polyVaryPixXTranCb);
+		this.polyVaryPixYTranCb.setVisible(false);
+		this.polyOptionsPanel.add(this.polyVaryPixYTranCb);
+		this.polyVaryIntraPixXYCb.setVisible(false);
+		this.polyOptionsPanel.add(this.polyVaryIntraPixXYCb);
+		
+		this.polyVaryPixelZFuncCb.setVisible(false);
+		this.polyOptionsPanel.add(this.polyVaryPixelZFuncCb);
+
+		this.polyVaryPixelPowerZCb.setVisible(false);
+		this.polyOptionsPanel.add(this.polyVaryPixelPowerZCb);
+
+		this.polyGenPixelPowerZFromLabel.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenPixelPowerZFromLabel);
+		this.polyGenPixelPowerZFromTf.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenPixelPowerZFromTf);
+		this.polyGenPixelPowerZToLabel.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenPixelPowerZToLabel);
+		this.polyGenPixelPowerZToTf.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenPixelPowerZToTf);
+		this.polyGenPixelPowerZJumpLabel.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenPixelPowerZJumpLabel);
+		this.polyGenPixelPowerZJumpCombo.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenPixelPowerZJumpCombo);
+
+		this.polyVaryConstCFuncCb.setVisible(false);
+		this.polyOptionsPanel.add(this.polyVaryConstCFuncCb);
+		this.polyVaryPixelConstOpZCCb.setVisible(false);
+		this.polyOptionsPanel.add(this.polyVaryPixelConstOpZCCb);
+		
+		this.polyVaryGenConstantCb.setVisible(false);
+		this.polyOptionsPanel.add(this.polyVaryGenConstantCb);		
+		
+		this.polyGenRealFromLabel.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenRealFromLabel);
+		this.polyGenRealFromTf.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenRealFromTf);
+		this.polyGenRealToLabel.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenRealToLabel);
+		this.polyGenRealToTf.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenRealToTf);
+		
+		this.polyGenRealJumpLabel.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenRealJumpLabel);
+		this.polyGenRealJumpCombo.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenRealJumpCombo);
+		
+
+		this.polyGenImagFromLabel.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenImagFromLabel);
+		this.polyGenImagFromTf.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenImagFromTf);
+		this.polyGenImagToLabel.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenImagToLabel);
+		this.polyGenImagToTf.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenImagToTf);
+		
+		this.polyGenImagJumpLabel.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenImagJumpLabel);
+		this.polyGenImagJumpCombo.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenImagJumpCombo);	
+
+		this.polyVaryIterCb.setVisible(false);
+		this.polyOptionsPanel.add(this.polyVaryIterCb);
+		
+		this.polyVaryRCMTCb.setVisible(false);
+		this.polyOptionsPanel.add(this.polyVaryRCMTCb);
+		
+		this.polyVaryBoundaryCb.setVisible(false);
+		this.polyOptionsPanel.add(this.polyVaryBoundaryCb);
+		this.polyGenBoundaryFromLabel.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenBoundaryFromLabel);
+		this.polyGenBoundaryFromTf.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenBoundaryFromTf);
+		this.polyGenBoundaryToLabel.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenBoundaryToLabel);
+		this.polyGenBoundaryToTf.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenBoundaryToTf);
+		this.polyGenBoundaryJumpLabel.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenBoundaryJumpLabel);	
+		this.polyGenBoundaryJumpCombo.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenBoundaryJumpCombo);
+		
+
+		this.polyVaryPixXCentrCb.setVisible(false);
+		this.polyOptionsPanel.add(this.polyVaryPixXCentrCb);
+
+		this.polyVaryPixYCentrCb.setVisible(false);
+		this.polyOptionsPanel.add(this.polyVaryPixYCentrCb);
+
+		this.polyVaryScaleSizeCb.setVisible(false);
+		this.polyOptionsPanel.add(this.polyVaryScaleSizeCb);
+		
+		this.polyGenScaleSizeFromLabel.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenScaleSizeFromLabel);
+		this.polyGenScaleSizeFromTf.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenScaleSizeFromTf);
+		this.polyGenScaleSizeToLabel.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenScaleSizeToLabel);
+		this.polyGenScaleSizeToTf.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenScaleSizeToTf);
+		this.polyGenScaleSizeJumpLabel.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenScaleSizeJumpLabel);	
+		this.polyGenScaleSizeJumpCombo.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenScaleSizeJumpCombo);
+		
+		this.polyApplyFormulaZCb.setVisible(true);
+		this.polyOptionsPanel.add(this.polyApplyFormulaZCb);
+		this.polyApplyFormulaTf.setVisible(false);
+		this.polyOptionsPanel.add(this.polyApplyFormulaTf);
+		this.polyGenVaryApplyFormulaTxtArea.setVisible(false);
+		this.polyGenVaryApplyFormulaTxtAreaSpane.setVisible(false);
+		this.polyOptionsPanel.add(this.polyGenVaryApplyFormulaTxtAreaSpane);	
+		
+		this.polyGenBu.setVisible(false);
+		
+		this.polyOptionsPanel.add(this.polyGenBu);
+	}
+
+	
 
 	private void createDIYPanel() {
 		this.setupDIYRBs();		
@@ -2748,11 +3000,11 @@ class SierpinskiComboPanel extends JPanel {
 		}
 	}
 	
-	private void doSetPolyUseLyapunovExpCommand(boolean useLyapunovExpC) {
+	/*private void doSetPolyUseLyapunovExpCommand(boolean useLyapunovExpC) {
 		this.polyUseLyapunovExponent = useLyapunovExpC;
 		this.formulaArea.setVisible(true);
 		this.doPolyChoicesCheck();
-	}
+	}*/
 
 	private void doSetDiyMandUseLyapunovExpCommand(boolean useLyapunovExpC) {
 		this.diyMandUseLyapunovExponent = useLyapunovExpC;
@@ -3589,7 +3841,6 @@ class SierpinskiComboPanel extends JPanel {
 				this.setSampleStart_DivVals(mands[i]);
 			}
 
-			String extraInfo = this.getExtraInfo();
 
 			String pxFunc = mands[i].getUseFuncPixel();
 			this.pxFuncChoice = pxFunc;
@@ -3617,9 +3868,11 @@ class SierpinskiComboPanel extends JPanel {
 			} else {
 				this.keepConst = true;
 			}
-
+			
+			String extraInfo = this.getExtraInfo();
 			
 			this.setDiyMandGenFormulaArea(pxFunc, this.diyMandExponent,pixXTr, pixYTr, pixIntraXYOp, pixConstOp);
+			
 			if ( !this.keepConst ) {
 				this.formulaArea.append("<br/>Constant = " + this.diyMandConstReal + " + (" + this.diyMandConstImg
 						+ " * i)</font>" + eol);
@@ -3708,7 +3961,538 @@ class SierpinskiComboPanel extends JPanel {
 
 	}
 
-	
+//////////////generator	PolyFract
+	private void doSelectPolyVaryColorCommand(boolean varyColor) {
+		this.polyVaryColor = varyColor;
+	}
+
+	private void doSelectPolyVaryIntraPixXYCommand(boolean varyaryIntraPixXY) {
+		this.polyVaryIntraPixXY = varyaryIntraPixXY;
+	}
+
+	private void doSelectPolyVaryPixYTranCommand(boolean varyPixYTran) {
+		this.polyVaryPixYTran = varyPixYTran;
+	}
+
+	private void doSelectPolyVaryPixXTranCommand(boolean varyPixXTran) {
+		this.polyVaryPixXTran = varyPixXTran;
+	}
+
+	private void doSelectPolyVaryPixelZFuncCommand(boolean varyPixelZFunc) {
+		this.polyVaryPixelZFunc = varyPixelZFunc;
+	}
+
+	private void doSelectPolyVaryConstCFuncCommand(boolean varyConstCFunc) {
+		this.polyVaryConstCFunc = varyConstCFunc;
+	}
+
+	private void doSelectPolyVaryPixelConstOpZCCommand(boolean varyPixelConstOpZC) {
+		this.polyVaryPixelConstOpZC = varyPixelConstOpZC;
+	}
+
+	private void doSelectPolyVaryGenConstantCommand(boolean varyGenConstant) {
+		this.polyVaryConstant = varyGenConstant;
+	}
+
+	private void doSelectPolyVaryPixelPowerZCommand(boolean varyPixelPowerZ) {
+		this.polyVaryPixelPowerZ = varyPixelPowerZ;
+	}
+
+	private void doSelectPolyVaryTypeCommand	(boolean varyPolyType) {
+		this.polyVaryPolyType = varyPolyType;
+	}
+
+	private void doSelectPolyVaryIterCommand(boolean varyIter) {
+		this.polyVaryIter = varyIter;
+	}
+
+	private void doSelectPolyVaryBoundaryCommand(boolean varyBoundary) {
+		this.polyVaryBoundary = varyBoundary;
+	}
+
+	private void doSelectPolyVaryPixXCentrCommand(boolean varyPixXCentr) {
+		this.polyVaryPixXCentr = varyPixXCentr;
+	}
+
+	private void doSelectPolyVaryPixYCentrCommand(boolean varyPixYCentr) {
+		this.polyVaryPixYCentr = varyPixYCentr;
+	}
+
+	private void doSelectPolyVaryScaleSizeCommand(boolean varyScaleSize) {
+		this.polyVaryScaleSize = varyScaleSize;
+	}
+
+	private void doSelectPolyVaryPixelPowerZCombosCommand(Integer varyPixelPowerZJumpVal) {
+		this.polyVaryPixelPowerZJumpVal = varyPixelPowerZJumpVal;
+	}
+
+	private void doSelectPolyVaryBoundaryJumpCombosCommand(Double varyBoundaryJumpVal) {
+		this.polyVaryBoundaryJumpVal = varyBoundaryJumpVal;
+	}
+
+	private void doSelectPolyVaryScaleSizeCombosCommand(Double varyScaleSizeJumpVal) {
+		this.polyVaryScaleSizeJumpVal = varyScaleSizeJumpVal;
+	}
+
+	private void doSelectPolyApplyFormulaCommand(boolean apply) {
+		this.polyApplyFormulaZ = apply;
+	}
+
+	private void doSetPolyGenCommand(boolean gen) {
+		this.polyGen = gen;
+		if (gen) {
+			this.keepConst = false;
+			this.buStart.setEnabled(false);
+			this.buSavePxStart.setEnabled(false);
+		}
+		this.formulaArea.setVisible(true);
+		this.doPolyChoicesCheck();
+	}
+
+	private void doSelectPolyGenRealJumpCombosCommand(Double realJump) {
+		this.polyGenRealJumpVal = realJump;
+	}
+
+	private void doSelectPolyGenImagJumpCombosCommand(Double imagJump) {
+		this.polyGenImagJumpVal = imagJump;
+	}
+
+	private void doPolyGenerateCommand() {
+
+		if (this.polyVaryConstant && this.polyVaryGenConstantCb.isSelected()) {
+			System.out.println("in_doPolyGenerateCommand_this.polyVaryConstant=true");
+			try {
+				this.polyGenRealFromVal = Double.parseDouble(this.polyGenRealFromTf.getText());
+				this.polyGenImagFromVal = Double.parseDouble(this.polyGenImagFromTf.getText());
+				this.polyGenRealToVal = Double.parseDouble(this.polyGenRealToTf.getText());
+				this.polyGenImagToVal = Double.parseDouble(this.polyGenImagToTf.getText());
+
+				if (this.polyGenRealFromVal > this.polyGenRealToVal
+						|| this.polyGenImagFromVal > this.polyGenImagToVal) {
+					JOptionPane.showMessageDialog(null, "From > To ???", "Please enter a valid range for Const-Real",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+
+			} catch (NumberFormatException | NullPointerException e2) {
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number \n" + e2.getMessage(),
+						"Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+
+		boolean varyConst = this.polyVaryConstant && this.polyVaryGenConstantCb.isSelected();
+		boolean varyKeepConst = (this.keepConst && this.polyKeepConstRb.isSelected()) && !varyConst;
+
+		/*
+		 * if ( !(varyConst && varyKeepConst) && !(this.polyVaryConstant &&
+		 * this.polyVaryGenConstantCb.isSelected())) {
+		 */
+		if (!(this.keepConst && this.polyKeepConstRb.isSelected())
+				&& !(this.polyVaryConstant && this.polyVaryGenConstantCb.isSelected())) {
+			try {
+				this.polyConstReal = Double.parseDouble(this.polyRealTf.getText());
+				this.polyConstImg = Double.parseDouble(this.polyImgTf.getText());
+			} catch (NumberFormatException | NullPointerException e2) {
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n" + e2.getMessage(),
+						"Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+
+		if (this.polyVaryBoundary) {
+			System.out.println("in_doPolyGenerateCommand_this.polyVaryBoundary=true");
+			try {
+				this.polyVaryBoundaryFromVal = Double.parseDouble(this.polyGenBoundaryFromTf.getText());
+				this.polyVaryBoundaryToVal = Double.parseDouble(this.polyGenBoundaryToTf.getText());
+
+				if (this.polyVaryBoundaryFromVal > this.polyVaryBoundaryToVal) {
+					JOptionPane.showMessageDialog(null, "From > To ???", "Please enter a valid range for Boundary",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			} catch (NumberFormatException | NullPointerException e2) {
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null,
+						"Please enter a valid Decimal Number for Boundary\n" + e2.getMessage(), "Error - Not a Decimal",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+
+		if (this.polyVaryScaleSize) {
+			System.out.println("in_doPolyGenerateCommand_this.polyVaryScaleSize=true");
+			try {
+				this.polyVaryScaleSizeFromVal = Double.parseDouble(this.polyGenScaleSizeFromTf.getText());
+				this.polyVaryScaleSizeToVal = Double.parseDouble(this.polyGenScaleSizeToTf.getText());
+				if (this.polyVaryScaleSizeFromVal > this.polyVaryScaleSizeToVal) {
+					JOptionPane.showMessageDialog(null, "From > To ???", "Please enter a valid range for ScaleSize",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			} catch (NumberFormatException | NullPointerException e2) {
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null,
+						"Please enter a valid Decimal Number for ScaleSize\n" + e2.getMessage(),
+						"Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+
+		if (this.polyVaryPixelPowerZ) {
+			System.out.println("in_doPolyGenerateCommand_this.polyVaryPixelPowerZ=true");
+			try {
+				this.polyVaryPixelPowerZFromVal = Integer.parseInt(this.polyGenPixelPowerZFromTf.getText());
+				this.polyVaryPixelPowerZToVal = Integer.parseInt(this.polyGenPixelPowerZToTf.getText());
+				if (this.polyVaryPixelPowerZFromVal > this.polyVaryPixelPowerZToVal) {
+					JOptionPane.showMessageDialog(null, "From > To ???", "Please enter a valid range for PixelPowerZ",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			} catch (NumberFormatException | NullPointerException e2) {
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Please enter a valid Integer for PixelPowerZ\n" + e2.getMessage(),
+						"Error - Not an Integer", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+
+		final int varyColorCount = this.getVaryPolyColorCount();
+		final List<?> varyColorList = this.getVaryPolyColorsList();
+
+		final int varyPixXTransCount = this.getVaryPolyPixXTransCount();
+		final List<?> varyPixXTrList = this.getVaryPolyPixXTransList();
+
+		final int varyPixYTransCount = this.getVaryPolyPixYTransCount();
+		final List<?> varyPixYTrList = this.getVaryPolyPixYTransList();
+
+		final int varyIntraPixXYOpCount = this.getVaryPolyIntraPixXYOpCount();
+		final List<?> varyIntraPixXYOpList = this.getVaryPolyIntraPixXYOpList();
+
+		final int varyZFuncCount = this.getVaryPolyZFuncCount();
+		final List<?> varyZFuncList = this.getVaryPolyZFuncList();
+
+		final int varyConstCFuncCount = this.getVaryPolyConstCFuncCount();
+		final List<?> varyConstCFuncList = this.getVaryPolyConstCFuncList();
+
+		final int varyPixelConstOpZCCount = this.getVaryPolyPixelConstOpZCCount();
+		final List<?> varyPixelConstOpZCList = this.getVaryPolyPixelConstOpZCList();
+
+		final int powerFrom = this.polyVaryPixelPowerZFromVal;
+		final int powerTo = this.polyVaryPixelPowerZToVal;
+		final int powerJump = this.polyVaryPixelPowerZJumpVal;
+		final int varyPowerCount = this.getVaryPolyPowerCount();
+		final List<?> varyPowerList = this.getVaryPolyPowerList(powerFrom, powerTo, powerJump, varyPowerCount);
+
+		final int varyPixXCenterCount = this.getVaryPolyPixXCenterCount();
+		final List<?> varyPixXCenterList = this.getVaryPolyPixXCenterList();
+
+		final int varyPixYCenterCount = this.getVaryPolyPixYCenterCount();
+		final List<?> varyPixYCenterList = this.getVaryPolyPixYCenterList();
+
+		final int varyPolyTypeCount = this.getVaryPolyTypeCount();
+		final List<?> varyPolyTypeList = this.getVaryPolyTypeList();
+		
+		final int varyIterCount = this.getVaryPolyIterCount();
+		final List<?> varyIterList = this.getVaryPolyIterList();
+		
+		
+/*
+		final int varyUseDiffCount = 2;
+		final List<?> varyUseDiffList = this.getAppendStr2List("useDiffChoice=", this.getTrueFalseList());
+*/
+		final int varyInvertPixelCount = 2;
+		final List<?> varyInvertPixelList = this.getAppendStr2List("invertPixelCalcChoice=", this.getTrueFalseList());
+
+		final double scaleSizeFrom = this.polyVaryScaleSizeFromVal;
+		final double scaleSizeTo = this.polyVaryScaleSizeToVal;
+		final double scaleSizeJump = this.polyVaryScaleSizeJumpVal;
+		final int varyScaleSizeCount = this.getVaryPolyScaleSizeCount();
+		final List<?> varyScaleSizeList = this.getVaryPolyScaleSizeList(scaleSizeFrom, scaleSizeTo, scaleSizeJump,
+				varyScaleSizeCount);
+
+		final double boundaryFrom = this.polyVaryBoundaryFromVal;
+		final double boundaryTo = this.polyVaryBoundaryToVal;
+		final double boundaryJump = this.polyVaryBoundaryJumpVal;
+		final int varyBoundaryCount = this.getVaryPolyBoundaryCount();
+		final List<?> varyBoundaryList = this.getVaryPolyBoundaryList(boundaryFrom, boundaryTo, boundaryJump,
+				varyBoundaryCount);
+		
+		
+
+		final double jRealFrom = this.polyGenRealFromVal;
+		final double jImagFrom = this.polyGenImagFromVal;
+		final double jRealTO = this.polyGenRealToVal;
+		final double jImagTO = this.polyGenImagToVal;
+		final double realJumpVal = this.polyGenRealJumpVal;
+		final double imagJumpVal = this.polyGenImagJumpVal;
+
+		final int varyRealConstantCount = this.getVaryPolyRealConstantCount();
+		final List<?> varyRealConstList = this.getVaryPolyRealConstantList(jRealFrom, jRealTO, realJumpVal,
+				varyRealConstantCount);
+
+		final int varyImagConstantCount = this.getVaryPolyImagConstantCount();
+		final List<?> varyImagConstList = this.getVaryPolyImagConstantList(jImagFrom, jImagTO, imagJumpVal,
+				varyImagConstantCount);
+
+		final List<?> varyConstList = this.getAppendStr2List("constantChoice=",
+				this.product(varyRealConstList, varyImagConstList));
+
+		// System.out.println("getTotalVaryCount=" + this.getTotalVaryCount());
+		// System.out.println("getTotalVaryCount=HARDED-2-To5== " + 5);
+		// int totalVaryCount = this.getTotalVaryCount();//5;
+
+		int totalVaryCount = varyColorCount * varyPixXTransCount * varyPixYTransCount * varyIntraPixXYOpCount
+				* varyZFuncCount * varyConstCFuncCount * varyPixelConstOpZCCount * varyPowerCount * varyPixXCenterCount
+				* varyPixYCenterCount * varyScaleSizeCount * varyBoundaryCount * varyIterCount * varyPolyTypeCount
+				* varyInvertPixelCount * varyRealConstantCount * varyImagConstantCount;
+
+		System.out.println("getTotalVaryCount=" + totalVaryCount);
+
+		if (totalVaryCount > 150) {
+			int ans = JOptionPane.showConfirmDialog(null,
+					"Are You Sure needs to generate\n" + totalVaryCount + "images", "Are_You_Sure",
+					JOptionPane.YES_NO_CANCEL_OPTION);
+			if (ans != JOptionPane.YES_OPTION) {
+				return;
+			}
+		}
+
+		final List<?> allCombinationsList = this.product(varyColorList, varyPixXTrList, varyPixYTrList,
+				varyIntraPixXYOpList, varyZFuncList, varyConstCFuncList, varyPixelConstOpZCList, varyPowerList,
+				varyPixXCenterList, varyPixYCenterList, varyScaleSizeList, varyBoundaryList, varyIterList,
+				varyPolyTypeList, varyInvertPixelList, varyConstList);
+
+		System.out
+				.println("allCombinationsListSize==totalVaryCount  " + (allCombinationsList.size() == totalVaryCount));
+
+		Properties[] props = new Properties[allCombinationsList.size()];
+		props = shuffle(this.getAllCombinationProperties(allCombinationsList));
+		// ps = this.getAllCombinationProperties(allCombinationsList);
+
+		/* final */ String subDirName;
+		/*
+		 * if(!varyConst && !varyKeepConst) { subDirName = "Poly_{(R)[" +
+		 * String.format("%.2f", this.polyGenRealFromVal) + "_to_" +
+		 * String.format("%.2f", this.polyGenRealToVal) + "],(I)[" +
+		 * String.format("%.2f", this.polyGenImagFromVal) + "_to_" +
+		 * String.format("%.2f", this.polyGenImagToVal) + "]" +
+		 * System.currentTimeMillis() + "}"; } else { subDirName = "Poly_" +
+		 * System.currentTimeMillis(); }
+		 */
+
+		subDirName = POLY + "__Vary[";
+
+		if (this.polyVaryColor)
+			subDirName += "Colr,";
+		if (this.polyVaryPixXTran)
+			subDirName += "F(x),";
+		if (this.polyVaryPixYTran)
+			subDirName += "F(y),";
+		if (this.polyVaryIntraPixXY)
+			subDirName += "I(xy),";
+		if (this.polyVaryPixelZFunc)
+			subDirName += "F(Z),";
+		if (this.polyApplyFormulaZ)
+			subDirName += "CustFormula,";
+		if (this.polyVaryConstant)
+			subDirName += "Const,";
+		if (this.polyVaryConstCFunc)
+			subDirName += "F(C),";
+		if (this.polyVaryPixelConstOpZC)
+			subDirName += "O(ZC),";
+		if (this.polyVaryPixelPowerZ)
+			subDirName += "X(Z),";
+		if (this.polyVaryIter)
+			subDirName += "M(It),";
+		if (this.polyVaryPixXCentr)
+			subDirName += "Cx,";
+		if (this.polyVaryPixYCentr)
+			subDirName += "Cy,";
+		if (this.polyVaryBoundary)
+			subDirName += "Bd,";
+		if (this.polyVaryPolyType)
+		subDirName += "Type,";
+		if (this.polyVaryScaleSize)
+		subDirName += "Sz,";
+
+		subDirName = subDirName.substring(0, subDirName.length() - 1) + "]_" + System.currentTimeMillis();
+
+		File subDir = new File("images_gen\\" + subDirName);
+		if (!subDir.exists()) {
+			subDir.mkdir();
+		}
+
+		File subDirDetail = new File(subDir, "Detail");
+		if (!subDirDetail.exists()) {
+			subDirDetail.mkdir();
+		}
+
+		PolyFract[] polys = new PolyFract[totalVaryCount];
+		boolean hasOutOfMemoryError = false;
+
+		for (int i = 0; i < totalVaryCount; i++) {
+			Runtime.getRuntime().gc();
+			if (hasOutOfMemoryError) {
+				i -= 1;
+			}
+
+			try {
+				polys[i] = new PolyFract(this.correctProperties(props[i]));
+			} catch (IllegalArgumentException e1) {
+				e1.printStackTrace();
+				System.out.println(e1.getMessage());
+				JOptionPane.showMessageDialog(null, "BAaaAD Properties\n" + e1.getMessage(), "One key has NULL value",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			polys[i].setVisible(false); // make invisible
+
+			/**
+			 * 
+			 * //need-to-set-4-booleans,as-properties-sends-strings-only
+			 * Polys[i].setApplyCustomFormula(this.diyMApplyFormulaZ);
+			 */
+
+			/////// reassign 2 UI - 4 formulaArea
+			this.constFuncChoice = polys[i].getUseFuncConst();
+
+			// 4_getExtraInfo
+			this.polyPower = polys[i].getPower();
+			this.polyBound = polys[i].getBound();
+			this.polyType = polys[i].getRowColMixType();
+			this.polyMaxIter = polys[i].getMaxIter();
+			this.polyXC = polys[i].getxC();
+			this.polyYC = polys[i].getyC();
+			this.polyScaleSize = polys[i].getScaleSize();
+
+			// 4_img_Base_Info
+			this.colorChoice = polys[i].getColorChoice();
+			if (this.colorChoice.equals("SampleMix")) {
+				this.setSampleStart_DivVals(polys[i]);
+			}
+
+			String pxFunc = polys[i].getUseFuncPixel();
+			this.pxFuncChoice = pxFunc;
+
+			String pixXTr = polys[i].getPxXTransformation();
+			this.pixXTransform = pixXTr;
+
+			String pixYTr = polys[i].getPxYTransformation();
+			this.pixYTransform = pixYTr;
+
+			String pixIntraXYOp = polys[i].getPixXYOperation();
+			this.pixIntraXYOperation = pixIntraXYOp;
+
+			String pixConstOp = polys[i].getPxConstOperation();
+			this.pxConstOprnChoice = pixConstOp;
+/*
+			this.setPolyUseDiff(polys[i].isUseDiff());*/
+			this.invertPixelCalculation = polys[i].isReversePixelCalculation();
+
+			if (!(polys[i].isComplexNumConst() || this.polyKeepConst || this.keepConst)
+					&& (this.polyKeepConstRb.isSelected() || this.polyVaryConstant)) {
+				this.polyConstReal = polys[i].getCompConst().real;
+				this.polyConstImg = polys[i].getCompConst().imaginary;
+			} else {
+				this.keepConst = true;
+			}
+			
+			String extraInfo = this.getExtraInfo();
+
+			this.setPolyGenFormulaArea(pxFunc, this.polyPower, pixXTr, pixYTr, pixIntraXYOp, pixConstOp);
+			if (!this.keepConst) {
+				this.formulaArea.append("<br/>Constant = " + this.polyConstReal + " + (" + this.polyConstImg
+						+ " * i)</font>" + eol);
+			} /* else { */
+			//
+			this.addPolyConstInfo(polys[i]);
+			/* } */
+			Runtime.getRuntime().gc();
+			/// done1---now-to-imaging
+
+			Graphics2D g = polys[i].getBufferedImage().createGraphics();
+			// System
+			try {
+				polys[i].paint(g);
+			} catch (NullPointerException e1) {
+				e1.printStackTrace();
+				System.out.println(e1.getMessage() + "+this.pxFuncChoiceIs\n" + this.pxFuncChoice);
+
+				if (varyZFuncCount != 1) {
+					JOptionPane.showMessageDialog(null, "BAaaAD Formula - continuing\n" + this.pxFuncChoice,
+							"IncorrectFormula", JOptionPane.INFORMATION_MESSAGE);
+
+					this.formulaArea.setText("");
+
+					g.dispose();
+					polys[i].dispose();
+					polys[i] = null;
+
+					Runtime.getRuntime().gc();
+
+					continue;
+				} else {
+					JOptionPane.showMessageDialog(null, "BAaaAD Formula\n" + this.pxFuncChoice, "IncorrectFormula",
+							JOptionPane.ERROR_MESSAGE);
+
+					return;
+				}
+			}
+
+			this.setFractalImage(polys[i].getBufferedImage());
+
+			String imgBaseInfo = this.getImgBaseInfo();
+			BufferedImage dataInfoImg = this.createStringImage(imgBaseInfo);
+
+			String imageFilePath = "images_gen\\" + subDirName + "\\" + "[" + extraInfo + "]_"
+					+ System.currentTimeMillis() + ".png";
+			File outputfile = new File(imageFilePath);
+
+			String imageDetailFilePath = "images_gen\\" + subDirName + "\\Detail\\" + "[" + extraInfo + "]_Detail_"
+					+ System.currentTimeMillis() + ".png";
+			File outputDetailfile = new File(imageDetailFilePath);
+
+			try {
+				ImageIO.write(polys[i].getBufferedImage(), "png", outputfile);
+				System.out.println("Generated File: " + imageFilePath);
+
+				final BufferedImage joinedFractalDataImage = FractalBase.joinBufferedImages(polys[i].getBufferedImage(),
+						dataInfoImg);
+				ImageIO.write(joinedFractalDataImage, "png", outputDetailfile);
+				System.out.println("Generated FileDetail: " + imageDetailFilePath);
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (OutOfMemoryError oome) {
+				oome.printStackTrace();
+				if (!hasOutOfMemoryError) {
+					hasOutOfMemoryError = true;
+				} else {
+					System.out.println("Error --- OuttaMemory ");
+					System.exit(1);
+				}
+			}
+
+			this.formulaArea.setText("");
+
+			g.dispose();
+			polys[i].dispose();
+			polys[i] = null;
+
+			Runtime.getRuntime().gc();// System.gc();
+		}
+
+		System.out.println("Done PolyFractGeneration");
+		JOptionPane.showMessageDialog(null, "Dir created: " + subDirName, "Poly Generated",
+				JOptionPane.INFORMATION_MESSAGE);
+
+		return;
+
+	}
+
+	/////////////////////////////////////////////// ensPolyFractMethods////////////////////////////////////////////////////////
 	
 	///////////////generator	Julia
 	private void doSelectDiyJuliaVaryColorCommand(boolean varyColor) {
@@ -4345,6 +5129,10 @@ class SierpinskiComboPanel extends JPanel {
 					}
 				} else if (prop.indexOf("fieldType=") > -1) {
 					ps[i].put("fieldType",prop.replace("fieldType=",EMPTY));		
+				}
+				
+				if (prop.indexOf("rowColumnMixType=") > -1) {
+					ps[i].put("rowColumnMixType",prop.replace("rowColumnMixType=",EMPTY));	// 		prop.substring("colorChoice=".length()));
 				} 
 			}
 
@@ -5644,6 +6432,39 @@ class SierpinskiComboPanel extends JPanel {
 		return returnList;
 	}
 	
+	private List<?> getVaryPolyColorsList() {
+//		colorChoice
+		final String colorChoice = "colorChoice=";
+		if (this.polyVaryColorCb.isSelected() && this.polyVaryColor) {
+			String[] colr_options_no_sampl = new String[] { colorChoice+"ColorPalette", colorChoice+"ComputeColor" };
+			
+			return asList(colr_options_no_sampl);
+
+		} else {
+			final String colorChosen = (String) this.colorChoiceCombo.getSelectedItem();
+			if (!colorChosen.equals("SampleMix")) {
+				return asList(new String[] { colorChoice+colorChosen });
+			} else {
+				return asList(new String[] {(String) ( 
+						colorChoice+
+						OPEN_BRACK+
+						colorChosen+PIPE+ 
+						(String) this.colorSampleMixStartValsCombo.getSelectedItem()+PIPE+
+						(String) this.colorSampleDivValsCombo.getSelectedItem() +
+						CLOSE_BRACK ).replaceAll(BACK_SLASH,EMPTY) });
+			}
+		}
+	}
+
+	private int getVaryPolyColorCount() {
+		if (this.polyVaryColorCb.isSelected()) {
+			return COLOR_OPTIONS.length;
+		} else {
+			return 1;
+		}
+	}
+	
+	
 	private List<?> getVaryMandColorsList() {
 //		colorChoice
 		final String colorChoice = "colorChoice=";
@@ -5763,6 +6584,28 @@ class SierpinskiComboPanel extends JPanel {
 		}
 	}
 	
+	private List<?> getVaryPolyPixXTransList() {
+		// pixXTransform
+		final String pixXTransform = "pixXTransform=";
+		if (this.polyVaryPixXTranCb.isSelected() && this.polyVaryPixXTran) {
+			String[] pxXTrArr = this.getAppendStr2Array(pixXTransform, PIX_TRANSFORM_OPTIONS);
+			return asList(pxXTrArr);// (PIX_TRANSFORM_OPTIONS);
+		} else {
+			return asList(new String[] { pixXTransform + (String) this.pxXTransformCombo.getSelectedItem() });
+		}
+	}
+
+	private int getVaryPolyPixXTransCount() {
+		if (this.polyVaryPixXTranCb.isSelected()) {
+			System.out.println("In_getVaryPixXTransCount count = " + PIX_TRANSFORM_OPTIONS.length);
+			return PIX_TRANSFORM_OPTIONS.length;
+		} else {
+			return 1;
+		}
+	}
+	
+
+	
 	private List<?> getVaryMandPixXTransList() {
 		// pixXTransform
 		final String pixXTransform = "pixXTransform=";
@@ -5804,6 +6647,28 @@ class SierpinskiComboPanel extends JPanel {
 		}
 	}
 	
+
+	private List<?> getVaryPolyPixYTransList() {
+		// pixYTransform
+		final String pixYTransform = "pixYTransform=";
+		if (this.polyVaryPixYTranCb.isSelected() && this.polyVaryPixYTran) {
+			String[] pxYTrArr = this.getAppendStr2Array(pixYTransform, PIX_TRANSFORM_OPTIONS);
+			return asList(pxYTrArr);// (PIX_TRANSFORM_OPTIONS);
+		} else {
+			return asList(new String[] { pixYTransform + (String) this.pxYTransformCombo.getSelectedItem() });
+		}
+	}
+
+	private int getVaryPolyPixYTransCount() {
+		if (this.polyVaryPixYTranCb.isSelected()) {
+			System.out.println("In_getVaryPixYTransCount count = " + PIX_TRANSFORM_OPTIONS.length);
+			return PIX_TRANSFORM_OPTIONS.length;
+		} else {
+			return 1;
+		}
+	}
+	
+	
 	private List<?> getVaryMandPixYTransList() {
 		// pixYTransform
 		final String pixYTransform = "pixYTransform=";
@@ -5843,6 +6708,28 @@ class SierpinskiComboPanel extends JPanel {
 			return 1;
 		}
 	}
+	
+	private List<?> getVaryPolyIntraPixXYOpList() {
+		// pixIntraXYOperation
+		final String pixIntraXYOperation = "pixIntraXYOperation=";
+		if (this.polyVaryIntraPixXYCb.isSelected() && this.polyVaryIntraPixXY) {
+			String[] intraXYOpArr = this.getAppendStr2Array(pixIntraXYOperation, PIX_INTRA_OPRNS);
+			return asList(intraXYOpArr);// asList(PIX_INTRA_OPRNS);
+		} else {
+			return asList(
+					new String[] { pixIntraXYOperation + (String) this.intraPixOperationCombo.getSelectedItem() });
+		}
+	}
+
+	private int getVaryPolyIntraPixXYOpCount() {
+		if (this.polyVaryIntraPixXYCb.isSelected()) {
+			System.out.println("In_getVaryIntraPixXYOpCount count = "+PIX_INTRA_OPRNS.length);
+			return PIX_INTRA_OPRNS.length;
+		} else {
+			return 1;
+		}
+	}
+	
 	
 	private List<?> getVaryMandIntraPixXYOpList() {
 		// pixIntraXYOperation
@@ -5886,6 +6773,43 @@ class SierpinskiComboPanel extends JPanel {
 			return 1;
 		}
 	}
+	
+
+	private List<?> getVaryPolyZFuncList() {
+		final String pxFuncChoice = "pxFuncChoice=";
+		if (this.polyVaryPixelZFuncCb.isSelected() && this.polyVaryPixelZFunc
+				&& !(this.polyApplyFormulaZCb.isSelected() || this.polyApplyFormulaZ)) {
+			String[] pxFuncArr = this.getAppendStr2Array(pxFuncChoice, FUNCTION_OPTIONS);
+			return asList(pxFuncArr);// (FUNCTION_OPTIONS);
+		} else {
+			if (this.polyApplyFormulaZCb.isSelected() || this.polyApplyFormulaZ) {
+				return asList(this.getPolyGenVaryApplyFormulaZ());
+			} else {
+				return asList(new String[] { pxFuncChoice + (String) this.pxFuncCombo.getSelectedItem() });
+			}
+		}
+	}
+	
+	private String[] getPolyGenVaryApplyFormulaZ() {
+		final String pxFuncChoice = "pxFuncChoice=";
+		String[] applyFormulas = this.polyGenVaryApplyFormulaTxtArea.getText().split("\n");
+		return this.getAppendStr2Array(pxFuncChoice, applyFormulas);
+	}
+
+
+	private int getVaryPolyZFuncCount() {
+		if (this.polyVaryPixelZFuncCb.isSelected() && !this.diyJApplyFormulaZCb.isSelected()) {
+			System.out.println("In_getVaryZFuncCount count = " + FUNCTION_OPTIONS.length);
+			return FUNCTION_OPTIONS.length;
+		} else {
+			if (this.polyApplyFormulaZCb.isSelected() || this.polyApplyFormulaZ) {
+				return this.polyGenVaryApplyFormulaTxtArea.getText().split("\n").length;
+			} else {
+				return 1;
+			}
+		}
+	}
+	
 	
 	private List<?> getVaryMandZFuncList() {
 		final String pxFuncChoice = "pxFuncChoice=";
@@ -5956,6 +6880,26 @@ class SierpinskiComboPanel extends JPanel {
 			}
 		}
 	}
+
+	private List<?> getVaryPolyConstCFuncList() {
+		final String constFuncChoice = "constFuncChoice=";
+		if (this.polyVaryConstCFuncCb.isSelected() && this.polyVaryConstCFunc) {
+			String[] constFuncArr = this.getAppendStr2Array(constFuncChoice, FUNCTION_OPTIONS);
+			return asList(constFuncArr);
+		} else {
+			return asList(new String[] { constFuncChoice + (String) this.constFuncCombo.getSelectedItem() });
+		}
+	}
+
+	private int getVaryPolyConstCFuncCount() {
+		if (this.polyVaryConstCFuncCb.isSelected()) {
+			System.out.println("In_getVaryConstCFuncCount count = "+FUNCTION_OPTIONS.length);
+			return FUNCTION_OPTIONS.length;
+		} else {
+			return 1;
+		}
+	}
+
 	
 	private List<?> getVaryMandConstCFuncList() {
 		final String constFuncChoice = "constFuncChoice=";
@@ -5995,7 +6939,27 @@ class SierpinskiComboPanel extends JPanel {
 			return 1;
 		}
 	}
-	
+
+	private List<?> getVaryPolyPixelConstOpZCList() {
+		//pxConstOprnChoice
+		final String pxConstOprnChoice = "pxConstOprnChoice=";
+		if (this.polyVaryPixelConstOpZCCb.isSelected() && this.polyVaryPixelConstOpZC) {
+			String[] constFuncArr = this.getAppendStr2Array(pxConstOprnChoice, PIX_CONST_OPRNS);
+			return asList(constFuncArr);
+		} else {
+			return asList(new String[] { pxConstOprnChoice+(String) this.pxConstOprnCombo.getSelectedItem() });
+		}
+	}
+
+	private int getVaryPolyPixelConstOpZCCount() {
+		if (this.polyVaryPixelConstOpZCCb.isSelected()) {
+			System.out.println("In_getVaryPixelConstOpZCCount count = "+PIX_CONST_OPRNS.length);
+			return PIX_CONST_OPRNS.length;
+		} else {
+			return 1;
+		}
+	}
+
 	private List<?> getVaryMandPixelConstOpZCList() {
 		//pxConstOprnChoice
 		final String pxConstOprnChoice = "pxConstOprnChoice=";
@@ -6068,6 +7032,28 @@ class SierpinskiComboPanel extends JPanel {
 			return asList(new String[] { String.valueOf(this.diyJuliaScaleSizeCombos.getSelectedItem()) });
 		}
 	}*/
+	private List<?> getVaryPolyPowerList(int pixelPowerZFrom,int pixelPowerZTo,int pixelPowerZJump,int powerCount) {
+		final String powerChoice = "power=";
+		if (this.polyVaryPixelPowerZCb.isSelected() && this.polyVaryPixelPowerZ) {
+			return this.getAppendStr2List(powerChoice,	this.getVaryIntList(pixelPowerZFrom, pixelPowerZTo, pixelPowerZJump, powerCount));
+		} else {
+			return asList(new String[] { powerChoice+String.valueOf(this.polyExpCombos.getSelectedItem()) });
+		}
+	}
+
+	private int getVaryPolyPowerCount() {
+		if (this.polyVaryPixelPowerZCb.isSelected()) {
+			double pixelPowerZFrom = this.polyVaryPixelPowerZFromVal;
+			double pixelPowerZTo = this.polyVaryPixelPowerZToVal;
+			double pixelPowerZJump = this.polyVaryPixelPowerZJumpVal;
+			System.out.println("In_getVaryPowerCount count = "
+					+ this.getJumpCount(pixelPowerZFrom, pixelPowerZTo, pixelPowerZJump));
+			return this.getJumpCount(pixelPowerZFrom, pixelPowerZTo, pixelPowerZJump);
+		} else {
+			return 1;
+		}
+	}
+
 	
 	private List<?> getVaryMandPowerList(int pixelPowerZFrom,int pixelPowerZTo,int pixelPowerZJump,int powerCount) {
 		final String powerChoice = "power=";
@@ -6138,7 +7124,65 @@ class SierpinskiComboPanel extends JPanel {
 			return 1;
 		}
 	}
+	private int getVaryPolyConstantCount() {
+		if (this.polyVaryGenConstantCb.isSelected() || this.polyVaryConstant) {
+			System.out.println("In_getVaryConstantCount()  realCount= "+this.getVaryPolyRealConstantCount()+" imagCount= "+this.getVaryPolyImagConstantCount());
+			System.out.println("TotalConstantCount realCount*imagCount= "+(this.getVaryPolyRealConstantCount() * this.getVaryPolyImagConstantCount()));
+			return (this.getVaryPolyRealConstantCount() * this.getVaryPolyImagConstantCount());
+		} else {
+			return 1;
+		}
+	}
 	
+	private List<?> getVaryPolyRealConstantList(double realFrom, double realTo, double realJump, int realCount) {
+		final String realConstChoice = "realConstChoice=";
+		if (this.polyVaryGenConstantCb.isSelected() || this.polyVaryConstant) {
+			return this.getAppendStr2List(realConstChoice,	this.getVaryDoubleList(realFrom, realTo, realJump, realCount) );
+		} else {
+			if (this.polyKeepConstRb.isSelected() || this.polyKeepConst) {
+				return asList(new String[] { realConstChoice+"DynamicConst" });
+			} else {
+				return asList(new String[] { realConstChoice+this.polyRealTf.getText() });
+			}
+		}
+	}
+
+	private int getVaryPolyRealConstantCount() {
+		if (this.polyVaryGenConstantCb.isSelected() || this.polyVaryConstant) {
+			double realFrom = this.polyGenRealFromVal;
+			double realTo = this.polyGenRealToVal;
+			double realJump = this.polyGenRealJumpVal;
+			return this.getJumpCount(realFrom, realTo, realJump);
+		} else {
+			return 1;
+		}
+	}
+	
+	private List<?> getVaryPolyImagConstantList(double imagFrom, double imagTo, double imagJump, int imagCount) {
+		final String imagConstChoice = "imagConstChoice=";
+		if (this.polyVaryGenConstantCb.isSelected() || this.polyVaryConstant) {
+			return this.getAppendStr2List(imagConstChoice,	this.getVaryDoubleList(imagFrom, imagTo, imagJump, imagCount));
+		} else {
+			if (this.polyKeepConstRb.isSelected() || this.polyKeepConst) {
+				return asList(new String[] { imagConstChoice+"DynamicConst" });
+			} else {
+				return asList(new String[] { imagConstChoice+this.polyImgTf.getText() });
+			}
+		}
+	}
+
+	private int getVaryPolyImagConstantCount() {
+		if (this.polyVaryGenConstantCb.isSelected()) {
+			double imagFrom = this.polyGenImagFromVal;
+			double imagTo = this.polyGenImagToVal;
+			double imagJump = this.polyGenImagJumpVal;
+			return this.getJumpCount(imagFrom, imagTo, imagJump);
+		} else {
+			return 1;
+		}
+	}
+	
+
 	private int getVaryMandConstantCount() {
 		if (this.diyMandVaryGenConstantCb.isSelected() || this.diyMandVaryConstant) {
 			System.out.println("In_getVaryConstantCount()  realCount= "+this.getVaryMandRealConstantCount()+" imagCount= "+this.getVaryMandImagConstantCount());
@@ -6256,6 +7300,49 @@ class SierpinskiComboPanel extends JPanel {
 		}
 	}
 	
+	
+
+
+	private List<?> getVaryPolyTypeList() {
+		final String rowColumnMixTypeChoice = "rowColumnMixType=";
+		if (this.polyVaryRCMTCb.isSelected() && this.polyVaryPolyType) {
+			List<String> maxIterList = this.getAppendStr2List(rowColumnMixTypeChoice, asList(MAX_ITERATIONS));
+			return (maxIterList);
+		} else {
+			return asList(
+					new String[] { rowColumnMixTypeChoice + String.valueOf(this.polyTypeCombos.getSelectedItem()) });
+		}
+	}
+
+	private int getVaryPolyTypeCount() {
+		if (this.polyVaryRCMTCb.isSelected()) {
+			System.out.println("In_getVaryPolyTypeCount count = "+POLY_RCMT_TYPES.length);
+			return POLY_RCMT_TYPES.length;
+		} else {
+			return 1;
+		}
+	}
+
+	private List<?> getVaryPolyIterList() {
+		final String maxIterChoice = "maxIter=";
+		if (this.polyVaryIterCb.isSelected() && this.polyVaryIter) {
+			List<String> maxIterList = this.getAppendStr2List(maxIterChoice, asList(MAX_ITERATIONS));
+			return (maxIterList);
+		} else {
+			return asList(
+					new String[] { maxIterChoice + String.valueOf(this.polyMaxIterCombos.getSelectedItem()) });
+		}
+	}
+
+	private int getVaryPolyIterCount() {
+		if (this.polyVaryIterCb.isSelected()) {
+			System.out.println("In_getVaryIterCount count = "+MAX_ITERATIONS.length);
+			return MAX_ITERATIONS.length;
+		} else {
+			return 1;
+		}
+	}
+	
 
 	private List<?> getVaryMandIterList() {
 		final String maxIterChoice = "maxIter=";
@@ -6298,6 +7385,29 @@ class SierpinskiComboPanel extends JPanel {
 		}
 	}
 
+	private List<?> getVaryPolyBoundaryList(double boundaryFrom, double boundaryTo, double boundaryJump, int boundaryCount) {
+		final String boundaryChoice = "boundary=";
+		if (this.polyVaryBoundaryCb.isSelected() && this.polyVaryBoundary) {
+			return this.getAppendStr2List(boundaryChoice,
+					this.getVaryDoubleList(boundaryFrom, boundaryTo, boundaryJump, boundaryCount));
+		} else {
+			return asList(new String[] { boundaryChoice + String.valueOf(this.polyBoundCombos.getSelectedItem()) });
+		}
+	}
+
+	private int getVaryPolyBoundaryCount() {
+		if (this.polyVaryBoundaryCb.isSelected()) {
+			double boundaryFrom = this.polyVaryBoundaryFromVal;
+			double boundaryTo = this.polyVaryBoundaryToVal;
+			double boundaryJump = this.polyVaryBoundaryJumpVal;
+			System.out.println("In_getVaryBoundaryCount count = "+this.getJumpCount(boundaryFrom, boundaryTo, boundaryJump));
+			return this.getJumpCount(boundaryFrom, boundaryTo, boundaryJump);
+		} else {
+			return 1;
+		}
+	}
+	
+	
 	private List<?> getVaryMandBoundaryList(double boundaryFrom, double boundaryTo, double boundaryJump, int boundaryCount) {
 		final String boundaryChoice = "boundary=";
 		if (this.diyMandVaryBoundaryCb.isSelected() && this.diyMandVaryBoundary) {
@@ -6344,6 +7454,44 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 
+	private List<?> getVaryPolyPixXCenterList() {
+		final String xCentrChoice = "xCentrChoice=";
+		if (this.polyVaryPixXCentrCb.isSelected() && this.polyVaryPixXCentr) {
+			return this.getAppendStr2List(xCentrChoice, asList(CENTER_XY));
+		} else {
+			return asList(new String[] { xCentrChoice + String.valueOf(this.polyXCCombos.getSelectedItem()) });
+		}
+	}
+
+
+	private int getVaryPolyPixXCenterCount() {
+		if (this.polyVaryPixXCentrCb.isSelected()) {
+			System.out.println("In_getVaryPixXCenterCount count = "+CENTER_XY.length);
+			return CENTER_XY.length;
+		} else {
+			return 1;
+		}
+	}
+	
+	private List<?> getVaryPolyPixYCenterList() {
+		final String yCentrChoice = "yCentrChoice=";
+		if (this.polyVaryPixYCentrCb.isSelected() && this.polyVaryPixYCentr) {
+			return this.getAppendStr2List(yCentrChoice, asList(CENTER_XY));
+		} else {
+			return asList(new String[] { yCentrChoice+String.valueOf(this.polyYCCombos.getSelectedItem()) });
+		}
+	}
+
+	private int getVaryPolyPixYCenterCount() {
+		if (this.polyVaryPixYCentrCb.isSelected()) {
+			System.out.println("In_getVaryPixYCenterCount count = "+CENTER_XY.length);
+			return CENTER_XY.length;
+		} else {
+			return 1;
+		}
+	}
+	
+	
 	private List<?> getVaryMandPixXCenterList() {
 		final String xCentrChoice = "xCentrChoice=";
 		if (this.diyMandVaryPixXCentrCb.isSelected() && this.diyMandVaryPixXCentr) {
@@ -6420,6 +7568,30 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 
+
+	private List<?> getVaryPolyScaleSizeList(double scaleSizeFrom,double scaleSizeTo,double scaleSizeJump,int scaleSizeCount) {
+		final String scaleSizeChoice = "scaleSizeChoice=";
+		if (this.polyVaryScaleSizeCb.isSelected() && this.polyVaryScaleSize) {
+			return this.getAppendStr2List(scaleSizeChoice,
+					this.getVaryDoubleList(scaleSizeFrom,scaleSizeTo,scaleSizeJump,scaleSizeCount));
+		} else {
+			return asList(new String[] {scaleSizeChoice + String.valueOf(this.polyScaleSizeCombos.getSelectedItem()) });
+		}
+	}
+
+	private int getVaryPolyScaleSizeCount() {
+		if (this.polyVaryScaleSizeCb.isSelected()) {
+			double scaleSizeFrom = this.polyVaryScaleSizeFromVal;
+			double scaleSizeTo = this.polyVaryScaleSizeToVal;
+			double scaleSizeJump = this.polyVaryScaleSizeJumpVal;
+			System.out.println("In_getVaryScaleSizeCount count = "+this.getJumpCount(scaleSizeFrom, scaleSizeTo, scaleSizeJump));
+			return this.getJumpCount(scaleSizeFrom, scaleSizeTo, scaleSizeJump);
+		} else {
+			return 1;
+		}
+	}
+	
+	
 	private List<?> getVaryMandScaleSizeList(double scaleSizeFrom,double scaleSizeTo,double scaleSizeJump,int scaleSizeCount) {
 		final String scaleSizeChoice = "scaleSizeChoice=";
 		if (this.diyMandVaryScaleSizeCb.isSelected() && this.diyMandVaryScaleSize) {
@@ -6551,6 +7723,46 @@ class SierpinskiComboPanel extends JPanel {
 
 		return count;
 	}*/
+	
+	
+	private void setPolyGenFormulaArea(String pixelFunction, int PolyPower, String pixXTransform,String pixYTransform,String pixIntraXYOperation,String pxConstOprnChoice) {
+		this.formulaArea.setVisible(true);
+		this.formulaArea.setText("");
+		this.formulaArea.setText("<font color='blue'>(DIY)Poly Set:" + eol);
+		/*if (this.diyPolyUseLyapunovExponent) {
+			this.addUseLyapunovInfo();
+		}*/
+		
+		this.addXtrYtrXYInfroInfo(pixXTransform,pixYTransform,pixIntraXYOperation);		
+		this.addInvertPixelCalcInfo();
+		this.addPixelConstantOperationInfo(pxConstOprnChoice);
+		this.addPixelFuncInfo(pixelFunction);
+
+		switch(pxConstOprnChoice){
+			case	"Plus"	:	
+				this.formulaArea.append(" + C</font>" + eol);
+				break;
+			case	"Minus"	:	
+				this.formulaArea.append(" - C</font>" + eol);
+				break;
+			case	"Multiply"	:	
+				this.formulaArea.append(" * C</font>" + eol);
+				break;
+			case	"Divide"	:	
+				this.formulaArea.append(" / C</font>" + eol);
+				break;
+			case	"Power"	:	
+				this.formulaArea.append(" ^ C</font>" + eol);
+				break;
+			default:
+				this.formulaArea.append(" + C</font>" + eol);
+				break;
+		}
+		
+		/*this.addPolyUseDiffInfo();*/
+	}
+	
+	
 
 	private void setDiyMandGenFormulaArea(String pixelFunction, int mandPower, String pixXTransform,String pixYTransform,String pixIntraXYOperation,String pxConstOprnChoice) {
 		this.formulaArea.setVisible(true);
@@ -8130,10 +9342,10 @@ System.out.println("space2DIs __ "+space2D);*/
 			this.formulaArea.setText("<br/>f(z) = (x ^ " + this.polyPower + " + y ^ " + this.polyPower + ") ^ C");
 		} */
 		
-
+/*
 		if (this.polyUseLyapunovExponent) {
 			this.addUseLyapunovInfo();
-		}
+		}*/
 			
 		if (!invertPix) {
 			this.formulaArea.append("<br/>  x = Row + 0 * i , y = 0 + Column * i<br/>");
@@ -8183,7 +9395,7 @@ System.out.println("space2DIs __ "+space2D);*/
 			}
 		}
 
-		ff.setUseLyapunovExponent(this.polyUseLyapunovExponent);
+		/*ff.setUseLyapunovExponent(this.polyUseLyapunovExponent)*/;
 
 		ff.setPxXTransformation(this.pixXTransform);
 		ff.setPxYTransformation(this.pixYTransform);
@@ -8342,7 +9554,7 @@ System.out.println("space2DIs __ "+space2D);*/
 		BufferedImage dataInfoImg = null;
 //		BufferedImage dataInfoImg = null;
 		BufferedImage detailDataImg = null;
-		if (saveCommand.equals("saveWithData")||saveCommand.equals("save2FileWithData")||saveCommand.equals("saveWithDetailData")) {
+		if (saveCommand.equals("saveWithData") || saveCommand.equals("save2FileWithData") || saveCommand.equals("saveWithDetailData")) {
 			imgBaseInfo = this.getImgBaseInfo();
 			dataInfoImg = this.createStringImage(imgBaseInfo);
 		}
@@ -10495,7 +11707,7 @@ System.out.println("space2DIs __ "+space2D);*/
 				}
 			}
 		});
-		
+		/*
 		this.polyUseLyapunovExpCb.addItemListener(new ItemListener() {
             @Override
 			public void itemStateChanged(ItemEvent event) {
@@ -10505,7 +11717,7 @@ System.out.println("space2DIs __ "+space2D);*/
 					doSetPolyUseLyapunovExpCommand(false);
 				}
 			}
-        });
+        });*/
 
 		this.polyMaxIterCombos.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
@@ -10579,7 +11791,556 @@ System.out.println("space2DIs __ "+space2D);*/
 				doSelectPolyScaleSizeCombosCommand(polyScaleSizeComboOption);
 			}
 		});
+		
+		this.setupPolyGeneratorListeners();
 	}
+	
+
+private void setupPolyGeneratorListeners() {
+		///////////////////////////////////////////////////////////
+		//generatorListeners
+		this.polyGenCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetPolyGenCommand(true);
+					
+					polyVaryColorCb.setVisible(true);
+					polyVaryPixXTranCb.setVisible(true);
+					polyVaryPixYTranCb.setVisible(true);
+					polyVaryIntraPixXYCb.setVisible(true);
+					polyVaryPixelZFuncCb.setVisible(true);
+					polyVaryConstCFuncCb.setVisible(true);
+					polyVaryPixelConstOpZCCb.setVisible(true);
+					
+					polyVaryGenConstantCb.setVisible(true);					
+					polyGenRealFromLabel.setVisible(true);
+					polyGenRealFromTf.setVisible(true);
+					polyGenRealToLabel.setVisible(true);
+					polyGenRealToTf.setVisible(true);
+					polyGenRealJumpLabel.setVisible(true);
+					polyGenRealJumpCombo.setVisible(true);
+					polyGenImagFromLabel.setVisible(true);
+					polyGenImagFromTf.setVisible(true);
+					polyGenImagToLabel.setVisible(true);
+					polyGenImagToTf.setVisible(true);
+					polyGenImagJumpLabel.setVisible(true);
+					polyGenImagJumpCombo.setVisible(true);
+					
+					polyGenRealFromTf.setEnabled(false);
+					polyGenRealToTf.setEnabled(false);
+					polyGenRealJumpCombo.setEnabled(false);
+					polyGenImagFromTf.setEnabled(false);
+					polyGenImagToTf.setEnabled(false);
+					polyGenImagJumpCombo.setEnabled(false);
+					
+					polyVaryPixelPowerZCb.setVisible(true);
+
+					polyGenPixelPowerZFromLabel.setVisible(true);
+					polyGenPixelPowerZFromTf.setVisible(true);
+					polyGenPixelPowerZToLabel.setVisible(true);
+					polyGenPixelPowerZToTf.setVisible(true);
+					polyGenPixelPowerZJumpLabel.setVisible(true);
+					polyGenPixelPowerZJumpCombo.setVisible(true);
+
+					polyGenPixelPowerZFromTf.setEnabled(false);
+					polyGenPixelPowerZToTf.setEnabled(false);
+					polyGenPixelPowerZJumpCombo.setEnabled(false);
+					
+
+					polyVaryRCMTCb.setVisible(true);
+					polyVaryIterCb.setVisible(true);
+					
+					polyVaryBoundaryCb.setVisible(true);
+					polyGenBoundaryFromLabel.setVisible(true);
+					polyGenBoundaryFromTf.setVisible(true);
+					polyGenBoundaryToLabel.setVisible(true);
+					polyGenBoundaryToTf.setVisible(true);
+					polyGenBoundaryJumpLabel.setVisible(true);	
+					polyGenBoundaryJumpCombo.setVisible(true);
+					
+					polyGenBoundaryFromTf.setEnabled(false);
+					polyGenBoundaryToTf.setEnabled(false);
+					polyGenBoundaryJumpCombo.setEnabled(false);
+					
+					polyVaryPixXCentrCb.setVisible(true);
+					polyVaryPixYCentrCb.setVisible(true);
+					
+					polyVaryScaleSizeCb.setVisible(true);
+					polyGenScaleSizeFromLabel.setVisible(true);
+					polyGenScaleSizeFromTf.setVisible(true);
+					polyGenScaleSizeToLabel.setVisible(true);
+					polyGenScaleSizeToTf.setVisible(true);
+					polyGenScaleSizeJumpLabel.setVisible(true);	
+					polyGenScaleSizeJumpCombo.setVisible(true);
+					
+					polyGenScaleSizeFromTf.setEnabled(false);
+					polyGenScaleSizeToTf.setEnabled(false);
+					polyGenScaleSizeJumpCombo.setEnabled(false);	
+					
+					polyUseDiffCb.setEnabled(false);
+					invertPixelsCb.setEnabled(false);
+					
+					polyGenBu.setVisible(true);					
+
+					/*polyRealTf.setEnabled(false);
+					polyImgTf.setEnabled(false);
+					polyKeepConstRb.setEnabled(false);
+					polyCreateConstRb.setEnabled(false);*/
+
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSetPolyGenCommand(false);
+
+					polyVaryColorCb.setVisible(false);
+					polyVaryPixXTranCb.setVisible(false);
+					polyVaryPixYTranCb.setVisible(false);
+					polyVaryIntraPixXYCb.setVisible(false);
+					polyVaryPixelZFuncCb.setVisible(false);
+					polyVaryConstCFuncCb.setVisible(false);
+					polyVaryPixelConstOpZCCb.setVisible(false);
+					
+					polyVaryGenConstantCb.setVisible(false);					
+					polyGenRealFromLabel.setVisible(false);
+					polyGenRealFromTf.setVisible(false);
+					polyGenRealToLabel.setVisible(false);
+					polyGenRealToTf.setVisible(false);
+					polyGenRealJumpLabel.setVisible(false);
+					polyGenRealJumpCombo.setVisible(false);
+					polyGenImagFromLabel.setVisible(false);
+					polyGenImagFromTf.setVisible(false);
+					polyGenImagToLabel.setVisible(false);
+					polyGenImagToTf.setVisible(false);
+					polyGenImagJumpLabel.setVisible(false);
+					polyGenImagJumpCombo.setVisible(false);
+					
+					polyVaryPixelPowerZCb.setVisible(false);
+
+					polyGenPixelPowerZFromLabel.setVisible(false);
+					polyGenPixelPowerZFromTf.setVisible(false);
+					polyGenPixelPowerZToLabel.setVisible(false);
+					polyGenPixelPowerZToTf.setVisible(false);
+					polyGenPixelPowerZJumpLabel.setVisible(false);
+					polyGenPixelPowerZJumpCombo.setVisible(false);
+					polyVaryRCMTCb.setVisible(false);
+					polyVaryIterCb.setVisible(false);
+					
+					polyVaryBoundaryCb.setVisible(false);
+					polyGenBoundaryFromLabel.setVisible(false);
+					polyGenBoundaryFromTf.setVisible(false);
+					polyGenBoundaryToLabel.setVisible(false);
+					polyGenBoundaryToTf.setVisible(false);
+					polyGenBoundaryJumpLabel.setVisible(false);	
+					polyGenBoundaryJumpCombo.setVisible(false);					
+					
+					polyVaryPixXCentrCb.setVisible(false);
+					polyVaryPixYCentrCb.setVisible(false);
+					
+					polyVaryScaleSizeCb.setVisible(false);
+					polyGenScaleSizeFromLabel.setVisible(false);
+					polyGenScaleSizeFromTf.setVisible(false);
+					polyGenScaleSizeToLabel.setVisible(false);
+					polyGenScaleSizeToTf.setVisible(false);
+					polyGenScaleSizeJumpLabel.setVisible(false);	
+					polyGenScaleSizeJumpCombo.setVisible(false);
+					
+					polyUseDiffCb.setEnabled(true);
+					invertPixelsCb.setEnabled(true);
+					
+					polyGenBu.setVisible(false);
+					
+
+					/*polyRealTf.setEnabled(true);
+					polyImgTf.setEnabled(true);
+					polyKeepConstRb.setEnabled(true);
+					polyCreateConstRb.setEnabled(true);*/
+					
+				}
+			}
+        });
+		
+		this.polyVaryColorCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectPolyVaryColorCommand(true);
+					colorChoiceCombo.setEnabled(false);
+					showAllColorsCb.setEnabled(false);
+					colorSampleMixStartValsCombo.setEnabled(false);
+					colorSampleDivValsCombo.setEnabled(false);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectPolyVaryColorCommand(false);
+					colorChoiceCombo.setEnabled(true);
+					showAllColorsCb.setEnabled(true);
+
+					if (colorChoiceCombo.getSelectedItem().equals("SampleMix")) {
+						colorSampleMixStartValsCombo.setVisible(true);
+						colorSampleDivValsCombo.setVisible(true);
+						colorSampleMixStartValsCombo.setEnabled(true);
+						colorSampleDivValsCombo.setEnabled(true);
+					} else {
+						colorSampleMixStartValsCombo.setVisible(false);
+						colorSampleDivValsCombo.setVisible(false);
+						colorSampleMixStartValsCombo.setEnabled(false);
+						colorSampleDivValsCombo.setEnabled(false);
+					}
+				}
+			}
+		});
+		
+		this.polyVaryPixXTranCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectPolyVaryPixXTranCommand(true);					
+					pxXTransformCombo.setEnabled(false);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectPolyVaryPixXTranCommand(false);
+					pxXTransformCombo.setEnabled(true);
+				}
+			}
+		});
+
+		
+		this.polyVaryPixYTranCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectPolyVaryPixYTranCommand(true);
+					pxYTransformCombo.setEnabled(false);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectPolyVaryPixYTranCommand(false);
+					pxYTransformCombo.setEnabled(true);
+				}
+			}
+		});
+
+		
+		this.polyVaryIntraPixXYCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectPolyVaryIntraPixXYCommand(true);
+					intraPixOperationCombo.setEnabled(false);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectPolyVaryIntraPixXYCommand(false);
+					intraPixOperationCombo.setEnabled(true);
+				}
+			}
+		});
+		
+
+		this.polyVaryPixelZFuncCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectPolyVaryPixelZFuncCommand(true);
+					pxFuncCombo.setEnabled(false);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectPolyVaryPixelZFuncCommand(false);
+					pxFuncCombo.setEnabled(true);
+				}
+			}
+		});
+		
+
+		this.polyVaryConstCFuncCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectPolyVaryConstCFuncCommand(true);
+					constFuncCombo.setEnabled(false);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectPolyVaryConstCFuncCommand(false);
+					constFuncCombo.setEnabled(true);
+				}
+			}
+		});
+
+		this.polyVaryPixelConstOpZCCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectPolyVaryPixelConstOpZCCommand(true);
+					pxConstOprnCombo.setEnabled(false);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectPolyVaryPixelConstOpZCCommand(false);
+					pxConstOprnCombo.setEnabled(true);
+				}
+			}
+		});
+		
+
+		this.polyVaryGenConstantCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectPolyVaryGenConstantCommand(true);
+					polyGenRealFromLabel.setEnabled(true);
+					polyGenRealFromTf.setEnabled(true);
+					polyGenRealToLabel.setEnabled(true);
+					polyGenRealToTf.setEnabled(true);
+					polyGenRealJumpLabel.setEnabled(true);
+					polyGenRealJumpCombo.setEnabled(true);
+					polyGenImagFromLabel.setEnabled(true);
+					polyGenImagFromTf.setEnabled(true);
+					polyGenImagToLabel.setEnabled(true);
+					polyGenImagToTf.setEnabled(true);
+					polyGenImagJumpLabel.setEnabled(true);
+					polyGenImagJumpCombo.setEnabled(true);
+					
+					polyKeepConstRb.setEnabled(false);
+					polyCreateConstRb.setEnabled(false);
+					polyRealTf.setEnabled(false);
+					polyImgTf.setEnabled(false);
+					
+					
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectPolyVaryGenConstantCommand(false);
+					polyGenRealFromLabel.setEnabled(false);
+					polyGenRealFromTf.setEnabled(false);
+					polyGenRealToLabel.setEnabled(false);
+					polyGenRealToTf.setEnabled(false);
+					polyGenRealJumpLabel.setEnabled(false);
+					polyGenRealJumpCombo.setEnabled(false);
+					polyGenImagFromLabel.setEnabled(false);
+					polyGenImagFromTf.setEnabled(false);
+					polyGenImagToLabel.setEnabled(false);
+					polyGenImagToTf.setEnabled(false);
+					polyGenImagJumpLabel.setEnabled(false);
+					polyGenImagJumpCombo.setEnabled(false);
+					
+					polyKeepConstRb.setEnabled(true);
+					polyCreateConstRb.setEnabled(true);
+					if (polyKeepConstRb.isSelected()) {
+						polyRealTf.setEnabled(false);
+						polyImgTf.setEnabled(false);
+					}
+					if (polyCreateConstRb.isSelected()) {
+						polyRealTf.setEnabled(true);
+						polyImgTf.setEnabled(true);
+					}
+				}
+			}
+		});
+		
+//		this.polyVaryPixelPowerZCb.addItemListener(new ItemListener() {
+//			@Override
+//			public void itemStateChanged(ItemEvent event) {
+//				if (event.getStateChange() == ItemEvent.SELECTED) {
+//					doSelectPolyVaryPixelPowerZCommand(true);
+//					polyPowerCombos.setEnabled(false);
+//				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+//					doSelectPolyVaryPixelPowerZCommand(false);
+//					polyPowerCombos.setEnabled(true);
+//				}
+//			}
+//		});
+//		
+
+		this.polyVaryPixelPowerZCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectPolyVaryPixelPowerZCommand(true);
+					polyGenPixelPowerZFromTf.setEnabled(true);
+					polyGenPixelPowerZToTf.setEnabled(true);
+					polyGenPixelPowerZJumpCombo.setEnabled(true);
+					polyExpCombos.setEnabled(false);
+					
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectPolyVaryPixelPowerZCommand(false);
+					polyGenPixelPowerZFromTf.setEnabled(false);
+					polyGenPixelPowerZToTf.setEnabled(false);
+					polyGenPixelPowerZJumpCombo.setEnabled(false);
+					polyExpCombos.setEnabled(true);
+				}
+			}
+		});
+
+
+		this.polyGenPixelPowerZJumpCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Integer> cb = (JComboBox<Integer>) e.getSource();
+				Integer polyVaryPixelPowerZComboOption = (Integer) cb.getSelectedItem();
+				doSelectPolyVaryPixelPowerZCombosCommand(polyVaryPixelPowerZComboOption);
+			}
+		});
+		this.polyVaryRCMTCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectPolyVaryTypeCommand(true);
+					polyTypeCombos.setEnabled(false);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectPolyVaryTypeCommand(false);
+					polyTypeCombos.setEnabled(true);
+				}
+			}
+		});
+
+
+		this.polyVaryIterCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectPolyVaryIterCommand(true);
+					polyMaxIterCombos.setEnabled(false);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectPolyVaryIterCommand(false);
+					polyMaxIterCombos.setEnabled(true);
+				}
+			}
+		});
+
+		this.polyVaryBoundaryCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectPolyVaryBoundaryCommand(true);
+					polyGenBoundaryFromTf.setEnabled(true);
+					polyGenBoundaryToTf.setEnabled(true);
+					polyGenBoundaryJumpCombo.setEnabled(true);
+					polyBoundCombos.setEnabled(false);
+					
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectPolyVaryBoundaryCommand(false);
+					polyGenBoundaryFromTf.setEnabled(false);
+					polyGenBoundaryToTf.setEnabled(false);
+					polyGenBoundaryJumpCombo.setEnabled(false);
+					polyBoundCombos.setEnabled(true);
+				}
+			}
+		});
+		
+		this.polyVaryPixXCentrCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectPolyVaryPixXCentrCommand(true);
+					polyXCCombos.setEnabled(false);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectPolyVaryPixXCentrCommand(false);
+					polyXCCombos.setEnabled(true);
+				}
+			}
+		});
+		
+		this.polyVaryPixYCentrCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectPolyVaryPixYCentrCommand(true);
+					polyYCCombos.setEnabled(false);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectPolyVaryPixYCentrCommand(false);
+					polyYCCombos.setEnabled(true);
+				}
+			}
+		});
+		
+
+		this.polyVaryScaleSizeCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectPolyVaryScaleSizeCommand(true);
+					polyGenScaleSizeFromTf.setEnabled(true);
+					polyGenScaleSizeToTf.setEnabled(true);
+					polyGenScaleSizeJumpCombo.setEnabled(true);
+					polyScaleSizeCombos.setEnabled(false);
+					
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectPolyVaryScaleSizeCommand(false);
+					polyGenScaleSizeFromTf.setEnabled(false);
+					polyGenScaleSizeToTf.setEnabled(false);
+					polyGenScaleSizeJumpCombo.setEnabled(false);
+					polyScaleSizeCombos.setEnabled(true);
+				}
+			}
+		});
+		
+
+		this.polyGenScaleSizeJumpCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>) e.getSource();
+				Double polyVaryScaleSizeComboOption = (Double) cb.getSelectedItem();
+				doSelectPolyVaryScaleSizeCombosCommand(polyVaryScaleSizeComboOption);
+			}
+		});
+		
+		this.polyGenBoundaryJumpCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>) e.getSource();
+				Double polyVaryBoundaryComboOption = (Double) cb.getSelectedItem();
+				doSelectPolyVaryBoundaryJumpCombosCommand(polyVaryBoundaryComboOption);
+			}
+		});
+		
+		
+		this.polyGenRealJumpCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double polyRealJumpComboOption = (Double)cb.getSelectedItem();
+				doSelectPolyGenRealJumpCombosCommand(polyRealJumpComboOption);				
+			}});
+		
+		
+		this.polyGenImagJumpCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double polyImagJumpComboOption = (Double)cb.getSelectedItem();
+				doSelectPolyGenImagJumpCombosCommand(polyImagJumpComboOption);				
+			}});
+		
+		
+		this.polyApplyFormulaZCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectPolyApplyFormulaCommand(true);
+					if (!polyGen) {
+						polyApplyFormulaTf.setVisible(true);
+						polyGenVaryApplyFormulaTxtAreaSpane.setVisible(false);
+						polyGenVaryApplyFormulaTxtArea.setVisible(false);
+					} else {
+						polyApplyFormulaTf.setVisible(false);
+						polyGenVaryApplyFormulaTxtAreaSpane.setVisible(true);
+						polyGenVaryApplyFormulaTxtArea.setVisible(true);
+					}
+					//					polyPowerCombos.setEnabled(false);
+					pxFuncCombo.setEnabled(false);
+					
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectPolyApplyFormulaCommand(false);
+					polyApplyFormulaTf.setVisible(false);
+//					polyPowerCombos.setEnabled(true);
+					pxFuncCombo.setEnabled(true);
+				}
+			}
+		});
+		
+		
+		
+		this.polyGenBu.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Runtime.getRuntime().gc();
+				doPolyGenerateCommand();				
+			}});
+		//////////////////////////endsGeneratorListeners/////////////////////////
+		/////////////////////////////////////////////////////////////////////////
+	}
+	
 
 	private void setupMandelbrotListeners() {
 		//////////////////////////////////////////////////

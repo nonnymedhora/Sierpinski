@@ -5,6 +5,7 @@ package org.bawaweb.ui.sierpinkski;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.Properties;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -53,6 +54,27 @@ public class PolyFract extends FractalBase {
 			this.compConst = null;
 		}*/
 			this.setComplexNumConst(false);
+	}
+
+	public PolyFract(Properties p) {
+		super(p);
+//		if (p.getProperty("useDiff") != null)
+//			this.setUseDiff(Boolean.parseBoolean(p.getProperty("useDiff").replaceAll(WHITESPACE, EMPTY)));
+		if (p.getProperty("isComplexNumConst") != null) {
+			this.setComplexNumConst(
+					Boolean.parseBoolean(p.getProperty("isComplexNumConst").replaceAll(WHITESPACE, EMPTY)));
+		}
+		if (p.getProperty("constReal") != null && p.getProperty(
+				"constImag") != null) {
+			this.setCompConst(new ComplexNumber(Double.parseDouble(p.getProperty("constReal").replaceAll(WHITESPACE, EMPTY)),
+					Double.parseDouble(p.getProperty("constImag").replaceAll(WHITESPACE, EMPTY))));
+
+			this.setComplexNumConst(false); // redundant - But!
+		}
+		if (p.getProperty("rowColumnMixType") != null) {
+			String fieldType = p.getProperty("rowColumnMixType").replaceAll(WHITESPACE, EMPTY);
+			this.setRowColMixType(fieldType);
+		}
 	}
 
 	/* (non-Javadoc)
