@@ -4266,7 +4266,7 @@ class SierpinskiComboPanel extends JPanel {
 				varyPolyTypeList, varyInvertPixelList, varyConstList);
 
 		System.out
-				.println("allCombinationsListSize==totalVaryCount  " + (allCombinationsList.size() == totalVaryCount));
+				.println("allCombinationsListSize_is_"+allCombinationsList.size()+"________allCombinationsListSize==totalVaryCount  " + (allCombinationsList.size() == totalVaryCount));
 
 		Properties[] props = new Properties[allCombinationsList.size()];
 		props = shuffle(this.getAllCombinationProperties(allCombinationsList));
@@ -4361,6 +4361,7 @@ class SierpinskiComboPanel extends JPanel {
 
 			// 4_getExtraInfo
 			this.polyPower = polys[i].getPower();
+			this.polyUseDiff = polys[i].isUseDiff();
 			this.polyBound = polys[i].getBound();
 			this.polyType = polys[i].getRowColMixType();
 			this.polyMaxIter = polys[i].getMaxIter();
@@ -4388,8 +4389,8 @@ class SierpinskiComboPanel extends JPanel {
 
 			String pixConstOp = polys[i].getPxConstOperation();
 			this.pxConstOprnChoice = pixConstOp;
-/*
-			this.setPolyUseDiff(polys[i].isUseDiff());*/
+
+			/*this.setPolyUseDiff(polys[i].isUseDiff());*/
 			this.invertPixelCalculation = polys[i].isReversePixelCalculation();
 
 			if (!(polys[i].isComplexNumConst() || this.polyKeepConst || this.keepConst)
@@ -7732,11 +7733,52 @@ class SierpinskiComboPanel extends JPanel {
 		/*if (this.diyPolyUseLyapunovExponent) {
 			this.addUseLyapunovInfo();
 		}*/
+		if (pxConstOprnChoice.equals("Plus")) {
+			this.formulaArea.append("<br/>f(z) = (x <sup>" + this.polyPower + "</sup> + y <sup>" + this.polyPower + "</sup>) + C");
+		} else if (pxConstOprnChoice.equals("Multiply")) {
+			this.formulaArea.append("<br/>f(z) = (x <sup>" + this.polyPower + "</sup> + y <sup>" + this.polyPower + "</sup>) * C");
+		} else if (pxConstOprnChoice.equals("Minus")) {
+			this.formulaArea.append("<br/>f(z) = (x <sup>" + this.polyPower + "</sup> + y <sup>" + this.polyPower + "</sup>) - C");
+		} else if (pxConstOprnChoice.equals("Divide")) {
+			this.formulaArea.append("<br/>f(z) = (x <sup>" + this.polyPower + "</sup> + y <sup>" + this.polyPower + "</sup>) / C");
+		}/* else if (pxConstOp.equals("Power")) {
+			this.formulaArea.setText("<br/>f(z) = (x ^ " + this.polyPower + " + y ^ " + this.polyPower + ") ^ C");
+		} */
+
+		boolean invertPix = this.invertPixelCalculation;
 		
+		if (!invertPix) {
+			this.formulaArea.append("<br/>  x = Row + 0 * i , y = 0 + Column * i<br/>");
+		}else{
+			this.formulaArea.append("<br/>  x = Column + 0 * i , y = 0 + Row * i<br/>");
+		}
 		this.addXtrYtrXYInfroInfo(pixXTransform,pixYTransform,pixIntraXYOperation);		
-		this.addInvertPixelCalcInfo();
+		/*this.addInvertPixelCalcInfo();*/
 		this.addPixelConstantOperationInfo(pxConstOprnChoice);
 		this.addPixelFuncInfo(pixelFunction);
+
+		if (this.polyType.equals("Reverse")) {
+			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, y)<br/>");
+			this.formulaArea.append("<br/>Zy = new ComplexNumber(y, x)<br/>");
+		} else if (this.polyType.equals("Exchange")) {
+			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, 0.0)<br/>");
+			this.formulaArea.append("<br/>Zy = new ComplexNumber(0.0, y)<br/>");
+		} else if (this.polyType.equals("Single")) {
+			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, y)<br/>");
+			this.formulaArea.append("<br/>Zy = new ComplexNumber(0.0, 0.0)<br/>");
+		} else if (this.polyType.equals("Duplicate")) {
+			this.formulaArea.append("<br/><br/>Zx = Zy = new ComplexNumber(x, y)<br/>");
+		} else if (this.polyType.equals("Exponent")) {
+			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, 0.0).exp()<br/>");
+			this.formulaArea.append("<br/>Zy = new ComplexNumber(y, 0.0).exp()<br/>");
+		} else if (this.polyType.equals("Power")) {
+			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, y).power((int)x)<br/>");
+			this.formulaArea.append("<br/>Zy = new ComplexNumber(y, x).power((int)y)<br/>");
+		} else if (this.polyType.equals("Default")) {
+			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, 0.0)<br/>");
+			this.formulaArea.append("<br/>Zy = new ComplexNumber(y, 0.0)<br/>");
+		}
+		this.addPolyUseDiffInfo();
 
 		switch(pxConstOprnChoice){
 			case	"Plus"	:	
@@ -8735,7 +8777,8 @@ System.out.println("space2DIs __ "+space2D);*/
 
 	private void addPixelFuncInfo(String pxFunc) {
 		if ((!this.diyJApplyFormulaZ && this.diyJuliaRb.isSelected())
-				|| (!this.diyMandApplyFormulaZ && this.diyMandRb.isSelected())) {
+				|| (!this.diyMandApplyFormulaZ && this.diyMandRb.isSelected())
+				||(!this.polyApplyFormulaZ) && this.comboChoice.equals(POLY)) {
 			switch (pxFunc) {
 				case 	"sine":				this.formulaArea.append("<br/><font color='black'><b>z = sin(Z)</font></b><br/>");break;
 				case 	"cosine":			this.formulaArea.append("<br/><font color='black'><b>z = cos(Z)</font></b><br/>");break;
@@ -9681,18 +9724,37 @@ System.out.println("space2DIs __ "+space2D);*/
 					baseInfo += "Ud, "+eol;
 				}
 				baseInfo += "Boundary: " + this.polyBound + ", " + eol;
-				if (this.keepConst) {
-					baseInfo += "Dynamic Constant	C = z"+eol;
+//				if (this.keepConst) {
+//					baseInfo += "Dynamic Constant	C = z"+eol;
+//				} else {
+//					try {
+//						baseInfo += "Real Value = " + Double.parseDouble(this.polyRealTf.getText()) + "," + eol;
+//						baseInfo += "Imaginary Value = " + Double.parseDouble(this.polyImgTf.getText()) + eol;
+//					} catch (NumberFormatException  | NullPointerException e2) {
+//						e2.printStackTrace();
+//						JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+//						return null;
+//					}
+//				}
+				if (((this.keepConst && this.polyKeepConstRb.isSelected()))
+						&& !(this.polyVaryConstant || this.polyVaryGenConstantCb.isSelected())) {
+					baseInfo += "Dynamic Constant	Z=C" + eol;
 				} else {
-					try {
-						baseInfo += "Real Value = " + Double.parseDouble(this.polyRealTf.getText()) + "," + eol;
-						baseInfo += "Imaginary Value = " + Double.parseDouble(this.polyImgTf.getText()) + eol;
-					} catch (NumberFormatException  | NullPointerException e2) {
-						e2.printStackTrace();
-						JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
-						return null;
+						if (!polyGen) {
+							try {
+								baseInfo += "Real Value = " + Double.parseDouble(this.polyRealTf.getText()) + "," + eol;
+								baseInfo += "Imaginary Value = " + Double.parseDouble(this.polyImgTf.getText()) + eol;
+							} catch (NumberFormatException  | NullPointerException e2) {
+								e2.printStackTrace();
+								JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+								return null;
+							}
+						} else {
+							baseInfo += "Real Value = " + this.polyConstReal + "," + eol;
+							baseInfo += "Imaginary Value = " + this.polyConstImg + eol;
+						}
 					}
-				}
+
 				baseInfo = addConstFuncInfo(baseInfo);
 				
 				baseInfo += "Rotation: " + this.getRotation() + eol;
@@ -9753,19 +9815,37 @@ System.out.println("space2DIs __ "+space2D);*/
 					baseInfo += "Ud, ";
 				}
 				baseInfo += "Boundary: " + this.diyMandBound + ", " + eol;
-				if (this.keepConst) {
+//				if (this.keepConst) {
+//					baseInfo += "Dynamic Constant	Z=C" + eol;
+//				} else {
+//					try {
+//						baseInfo += "Real Value = " + Double.parseDouble(this.diyMandRealTf.getText()) + ","+eol;
+//						baseInfo += "Imaginary Value = " + Double.parseDouble(this.diyMandImgTf.getText()) + eol;
+//					} catch (NumberFormatException  | NullPointerException e2) {
+//						e2.printStackTrace();
+//						JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+//						return null;
+//					}
+//				}
+				if (((this.keepConst && this.diyMandelbrotKeepConstRb.isSelected()))
+						&& !(this.diyMandVaryConstant || this.diyMandVaryGenConstantCb.isSelected())) {
 					baseInfo += "Dynamic Constant	Z=C" + eol;
 				} else {
-					try {
-						baseInfo += "Real Value = " + Double.parseDouble(this.diyMandRealTf.getText()) + ","+eol;
-						baseInfo += "Imaginary Value = " + Double.parseDouble(this.diyMandImgTf.getText()) + eol;
-					} catch (NumberFormatException  | NullPointerException e2) {
-						e2.printStackTrace();
-						JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
-						return null;
+						if (!diyMandGen) {
+							try {
+								baseInfo += "Real Value = " + Double.parseDouble(this.diyMandRealTf.getText()) + "," + eol;
+								baseInfo += "Imaginary Value = " + Double.parseDouble(this.diyMandImgTf.getText()) + eol;
+							} catch (NumberFormatException  | NullPointerException e2) {
+								e2.printStackTrace();
+								JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+								return null;
+							}
+						} else {
+							baseInfo += "Real Value = " + this.diyMandConstReal + "," + eol;
+							baseInfo += "Imaginary Value = " + this.diyMandConstImg + eol;
+						}
 					}
-				}
-				
+
 				baseInfo = addConstFuncInfo(baseInfo);
 				
 				baseInfo += "Rotation: " + this.getRotation() + eol;
@@ -9831,9 +9911,9 @@ System.out.println("space2DIs __ "+space2D);*/
 					baseInfo += "<font color='blue'>Rho: "+this.attrLorenzRho_tf.getText()+"</font>" + eol;
 					baseInfo += "<font color='green'>Beta: "+this.attrLorenzBeta_tf.getText()+"</font>" + eol;
 					
-					String lorenzFormulaStr = "<b>DeltaX   = -Sigma * (X - Y)" + eol;
-					lorenzFormulaStr += "DeltaY   = (-X * Z) + (Rho * X) - Y;" + eol;
-					lorenzFormulaStr += "DeltaZ   = (X * Y) - (Beta * Z)</b>"	+ eol;
+					String lorenzFormulaStr = "<b>ΔX   = -σ * (X - Y)" + eol;
+					lorenzFormulaStr += "ΔY   = (-X * Z) + (ρ * X) - Y;" + eol;
+					lorenzFormulaStr += "ΔZ   = (X * Y) - (β * Z)</b>"	+ eol;
 					
 					baseInfo += lorenzFormulaStr;
 					
@@ -9846,9 +9926,9 @@ System.out.println("space2DIs __ "+space2D);*/
 					baseInfo += "<font color='red'>E: "+this.attrAizawaE_tf.getText()+"</font>" + eol;
 					baseInfo += "<font color='blue'>F: "+this.attrAizawaF_tf.getText()+"</font>" + eol;
 					
-					String aizawaFormulaStr = "<b>DeltaX   =   (Z - B) * X - (D * Y)" + eol;
-					aizawaFormulaStr += "DeltaY   =   D * X + (Z - B) * Y " + eol;
-					aizawaFormulaStr += "DeltaZ   = C + (A * Z) - ((Z <sup>3</sup>) /3) - (X <sup>2</sup>)   + (F * Z * X <sup>3</sup>)</b>" + eol;
+					String aizawaFormulaStr = "<b>ΔX   =   (Z - B) * X - (D * Y)" + eol;
+					aizawaFormulaStr += "ΔY   =   D * X + (Z - B) * Y " + eol;
+					aizawaFormulaStr += "ΔZ   = C + (A * Z) - ((Z <sup>3</sup>) /3) - (X <sup>2</sup>)   + (F * Z * X <sup>3</sup>)</b>" + eol;
 					
 					baseInfo += aizawaFormulaStr;
 					
@@ -9859,17 +9939,17 @@ System.out.println("space2DIs __ "+space2D);*/
 					baseInfo += "<font color='red'>C: "+this.attrDeJongC_tf.getText()+"</font>" + eol;
 					baseInfo += "<font color='blue'>D: "+this.attrDeJongD_tf.getText()+"</font>" + eol;
 										
-					String deJongFormulaStr = "<b>DeltaX   =   sin(A * Y) - cos(B * X)" + eol;
-					deJongFormulaStr += "DeltaY   =   sin(C * X) - cos(D * Y) " + eol;
+					String deJongFormulaStr = "<b>ΔX   =   sin(A * Y) - cos(B * X)" + eol;
+					deJongFormulaStr += "ΔY   =   sin(C * X) - cos(D * Y) " + eol;
 					
 					baseInfo += deJongFormulaStr;
 					
 				} else if(this.attractorSelectionChoice.equals("custom")) {
 					baseInfo += "<b>Custom Attractor</b>" + eol;
-					baseInfo += "<font color='red'>DeltaX: "+this.attrCustom_DeltaXFormula_tf.getText()+"</font>" + eol;
-					baseInfo += "<font color='blue'>DeltaY: "+this.attrCustom_DeltaYFormula_tf.getText()+"</font>" + eol;
+					baseInfo += "<font color='red'>ΔX: "+this.attrCustom_DeltaXFormula_tf.getText()+"</font>" + eol;
+					baseInfo += "<font color='blue'>ΔY: "+this.attrCustom_DeltaYFormula_tf.getText()+"</font>" + eol;
 					if (this.isAttractorDimSpace3D) {
-						baseInfo += "<font color='red'>DeltaZ: "+this.attrCustom_DeltaZFormula_tf.getText()+"</font>" + eol;
+						baseInfo += "<font color='red'>ΔZ: "+this.attrCustom_DeltaZFormula_tf.getText()+"</font>" + eol;
 					}
 				}
 				
@@ -9894,15 +9974,15 @@ System.out.println("space2DIs __ "+space2D);*/
 					Color seedColor = this.attrSeed_ClrChList.get(i);	System.out.println("colorATTRIs___"+seedColor);
 					String red = Integer.toHexString(seedColor.getRed());
 					if(red.equals("0")){red="00";}
-					System.out.println("redIs___"+red);
+					/*System.out.println("redIs___"+red);*/
 					String green = Integer.toHexString(seedColor.getGreen());
 					if(green.equals("0")){green="00";}
-					System.out.println("greenIs___"+green);
+					/*System.out.println("greenIs___"+green);*/
 					String blue =  Integer.toHexString(seedColor.getBlue());	
 					if(blue.equals("0")){blue="00";}	
-					System.out.println("blueIs___"+blue);
+					/*System.out.println("blueIs___"+blue);*/
 					String seedColorStr = "'#" + red + EMPTY + green + EMPTY + blue + "'";
-					System.out.println("seedColorStrIs___"+seedColorStr);
+					/*System.out.println("seedColorStrIs___"+seedColorStr);*/
 					
 					seedInfo += "<font color="+seedColorStr+">Seed "+i+": X["+this.attrSeed_X_tfList.get(i).getText()+"],"+
 								" Y["+this.attrSeed_Y_tfList.get(i).getText()+"]";

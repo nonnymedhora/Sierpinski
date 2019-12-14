@@ -479,5 +479,19 @@ System.out.println("type---->"+(type));	*/
 	public void setComplexNumConst(boolean isConstant) {
 		this.isComplexNumConst = isConstant;
 	}
+	
+	/**
+	 * @return the useDiff
+	 */
+	public boolean isUseDiff() {
+		return useDiff;
+	}
+
+	/**
+	 * @param useDiff the useDiff to set
+	 */
+	public void setUseDiff(boolean useDiff) {
+		this.useDiff = useDiff;
+	}
 
 }
