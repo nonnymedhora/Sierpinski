@@ -5148,6 +5148,9 @@ class SierpinskiComboPanel extends JPanel {
 			} else if (this.diyMandGen) {
 				ps[i].put("applyCustomFormula", String.valueOf(this.diyMandApplyFormulaZ));
 				ps[i].put("areaSize",String.valueOf(this.mandSize));
+			} else if (this.polyGen) {
+				ps[i].put("applyCustomFormula", String.valueOf(this.polyApplyFormulaZ));
+				ps[i].put("areaSize",String.valueOf(this.polySize));
 			}
 			/*ps[i].put("isZSq", String.valueOf(this.applyZSq));
 			ps[i].put("isFatou", String.valueOf(this.applyFatou));
