@@ -358,7 +358,7 @@ class SierpinskiComboPanel extends JPanel {
 	//////////////////////////////////////////////////////////////
 	// for DIY
 	//radioButton
-	protected JRadioButton diyMandRb = new JRadioButton(MANDELBROT,true);
+	protected JRadioButton diyMandRb = new JRadioButton(MANDELBROT/*,true*/);
 	protected JRadioButton diyJuliaRb = new JRadioButton(JULIA);
 	protected JRadioButton diyApolloRb = new JRadioButton(APOLLONIAN_CIRCLES);
 	
@@ -1696,7 +1696,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyBg.add(this.diyJuliaRb);
 		this.diyBg.add(this.diyApolloRb);
 
-		this.diyMandRb.setSelected(true);
+		/*this.diyMandRb.setSelected(true);*/
 		this.diyMandRb.setName(this.diyMand);
 		this.diyJuliaRb.setName(this.diyJulia);
 		this.diyApolloRb.setName(this.diyApollo);
@@ -6802,7 +6802,7 @@ class SierpinskiComboPanel extends JPanel {
 
 
 	private int getVaryPolyZFuncCount() {
-		if (this.polyVaryPixelZFuncCb.isSelected() && !this.diyJApplyFormulaZCb.isSelected()) {
+		if (this.polyVaryPixelZFuncCb.isSelected() && !this.polyApplyFormulaZCb.isSelected()) {
 			System.out.println("In_getVaryZFuncCount count = " + FUNCTION_OPTIONS.length);
 			return FUNCTION_OPTIONS.length;
 		} else {
@@ -8789,7 +8789,7 @@ System.out.println("space2DIs __ "+space2D);*/
 	private void addPixelFuncInfo(String pxFunc) {
 		if ((!this.diyJApplyFormulaZ && this.diyJuliaRb.isSelected())
 				|| (!this.diyMandApplyFormulaZ && this.diyMandRb.isSelected())
-				||(!this.polyApplyFormulaZ) && this.comboChoice.equals(POLY)) {
+				||(!this.polyApplyFormulaZ && this.comboChoice.equals(POLY))) {
 			switch (pxFunc) {
 				case 	"sine":				this.formulaArea.append("<br/><font color='black'><b>z = sin(Z)</font></b><br/>");break;
 				case 	"cosine":			this.formulaArea.append("<br/><font color='black'><b>z = cos(Z)</font></b><br/>");break;
@@ -9376,7 +9376,8 @@ System.out.println("space2DIs __ "+space2D);*/
 		
 		String pxConstOp = this.pxConstOprnChoice;
 		String func = this.constFuncChoice;
-		String pxFunc = this.pxFuncChoice;
+		String pxFunc = !this.polyApplyFormulaZ ? this.pxFuncChoice : this.polyApplyFormulaTf.getText().trim();
+		
 		double rot = this.getRotation();
 		boolean invertPix = this.invertPixelCalculation;
 		
