@@ -2775,7 +2775,8 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private void addDiyMandelbrotUseDiffInfo() {
-		if (this.diyMandUseDiff || this.diyMandUseDiffCb.isSelected()) {
+		if (this.diyMandUseDiff
+				|| (this.diyMandUseDiffCb.isSelected() && !(this.diyMandGenCb.isSelected() || this.diyMandGen))) {
 			this.formulaArea
 					.append("<br/><br/>Calculated inverted colors based on differences in pixel values from origin</font>"+eol);
 		} else {
@@ -2802,7 +2803,8 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private void addPolyUseDiffInfo() {
-		if (this.polyUseDiff || this.polyUseDiffCb.isSelected()) {
+		if (this.polyUseDiff
+				|| (this.polyUseDiffCb.isSelected() && !(this.polyGenCb.isSelected() || this.polyGen))) {			
 			this.formulaArea
 					.append("<br/><br/>Calculated inverted colors based on differences in pixel values from origin</font>"+eol);
 		} else {
@@ -4197,12 +4199,10 @@ class SierpinskiComboPanel extends JPanel {
 		
 		final int varyIterCount = this.getVaryPolyIterCount();
 		final List<?> varyIterList = this.getVaryPolyIterList();
-		
-		
-/*
+
 		final int varyUseDiffCount = 2;
 		final List<?> varyUseDiffList = this.getAppendStr2List("useDiffChoice=", this.getTrueFalseList());
-*/
+
 		final int varyInvertPixelCount = 2;
 		final List<?> varyInvertPixelList = this.getAppendStr2List("invertPixelCalcChoice=", this.getTrueFalseList());
 
@@ -4247,7 +4247,7 @@ class SierpinskiComboPanel extends JPanel {
 		int totalVaryCount = varyColorCount * varyPixXTransCount * varyPixYTransCount * varyIntraPixXYOpCount
 				* varyZFuncCount * varyConstCFuncCount * varyPixelConstOpZCCount * varyPowerCount * varyPixXCenterCount
 				* varyPixYCenterCount * varyScaleSizeCount * varyBoundaryCount * varyIterCount * varyPolyTypeCount
-				* varyInvertPixelCount * varyRealConstantCount * varyImagConstantCount;
+				* varyUseDiffCount * varyInvertPixelCount * varyRealConstantCount * varyImagConstantCount;
 
 		System.out.println("getTotalVaryCount=" + totalVaryCount);
 
@@ -4263,7 +4263,7 @@ class SierpinskiComboPanel extends JPanel {
 		final List<?> allCombinationsList = this.product(varyColorList, varyPixXTrList, varyPixYTrList,
 				varyIntraPixXYOpList, varyZFuncList, varyConstCFuncList, varyPixelConstOpZCList, varyPowerList,
 				varyPixXCenterList, varyPixYCenterList, varyScaleSizeList, varyBoundaryList, varyIterList,
-				varyPolyTypeList, varyInvertPixelList, varyConstList);
+				varyPolyTypeList, varyUseDiffList, varyInvertPixelList, varyConstList);
 
 		System.out
 				.println("allCombinationsListSize_is_"+allCombinationsList.size()+"________allCombinationsListSize==totalVaryCount  " + (allCombinationsList.size() == totalVaryCount));
@@ -4390,7 +4390,7 @@ class SierpinskiComboPanel extends JPanel {
 			String pixConstOp = polys[i].getPxConstOperation();
 			this.pxConstOprnChoice = pixConstOp;
 
-			/*this.setPolyUseDiff(polys[i].isUseDiff());*/
+			this.setPolyUseDiff(polys[i].isUseDiff());
 			this.invertPixelCalculation = polys[i].isReversePixelCalculation();
 
 			if (!(polys[i].isComplexNumConst() || this.polyKeepConst || this.keepConst)
@@ -7307,8 +7307,8 @@ class SierpinskiComboPanel extends JPanel {
 	private List<?> getVaryPolyTypeList() {
 		final String rowColumnMixTypeChoice = "rowColumnMixType=";
 		if (this.polyVaryRCMTCb.isSelected() && this.polyVaryPolyType) {
-			List<String> maxIterList = this.getAppendStr2List(rowColumnMixTypeChoice, asList(MAX_ITERATIONS));
-			return (maxIterList);
+			List<String> polyTypeList = this.getAppendStr2List(rowColumnMixTypeChoice, asList(POLY_RCMT_TYPES));
+			return (polyTypeList);
 		} else {
 			return asList(
 					new String[] { rowColumnMixTypeChoice + String.valueOf(this.polyTypeCombos.getSelectedItem()) });
@@ -7725,6 +7725,13 @@ class SierpinskiComboPanel extends JPanel {
 		return count;
 	}*/
 	
+	public boolean getPolyUseDiff() {
+		return this.polyUseDiff;
+	}
+
+	public void setPolyUseDiff(boolean useDiff) {
+		this.polyUseDiff = useDiff;
+	}
 	
 	private void setPolyGenFormulaArea(String pixelFunction, int PolyPower, String pixXTransform,String pixYTransform,String pixIntraXYOperation,String pxConstOprnChoice) {
 		this.formulaArea.setVisible(true);
@@ -7778,6 +7785,7 @@ class SierpinskiComboPanel extends JPanel {
 			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, 0.0)<br/>");
 			this.formulaArea.append("<br/>Zy = new ComplexNumber(y, 0.0)<br/>");
 		}
+		
 		this.addPolyUseDiffInfo();
 
 		switch(pxConstOprnChoice){
@@ -7801,7 +7809,7 @@ class SierpinskiComboPanel extends JPanel {
 				break;
 		}
 		
-		/*this.addPolyUseDiffInfo();*/
+		this.addPolyUseDiffInfo();
 	}
 	
 	
@@ -9720,7 +9728,7 @@ System.out.println("space2DIs __ "+space2D);*/
 				baseInfo += this.colorChoice + "," + eol;
 				if(this.colorChoice.equals("SampleMix")) { baseInfo += "startVals["+this.colorSampleMixStartVals+"] divVals["+this.colorSampleDivVals+"]" + eol; }
 				baseInfo += "Power: " + this.polyPower + ", ";
-				if (this.polyUseDiff) {
+				if (this.getPUseDiff()) {
 					baseInfo += "Ud, "+eol;
 				}
 				baseInfo += "Boundary: " + this.polyBound + ", " + eol;
@@ -13572,11 +13580,16 @@ private void setupPolyGeneratorListeners() {
 		return this.exponent;
 	}
 
-	protected boolean getMUseDiff(){
+	protected boolean getMUseDiff() {
 		return this.mUseDiff || this.mandUseDiffCb.isSelected();
 	}
-	protected boolean getJUseDiff(){
+
+	protected boolean getJUseDiff() {
 		return this.jUseDiff || this.juliaUseDiffCb.isSelected();
+	}
+
+	protected boolean getPUseDiff() {
+		return this.polyUseDiff || this.polyUseDiffCb.isSelected();
 	}
 
 	public String getDiyFractChoice() {

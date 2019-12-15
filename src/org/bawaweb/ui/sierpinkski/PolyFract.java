@@ -58,8 +58,8 @@ public class PolyFract extends FractalBase {
 
 	public PolyFract(Properties p) {
 		super(p);
-//		if (p.getProperty("useDiff") != null)
-//			this.setUseDiff(Boolean.parseBoolean(p.getProperty("useDiff").replaceAll(WHITESPACE, EMPTY)));
+		if (p.getProperty("useDiff") != null)
+			this.setUseDiff(Boolean.parseBoolean(p.getProperty("useDiff").replaceAll(WHITESPACE, EMPTY)));
 		if (p.getProperty("isComplexNumConst") != null) {
 			this.setComplexNumConst(
 					Boolean.parseBoolean(p.getProperty("isComplexNumConst").replaceAll(WHITESPACE, EMPTY)));
