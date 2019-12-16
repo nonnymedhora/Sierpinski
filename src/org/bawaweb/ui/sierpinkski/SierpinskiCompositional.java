@@ -7768,28 +7768,28 @@ class SierpinskiComboPanel extends JPanel {
 		this.addPixelFuncInfo(pixelFunction);
 
 		if (this.polyType.equals("Reverse")) {
-			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, y)<br/>");
-			this.formulaArea.append("<br/>Zy = new ComplexNumber(y, x)<br/>");
+			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, y)");
+			this.formulaArea.append("<br/>Zy = new ComplexNumber(y, x)");
 		} else if (this.polyType.equals("Exchange")) {
-			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, 0.0)<br/>");
-			this.formulaArea.append("<br/>Zy = new ComplexNumber(0.0, y)<br/>");
+			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, 0.0)");
+			this.formulaArea.append("<br/>Zy = new ComplexNumber(0.0, y)");
 		} else if (this.polyType.equals("Single")) {
-			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, y)<br/>");
-			this.formulaArea.append("<br/>Zy = new ComplexNumber(0.0, 0.0)<br/>");
+			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, y)");
+			this.formulaArea.append("<br/>Zy = new ComplexNumber(0.0, 0.0)");
 		} else if (this.polyType.equals("Duplicate")) {
-			this.formulaArea.append("<br/><br/>Zx = Zy = new ComplexNumber(x, y)<br/>");
+			this.formulaArea.append("<br/><br/>Zx = Zy = new ComplexNumber(x, y)");
 		} else if (this.polyType.equals("Exponent")) {
-			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, 0.0).exp()<br/>");
-			this.formulaArea.append("<br/>Zy = new ComplexNumber(y, 0.0).exp()<br/>");
+			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, 0.0).exp()");
+			this.formulaArea.append("<br/>Zy = new ComplexNumber(y, 0.0).exp()");
 		} else if (this.polyType.equals("Power")) {
-			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, y).power((int)x)<br/>");
-			this.formulaArea.append("<br/>Zy = new ComplexNumber(y, x).power((int)y)<br/>");
+			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, y).power((int)x)");
+			this.formulaArea.append("<br/>Zy = new ComplexNumber(y, x).power((int)y)");
 		} else if (this.polyType.equals("Default")) {
-			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, 0.0)<br/>");
-			this.formulaArea.append("<br/>Zy = new ComplexNumber(y, 0.0)<br/>");
+			this.formulaArea.append("<br/><br/>Zx = new ComplexNumber(x, 0.0)");
+			this.formulaArea.append("<br/>Zy = new ComplexNumber(y, 0.0)");
 		}
-		
-		this.addPolyUseDiffInfo();
+		/*
+		this.addPolyUseDiffInfo();*/
 
 		switch(pxConstOprnChoice){
 			case	"Plus"	:	
@@ -9385,6 +9385,7 @@ System.out.println("space2DIs __ "+space2D);*/
 		this.formulaArea.setVisible(true);
 		this.formulaArea.setText("");
 		this.formulaArea.setText("<font color='blue'>Poynomial Set:<br/>");
+	
 		if (pxConstOp.equals("Plus")) {
 			this.formulaArea.append("<br/>f(z) = (x <sup>" + this.polyPower + "</sup> + y <sup>" + this.polyPower + "</sup>) + C");
 		} else if (pxConstOp.equals("Multiply")) {
@@ -9407,6 +9408,9 @@ System.out.println("space2DIs __ "+space2D);*/
 		}else{
 			this.formulaArea.append("<br/>  x = Column + 0 * i , y = 0 + Row * i<br/>");
 		}
+
+		this.addXtrYtrXYInfroInfo(this.pixXTransform, this.pixYTransform, this.pixIntraXYOperation);
+		this.addPixelConstantOperationInfo(this.pxConstOprnChoice);
 		
 		this.addPixelFuncInfo(pxFunc);
 		
