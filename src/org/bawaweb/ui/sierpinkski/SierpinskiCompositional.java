@@ -12898,7 +12898,11 @@ private void setupPolyGeneratorListeners() {
 				attractor1Color = JColorChooser.showDialog(null, "Choose Attractor1 Color", Color.black);
 				attr1ColorChooserBu.setForeground(attractor1Color);
 				attr1ColorChooserBu.setBackground(attractor1Color);
-				attrSeed_ClrChList .add(attractor1Color);
+				if (attrSeed_ClrChList.size() >= 1) {
+					attrSeed_ClrChList.set(0, attractor1Color);
+				} else {
+					attrSeed_ClrChList.add(attractor1Color);
+				}
 			}
 		});
 
@@ -12909,7 +12913,11 @@ private void setupPolyGeneratorListeners() {
 				attractor2Color = JColorChooser.showDialog(null, "Choose Attractor2 Color", Color.black);
 				attr2ColorChooserBu.setForeground(attractor2Color);	
 				attr2ColorChooserBu.setBackground(attractor2Color);
-				attrSeed_ClrChList .add(attractor2Color);
+				if (attrSeed_ClrChList.size() >= 2) {
+					attrSeed_ClrChList.set(1,attractor2Color);
+				} else {
+					attrSeed_ClrChList.add(attractor2Color);
+				}
 			}
 		});
 		
@@ -13077,12 +13085,17 @@ private void setupPolyGeneratorListeners() {
 		};
 	}
 
-	private void setNxtAttrColor(JButton nxtAttrClrBu,int attrSize) {
-		Color nxtAttr_Color = JColorChooser.showDialog(null, "Choose Attractor: "+attrSize+" Color", Color.black);
+	private void setNxtAttrColor(JButton nxtAttrClrBu, int attrSize) {
+		Color nxtAttr_Color = JColorChooser.showDialog(null, "Choose Attractor: " + attrSize + " Color", Color.black);
 		nxtAttrClrBu.setForeground(nxtAttr_Color);
 		nxtAttrClrBu.setBackground(nxtAttr_Color);
-		attrSeed_Clr_buList.add(nxtAttrClrBu);
-		attrSeed_ClrChList.add(nxtAttr_Color);
+		if (attrSeed_ClrChList.size() > (attrSize - 1)) {
+			attrSeed_ClrChList.set(attrSize - 1, nxtAttr_Color);
+			attrSeed_Clr_buList.set(attrSize - 1, nxtAttrClrBu);
+		} else {
+			attrSeed_ClrChList.add(nxtAttr_Color);
+			attrSeed_Clr_buList.add(nxtAttrClrBu);
+		}
 	}	
 
 	private void doSelectAttractorInstantDrawCommand(boolean instantDraw) {
