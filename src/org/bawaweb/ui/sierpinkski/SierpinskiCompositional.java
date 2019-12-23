@@ -9985,7 +9985,7 @@ System.out.println("space2DIs __ "+space2D);*/
 				
 
 				String seedInfo = "Seeds:" + eol;
-				int numAttr = this.attrSeed_X_tfList.size();
+				int numAttr = this.attrSeed_ClrChList.size();
 				for(int i = 0; i < numAttr; i++) {
 					Color seedColor = this.attrSeed_ClrChList.get(i);	System.out.println("colorATTRIs___"+seedColor);
 					String red = Integer.toHexString(seedColor.getRed());
@@ -12911,10 +12911,10 @@ private void setupPolyGeneratorListeners() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				attractor2Color = JColorChooser.showDialog(null, "Choose Attractor2 Color", Color.black);
-				attr2ColorChooserBu.setForeground(attractor2Color);	
+				attr2ColorChooserBu.setForeground(attractor2Color);
 				attr2ColorChooserBu.setBackground(attractor2Color);
 				if (attrSeed_ClrChList.size() >= 2) {
-					attrSeed_ClrChList.set(1,attractor2Color);
+					attrSeed_ClrChList.set(1, attractor2Color);
 				} else {
 					attrSeed_ClrChList.add(attractor2Color);
 				}
