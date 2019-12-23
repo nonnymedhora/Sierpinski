@@ -5076,87 +5076,87 @@ class SierpinskiComboPanel extends JPanel {
 			
 			for(String prop : iStr) {		//startsWith replaced with java.lang.String.contains() implementation
 				if (prop.indexOf("colorChoice=") > -1) {
-					ps[i].put("colorChoice",prop.replace("colorChoice=",EMPTY));	// 		prop.substring("colorChoice=".length()));
+					ps[i].setProperty("colorChoice",prop.replace("colorChoice=",EMPTY));	// 		prop.substring("colorChoice=".length()));
 				} else if (prop.indexOf("startVals=") > -1) {
-					ps[i].put("startVals",prop.replace("startVals=",EMPTY));		
+					ps[i].setProperty("startVals",prop.replace("startVals=",EMPTY));		
 				} else if (prop.indexOf("divVals=") > -1) {
-					ps[i].put("divVals",prop.replace("divVals=",EMPTY));	
+					ps[i].setProperty("divVals",prop.replace("divVals=",EMPTY));	
 				} else if (prop.indexOf("pixXTransform=") > -1) {
-					ps[i].put("pxXTransformation", prop.replace("pixXTransform=",EMPTY));
+					ps[i].setProperty("pxXTransformation", prop.replace("pixXTransform=",EMPTY));
 				} else if (prop.indexOf("pixYTransform=") > -1) {
-					ps[i].put("pxYTransformation", prop.replace("pixYTransform=",EMPTY));
+					ps[i].setProperty("pxYTransformation", prop.replace("pixYTransform=",EMPTY));
 				} else if (prop.indexOf("pixIntraXYOperation=") > -1) {
-					ps[i].put("pixXYOperation", prop.replace("pixIntraXYOperation=",EMPTY));
+					ps[i].setProperty("pixXYOperation", prop.replace("pixIntraXYOperation=",EMPTY));
 				} else if (prop.indexOf("pxFuncChoice=") > -1) {
-					ps[i].put("useFuncPixel", prop.replace("pxFuncChoice=",EMPTY));
+					ps[i].setProperty("useFuncPixel", prop.replace("pxFuncChoice=",EMPTY));
 				} else if (prop.indexOf("constFuncChoice=") > -1) {
-					ps[i].put("useFuncConst", prop.replace("constFuncChoice=",EMPTY));
+					ps[i].setProperty("useFuncConst", prop.replace("constFuncChoice=",EMPTY));
 				} else if (prop.indexOf("pxConstOprnChoice=") > -1) {
-					ps[i].put("pxConstOperation", prop.replace("pxConstOprnChoice=",EMPTY));
+					ps[i].setProperty("pxConstOperation", prop.replace("pxConstOprnChoice=",EMPTY));
 				} else if (prop.indexOf("power=") > -1) {
-					ps[i].put("power", prop.replace("power=",EMPTY));
+					ps[i].setProperty("power", prop.replace("power=",EMPTY));
 				} else if (prop.indexOf("xCentrChoice=") > -1) {
-					ps[i].put("xC", prop.replace("xCentrChoice=",EMPTY));
+					ps[i].setProperty("xC", prop.replace("xCentrChoice=",EMPTY));
 				} else if (prop.indexOf("yCentrChoice=") > -1) {
-					ps[i].put("yC", prop.replace("yCentrChoice=",EMPTY));
+					ps[i].setProperty("yC", prop.replace("yCentrChoice=",EMPTY));
 				} else if (prop.indexOf("scaleSizeChoice=") > -1) {
-					ps[i].put("scaleSize", prop.replace("scaleSizeChoice=",EMPTY));
+					ps[i].setProperty("scaleSize", prop.replace("scaleSizeChoice=",EMPTY));
 				} else if (prop.indexOf("boundary=") > -1) {
-					ps[i].put("bound", prop.replace("boundary=",EMPTY));
+					ps[i].setProperty("bound", prop.replace("boundary=",EMPTY));
 				} else if (prop.indexOf("maxIter=") > -1) {
-					ps[i].put("maxIter", prop.replace("maxIter=",EMPTY));
+					ps[i].setProperty("maxIter", prop.replace("maxIter=",EMPTY));
 				} else if (prop.indexOf("useDiffChoice=") > -1) {
-					ps[i].put("useDiff", prop.replace("useDiffChoice=",EMPTY));
+					ps[i].setProperty("useDiff", prop.replace("useDiffChoice=",EMPTY));
 				} else if (prop.indexOf("invertPixelCalcChoice=") > -1) {
-					ps[i].put("reversePixelCalculation", prop.replace("invertPixelCalcChoice=",EMPTY));
+					ps[i].setProperty("reversePixelCalculation", prop.replace("invertPixelCalcChoice=",EMPTY));
 				} else if (prop.indexOf("constantChoice=realConstChoice=") > -1) {
 					String realConstChoice = prop.replace("constantChoice=realConstChoice=",EMPTY);
 
 					if (realConstChoice.contains("DynamicConst")) {
-						ps[i].put("isComplexNumConst", "true");
+						ps[i].setProperty("isComplexNumConst", "true");
 					} else {
-						ps[i].put("isComplexNumConst", "false");
-						ps[i].put("constReal", realConstChoice);
+						ps[i].setProperty("isComplexNumConst", "false");
+						ps[i].setProperty("constReal", realConstChoice);
 					}
 
 				} else if (prop.indexOf("imagConstChoice=") > -1) {
 					String imagConstChoice = prop.replace("imagConstChoice=",EMPTY);
 
 					if (imagConstChoice.contains("DynamicConst")) {
-						ps[i].put("isComplexNumConst", "true");
+						ps[i].setProperty("isComplexNumConst", "true");
 					} else {
-						ps[i].put("isComplexNumConst", "false");
-						ps[i].put("constImag", imagConstChoice);
+						ps[i].setProperty("isComplexNumConst", "false");
+						ps[i].setProperty("constImag", imagConstChoice);
 					}
 				} else if (prop.indexOf("fieldType=") > -1) {
-					ps[i].put("fieldType",prop.replace("fieldType=",EMPTY));		
+					ps[i].setProperty("fieldType",prop.replace("fieldType=",EMPTY));		
 				}
 				
 				if (prop.indexOf("rowColumnMixType=") > -1) {
-					ps[i].put("rowColumnMixType",prop.replace("rowColumnMixType=",EMPTY));	// 		prop.substring("colorChoice=".length()));
+					ps[i].setProperty("rowColumnMixType",prop.replace("rowColumnMixType=",EMPTY));	// 		prop.substring("colorChoice=".length()));
 				} 
 			}
 
 			if (this.diyMandGen) {
-				ps[i].put("magnificationChoice", String.valueOf(this.diyMandMagnification));
+				ps[i].setProperty("magnificationChoice", String.valueOf(this.diyMandMagnification));
 			}
 			
 			
 			if (this.diyJuliaGen) {
-				ps[i].put("applyCustomFormula", String.valueOf(this.diyJApplyFormulaZ));
-				ps[i].put("areaSize",String.valueOf(this.juliaSize));
+				ps[i].setProperty("applyCustomFormula", String.valueOf(this.diyJApplyFormulaZ));
+				ps[i].setProperty("areaSize",String.valueOf(this.juliaSize));
 			} else if (this.diyMandGen) {
-				ps[i].put("applyCustomFormula", String.valueOf(this.diyMandApplyFormulaZ));
-				ps[i].put("areaSize",String.valueOf(this.mandSize));
+				ps[i].setProperty("applyCustomFormula", String.valueOf(this.diyMandApplyFormulaZ));
+				ps[i].setProperty("areaSize",String.valueOf(this.mandSize));
 			} else if (this.polyGen) {
-				ps[i].put("applyCustomFormula", String.valueOf(this.polyApplyFormulaZ));
-				ps[i].put("areaSize",String.valueOf(this.polySize));
+				ps[i].setProperty("applyCustomFormula", String.valueOf(this.polyApplyFormulaZ));
+				ps[i].setProperty("areaSize",String.valueOf(this.polySize));
 			}
 			/*ps[i].put("isZSq", String.valueOf(this.applyZSq));
 			ps[i].put("isFatou", String.valueOf(this.applyFatou));
 			ps[i].put("isClassicJulia", String.valueOf(this.applyClassicJulia));*/
 			
-			ps[i].put("rotation",String.valueOf(this.rotation));
+			ps[i].setProperty("rotation",String.valueOf(this.rotation));
 				
 			
 		}
