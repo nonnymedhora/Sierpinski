@@ -9382,6 +9382,67 @@ System.out.println("space2DIs __ "+space2D);*/
 		boolean invertPix = this.invertPixelCalculation;
 		
 		FractalBase ff = null;
+		this.setUpPolyDetailInfo(pxConstOp, pxFunc, invertPix);
+
+		if (this.keepConst) {
+			this.formulaArea.append("<br/>Dynamic Constant = z</font>");
+			ff = new PolyFract(this.polyPower, this.polyUseDiff, this.polyBound, this.keepConst);
+		} else {
+			try {
+				double polyRealVal = Double.parseDouble(this.polyRealTf.getText());
+				double polyImgVal = Double.parseDouble(this.polyImgTf.getText());
+				this.formulaArea.append("<br/>Constant = " + polyRealVal + " + (" + polyImgVal + " * i)</font>");
+				
+				ff = new PolyFract(this.polyPower, this.polyUseDiff, this.polyBound, polyRealVal, polyImgVal);
+			} catch (NumberFormatException  | NullPointerException e2) {
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+				return null;
+			}
+		}
+
+		/*ff.setUseLyapunovExponent(this.polyUseLyapunovExponent)*/;
+
+		ff.setPxXTransformation(this.pixXTransform);
+		ff.setPxYTransformation(this.pixYTransform);
+		ff.setPixXYOperation(this.pixIntraXYOperation);
+		
+		ff.setPxConstOperation(pxConstOp);
+		
+		ff.setReversePixelCalculation(invertPix);
+		
+		if (useCP) {
+			ff.setColorChoice(this.colorChoice);	//	ff.setUseColorPalette(useCP);
+		} else {
+			if (useBw) {
+				ff.setColorChoice(this.colorChoice);	//	ff.setUseBlackWhite(useBw);
+			} else {
+				if (useSample) {
+					ff.setColorChoice(this.colorChoice);	//	
+					this.setSampleColorMix(ff);
+				} else {
+
+					ff.setColorChoice(this.colorChoice);	//	ff.setUseColorPalette(useCP);
+				}
+			}
+		}
+		ff.setUseFuncConst(func);
+		ff.setUseFuncPixel(pxFunc);
+		ff.setRotation(rot);
+		ff.setRowColMixType(this.polyType);
+		ff.setxC(this.polyXC);
+		ff.setyC(this.polyYC);
+		ff.setScaleSize(this.polyScaleSize);
+		ff.setMaxIter(this.polyMaxIter);
+		ff.setAreaSize(this.polySize);
+
+		this.addPolyConstInfo(ff);
+		ff.setSavePixelInfo2File(this.savePixelInfo2File);
+		
+		return ff;
+	}
+
+	private void setUpPolyDetailInfo(String pxConstOp, String pxFunc, boolean invertPix) {
 		this.formulaArea.setVisible(true);
 		this.formulaArea.setText("");
 		this.formulaArea.setText("<font color='blue'>Poynomial Set:<br/>");
@@ -9436,63 +9497,6 @@ System.out.println("space2DIs __ "+space2D);*/
 			this.formulaArea.append("<br/>Zy = new ComplexNumber(y, 0.0)<br/>");
 		}
 		this.addPolyUseDiffInfo();
-
-		if (this.keepConst) {
-			this.formulaArea.append("<br/>Dynamic Constant = z</font>");
-			ff = new PolyFract(this.polyPower, this.polyUseDiff, this.polyBound, this.keepConst);
-		}else{
-			try {
-				double polyRealVal = Double.parseDouble(this.polyRealTf.getText());
-				double polyImgVal = Double.parseDouble(this.polyImgTf.getText());
-				this.formulaArea.append("<br/>Constant = " + polyRealVal + " + (" + polyImgVal + " * i)</font>");
-				
-				ff = new PolyFract(this.polyPower, this.polyUseDiff, this.polyBound, polyRealVal, polyImgVal);
-			} catch (NumberFormatException  | NullPointerException e2) {
-				e2.printStackTrace();
-				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
-				return null;
-			}
-		}
-
-		/*ff.setUseLyapunovExponent(this.polyUseLyapunovExponent)*/;
-
-		ff.setPxXTransformation(this.pixXTransform);
-		ff.setPxYTransformation(this.pixYTransform);
-		ff.setPixXYOperation(this.pixIntraXYOperation);
-		
-		ff.setPxConstOperation(pxConstOp);
-		
-		ff.setReversePixelCalculation(invertPix);
-		
-		if (useCP) {
-			ff.setColorChoice(this.colorChoice);	//	ff.setUseColorPalette(useCP);
-		} else {
-			if (useBw) {
-				ff.setColorChoice(this.colorChoice);	//	ff.setUseBlackWhite(useBw);
-			} else {
-				if (useSample) {
-					ff.setColorChoice(this.colorChoice);	//	
-					this.setSampleColorMix(ff);
-				} else {
-
-					ff.setColorChoice(this.colorChoice);	//	ff.setUseColorPalette(useCP);
-				}
-			}
-		}
-		ff.setUseFuncConst(func);
-		ff.setUseFuncPixel(pxFunc);
-		ff.setRotation(rot);
-		ff.setRowColMixType(this.polyType);
-		ff.setxC(this.polyXC);
-		ff.setyC(this.polyYC);
-		ff.setScaleSize(this.polyScaleSize);
-		ff.setMaxIter(this.polyMaxIter);
-		ff.setAreaSize(this.polySize);
-
-		this.addPolyConstInfo(ff);
-		ff.setSavePixelInfo2File(this.savePixelInfo2File);
-		
-		return ff;
 	}	
 
 	private void startFractals(final FractalBase ff) {

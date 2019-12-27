@@ -544,8 +544,9 @@ public class Mandelbrot extends FractalBase {
 			z0 = this.getPixelComplexValue(y0, x0);
 		}
 		
-		boolean pxFuncHasConst = (pxFunc2Apply.indexOf('c') > -1 || pxFunc2Apply.indexOf('C') > -1);
-		
+		boolean pxFuncHasConst = this.applyCustomFormula
+				&& (pxFunc2Apply.indexOf('c') > -1 || pxFunc2Apply.indexOf('C') > -1);
+
 		/*z0 = this.computePixel(pxFunc2Apply, z0);*/
 
 		if (!pxFuncHasConst) {
@@ -670,75 +671,75 @@ public class Mandelbrot extends FractalBase {
 //	}
 	
 
-	private ComplexNumber computePixel(String fun, ComplexNumber z0, ComplexNumber compConst) {
-		if (this.applyCustomFormula) {
-			fun = fun.replaceAll("c", "(" + compConst.toString().replaceAll("i", "*i") + ")")
-					.replaceAll("C", "(" + compConst.toString().replaceAll("i", "*i") + ")");
-
-			return new FunctionEvaluator().evaluate(fun, z0);//, compConst);
-		}
-		return null;
-	}
-
-
-	private ComplexNumber computePixel(String fun, ComplexNumber z0) {
-		if (!this.applyCustomFormula) {
-			switch (fun) {
-				case "sine":
-					z0 = z0.sine();
-					break;
-				case "coosine":
-					z0 = z0.cosine();
-					break;
-				case "tan":
-					z0 = z0.tangent();
-					break;
-				case "arcsine":
-					z0 = z0.inverseSine();
-					break;
-				case "arccosine":
-					z0 = z0.inverseCosine(); 
-					break;
-				case "arctan":
-					z0 = z0.inverseTangent();
-					break;
-				case "reiprocal":
-					z0 = z0.reciprocal();
-					break;
-				case "reciprocalSquare":
-					z0 = (z0.reciprocal()).power(2);
-					break;
-				case "square":
-					z0 = z0.power(2);
-					break;
-				case "cube":
-					z0 = z0.power(3);
-					break;
-				case "exponent(e)":
-					z0 = z0.exp();
-					break;
-				case "root":
-					z0 = z0.sqroot();
-					break;
-				case "cube-root":
-					z0 = z0.curoot();
-					break;
-				case "log(e)":
-					z0 = z0.ln();
-					break;	
-				case "None":
-					z0 = z0;
-					break;
-				default:
-					z0 = z0;
-					break;
-			}// ends-switch
-		}	else {
-			z0 = new FunctionEvaluator().evaluate(fun, z0);
-		}
-
-		return z0;
-	}
+//	private ComplexNumber computePixel(String fun, ComplexNumber z0, ComplexNumber compConst) {
+//		if (this.applyCustomFormula) {
+//			fun = fun.replaceAll("c", "(" + compConst.toString().replaceAll("i", "*i") + ")")
+//					.replaceAll("C", "(" + compConst.toString().replaceAll("i", "*i") + ")");
+//
+//			return new FunctionEvaluator().evaluate(fun, z0);//, compConst);
+//		}
+//		return null;
+//	}
+//
+//
+//	private ComplexNumber computePixel(String fun, ComplexNumber z0) {
+//		if (!this.applyCustomFormula) {
+//			switch (fun) {
+//				case "sine":
+//					z0 = z0.sine();
+//					break;
+//				case "coosine":
+//					z0 = z0.cosine();
+//					break;
+//				case "tan":
+//					z0 = z0.tangent();
+//					break;
+//				case "arcsine":
+//					z0 = z0.inverseSine();
+//					break;
+//				case "arccosine":
+//					z0 = z0.inverseCosine(); 
+//					break;
+//				case "arctan":
+//					z0 = z0.inverseTangent();
+//					break;
+//				case "reiprocal":
+//					z0 = z0.reciprocal();
+//					break;
+//				case "reciprocalSquare":
+//					z0 = (z0.reciprocal()).power(2);
+//					break;
+//				case "square":
+//					z0 = z0.power(2);
+//					break;
+//				case "cube":
+//					z0 = z0.power(3);
+//					break;
+//				case "exponent(e)":
+//					z0 = z0.exp();
+//					break;
+//				case "root":
+//					z0 = z0.sqroot();
+//					break;
+//				case "cube-root":
+//					z0 = z0.curoot();
+//					break;
+//				case "log(e)":
+//					z0 = z0.ln();
+//					break;	
+//				case "None":
+//					z0 = z0;
+//					break;
+//				default:
+//					z0 = z0;
+//					break;
+//			}// ends-switch
+//		}	else {
+//			z0 = new FunctionEvaluator().evaluate(fun, z0);
+//		}
+//
+//		return z0;
+//	}
 
 	private ComplexNumber computeComplexConstant(String func2Apply, ComplexNumber z0) {
 		ComplexNumber cConst = null;

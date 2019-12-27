@@ -381,8 +381,9 @@ public class Julia extends FractalBase {
 		String func2Apply = this.useFuncConst;
 		String pxFunc2Apply = this.useFuncPixel;
 		
-		boolean pxFuncHasConst = (pxFunc2Apply.indexOf('c') > -1 || pxFunc2Apply.indexOf('C') > -1);
-		
+		boolean pxFuncHasConst = this.applyCustomFormula
+				&& (pxFunc2Apply.indexOf('c') > -1 || pxFunc2Apply.indexOf('C') > -1);
+
 		if (this.isSavePixelInfo2File()) {
 			if (!this.isComplexNumConst) {
 				if (func2Apply.equals("None")) {
@@ -648,74 +649,74 @@ public class Julia extends FractalBase {
 		return cConst;
 	}
 	
-	private ComplexNumber computePixel(String fun, ComplexNumber z0, ComplexNumber compConst) {
-		if (this.applyCustomFormula) {
-			fun = fun.replaceAll("c", "(" + compConst.toString().replaceAll("i", "*i") + ")")
-					.replaceAll("C", "(" + compConst.toString().replaceAll("i", "*i") + ")");
-
-			return new FunctionEvaluator().evaluate(fun, z0);//, compConst);
-		}
-		return null;
-	}
-
-	private ComplexNumber computePixel(String fun, ComplexNumber z0) {
-		if (!this.applyCustomFormula) {
-			switch (fun) {
-			case "sine":
-				z0 = z0.sine(); // z0.sin();
-				break;
-			case "cosine":
-				z0 = z0.cosine(); // z0.cos();
-				break;
-			case "tan":
-				z0 = z0.tangent(); // z0.tan();
-				break;
-			case "arcsine":
-				z0 = z0.inverseSine(); // z0.sin();
-				break;
-			case "arccosine":
-				z0 = z0.inverseCosine(); // z0.cos();
-				break;
-			case "arctan":
-				z0 = z0.inverseTangent(); // z0.tan();
-				break;
-			case "reciprocal":
-				z0 = z0.reciprocal(); // z0.sin();
-				break;
-			case "reciprocalSquare":
-				z0 = (z0.reciprocal()).power(2); // z0.sin();
-				break;
-			case "square":
-				z0 = z0.power(2); // z0.sin();
-				break;
-			case "cube":
-				z0 = z0.power(3); // z0.cos();
-				break;
-			case "exponent(e)":
-				z0 = z0.exp(); // z0.tan();
-				break;
-			case "root":
-				z0 = z0.sqroot(); // z0.sin();
-				break;
-			case "cube-root":
-				z0 = z0.curoot(); // z0.cos();
-				break;
-			case "log(e)":
-				z0 = z0.ln(); // z0.tan();
-				break;
-
-			case "None":
-				z0 = z0;
-				break;
-			default:
-				z0 = z0;
-				break;
-			}// ends-switch
-		} else {
-			z0 = new FunctionEvaluator().evaluate(fun, z0);
-		}
-		return z0;
-	}
+//	private ComplexNumber computePixel(String fun, ComplexNumber z0, ComplexNumber compConst) {
+//		if (this.applyCustomFormula) {
+//			fun = fun.replaceAll("c", "(" + compConst.toString().replaceAll("i", "*i") + ")")
+//					.replaceAll("C", "(" + compConst.toString().replaceAll("i", "*i") + ")");
+//
+//			return new FunctionEvaluator().evaluate(fun, z0);//, compConst);
+//		}
+//		return null;
+//	}
+//
+//	private ComplexNumber computePixel(String fun, ComplexNumber z0) {
+//		if (!this.applyCustomFormula) {
+//			switch (fun) {
+//			case "sine":
+//				z0 = z0.sine(); // z0.sin();
+//				break;
+//			case "cosine":
+//				z0 = z0.cosine(); // z0.cos();
+//				break;
+//			case "tan":
+//				z0 = z0.tangent(); // z0.tan();
+//				break;
+//			case "arcsine":
+//				z0 = z0.inverseSine(); // z0.sin();
+//				break;
+//			case "arccosine":
+//				z0 = z0.inverseCosine(); // z0.cos();
+//				break;
+//			case "arctan":
+//				z0 = z0.inverseTangent(); // z0.tan();
+//				break;
+//			case "reciprocal":
+//				z0 = z0.reciprocal(); // z0.sin();
+//				break;
+//			case "reciprocalSquare":
+//				z0 = (z0.reciprocal()).power(2); // z0.sin();
+//				break;
+//			case "square":
+//				z0 = z0.power(2); // z0.sin();
+//				break;
+//			case "cube":
+//				z0 = z0.power(3); // z0.cos();
+//				break;
+//			case "exponent(e)":
+//				z0 = z0.exp(); // z0.tan();
+//				break;
+//			case "root":
+//				z0 = z0.sqroot(); // z0.sin();
+//				break;
+//			case "cube-root":
+//				z0 = z0.curoot(); // z0.cos();
+//				break;
+//			case "log(e)":
+//				z0 = z0.ln(); // z0.tan();
+//				break;
+//
+//			case "None":
+//				z0 = z0;
+//				break;
+//			default:
+//				z0 = z0;
+//				break;
+//			}// ends-switch
+//		} else {
+//			z0 = new FunctionEvaluator().evaluate(fun, z0);
+//		}
+//		return z0;
+//	}
 	
 	/* (non-Javadoc)
 	 * @see org.bawaweb.ui.sierpinkski.FractalBase#getFractalShapeTitle()

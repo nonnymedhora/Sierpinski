@@ -136,98 +136,121 @@ System.out.println("type---->"+(type));	*/
 				
 				switch (type) {
 					case "Reverse":
-						zx = new ComplexNumber(x0, y0);
-						zy = new ComplexNumber(y0, x0);
+						zx = this.getPixelComplexValue(x0, y0);
+						zy = this.getPixelComplexValue(y0, x0);
 						break;
 					case "Exchange":
-						zx = new ComplexNumber(x0, 0.0);
-						zy = new ComplexNumber(0.0, y0);
+						zx = this.getPixelComplexValue(x0, 0.0);
+						zy = this.getPixelComplexValue(0.0, y0);
 						break;
 					case "Single":
-						zx = new ComplexNumber(x0, y0);
-						zy = new ComplexNumber(0.0, 0.0);
+						zx = this.getPixelComplexValue(x0, y0);
+						zy = this.getPixelComplexValue(0.0, 0.0);
 						break;
 					case "Duplicate":
-						zx = zy = new ComplexNumber(x0, y0);
+						zx = zy = this.getPixelComplexValue(x0, y0);
 						break;
 					case "Exponent"	:
-						zx = new ComplexNumber(x0, 0.0).exp();
-						zy = new ComplexNumber(y0, 0.0).exp();
+						zx = this.getPixelComplexValue(x0, 0.0).exp();
+						zy = this.getPixelComplexValue(y0, 0.0).exp();
 						break;
 					case	"Power"	:
-						zx = new ComplexNumber(x0, y0).power((int)x0);
-						zy = new ComplexNumber(y0, x0).power((int)y0);
+						zx = this.getPixelComplexValue(x0, y0).power((int)x0);
+						zy = this.getPixelComplexValue(y0, x0).power((int)y0);
 						break;
 					case	"Default"	:
-						zx = new ComplexNumber(x0, 0.0);
-						zy = new ComplexNumber(y0, 0.0);
+						zx = this.getPixelComplexValue(x0, 0.0);
+						zy = this.getPixelComplexValue(y0, 0.0);
 						break;
 					default:
-						zx = new ComplexNumber(x0, 0.0);
-						zy = new ComplexNumber(y0, 0.0);
+						zx = this.getPixelComplexValue(x0, 0.0);
+						zy = this.getPixelComplexValue(y0, 0.0);
 						break;
 				}
 				
 				String pxFunc2Apply = this.useFuncPixel;
-				switch (pxFunc2Apply) {
-					case "sine"	:
-						zx = zx.sine();
-						zy = zy.sine();
-						break;
-					case "cosine" :
-						zx = zx.cosine();
-						zy = zy.cosine();
-						break;
-					case "tan" :
-						zx = zx.tan();
-						zy = zy.tan();
-						break;
-					case "arcsine"	:
-						zx = zx.inverseSine();
-						zy = zy.inverseSine();
-						break;
-					case "arccosine" :
-						zx = zx.inverseCosine();
-						zy = zy.inverseCosine();
-						break;
-					case "arctan" :
-						zx = zx.inverseTangent();
-						zy = zy.inverseTangent();
-						break;									
-					case "square"	:
-						zx = zx.power(2);
-						zy = zy.power(2);
-						break;
-					case "cube" :
-						zx = zx.power(3);
-						zy = zy.power(3);
-						break;
-					case "exponent(e)" :
-						zx = zx.exp();
-						zy = zy.exp();
-						break;
-					case "root"	:
-						zx = zx.sqroot();
-						zy = zy.sqroot();
-						break;
-					case "cube-root" :
-						zx = zx.curoot();
-						zy = zy.curoot();
-						break;
-					case "log(e)" :
-						zx = zx.ln();
-						zy = zy.ln();
-						break;	
-					case "None" :
-						zx = zx;
-						zy = zy;
-						break;
-					default:
-						zx = zx;
-						zy = zy;
-						break;
-			}// ends switch
+
+				boolean pxFuncHasConst = this.applyCustomFormula
+						&& (pxFunc2Apply.indexOf('c') > -1 || pxFunc2Apply.indexOf('C') > -1);
+				if (!pxFuncHasConst) {
+					zx = this.computePixel(pxFunc2Apply, zx);
+					zy = this.computePixel(pxFunc2Apply, zy);
+				} else {
+
+					ComplexNumber cConst = null;
+
+					if (this.isComplexNumConst || this.compConst == null) {
+						cConst = zx.plus(zy);
+						this.compConst = cConst;
+					} else if (!this.isComplexNumConst) {
+						if(this.compConst==null){System.out.println("uh--oh[poly]  this.compConst="+this.compConst+" avd this.isComplexNumConst="+this.isComplexNumConst);}
+						cConst = this.compConst;
+					}
+
+					zx = this.computePixel(pxFunc2Apply, zx, cConst);
+					zy = this.computePixel(pxFunc2Apply, zy, cConst);
 				
+				}
+//				
+//				switch (pxFunc2Apply) {
+//					case "sine"	:
+//						zx = zx.sine();
+//						zy = zy.sine();
+//						break;
+//					case "cosine" :
+//						zx = zx.cosine();
+//						zy = zy.cosine();
+//						break;
+//					case "tan" :
+//						zx = zx.tan();
+//						zy = zy.tan();
+//						break;
+//					case "arcsine"	:
+//						zx = zx.inverseSine();
+//						zy = zy.inverseSine();
+//						break;
+//					case "arccosine" :
+//						zx = zx.inverseCosine();
+//						zy = zy.inverseCosine();
+//						break;
+//					case "arctan" :
+//						zx = zx.inverseTangent();
+//						zy = zy.inverseTangent();
+//						break;									
+//					case "square"	:
+//						zx = zx.power(2);
+//						zy = zy.power(2);
+//						break;
+//					case "cube" :
+//						zx = zx.power(3);
+//						zy = zy.power(3);
+//						break;
+//					case "exponent(e)" :
+//						zx = zx.exp();
+//						zy = zy.exp();
+//						break;
+//					case "root"	:
+//						zx = zx.sqroot();
+//						zy = zy.sqroot();
+//						break;
+//					case "cube-root" :
+//						zx = zx.curoot();
+//						zy = zy.curoot();
+//						break;
+//					case "log(e)" :
+//						zx = zx.ln();
+//						zy = zy.ln();
+//						break;	
+//					case "None" :
+//						zx = zx;
+//						zy = zy;
+//						break;
+//					default:
+//						zx = zx;
+//						zy = zy;
+//						break;
+//			}// ends switch
+//				
 
 			if (zx.isNaN()||zy.isNaN()) {
 				continue;
@@ -431,6 +454,7 @@ System.out.println("type---->"+(type));	*/
 		}
 		return maxIter;
 	}
+	
 	
 
 	/*@Override
