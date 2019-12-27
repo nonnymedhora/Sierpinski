@@ -60,11 +60,11 @@ public class FunctionEvaluator {
 		 * message. Otherwise, compute f(x) and return the result.
 		 */
 		if (x == (Double.NaN) || y == (Double.NaN) || z == (Double.NaN)) {
-			System.out.println("Err___line2");
+			/*System.out.println("Err___line2");*/
 			return Double.NaN;
 		}
 		if (funcString == null || funcString.length() == 0) {
-			System.out.println("Err___line");
+			/*System.out.println("Err___line");*/
 			return 0.0;
 		}
 		
@@ -95,10 +95,10 @@ public class FunctionEvaluator {
 		
 		valR = expression.value(xR,yR,zR);
 		
-		if (Double.isNaN(valR))
-			System.out.println("f("+x+","+y+"," + z + ") is undefined.");
-		else {
-			/* System.out.println("f(" + z + ") = " + val); */}
+//		if (Double.isNaN(valR))
+//			System.out.println("f("+x+","+y+"," + z + ") is undefined.");
+//		else {
+//			/* System.out.println("f(" + z + ") = " + val); */}
 		return valR;
 
 	}
@@ -106,7 +106,7 @@ public class FunctionEvaluator {
 	public ComplexNumber evaluate(String funcString, final ComplexNumber z0) {
 		//	System.out.println("\nf(z) = " + funcString.trim());
 		if (funcString.length() == 0) {
-			System.out.println("Err___line");
+			/*System.out.println("Err___line");*/
 			return null;
 		}
 
@@ -115,7 +115,7 @@ public class FunctionEvaluator {
 		 * message. Otherwise, compute f(x) and return the result.
 		 */
 		if (z0 == null || z0.isNaN()) {
-			System.out.println("Err___line2");
+			/*System.out.println("Err___line2");*/
 			return new ComplexNumber(Double.NaN, Double.NaN);
 		}
 		
