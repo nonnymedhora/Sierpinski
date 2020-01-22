@@ -545,7 +545,7 @@ public class Mandelbrot extends FractalBase {
 		}
 		
 		boolean pxFuncHasConst = this.applyCustomFormula
-				&& (pxFunc2Apply.indexOf('c') > -1 || pxFunc2Apply.indexOf('C') > -1);
+				&&  this.checkForConstInAppliedFormula(pxFunc2Apply);//(pxFunc2Apply.indexOf('c') > -1 || pxFunc2Apply.indexOf('C') > -1);
 
 		/*z0 = this.computePixel(pxFunc2Apply, z0);*/
 

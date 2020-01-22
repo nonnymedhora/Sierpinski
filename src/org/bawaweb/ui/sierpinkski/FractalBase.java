@@ -632,12 +632,49 @@ public abstract class FractalBase extends JFrame implements Runnable {
 
 	protected ComplexNumber computePixel(String fun, ComplexNumber z0, ComplexNumber compConst) {
 		if (this.applyCustomFormula) {
+			fun = fun.replaceAll("cos","kos")
+					.replaceAll("cot", "kot")
+					.replaceAll("sec", "sek")
+					.replaceAll("csc", "ksk")
+					.replaceAll("arcsin", "arksin")
+					.replaceAll("arccos", "arkkos")
+					.replaceAll("arctan","arktan");
+			
 			fun = fun.replaceAll("c", "(" + compConst.toString().replaceAll("i", "*i") + ")")
 					.replaceAll("C", "(" + compConst.toString().replaceAll("i", "*i") + ")");
 
+			fun = fun.replaceAll("kos","cos")
+					.replaceAll("kot", "cot")
+					.replaceAll("sek", "sec")
+					.replaceAll("ksk", "csc")
+					.replaceAll("arksin", "arcsin")
+					.replaceAll("arkkos", "arccos")
+					.replaceAll("arktan","arctan");
+			
 			return new FunctionEvaluator().evaluate(fun, z0);//, compConst);
 		}
 		return null;
+	}
+	
+	protected boolean checkForConstInAppliedFormula(String fun2Apply) {
+		boolean fun2ApplyHasC = false;
+		
+		String fun = fun2Apply.toLowerCase();
+		if (this.applyCustomFormula) {
+			//	Replace 'c' with 'k' in functionNames
+			fun = fun.replaceAll("cos","kos")
+					.replaceAll("cot", "kot")
+					.replaceAll("sec", "sek")
+					.replaceAll("csc", "ksk")
+					.replaceAll("arcsin", "arksin")
+					.replaceAll("arccos", "arkkos")
+					.replaceAll("arctan","arktan");
+			// does 'c' still exist in formula2Apply
+			fun2ApplyHasC = fun.indexOf('c') > -1;
+		}
+
+		return fun2ApplyHasC ;
+		
 	}
 	
 	protected ComplexNumber getPixelComplexValue(double x, double y) {

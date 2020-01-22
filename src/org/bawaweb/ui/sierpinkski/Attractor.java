@@ -342,10 +342,10 @@ public abstract class Attractor {
 		for (int i = 0; i < this.maxIter; i++) {
 			Tuple3d existingTuple = tempDummyTuple;
 
-			if (! (existingTuple.x == Double.NaN || existingTuple.y == Double.NaN || existingTuple.z == Double.NaN)) {
+			if (! (Double.isNaN(existingTuple.x) || Double.isNaN(existingTuple.y) || Double.isNaN(existingTuple.z) )) {
 				Tuple3d updatedTuple = this.update(existingTuple, dt);
 				
-				if (updatedTuple.x == Double.NaN || updatedTuple.y == Double.NaN || updatedTuple.z == Double.NaN) {
+				if (Double.isNaN(updatedTuple.x) || Double.isNaN(updatedTuple.y) || Double.isNaN(updatedTuple.z)) {
 					return spaceMap;
 				}
 

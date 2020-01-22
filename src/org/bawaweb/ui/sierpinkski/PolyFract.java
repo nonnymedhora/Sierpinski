@@ -171,7 +171,7 @@ System.out.println("type---->"+(type));	*/
 				String pxFunc2Apply = this.useFuncPixel;
 
 				boolean pxFuncHasConst = this.applyCustomFormula
-						&& (pxFunc2Apply.indexOf('c') > -1 || pxFunc2Apply.indexOf('C') > -1);
+						&&  this.checkForConstInAppliedFormula(pxFunc2Apply);//(pxFunc2Apply.indexOf('c') > -1 || pxFunc2Apply.indexOf('C') > -1);
 				if (!pxFuncHasConst) {
 					zx = this.computePixel(pxFunc2Apply, zx);
 					zy = this.computePixel(pxFunc2Apply, zy);

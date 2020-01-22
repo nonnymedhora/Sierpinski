@@ -36,6 +36,12 @@ public class FunctionEvaluator {
 		if (t3d.x == Double.NaN || t3d.y == Double.NaN || t3d.z == Double.NaN) {
 			return Double.NaN;
 		}
+		if ( Double.isNaN(t3d.x) || Double.isNaN(t3d.y) || Double.isNaN(t3d.z)) {
+			return Double.NaN;
+		}
+		if ( Double.isInfinite(t3d.x) || Double.isInfinite(t3d.y) || Double.isInfinite(t3d.z)) {
+			return Double.NaN;
+		}
 		if (funcString.length() == 0) {
 			System.out.println("Err___line");
 			return 0.0;

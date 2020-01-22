@@ -382,7 +382,7 @@ public class Julia extends FractalBase {
 		String pxFunc2Apply = this.useFuncPixel;
 		
 		boolean pxFuncHasConst = this.applyCustomFormula
-				&& (pxFunc2Apply.indexOf('c') > -1 || pxFunc2Apply.indexOf('C') > -1);
+				&& this.checkForConstInAppliedFormula(pxFunc2Apply);//(pxFunc2Apply.indexOf('c') > -1 || pxFunc2Apply.indexOf('C') > -1);
 
 		if (this.isSavePixelInfo2File()) {
 			if (!this.isComplexNumConst) {
