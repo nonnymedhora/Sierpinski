@@ -59,6 +59,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileSystemView;
 
 
@@ -583,6 +584,9 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private boolean diyJuliaGen = false;
 	private JButton diyJuliaGenBu = new JButton("Generate Julia");
+	private JButton diyJuliaGen2FolderBu = new JButton("Generate Julia 2Folder");
+	private String diyJuliaGen2FolderPath = null;
+	private boolean diyJuliaGen2Folder = false;
 	///////////////////////////////////////////////////////////////////////////
 	//	Generator	Mandelbrot
 
@@ -1906,8 +1910,9 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaPanel.add(this.diyJuliaGenVaryApplyFormulaTxtAreaSpane);		
 		
 		this.diyJuliaGenBu.setVisible(false);
-		
+		this.diyJuliaGen2FolderBu.setVisible(false);
 		this.diyJuliaPanel.add(this.diyJuliaGenBu);
+		this.diyJuliaPanel.add(this.diyJuliaGen2FolderBu);
 	}
 
 	private void createDiyMandelbrotPanel() {
@@ -4837,11 +4842,21 @@ class SierpinskiComboPanel extends JPanel {
 		
 		subDirName = subDirName.substring(0, subDirName.length() - 1) + "]_" + System.currentTimeMillis();
 		
-		File subDir = new File("images_gen\\" + subDirName);
+		File subDir = null;
+		if (!diyJuliaGen2Folder && diyJuliaGen2FolderPath == null) {
+			subDir = new File("images_gen\\" + subDirName);
+
+		} else {
+			subDir = new File(diyJuliaGen2FolderPath+"\\"+subDirName);
+		}
+		
 		if (!subDir.exists()) {
 			subDir.mkdir();
+			//check-again-for-create
+			System.out.println("subDir-did-NOTExist.....created_using_mkdir--now-checking");
+			System.out.println("subDir_exists?....."+subDir.exists());
 		}
-
+		
 		File subDirDetail = new File(subDir, "Detail");
 		if (!subDirDetail.exists()) {
 			subDirDetail.mkdir();
@@ -4970,10 +4985,10 @@ class SierpinskiComboPanel extends JPanel {
 			String imgBaseInfo = this.getImgBaseInfo();
 			BufferedImage dataInfoImg = this.createStringImage(imgBaseInfo);
 
-			String imageFilePath = "images_gen\\" + subDirName + "\\" + "[" + extraInfo + "]_" + System.currentTimeMillis() + ".png";
+			String imageFilePath = subDir+File.separator/*+"images_gen\\" + subDirName + "\\"*/ + "[" + extraInfo + "]_" + System.currentTimeMillis() + ".png";
 			File outputfile = new File(imageFilePath);
 
-			String imageDetailFilePath = "images_gen\\" + subDirName + "\\Detail\\" + "[" + extraInfo + "]_Detail_" + System.currentTimeMillis() + ".png";
+			String imageDetailFilePath = subDir+File.separator/*+"images_gen\\" + subDirName + "\\"*/ + "\\Detail\\" + "[" + extraInfo + "]_Detail_" + System.currentTimeMillis() + ".png";
 			File outputDetailfile = new File(imageDetailFilePath);
 
 			try {
@@ -10682,7 +10697,8 @@ System.out.println("space2DIs __ "+space2D);*/
 					diyJuliaFieldZSqRB.setEnabled(false);
 					diyJuliaFieldClassicRB.setEnabled(false);
 					
-					diyJuliaGenBu.setVisible(true);					
+					diyJuliaGenBu.setVisible(true);	
+					diyJuliaGen2FolderBu.setVisible(true);
 
 					/*diyJuliaRealTf.setEnabled(false);
 					diyJuliaImgTf.setEnabled(false);
@@ -10752,6 +10768,7 @@ System.out.println("space2DIs __ "+space2D);*/
 					diyJuliaFieldClassicRB.setEnabled(true);
 					
 					diyJuliaGenBu.setVisible(false);
+					diyJuliaGen2FolderBu.setVisible(false);
 					
 
 					/*diyJuliaRealTf.setEnabled(true);
@@ -11128,6 +11145,40 @@ System.out.println("space2DIs __ "+space2D);*/
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Runtime.getRuntime().gc();
+				doJuliaGenerateCommand();				
+			}});
+		
+		this.diyJuliaGen2FolderBu.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Runtime.getRuntime().gc();
+				diyJuliaGen2Folder = true;
+				
+				// create an object of JFileChooser class 
+				JFileChooser chooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); 
+				
+				chooser.setFileFilter( new FileFilter(){
+	                @Override
+	                public boolean accept(File f) {
+	                    return f.isDirectory();
+	                }
+	                @Override
+	                public String getDescription() {
+	                    return "Any folder";
+	                }
+	            });
+
+				
+				// invoke the showsSaveDialog function to show the save dialog
+				int r = chooser.showSaveDialog(null);
+				
+				// if the user selects a file
+				if (r == JFileChooser.APPROVE_OPTION) {
+					diyJuliaGen2FolderPath  = chooser.getSelectedFile().getAbsolutePath();
+//					doSaveImageCommand("save2File");
+				}
+				
 				doJuliaGenerateCommand();				
 			}});
 		//////////////////////////endsGeneratorListeners/////////////////////////
