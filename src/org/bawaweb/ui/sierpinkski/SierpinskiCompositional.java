@@ -694,6 +694,9 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private boolean diyMandGen = false;
 	private JButton diyMandGenBu = new JButton("Generate Mandelbrot");
+	private JButton diyMandGen2FolderBu = new JButton("Generate Mandelbrot 2Folder");
+	private String diyMandGen2FolderPath = null;
+	private boolean diyMandGen2Folder = false;
 	///////////////////////////////////////////////////////////////////////////
 //	Generator	PolyFract
 
@@ -802,6 +805,9 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private boolean polyGen = false;
 	private JButton polyGenBu = new JButton("Generate PolyFractal");
+	private JButton diyPolyGen2FolderBu = new JButton("Generate PolyelFract 2Folder");
+	private String diyPolyGen2FolderPath = null;
+	private boolean diyPolyGen2Folder = false;
 	///////////////////////////////////////////////////////////////////////////
 	
 	///////////ends	Generator//////////////////////////////////////////////////
@@ -1669,9 +1675,11 @@ class SierpinskiComboPanel extends JPanel {
 		this.polyGenVaryApplyFormulaTxtAreaSpane.setVisible(false);
 		this.polyOptionsPanel.add(this.polyGenVaryApplyFormulaTxtAreaSpane);	
 		
-		this.polyGenBu.setVisible(false);
 		
+		this.polyGenBu.setVisible(false);
+		this.diyPolyGen2FolderBu.setVisible(false);
 		this.polyOptionsPanel.add(this.polyGenBu);
+		this.polyOptionsPanel.add(this.diyPolyGen2FolderBu);
 	}
 
 	
@@ -2086,8 +2094,9 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyMandPanel.add(this.diyMandGenVaryApplyFormulaTxtAreaSpane);	
 		
 		this.diyMandGenBu.setVisible(false);
-		
+		this.diyMandGen2FolderBu.setVisible(false);
 		this.diyMandPanel.add(this.diyMandGenBu);
+		this.diyMandPanel.add(this.diyMandGen2FolderBu);
 	}
 
 	private void createMandelbrotPanel() {
@@ -3794,9 +3803,23 @@ class SierpinskiComboPanel extends JPanel {
 		
 		subDirName = subDirName.substring(0, subDirName.length() - 1) + "]_" + System.currentTimeMillis();
 		
-		File subDir = new File("images_gen\\" + subDirName);
+		/*File subDir = new File("images_gen\\" + subDirName);
 		if (!subDir.exists()) {
 			subDir.mkdir();
+		}*/
+		File subDir = null;
+		if (!diyMandGen2Folder && diyMandGen2FolderPath == null) {
+			subDir = new File("images_gen\\" + subDirName);
+
+		} else {
+			subDir = new File(diyMandGen2FolderPath+"\\"+subDirName);
+		}
+		
+		if (!subDir.exists()) {
+			subDir.mkdir();
+			//check-again-for-create
+			System.out.println("subDir-did-NOTExist.....created_using_mkdir--now-checking");
+			System.out.println("subDir_exists?....."+subDir.exists());
 		}
 
 		File subDirDetail = new File(subDir, "Detail");
@@ -3926,10 +3949,16 @@ class SierpinskiComboPanel extends JPanel {
 			String imgBaseInfo = this.getImgBaseInfo();
 			BufferedImage dataInfoImg = this.createStringImage(imgBaseInfo);
 
-			String imageFilePath = "images_gen\\" + subDirName + "\\" + "[" + extraInfo + "]_" + System.currentTimeMillis() + ".png";
+			/*String imageFilePath = "images_gen\\" + subDirName + "\\" + "[" + extraInfo + "]_" + System.currentTimeMillis() + ".png";
 			File outputfile = new File(imageFilePath);
 
 			String imageDetailFilePath = "images_gen\\" + subDirName + "\\Detail\\" + "[" + extraInfo + "]_Detail_" + System.currentTimeMillis() + ".png";
+			File outputDetailfile = new File(imageDetailFilePath);*/
+			
+			String imageFilePath = subDir+File.separator/*+"images_gen\\" + subDirName + "\\"*/ + "[" + extraInfo + "]_" + System.currentTimeMillis() + ".png";
+			File outputfile = new File(imageFilePath);
+
+			String imageDetailFilePath = subDir+File.separator/*+"images_gen\\" + subDirName + "\\"*/ + "\\Detail\\" + "[" + extraInfo + "]_Detail_" + System.currentTimeMillis() + ".png";
 			File outputDetailfile = new File(imageDetailFilePath);
 
 			try {
@@ -4325,9 +4354,24 @@ class SierpinskiComboPanel extends JPanel {
 
 		subDirName = subDirName.substring(0, subDirName.length() - 1) + "]_" + System.currentTimeMillis();
 
-		File subDir = new File("images_gen\\" + subDirName);
+/*		File subDir = new File("images_gen\\" + subDirName);
 		if (!subDir.exists()) {
 			subDir.mkdir();
+		}*/
+		
+		File subDir = null;
+		if (!diyPolyGen2Folder && diyPolyGen2FolderPath == null) {
+			subDir = new File("images_gen\\" + subDirName);
+
+		} else {
+			subDir = new File(diyPolyGen2FolderPath+"\\"+subDirName);
+		}
+		
+		if (!subDir.exists()) {
+			subDir.mkdir();
+			//check-again-for-create
+			System.out.println("subDir-did-NOTExist.....created_using_mkdir--now-checking");
+			System.out.println("subDir_exists?....."+subDir.exists());
 		}
 
 		File subDirDetail = new File(subDir, "Detail");
@@ -4453,13 +4497,20 @@ class SierpinskiComboPanel extends JPanel {
 			String imgBaseInfo = this.getImgBaseInfo();
 			BufferedImage dataInfoImg = this.createStringImage(imgBaseInfo);
 
-			String imageFilePath = "images_gen\\" + subDirName + "\\" + "[" + extraInfo + "]_"
+			/*String imageFilePath = "images_gen\\" + subDirName + "\\" + "[" + extraInfo + "]_"
 					+ System.currentTimeMillis() + ".png";
 			File outputfile = new File(imageFilePath);
 
 			String imageDetailFilePath = "images_gen\\" + subDirName + "\\Detail\\" + "[" + extraInfo + "]_Detail_"
 					+ System.currentTimeMillis() + ".png";
+			File outputDetailfile = new File(imageDetailFilePath);*/
+			
+			String imageFilePath = subDir+File.separator/*+"images_gen\\" + subDirName + "\\"*/ + "[" + extraInfo + "]_" + System.currentTimeMillis() + ".png";
+			File outputfile = new File(imageFilePath);
+
+			String imageDetailFilePath = subDir+File.separator/*+"images_gen\\" + subDirName + "\\"*/ + "\\Detail\\" + "[" + extraInfo + "]_Detail_" + System.currentTimeMillis() + ".png";
 			File outputDetailfile = new File(imageDetailFilePath);
+
 
 			try {
 				ImageIO.write(polys[i].getBufferedImage(), "png", outputfile);
@@ -11387,7 +11438,8 @@ System.out.println("space2DIs __ "+space2D);*/
 					diyMandUseDiffCb.setEnabled(false);
 					invertPixelsCb.setEnabled(false);
 					
-					diyMandGenBu.setVisible(true);					
+					diyMandGenBu.setVisible(true);	
+					diyMandGen2FolderBu.setVisible(true);
 
 					/*diyMandRealTf.setEnabled(false);
 					diyMandImgTf.setEnabled(false);
@@ -11451,7 +11503,8 @@ System.out.println("space2DIs __ "+space2D);*/
 					diyMandUseDiffCb.setEnabled(true);
 					invertPixelsCb.setEnabled(true);
 					
-					diyMandGenBu.setVisible(false);
+					diyMandGenBu.setVisible(false);	
+					diyMandGen2FolderBu.setVisible(false);
 					
 
 					/*diyMandRealTf.setEnabled(true);
@@ -11830,6 +11883,41 @@ System.out.println("space2DIs __ "+space2D);*/
 				Runtime.getRuntime().gc();
 				doMandelbrotGenerateCommand();				
 			}});
+		
+		this.diyMandGen2FolderBu.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Runtime.getRuntime().gc();
+				diyMandGen2Folder = true;
+				
+				// create an object of JFileChooser class 
+				JFileChooser chooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); 
+				
+				chooser.setFileFilter( new FileFilter(){
+	                @Override
+	                public boolean accept(File f) {
+	                    return f.isDirectory();
+	                }
+	                @Override
+	                public String getDescription() {
+	                    return "Any folder";
+	                }
+	            });
+
+				
+				// invoke the showsSaveDialog function to show the save dialog
+				int r = chooser.showSaveDialog(null);
+				
+				// if the user selects a file
+				if (r == JFileChooser.APPROVE_OPTION) {
+					diyMandGen2FolderPath  = chooser.getSelectedFile().getAbsolutePath();
+//					doSaveImageCommand("save2File");
+				}
+				
+				doMandelbrotGenerateCommand();				
+			}});
+		
 		//////////////////////////endsGeneratorListeners/////////////////////////
 		/////////////////////////////////////////////////////////////////////////
 	}
@@ -12032,7 +12120,8 @@ private void setupPolyGeneratorListeners() {
 					polyUseDiffCb.setEnabled(false);
 					invertPixelsCb.setEnabled(false);
 					
-					polyGenBu.setVisible(true);					
+					polyGenBu.setVisible(true);	
+					diyPolyGen2FolderBu.setVisible(true);
 
 					/*polyRealTf.setEnabled(false);
 					polyImgTf.setEnabled(false);
@@ -12098,6 +12187,7 @@ private void setupPolyGeneratorListeners() {
 					invertPixelsCb.setEnabled(true);
 					
 					polyGenBu.setVisible(false);
+					diyPolyGen2FolderBu.setVisible(false);
 					
 
 					/*polyRealTf.setEnabled(true);
@@ -12488,6 +12578,41 @@ private void setupPolyGeneratorListeners() {
 				Runtime.getRuntime().gc();
 				doPolyGenerateCommand();				
 			}});
+		
+		this.diyPolyGen2FolderBu.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Runtime.getRuntime().gc();
+				diyPolyGen2Folder = true;
+				
+				// create an object of JFileChooser class 
+				JFileChooser chooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); 
+				
+				chooser.setFileFilter( new FileFilter(){
+	                @Override
+	                public boolean accept(File f) {
+	                    return f.isDirectory();
+	                }
+	                @Override
+	                public String getDescription() {
+	                    return "Any folder";
+	                }
+	            });
+
+				
+				// invoke the showsSaveDialog function to show the save dialog
+				int r = chooser.showSaveDialog(null);
+				
+				// if the user selects a file
+				if (r == JFileChooser.APPROVE_OPTION) {
+					diyPolyGen2FolderPath  = chooser.getSelectedFile().getAbsolutePath();
+//					doSaveImageCommand("save2File");
+				}
+				
+				doPolyGenerateCommand();				
+			}});
+		
 		//////////////////////////endsGeneratorListeners/////////////////////////
 		/////////////////////////////////////////////////////////////////////////
 	}
