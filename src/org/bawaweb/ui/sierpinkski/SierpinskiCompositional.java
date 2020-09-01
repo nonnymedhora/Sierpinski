@@ -13375,6 +13375,14 @@ private void setupPolyGeneratorListeners() {
 			this.attrCustomFormulaStrDeltaZLabel.setVisible(true);
 			this.attrCustom_DeltaZFormula_tf.setVisible(true);
 			
+			this.attractorTimeInvariantCb.setEnabled(true);
+			this.attractorTimeInvariantCb.setSelected(false);
+			this.isAttractorTimeInvariant = false;
+			
+			this.attractorDimChoiceCb.setEnabled(true);
+			this.attractorDimChoiceCb.setSelected(true);
+			this.isAttractorDimSpace3D = true;
+			
 			this.setupAttractorParamChoices();
 		} else {
 			this.attrCustomFormulaStrLabel.setVisible(false);
@@ -13438,6 +13446,15 @@ private void setupPolyGeneratorListeners() {
 				this.attr2ColorChooserBu.setEnabled(false);
 				this.addAttrBu.setEnabled(false);
 			}
+			
+			this.attractorTimeInvariantCb.setEnabled(false);
+			this.attractorTimeInvariantCb.setSelected(false);
+			this.isAttractorTimeInvariant = false;
+			
+			this.attractorDimChoiceCb.setEnabled(false);
+			this.attractorDimChoiceCb.setSelected(true);
+			this.isAttractorDimSpace3D = true;
+			
 		} else if (this.attractorSelectionChoice.equals("aizawa")) {
 			this.attrAizawaALabel.setVisible(true);
 			this.attrAizawaA_tf.setVisible(true);
@@ -13483,6 +13500,17 @@ private void setupPolyGeneratorListeners() {
 				this.attr2ColorChooserBu.setEnabled(false);
 				this.addAttrBu.setEnabled(false);
 			}
+			
+			
+
+			this.attractorTimeInvariantCb.setEnabled(false);
+			this.attractorTimeInvariantCb.setSelected(true);
+			this.isAttractorTimeInvariant = true;
+			
+			this.attractorDimChoiceCb.setEnabled(false);
+			this.attractorDimChoiceCb.setSelected(true);
+			this.isAttractorDimSpace3D = true;
+			
 		} else if (this.attractorSelectionChoice.equals("dejong")) {
 			this.attrDeJongALabel.setVisible(true);
 			this.attrDeJongA_tf.setVisible(true);
@@ -13529,7 +13557,16 @@ private void setupPolyGeneratorListeners() {
 				this.addAttrBu.setEnabled(false);
 			}
 
+			this.attractorTimeInvariantCb.setEnabled(false);
+			this.attractorTimeInvariantCb.setSelected(true);
 			this.isAttractorTimeInvariant = true;
+			
+			this.attractorDimChoiceCb.setEnabled(false);
+			this.attractorDimChoiceCb.setSelected(false);
+			this.isAttractorDimSpace3D = false;
+			
+			
+			
 		} else if (this.attractorSelectionChoice.equals("custom")) {
 			this.attrLorenzSigmaLabel.setVisible(false);
 			this.attrLorenzSigma_tf.setVisible(false);
