@@ -51,7 +51,7 @@ public class ApollonianTriangleNetwork extends FractalBase {
 			Colors.GREEN.getColor(),
 			Colors.YELLOW.getColor(),		//ORANGE
 			Colors.MAGENTA.getColor(),	//YELLOW
-			Colors.ORANGE.getColor(),		//PINK
+			Colors.RED.getColor(),		//PINK
 			Colors.CYAN.getColor(),			//MAGENTA
 			Colors.PINK.getColor()
 			
@@ -124,9 +124,10 @@ public class ApollonianTriangleNetwork extends FractalBase {
 	}
 
 	private void drawApollonianTriangleNetwork(final Graphics2D g, final int d, final Point p1, final Point p2, final Point p3) {
-		g.setColor(Color.BLACK);
+		g.setColor(TriangleColorPalette[runCount+2]);
+		//g.setColor(Color.BLACK);
 		if (d == 0) { // depth is 0, draw the triangle
-			g.setStroke(new BasicStroke(1));
+			g.setStroke(new BasicStroke(2));
 			this.drawLine(g, p1, p2);
 			this.drawLine(g, p2, p3);
 			this.drawLine(g, p3, p1);
