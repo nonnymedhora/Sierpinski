@@ -389,7 +389,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 					depth += 1;
 					Thread.sleep(3000);
 					generate(depth);
-					run();
+//					run();
 				}
 			} catch (InterruptedException ex) {
 			}
