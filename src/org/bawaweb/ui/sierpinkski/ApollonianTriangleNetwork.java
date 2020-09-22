@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.geom.Path2D;
 import java.util.Properties;
 import java.util.Random;
 
@@ -128,23 +129,15 @@ public class ApollonianTriangleNetwork extends FractalBase {
 		//g.setColor(Color.BLACK);
 		if (d == 0) { // depth is 0, draw the triangle
 			g.setStroke(new BasicStroke(2));
-			this.drawLine(g, p1, p2);
-			this.drawLine(g, p2, p3);
-			this.drawLine(g, p3, p1);
+			Triangle tBase = new Triangle(p1, p2, p3);
+			tBase.draw(g);
 			return;
 		}
 
 		Point randomPt = this.randomInnerPoint(g, p1, p2, p3);
-
-
 		Triangle t1 = new Triangle(p1, p2, randomPt);
 		Triangle t2 = new Triangle(p2, p3, randomPt);
 		Triangle t3 = new Triangle(p1, p3, randomPt);
-
-		/*g.setColor(Color.RED);
-		t1.draw(g);
-		t2.draw(g);
-		t3.draw(g);*/
 
 		this.drawApollonianTriangleNetwork(g, d - 1, t1.p1, t1.p2, t1.p3);
 		this.drawApollonianTriangleNetwork(g, d - 1, t2.p1, t2.p2, t2.p3);
@@ -214,12 +207,6 @@ System.out.println("randInnrPt = "+randInnrPt);
 			@Override
 			public void run() {
 				final ApollonianTriangleNetwork apollonianTriangleNetwork = new ApollonianTriangleNetwork();
-				/*frame.setTitle(frame.getFractalShapeTitle());
-				frame.setSize(FractalBase.WIDTH, FractalBase.HEIGHT);
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame.setResizable(false);
-				frame.setVisible(true);
-				*/
 				
 				final FractalBase frame = apollonianTriangleNetwork;
 				
@@ -229,10 +216,7 @@ System.out.println("randInnrPt = "+randInnrPt);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setResizable(false);
 				frame.setVisible(true);
-//				frame.depth = 3;
 				new Thread(frame).start();
-				
-
 			}
 		});
 	}
@@ -266,6 +250,21 @@ class Triangle {
 		g.drawLine(this.p1.x, this.p1.y, this.p2.x, this.p2.y);
 		g.drawLine(this.p2.x, this.p2.y, this.p3.x, this.p3.y);
 		g.drawLine(this.p1.x, this.p1.y, this.p3.x, this.p3.y);
+	}
+	
+	
+	protected void fill(Graphics2D g) {
+		Path2D myPath = this.getTrianglePath();
+		g.fill(myPath);
+	}
+	
+	private Path2D getTrianglePath() {
+		Path2D myPath = new Path2D.Double();
+		myPath.moveTo(this.p1.x, this.p1.y);
+		myPath.lineTo(this.p2.x, this.p2.y);
+		myPath.lineTo(this.p3.x, this.p3.y);
+		myPath.closePath();
+		return myPath;
 	}
 	
 	
