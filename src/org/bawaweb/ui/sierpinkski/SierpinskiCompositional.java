@@ -271,6 +271,10 @@ class SierpinskiComboPanel extends JPanel {
 	//	for	Apollo
 	private final String[] curvOptions = new String[] { A1, A2, A3, A4, A5, A6 };
 	private final JComboBox<String> curvCombos = new JComboBox<String>(curvOptions);
+	
+	private final JCheckBox apolloTriangleCb = new JCheckBox("Apollonian Triangle");
+	private final JCheckBox apolloTriangleUseCentroidCb = new JCheckBox("Apollonian TriangleUseCentroid");
+	
 
 	// Fractal Art Options
 	private JPanel fannyOptionsPanel 	= new JPanel(new FlowLayout(),true);
@@ -2203,6 +2207,9 @@ class SierpinskiComboPanel extends JPanel {
 
 		this.apolloOptionsPanel.add(new JLabel("CurvatureOptions:"));
 		this.apolloOptionsPanel.add(this.curvCombos);
+		
+		this.apolloOptionsPanel.add(this.apolloTriangleCb);
+		this.apolloOptionsPanel.add(this.apolloTriangleUseCentroidCb);
 
 		this.apolloOptionsPanel.setVisible(false);
 		this.add(this.apolloOptionsPanel);
@@ -8115,9 +8122,18 @@ class SierpinskiComboPanel extends JPanel {
 		} else if (choice.equals(SIERPINSKI_SQUARES)) {
 			ff = new SierpinskiSquare();
 		} else if (choice.equals(APOLLONIAN_CIRCLES)) {
-			ff = new ApollonianCircles(cChoices, mXt);
 			
-//			boolean useCP = this.colorChoice.equals("ColorPalette");			
+			if (!this.apolloTriangleCb.isSelected()) {
+				ff = new ApollonianCircles(cChoices, mXt);
+			} else {
+				 
+				if (!this.apolloTriangleUseCentroidCb.isSelected()) {
+					ff = new ApollonianTriangleNetwork("useRandom");
+				}else{
+					ff = new ApollonianTriangleNetwork("useCentroid");
+				}
+			}
+			//			boolean useCP = this.colorChoice.equals("ColorPalette");			
 			ff.setColorChoice(this.colorChoice);//		ff.setUseColorPalette(useCP);
 		} else if (choice.equals(SAMPLE)) {
 			ff = new FractalBaseSample();
@@ -12876,11 +12892,26 @@ private void setupPolyGeneratorListeners() {
 			@SuppressWarnings("unchecked")
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JComboBox<String> cb = (JComboBox<String>)e.getSource();
-				String curvComboOption = (String)cb.getSelectedItem();
-				doSelectCurvCombosCommand(curvComboOption);				
-			}}
-		);		
+				if(!apolloTriangleCb.isSelected()){
+					JComboBox<String> cb = (JComboBox<String>)e.getSource();
+					String curvComboOption = (String)cb.getSelectedItem();
+					doSelectCurvCombosCommand(curvComboOption);
+				}
+			}
+			});	
+		
+		
+		this.apolloTriangleCb.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(apolloTriangleCb.isSelected()){
+					curvCombos.setEnabled(false);
+				}else{
+					curvCombos.setEnabled(true);
+				}
+			}
+			});
 		
 	}
 	

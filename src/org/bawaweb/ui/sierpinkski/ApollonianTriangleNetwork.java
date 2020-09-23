@@ -58,12 +58,18 @@ public class ApollonianTriangleNetwork extends FractalBase {
 			
 			
 	};
-	
+	private String mode = "useRandom";
 	private int runCount;
 
 	public ApollonianTriangleNetwork() {
 		super();
 		runCount = 1;
+	}
+
+	public ApollonianTriangleNetwork(String m) {
+		super();
+		runCount=1;
+		this.mode=m;
 	}
 
 	/* (non-Javadoc)
@@ -79,11 +85,11 @@ public class ApollonianTriangleNetwork extends FractalBase {
 	
 	private Image createApollonianTriangleNetwork(final Graphics2D g, final int d) {
 		// Clear the frame
-//		g.setColor(Color.BLUE);
+		g.setColor(Color.BLUE);
 		/*if(runCount>4)
 			return this.bufferedImage;*/
 		g.setColor(TriangleColorPalette[runCount]);
-//		g.setColor(new Color((int)Math.random()*256,(int)Math.random()*256,(int)Math.random()*256));
+
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
 		Point p1, p2, p3 = null;
@@ -94,30 +100,31 @@ public class ApollonianTriangleNetwork extends FractalBase {
 
 		Triangle tBase = new Triangle(p1, p2, p3);
 		// Draw ApollonianTriangleNetwork
-//		this.drawApollonianTriangleNetwork(g, depth, tBase);// p1, p2, p3);
-		this.drawApollonianTriangleNetwork(g, depth,  p1, p2, p3);
+		this.drawApollonianTriangleNetwork(g, depth, tBase);	//Uses Triangle
+//		this.drawApollonianTriangleNetwork(g, depth,  p1, p2, p3);	//Uses Point
 
 		return this.bufferedImage;
-
 	}
 
 	private void drawApollonianTriangleNetwork(Graphics2D g, int d, Triangle tri) {
-		g.setColor(Color.BLACK);
+		g.setColor(TriangleColorPalette[runCount+1]);//(Color.BLACK);
 		if (d == 0) { // depth is 0, draw the triangle
 			g.setStroke(new BasicStroke(1));
 			tri.draw(g);
 			return;
 		}
-		Point p1 = tri.p1;
-		Point p2 = tri.p1;
-		Point p3 = tri.p3;
-		
-		Point randomPt = this.randomInnerPoint(g, p1, p2, p3);
+		Point innerPt;
+		if (this.mode.equalsIgnoreCase("useCentroid")) {
+			innerPt = tri.centroid();
+		} else if (this.mode.equalsIgnoreCase("useRandom")) {
+			innerPt = this.randomInnerPoint(g, tri);
+		} else {
+			innerPt = this.randomInnerPoint(g, tri);
+		}
 
-
-		Triangle t1 = new Triangle(p1, p2, randomPt);
-		Triangle t2 = new Triangle(p2, p3, randomPt);
-		Triangle t3 = new Triangle(p1, p3, randomPt);
+		Triangle t1 = new Triangle(tri.p1, tri.p2, innerPt);
+		Triangle t2 = new Triangle(tri.p2, tri.p3, innerPt);
+		Triangle t3 = new Triangle(tri.p1, tri.p3, innerPt);
 		
 		this.drawApollonianTriangleNetwork(g, d - 1, t1);
 		this.drawApollonianTriangleNetwork(g, d - 1, t2);
@@ -133,6 +140,8 @@ public class ApollonianTriangleNetwork extends FractalBase {
 			tBase.draw(g);
 			return;
 		}
+		
+//		Point randomPt = new Triangle(p1,p2,p3).centroid();
 
 		Point randomPt = this.randomInnerPoint(g, p1, p2, p3);
 		Triangle t1 = new Triangle(p1, p2, randomPt);
@@ -143,6 +152,33 @@ public class ApollonianTriangleNetwork extends FractalBase {
 		this.drawApollonianTriangleNetwork(g, d - 1, t2.p1, t2.p2, t2.p3);
 		this.drawApollonianTriangleNetwork(g, d - 1, t3.p1, t3.p2, t3.p3);
 
+	}
+	
+	private Point randomInnerPoint(Graphics2D g, Triangle t) {
+		Point randInnrPt = null;
+		final int minX = Math.min(t.p1.x,Math.min(t.p2.x,t.p3.x));		
+		final int minY = Math.min(t.p1.y,Math.min(t.p2.y,t.p3.y));
+		final int maxX = Math.max(t.p1.x,Math.max(t.p2.x,t.p3.x));		
+		final int maxY = Math.max(t.p1.y,Math.max(t.p2.y,t.p3.y));
+
+		boolean found = false;
+		int randXPt = (int) (Math.random() * (maxX-minX)+minX);
+		int randYPt = (int) (Math.random() * (maxY-minY)+minY);
+		
+		randInnrPt = new Point(randXPt,randYPt);
+
+		while (!found) {
+			if (t.isPointInTriangle(randInnrPt)) {
+				found = true;
+				break;
+				
+			}
+			randXPt = (int) (Math.random() * (maxX-minX)+minX);
+			randYPt = (int) (Math.random() * (maxY-minY)+minY);
+			
+			randInnrPt = new Point(randXPt,randYPt);
+		}
+		return randInnrPt ;
 	}
 
 	private Point randomInnerPoint(Graphics2D g, Point p1, Point p2, Point p3) {		
@@ -244,6 +280,12 @@ class Triangle {
 		this.p1 = p11;
 		this.p2 = p22;
 		this.p3 = p33;
+	}
+	
+	public Point centroid() {
+		return new Point(
+				(this.p1.x + this.p2.x + this.p3.x) / 3, 
+				(this.p1.y + this.p2.y + this.p3.y) / 3);
 	}
 	
 	public void draw(Graphics2D g) {
