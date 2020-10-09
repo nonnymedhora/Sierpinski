@@ -10,8 +10,13 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.geom.Path2D;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
+import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -60,6 +65,9 @@ public class ApollonianTriangleNetwork extends FractalBase {
 	};
 	private String mode = "useRandom";
 	private int runCount;
+	
+	static LinkedHashMap<Integer,List<Triangle>> trianglesListMap
+	= new LinkedHashMap<Integer,List<Triangle>>();
 
 	public ApollonianTriangleNetwork() {
 		super();
@@ -85,10 +93,11 @@ public class ApollonianTriangleNetwork extends FractalBase {
 	
 	private Image createApollonianTriangleNetwork(final Graphics2D g, final int d) {
 		// Clear the frame
-		g.setColor(Color.BLUE);
-		/*if(runCount>4)
-			return this.bufferedImage;*/
-		g.setColor(TriangleColorPalette[runCount]);
+//		g.setColor(Color.BLUE);
+//		/*if(runCount>4)
+//			return this.bufferedImage;*/
+//		g.setColor(TriangleColorPalette[runCount]);
+		g.setColor(Color.white);
 
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
@@ -99,18 +108,25 @@ public class ApollonianTriangleNetwork extends FractalBase {
 		p3 = new Point(getWidth() - OFFSET, getHeight() - OFFSET);
 
 		Triangle tBase = new Triangle(p1, p2, p3);
+		
+		add2TrianglesListSet(tBase,d);
+		
 		// Draw ApollonianTriangleNetwork
-		this.drawApollonianTriangleNetwork(g, depth, tBase);	//Uses Triangle
+		this.drawApollonianTriangleNetwork(g, d, tBase);	//Uses Triangle
 //		this.drawApollonianTriangleNetwork(g, depth,  p1, p2, p3);	//Uses Point
 
 		return this.bufferedImage;
 	}
 
 	private void drawApollonianTriangleNetwork(Graphics2D g, int d, Triangle tri) {
-		g.setColor(TriangleColorPalette[runCount+1]);//(Color.BLACK);
+//		g.setColor(TriangleColorPalette[runCount+1]);//
+		g.setColor(Color.BLACK);
 		if (d == 0) { // depth is 0, draw the triangle
 			g.setStroke(new BasicStroke(1));
-			tri.draw(g);
+//			tri.draw(g);
+			
+			this.drawTrianglesListMap(g);
+//			((List<Triangle>)trianglesListMap.get(d+1)).get(0).draw(g);
 			return;
 		}
 		Point innerPt;
@@ -126,34 +142,46 @@ public class ApollonianTriangleNetwork extends FractalBase {
 		Triangle t2 = new Triangle(tri.p2, tri.p3, innerPt);
 		Triangle t3 = new Triangle(tri.p1, tri.p3, innerPt);
 		
+
+		this.add2TrianglesListSet(t1,d);
+		this.add2TrianglesListSet(t2,d);
+		this.add2TrianglesListSet(t3,d);
+		
 		this.drawApollonianTriangleNetwork(g, d - 1, t1);
 		this.drawApollonianTriangleNetwork(g, d - 1, t2);
 		this.drawApollonianTriangleNetwork(g, d - 1, t3);
 	}
-
-	private void drawApollonianTriangleNetwork(final Graphics2D g, final int d, final Point p1, final Point p2, final Point p3) {
-		g.setColor(TriangleColorPalette[runCount+2]);
-		//g.setColor(Color.BLACK);
-		if (d == 0) { // depth is 0, draw the triangle
-			g.setStroke(new BasicStroke(2));
-			Triangle tBase = new Triangle(p1, p2, p3);
-			tBase.draw(g);
-			return;
+	
+	private void drawTrianglesListMap(Graphics2D g) {
+		for(Integer dep : trianglesListMap.keySet()){
+//			System.out.println("Dep___ "+dep);
+			for(Triangle tri : trianglesListMap.get(dep)){
+				tri.draw(g);
+			}
 		}
 		
-//		Point randomPt = new Triangle(p1,p2,p3).centroid();
+	}
 
-		Point randomPt = this.randomInnerPoint(g, p1, p2, p3);
-		Triangle t1 = new Triangle(p1, p2, randomPt);
-		Triangle t2 = new Triangle(p2, p3, randomPt);
-		Triangle t3 = new Triangle(p1, p3, randomPt);
+	private void add2TrianglesListSet(Triangle tri, int dpth) {
+		// TODO Auto-generated method stub
+//		System.out.println("depth+" + dpth);
+		if (trianglesListMap.get(dpth) == null) {
+			List<Triangle> trianglesSet = new ArrayList<Triangle>();
+			trianglesSet.add(tri);
 
-		this.drawApollonianTriangleNetwork(g, d - 1, t1.p1, t1.p2, t1.p3);
-		this.drawApollonianTriangleNetwork(g, d - 1, t2.p1, t2.p2, t2.p3);
-		this.drawApollonianTriangleNetwork(g, d - 1, t3.p1, t3.p2, t3.p3);
+			trianglesListMap.put(dpth, trianglesSet);
+
+		} else {
+			List<Triangle> trianglesSet = trianglesListMap.get(dpth);
+			trianglesSet.add(tri);
+
+			trianglesListMap.put(dpth, trianglesSet);
+		}
 
 	}
 	
+	
+
 	private Point randomInnerPoint(Graphics2D g, Triangle t) {
 		Point randInnrPt = null;
 		final int minX = Math.min(t.p1.x,Math.min(t.p2.x,t.p3.x));		
@@ -180,51 +208,7 @@ public class ApollonianTriangleNetwork extends FractalBase {
 		}
 		return randInnrPt ;
 	}
-
-	private Point randomInnerPoint(Graphics2D g, Point p1, Point p2, Point p3) {		
-		Point randInnrPt = null;
-		Triangle testTriangle = new Triangle(p1,p2,p3);
-
-		final int minX = Math.min(p1.x,Math.min(p2.x,p3.x));		
-		final int minY = Math.min(p1.y,Math.min(p2.y,p3.y));
-		final int maxX = Math.max(p1.x,Math.max(p2.x,p3.x));		
-		final int maxY = Math.max(p1.y,Math.max(p2.y,p3.y));
-
-		boolean found = false;
-		int randXPt = (int) (Math.random() * (maxX-minX)+minX);
-		int randYPt = (int) (Math.random() * (maxY-minY)+minY);
-		
-		randInnrPt = new Point(randXPt,randYPt);
-
-		while (!found) {
-			if (testTriangle.isPointInTriangle(randInnrPt)) {
-				found = true;
-				break;
-				
-			}
-			randXPt = (int) (Math.random() * (maxX-minX)+minX);
-			randYPt = (int) (Math.random() * (maxY-minY)+minY);
-			
-			randInnrPt = new Point(randXPt,randYPt);
-//			System.out.println("randInnrPt = "+randInnrPt);
-		}
-		
-		/*
-		final Random randX = new Random((p1.x + p2.x + p3.x) / 3);
-		final Random randY = new Random((p1.y + p2.y + p3.y) / 3);
-		
-		while (!found) {
-			randInnrPt = new Point(randX.nextInt(), 
-					 randY.nextInt());
-System.out.println("randInnrPt = "+randInnrPt);
-			if (testTriangle.isPointInTriangle(randInnrPt)) {
-				found = true;
-			}
-		}*/
-//		System.out.println("found==="+found);
-		return randInnrPt ;
-	}
-
+	
 	/* (non-Javadoc)
 	 * @see org.bawaweb.ui.sierpinkski.FractalBase#getFractalShapeTitle()
 	 */
@@ -243,9 +227,9 @@ System.out.println("randInnrPt = "+randInnrPt);
 			@Override
 			public void run() {
 				final ApollonianTriangleNetwork apollonianTriangleNetwork = new ApollonianTriangleNetwork();
-				
+				apollonianTriangleNetwork.mode="useRandom";//"useCentroid";//
 				final FractalBase frame = apollonianTriangleNetwork;
-				
+//				System.out.println("In__run__depth=="+frame.depth);==0
 				frame.setTitle(frame.getFractalShapeTitle());
 				frame.setSize(WIDTH-200, HEIGHT-200);
 				frame.setRunning(true);
