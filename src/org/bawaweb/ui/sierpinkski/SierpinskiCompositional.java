@@ -233,11 +233,15 @@ class SierpinskiComboPanel extends JPanel {
 	private final Double[] juliaScaleSizeOptions = SCALE_SIZES;
 	private final JComboBox<Double> juliaScaleSizeCombos = new JComboBox<Double>(juliaScaleSizeOptions);
 	
+	private static final String[] JULIA_FIELD_TYPES 		= new String[] { "None", "Fatou", "Z-Squared", "ClassicJ" };
+	
+	
 	private ButtonGroup  juliaFieldLinesBG 		= new ButtonGroup();
 	private JRadioButton juliaFieldNoneRB 		= new JRadioButton("None", true);
 	private JRadioButton juliaFieldFatouRB 		= new JRadioButton("Fatou", false);
 	private JRadioButton juliaFieldZSqRB 		= new JRadioButton("Z-Squared", false);
 	private JRadioButton juliaFieldClassicRB 	= new JRadioButton("ClassicJ", false);
+	
 	
 
 	// for Mandelbrot
@@ -501,6 +505,8 @@ class SierpinskiComboPanel extends JPanel {
 	private JCheckBox diyJuliaVaryPixYCentrCb = new JCheckBox("Vary PixelCenter_Y", false);
 	private JCheckBox diyJuliaVaryScaleSizeCb = new JCheckBox("Vary Scale", false);
 	
+	private JCheckBox diyJuliaVaryFieldTypeCb = new JCheckBox("Vary Type", false);
+	
 	private boolean diyJuliaVaryColor 		= false;			//diyJuliaVaryColorCb
 	private boolean diyJuliaVaryPixXTran 	= false;			//diyJuliaVaryPixXTranCb
 	private boolean diyJuliaVaryPixYTran 	= false;			//diyJuliaVaryPixYTranCb
@@ -510,8 +516,8 @@ class SierpinskiComboPanel extends JPanel {
 	private boolean diyJuliaVaryPixelConstOpZC 	= false;		//diyJuliaVaryPixelConstOpZCCb
 	private boolean diyJuliaVaryPixelPowerZ = false;			//diyJuliaVaryPixelPowerZCb
 	
-
-	private boolean diyJuliaVaryIter 		= false;			//diyJuliaVaryIterCb
+	private boolean diyJuliaVaryIter 		= false;
+	private boolean diyJuliaVaryFieldType 	= false;			//diyJuliaVaryFieldTypeCb
 	private boolean diyJuliaVaryPixXCentr 	= false;			//diyJuliaVaryPixXCentrCb
 	private boolean diyJuliaVaryPixYCentr 	= false;			//diyJuliaVaryPixYCentrCb
 	
@@ -1871,6 +1877,9 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaPanel.add(this.diyJuliaGenImagJumpLabel);
 		this.diyJuliaGenImagJumpCombo.setVisible(false);
 		this.diyJuliaPanel.add(this.diyJuliaGenImagJumpCombo);	
+		
+		this.diyJuliaVaryFieldTypeCb.setVisible(false);
+		this.diyJuliaPanel.add(this.diyJuliaVaryFieldTypeCb);
 
 		this.diyJuliaVaryIterCb.setVisible(false);
 		this.diyJuliaPanel.add(this.diyJuliaVaryIterCb);
@@ -4595,6 +4604,10 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaVaryPixelPowerZ = varyPixelPowerZ;
 	}
 	
+	private void doSelectDiyJuliaVaryFieldTypesCommand(boolean varyFieldType) {
+		this.diyJuliaVaryFieldType = varyFieldType;
+	}
+	
 	private void doSelectDiyJuliaVaryIterCommand(boolean varyIter) {
 		this.diyJuliaVaryIter = varyIter;
 	}
@@ -6627,9 +6640,10 @@ class SierpinskiComboPanel extends JPanel {
 	private List<?> getVaryJuliaFieldTypesList() {
 		// fieldType
 		final String fieldType = "fieldType=";
-		if (this.diyJuliaGen || this.diyJuliaGenCb.isSelected()) {
-			String[] fieldTypesArr = this.getAppendStr2Array(fieldType,
-					new String[] { "None", "Fatou", "Z-Sq", "ClassicJ" });
+		//if (this.diyJuliaGen || this.diyJuliaGenCb.isSelected()) {
+		if (this.diyJuliaVaryFieldType || this.diyJuliaVaryFieldTypeCb.isSelected()) {	
+			String[] fieldTypesArr = this.getAppendStr2Array(fieldType,JULIA_FIELD_TYPES);//
+					//new String[] { "None", "Fatou", "Z-Sq", "ClassicJ" });
 			return asList(fieldTypesArr);
 		} else {		//redundant	-	for BUT!
 			String diyJApplyField = this.fieldLines;
@@ -6654,8 +6668,9 @@ class SierpinskiComboPanel extends JPanel {
 	}
 	
 	private int getVaryJuliaFieldTypesCount() {// diyJuliaGenCb
-		if (this.diyJuliaGen || this.diyJuliaGenCb.isSelected()) {
-			return 4; // "None","Fatou","Z-Sq","ClassicJ"
+		//if (this.diyJuliaGen || this.diyJuliaGenCb.isSelected()) {
+		if(this.diyJuliaVaryFieldType || this.diyJuliaVaryFieldTypeCb.isSelected()){
+			return JULIA_FIELD_TYPES.length;//4; // "None","Fatou","Z-Sq","ClassicJ"
 		} else {
 			return 1;
 		}
@@ -7452,6 +7467,7 @@ class SierpinskiComboPanel extends JPanel {
 					new String[] { maxIterChoice + String.valueOf(this.diyJuliaMaxIterCombos.getSelectedItem()) });
 		}
 	}
+	
 
 	private int getVaryJuliaIterCount() {
 		if (this.diyJuliaVaryIterCb.isSelected()) {
@@ -7461,6 +7477,28 @@ class SierpinskiComboPanel extends JPanel {
 			return 1;
 		}
 	}
+
+	private List<?> getVaryJuliaFieldTypeList() {
+		final String fieldTypeChoice = "fieldType=";
+		if (this.diyJuliaVaryFieldTypeCb.isSelected() && this.diyJuliaVaryFieldType) {
+			List<String> fieldTypeList = this.getAppendStr2List(fieldTypeChoice, asList(JULIA_FIELD_TYPES));
+			return (fieldTypeList);
+		} else {
+			return asList(
+					new String[] { fieldTypeChoice + String.valueOf(this.diyJuliaMaxIterCombos.getSelectedItem()) });
+		}
+	}
+	
+
+	private int getVaryJuliaTypeCount() {
+		if (this.diyJuliaVaryFieldTypeCb.isSelected()) {
+			System.out.println("In_getVaryJuliaTypeCount count = "+this.juliaFieldLinesBG.getButtonCount());
+			return JULIA_FIELD_TYPES.length;//this.juliaFieldLinesBG.getButtonCount();
+		} else {
+			return 1;
+		}
+	}
+
 
 	private List<?> getVaryPolyBoundaryList(double boundaryFrom, double boundaryTo, double boundaryJump, int boundaryCount) {
 		final String boundaryChoice = "boundary=";
@@ -10726,7 +10764,7 @@ System.out.println("space2DIs __ "+space2D);*/
 					diyJuliaGenPixelPowerZToTf.setEnabled(false);
 					diyJuliaGenPixelPowerZJumpCombo.setEnabled(false);
 					
-					
+					diyJuliaVaryFieldTypeCb.setVisible(true);
 					diyJuliaVaryIterCb.setVisible(true);
 					
 					diyJuliaVaryBoundaryCb.setVisible(true);
@@ -10759,10 +10797,10 @@ System.out.println("space2DIs __ "+space2D);*/
 					diyJuliaUseDiffCb.setEnabled(false);
 					invertPixelsCb.setEnabled(false);
 					
-					diyJuliaFieldNoneRB.setEnabled(false);
-					diyJuliaFieldFatouRB.setEnabled(false);
-					diyJuliaFieldZSqRB.setEnabled(false);
-					diyJuliaFieldClassicRB.setEnabled(false);
+					//diyJuliaFieldNoneRB.setEnabled(false);
+					//diyJuliaFieldFatouRB.setEnabled(false);
+					//diyJuliaFieldZSqRB.setEnabled(false);
+					//diyJuliaFieldClassicRB.setEnabled(false);
 					
 					diyJuliaGenBu.setVisible(true);	
 					diyJuliaGen2FolderBu.setVisible(true);
@@ -10805,6 +10843,7 @@ System.out.println("space2DIs __ "+space2D);*/
 					diyJuliaGenPixelPowerZToTf.setVisible(false);
 					diyJuliaGenPixelPowerZJumpLabel.setVisible(false);
 					diyJuliaGenPixelPowerZJumpCombo.setVisible(false);
+					diyJuliaVaryFieldTypeCb.setVisible(false);
 					diyJuliaVaryIterCb.setVisible(false);
 					
 					diyJuliaVaryBoundaryCb.setVisible(false);
@@ -11054,6 +11093,27 @@ System.out.println("space2DIs __ "+space2D);*/
 				JComboBox<Integer> cb = (JComboBox<Integer>) e.getSource();
 				Integer diyJuliaVaryPixelPowerZComboOption = (Integer) cb.getSelectedItem();
 				doSelectDiyJuliaVaryPixelPowerZCombosCommand(diyJuliaVaryPixelPowerZComboOption);
+			}
+		});
+		
+		this.diyJuliaVaryFieldTypeCb.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectDiyJuliaVaryFieldTypesCommand(true);					
+
+					diyJuliaFieldNoneRB.setEnabled(false);
+					diyJuliaFieldFatouRB.setEnabled(false);
+					diyJuliaFieldZSqRB.setEnabled(false);
+					diyJuliaFieldClassicRB.setEnabled(false);
+				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
+					doSelectDiyJuliaVaryFieldTypesCommand(false);
+
+					diyJuliaFieldNoneRB.setEnabled(true);
+					diyJuliaFieldFatouRB.setEnabled(true);
+					diyJuliaFieldZSqRB.setEnabled(true);
+					diyJuliaFieldClassicRB.setEnabled(true);
+				}
 			}
 		});
 
