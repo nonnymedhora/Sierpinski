@@ -7478,28 +7478,6 @@ class SierpinskiComboPanel extends JPanel {
 		}
 	}
 
-	private List<?> getVaryJuliaFieldTypeList() {
-		final String fieldTypeChoice = "fieldType=";
-		if (this.diyJuliaVaryFieldTypeCb.isSelected() && this.diyJuliaVaryFieldType) {
-			List<String> fieldTypeList = this.getAppendStr2List(fieldTypeChoice, asList(JULIA_FIELD_TYPES));
-			return (fieldTypeList);
-		} else {
-			return asList(
-					new String[] { fieldTypeChoice + String.valueOf(this.diyJuliaMaxIterCombos.getSelectedItem()) });
-		}
-	}
-	
-
-	private int getVaryJuliaTypeCount() {
-		if (this.diyJuliaVaryFieldTypeCb.isSelected()) {
-			System.out.println("In_getVaryJuliaTypeCount count = "+this.juliaFieldLinesBG.getButtonCount());
-			return JULIA_FIELD_TYPES.length;//this.juliaFieldLinesBG.getButtonCount();
-		} else {
-			return 1;
-		}
-	}
-
-
 	private List<?> getVaryPolyBoundaryList(double boundaryFrom, double boundaryTo, double boundaryJump, int boundaryCount) {
 		final String boundaryChoice = "boundary=";
 		if (this.polyVaryBoundaryCb.isSelected() && this.polyVaryBoundary) {
