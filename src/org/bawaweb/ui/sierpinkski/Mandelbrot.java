@@ -478,42 +478,44 @@ public class Mandelbrot extends FractalBase {
 				if (z0.isNaN()) {
 					continue;
 				}
-
-
-				if (this.colorChoice.equals(BlackWhite)) {
-					int bOrW = 0;
-					
-					if (diff) {
-						bOrW = this.mand(z0, max, pow, this.complex, bd, row, col);
-						/*if (!this.isBuddha) {*/
-							if (bOrW != max) {
-								bOrW = 0;
-							} else {
-								bOrW = COLORMAXRGB;
-							} 
-						/*}*/
-					} else {
-						int res = this.mand(z0, max, pow, this.complex, bd, row, col);
-						/*if (!this.isBuddha) {*/
-							bOrW = max - res;
-							if (bOrW != res) {
-								bOrW = 0;
-							} else {
-								bOrW = COLORMAXRGB;
-							} 
-						/*}*/
-
-					}
-					
-					/*if (!this.isBuddha) {*/
-						setPixel(row, n - 1 - col, bOrW);
-					/*}*/
-					if (this.isSavePixelInfo2File()) {
-						this.appendPixelInfo2File(row, n - 1 - col, bOrW);
-					}
-
-				} else {
-
+				
+/******NOV9***************************************/
+//
+//
+//				if (this.colorChoice.equals(BlackWhite)) {
+//					int bOrW = 0;
+//					
+//					if (diff) {
+//						bOrW = this.mand(z0, max, pow, this.complex, bd, row, col);
+//						/*if (!this.isBuddha) {*/
+//							if (bOrW != max) {
+//								bOrW = 0;
+//							} else {
+//								bOrW = COLORMAXRGB;
+//							} 
+//						/*}*/
+//					} else {
+//						int res = this.mand(z0, max, pow, this.complex, bd, row, col);
+//						/*if (!this.isBuddha) {*/
+//							bOrW = max - res;
+//							if (bOrW != res) {
+//								bOrW = 0;
+//							} else {
+//								bOrW = COLORMAXRGB;
+//							} 
+//						/*}*/
+//
+//					}
+//					
+//					/*if (!this.isBuddha) {*/
+//						setPixel(row, n - 1 - col, bOrW);
+//					/*}*/
+//					if (this.isSavePixelInfo2File()) {
+//						this.appendPixelInfo2File(row, n - 1 - col, bOrW);
+//					}
+//
+//				} else {///////////////////////*/
+/////////////////ends///Nov9/////////////////////////////
 					int colorRGB;
 	
 					if (diff) {
@@ -531,7 +533,7 @@ public class Mandelbrot extends FractalBase {
 					if (this.isSavePixelInfo2File()) {
 						this.appendPixelInfo2File(row, n - 1 - col, color.getRGB());
 					}
-				}
+				/*}//////////////////////*/
 
 			}
 		}

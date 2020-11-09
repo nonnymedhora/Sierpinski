@@ -933,9 +933,13 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 					} else {
 						color = ColorPalette[ColorPalette.length - iter - 1];
 					}
-				}/* else if(this.useBlackWhite){
-					
-				} */else if(this.colorChoice.equals(ComputeColor)||this.colorChoice.equals(SampleMix)){
+				} else if(this.colorChoice.equals(BlackWhite)) {
+					if (useD) {
+						color = BlackWhitePalette[iter];
+					} else {
+						color = BlackWhitePalette[BlackWhitePalette.length - iter - 1];
+					}
+				} else if(this.colorChoice.equals(ComputeColor)||this.colorChoice.equals(SampleMix)){
 
 					final int start = colStart[iter];
 					final int end = COLORMAXRGB - start;
@@ -954,12 +958,21 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 			}
 			
 		}
-		
-		if(this.colorChoice.equals(Color_Palette)){
+
+		if (this.colorChoice.equals(Color_Palette)) {
 			if (useD) {
 				color = ColorPalette[4];
 			} else {
 				color = ColorPalette[ColorPalette.length - 5];
+			}
+			return color;
+		}
+
+		if (this.colorChoice.equals(BlackWhite)) {
+			if (useD) {
+				color = BlackWhitePalette[4];
+			} else {
+				color = BlackWhitePalette[BlackWhitePalette.length - 5];
 			}
 			return color;
 		}
@@ -1216,6 +1229,17 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 				Color.BLACK, Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, 
 				Color.MAGENTA, Color.DARK_GRAY,Color.ORANGE, 
 				Color.CYAN, Color.PINK, Color.LIGHT_GRAY};*/
+	
+	public static final Color[] BlackWhitePalette = new Color[] {
+			new Color(0,0,0),
+			new Color(25,25,25),
+			new Color(50,50,50),
+			new Color(70,70,70),
+			new Color(100,100,100),
+			new Color(150,150,150),
+			new Color(200,200,200),
+			new Color(255,255,255)			
+	};
 	
 
 	// first = seed color

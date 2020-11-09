@@ -320,7 +320,7 @@ System.out.println("type---->"+(type));	*/
 				continue;
 			}
 			
-			
+			/*////////////////////////////////////////
 			if (this.colorChoice.equals(BlackWhite)) {
 				int bOrW;
 				if (diff) {
@@ -347,7 +347,7 @@ System.out.println("type---->"+(type));	*/
 					this.appendPixelInfo2File(row, n - 1 - col, bOrW);
 				}
 
-			} else {
+			} else {///////////////////////////////////*/
 
 				int colorRGB;
 
@@ -364,7 +364,7 @@ System.out.println("type---->"+(type));	*/
 				if (this.isSavePixelInfo2File()) {
 					this.appendPixelInfo2File(row, n - 1 - col, color.getRGB());
 				}
-			}
+			/*}//////////////////////////*/
 
 			}
 		}

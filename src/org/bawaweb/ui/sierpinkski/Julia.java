@@ -465,8 +465,9 @@ public class Julia extends FractalBase {
 					if (!this.preStringComplexConstConstruct) {
 						this.complex = z0;
 					}
-				}*/			
+				}*/	
 				
+				/*///////////////////////////////////////////////
 				if (this.colorChoice.equals(BlackWhite)) {
 					int bOrW;
 					if (diff) {
@@ -492,7 +493,7 @@ public class Julia extends FractalBase {
 						this.appendPixelInfo2File(row, n - 1 - col, bOrW);
 					}
 
-				} else {
+				} else {/////////////////////////////////////////////*/
 				
 					int colorRGB;
 					if (diff) {
@@ -507,7 +508,7 @@ public class Julia extends FractalBase {
 					if (this.isSavePixelInfo2File()) {
 						this.appendPixelInfo2File(row, n - 1 - col, color.getRGB());
 					}
-				}
+				/*}//////////////////////////*/
 			}
 		}
 		
