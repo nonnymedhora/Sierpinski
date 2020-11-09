@@ -118,6 +118,9 @@ System.out.println("this.compConst == null---->"+(this.compConst == null));
 System.out.println("(BEFOR)this.compConst == "+this.compConst);
 System.out.println("type---->"+(type));	*/
 		
+
+
+		this.setRangeSpace(xc, yc, size, n);
 		
 		for (int row = 0; row < n; row++) {
 			for (int col = 0; col < n; col++) {

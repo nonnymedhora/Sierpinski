@@ -102,8 +102,8 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private static final String[] COLOR_OPTIONS 		= new String[] { "ColorPalette", "ComputeColor" };
 	private static final String[] COLOR_OPTIONS_ALL 	= new String[]{"BlackWhite","ColorPalette","ComputeColor"/*,"Random"*/,"SampleMix"};
-	private static final String[] FUNCTION_OPTIONS 		= {"None","sine","cosine","tan","arcsine","arccosine","arctan","reciprocal", "reciprocalSquare","square","cube","exponent(e)","root",/*"cube-root",*/"log(e)"};
-	private static final String[] PIX_TRANSFORM_OPTIONS = {"none", "absolute", "absoluteSquare","reciprocal", "reciprocalSquare", "square", "cube","root", "exponent", "log(10)", "log(e)", "sine", "cosine", "tangent", "arcsine", "arccosine", "arctangent"};
+	private static final String[] FUNCTION_OPTIONS 		= {"None","sine","cosine","tan","cosec","sec","cot","sinh","cosh","tanh","arcsine","arccosine","arctan","arcsinh","arccosh","arctanh","reciprocal", "reciprocalSquare","square","cube","exponent(e)", "root",/*"cube-root",*/ "log(e)"};
+	private static final String[] PIX_TRANSFORM_OPTIONS = {"none", "absolute", "absoluteSquare","reciprocal", "reciprocalSquare", "square", "cube","root", "exponent", "log(10)", "log(e)", "sine", "cosine", "tan", "cosec", "sec", "cot", "sinh", "cosh", "tanh", "arcsine", "arccosine", "arctangent", "arcsinh", "arccosh", "arctanh"};
 	
 	private static final Integer[] EXPONENTS 			= new Integer[] { -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	private static final Integer[] MAX_ITERATIONS 		= new Integer[] { 10, 50, 100, 200, 225, 255, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 2000, 3000, 5000, 7500, 10000 };
@@ -2910,27 +2910,95 @@ class SierpinskiComboPanel extends JPanel {
 				this.formulaArea.append("<br/>Complex Constant = tan(z)");
 			}
 			break;
+
+		case	"cosec":
+			if (!isComplexConst) {
+				this.formulaArea.append("<br/>cosec(ComplexConstant) == " + c.cosec().toString() + eol);
+			} else {
+				this.formulaArea.append("<br/>Complex Constant = cosec(z)");
+			}
+			break;
+		case	"sec":
+			if (!isComplexConst) {
+				this.formulaArea.append("<br/>sec(ComplexConstant) == " + c.sec().toString() + eol);
+			} else {
+				this.formulaArea.append("<br/>Complex Constant = sec(z)");
+			}
+			break;
+		case	"cot":
+			if (!isComplexConst) {
+				this.formulaArea.append("<br/>cot(ComplexConstant) == " + c.cot().toString() + eol);
+				
+			} else {
+				this.formulaArea.append("<br/>Complex Constant = cot(z)");
+			}
+			break;
+		case	"sinh":
+			if (!isComplexConst) {
+				this.formulaArea.append("<br/>sinh(ComplexConstant) == " + c.sinh().toString() + eol);
+			} else {
+				this.formulaArea.append("<br/>Complex Constant = sin(z)");
+			}
+			break;
+		case	"cosh":
+			if (!isComplexConst) {
+				this.formulaArea.append("<br/>cosh(ComplexConstant) == " + c.cosh().toString() + eol);
+			} else {
+				this.formulaArea.append("<br/>Complex Constant = cosh(z)");
+			}
+			break;
+		case	"tanh":
+			if (!isComplexConst) {
+				this.formulaArea.append("<br/>tanh(ComplexConstant) == " + c.tanh().toString() + eol);
+				
+			} else {
+				this.formulaArea.append("<br/>Complex Constant = tanh(z)");
+			}
+			break;
 		case	"arcsine":
 			if (!isComplexConst) {
-				this.formulaArea.append("<br/>asin2(ComplexConstant) == " + c.inverseSine().toString() + eol);
+				this.formulaArea.append("<br/>asin2(ComplexConstant) == " + c.asin().toString() + eol);
 			} else {
 				this.formulaArea.append("<br/>Complex Constant = arcsin(z)");
 			}
 			break;
 		case	"arccosine":
 			if (!isComplexConst) {
-				this.formulaArea.append("<br/>acos2(ComplexConstant) == " + c.inverseCosine().toString() + eol);
+				this.formulaArea.append("<br/>acos2(ComplexConstant) == " + c.acos().toString() + eol);
 			} else {
 				this.formulaArea.append("<br/>Complex Constant = arccos(z)");
 			}
 			break;
 		case	"arctan":
 			if (!isComplexConst) {
-				this.formulaArea.append("<br/>atan(ComplexConstant) == " + c.inverseTangent().toString() + eol);
+				this.formulaArea.append("<br/>atan(ComplexConstant) == " + c.atan().toString() + eol);
 			} else {
 				this.formulaArea.append("<br/>Complex Constant = arctan(z)");
 			}
 			break;
+		case	"arcsinh":
+			if (!isComplexConst) {
+				this.formulaArea.append("<br/>arcsinh(ComplexConstant) == " + c.asinh().toString() + eol);
+			} else {
+				this.formulaArea.append("<br/>Complex Constant = arcsinh(z)");
+			}
+			break;
+		case	"arccosh":
+			if (!isComplexConst) {
+				this.formulaArea.append("<br/>arccosh(ComplexConstant) == " + c.acosh().toString() + eol);
+			} else {
+				this.formulaArea.append("<br/>Complex Constant = arccosh(z)");
+			}
+			break;
+		case	"arctanh":
+			if (!isComplexConst) {
+				this.formulaArea.append("<br/>atanh(ComplexConstant) == " + c.atanh().toString() + eol);
+			} else {
+				this.formulaArea.append("<br/>Complex Constant = atanh(z)");
+			}
+			break;
+			
+			
 			case	"reciprocal":
 				if (!isComplexConst) {
 					this.formulaArea.append("<br/>(1 / ComplexConstant) == " + c.reciprocal().toString() + eol);
@@ -8818,9 +8886,18 @@ System.out.println("space2DIs __ "+space2D);*/
 			case "sine": 		xVal = " sin( "+xVal+" ) "; break;
 			case "cosine": 		xVal = " cos( "+xVal+" ) "; break;			
 			case "tangent": 	xVal = " tan( "+xVal+" ) "; break;
+			case "cosec": 		xVal = " cosec( "+xVal+" ) "; break;
+			case "sec": 		xVal = " sec( "+xVal+" ) "; break;			
+			case "cot": 		xVal = " cot( "+xVal+" ) "; break;
+			case "sinh": 		xVal = " sinh( "+xVal+" ) "; break;
+			case "cosh": 		xVal = " cosh( "+xVal+" ) "; break;			
+			case "tanh": 		xVal = " tanh( "+xVal+" ) "; break;
 			case "arcsine": 	xVal = " asin( "+xVal+" ) "; break;
 			case "arccosine": 	xVal = " acos( "+xVal+" ) "; break;
 			case "arctangent": 	xVal = " atan2( "+xVal+" ) "; break;
+			case "arcsinh": 	xVal = " asinh( "+xVal+" ) "; break;
+			case "arccosh": 	xVal = " acosh( "+xVal+" ) "; break;
+			case "arctanh": 	xVal = " atanh( "+xVal+" ) "; break;
 			
 			default:  break;
 		}
@@ -8840,9 +8917,21 @@ System.out.println("space2DIs __ "+space2D);*/
 			case "sine": 		yVal = " sin( "+yVal+" ) i "; break;
 			case "cosine": 		yVal = " cos( "+yVal+" ) i "; break;			
 			case "tangent": 	yVal = " tan( "+yVal+" ) i "; break;
+			
+			case "cosec": 		yVal = " cosec( "+yVal+" ) i "; break;
+			case "sec": 		yVal = " sec( "+yVal+" ) i "; break;			
+			case "cot": 		yVal = " cot( "+yVal+" ) i "; break;
+			case "sinh": 		yVal = " sinh( "+yVal+" ) i "; break;
+			case "cosh": 		yVal = " cosh( "+yVal+" ) i "; break;			
+			case "tanh": 		yVal = " tanh( "+yVal+" ) i "; break;
+
 			case "arcsine": 	yVal = " asin( "+yVal+" ) i "; break;
 			case "arccosine": 	yVal = " acos( "+yVal+" ) i "; break;
 			case "arctangent": 	yVal = " atan2( "+yVal+" ) i "; break;
+			
+			case "arcsinh": 	yVal = " asinh( "+yVal+" ) i "; break;
+			case "arccosh": 	yVal = " acosh( "+yVal+" ) i "; break;
+			case "arctanh": 	yVal = " atanh( "+yVal+" ) i "; break;
 			
 			default:  break;
 		}
@@ -8892,9 +8981,24 @@ System.out.println("space2DIs __ "+space2D);*/
 				case 	"sine":				this.formulaArea.append("<br/><font color='black'><b>z = sin(Z)</font></b><br/>");break;
 				case 	"cosine":			this.formulaArea.append("<br/><font color='black'><b>z = cos(Z)</font></b><br/>");break;
 				case	"tan":				this.formulaArea.append("<br/><font color='black'><b>z = tan(Z)</font></b><br/>");break;
+
+				case 	"cosec":			this.formulaArea.append("<br/><font color='black'><b>z = cosec(Z)</font></b><br/>");break;
+				case 	"sec":				this.formulaArea.append("<br/><font color='black'><b>z = sec(Z)</font></b><br/>");break;
+				case	"cot":				this.formulaArea.append("<br/><font color='black'><b>z = cot(Z)</font></b><br/>");break;
+
+				case 	"sinh":				this.formulaArea.append("<br/><font color='black'><b>z = sinh(Z)</font></b><br/>");break;
+				case 	"cosh":				this.formulaArea.append("<br/><font color='black'><b>z = cosh(Z)</font></b><br/>");break;
+				case	"tanh":				this.formulaArea.append("<br/><font color='black'><b>z = tanh(Z)</font></b><br/>");break;
+				
 				case	"arcsine":			this.formulaArea.append("<br/><font color='black'><b>z = arcsin(Z)</font></b><br/>");break;
 				case	"arccosine":		this.formulaArea.append("<br/><font color='black'><b>z = arccos(Z)</font></b><br/>");break;
 				case	"arctan":			this.formulaArea.append("<br/><font color='black'><b>z = arctan(Z)</font></b><br/>");break;
+
+				case	"arcsinh":			this.formulaArea.append("<br/><font color='black'><b>z = arcsinh(Z)</font></b><br/>");break;
+				case	"arccosh":			this.formulaArea.append("<br/><font color='black'><b>z = arccosh(Z)</font></b><br/>");break;
+				case	"arctanh":			this.formulaArea.append("<br/><font color='black'><b>z = arctanh(Z)</font></b><br/>");break;
+				
+				
 				case	"reciprocal":		this.formulaArea.append("<br/><font color='black'><b>z = (1 /Z)</font></b><br/>");break;
 				case	"reciprocalSquare":	this.formulaArea.append("<br/><font color='black'><b>z = (1 /Z) <sup>2</sup></font></b><br/>");break;
 				case	"square":			this.formulaArea.append("<br/><font color='black'><b>z = (Z <sup>2</sup>)</font></b><br/>");break;

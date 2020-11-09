@@ -466,6 +466,9 @@ public class Mandelbrot extends FractalBase {
 
 	private void createMandelbrotPixels(boolean diff, double xc, double yc, double size, double bd, int pow, int max,
 			String func2Apply, String pxFunc2Apply, int n) {
+
+		this.setRangeSpace(xc, yc, size, n);
+		
 		for (int row = 0; row < n; row++) {
 			for (int col = 0; col < n; col++) {
 				double x0 = xc - size / 2 + size * row / n;

@@ -7,7 +7,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.MouseInfo;
 import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.image.AffineTransformOp;
@@ -26,13 +30,14 @@ import java.util.Properties;
 import java.util.Random;
 
 import javax.swing.JFrame;
+import javax.swing.JTextField;
 
 
 /**
  * @author Navroz
  * Superclass for SierpinskiTriangle, SiepinskiSquare, KochSnowflake
  */
-public abstract class FractalBase extends JFrame implements Runnable {
+public abstract class FractalBase extends JFrame implements Runnable, MouseMotionListener, MouseListener {
 	private static final long serialVersionUID = 123456543L;
 	
 
@@ -153,14 +158,20 @@ public abstract class FractalBase extends JFrame implements Runnable {
 	protected boolean useLyapunovExponent = false;
 	
 	protected boolean savePixelInfo2File = false;
+	
+	protected /*final */JTextField locPtTextField = new JTextField(WIDTH);
+	
 
 
 
 	/** Constructor: an instance */
 	public FractalBase() {
 		super();
-		this.setSize(WIDTH, HEIGHT);
+		this.setSize(WIDTH, HEIGHT+20);
 		this.setVisible(true);
+		this.add(locPtTextField,java.awt.BorderLayout.SOUTH);
+		this.addMouseListener(this);
+		this.addMouseMotionListener(this);
 /******************		
 		this.setRgbStartVals(POW3_3_243);	//POW2_4_200
 		this.setRgbDivisors(FRST_SIX_ODDS);	//FRST_SIX_PRIMES
@@ -583,13 +594,40 @@ public abstract class FractalBase extends JFrame implements Runnable {
 				z0 = z0.tangent(); // z0.tan();
 				break;
 			case "arcsine":
-				z0 = z0.inverseSine(); // z0.sin();
+				z0 = z0.asin();		//z0.inverseSine(); // z0.sin();
 				break;
 			case "arccosine":
-				z0 = z0.inverseCosine(); // z0.cos();
+				z0 = z0.acos();//z0.inverseCosine(); // z0.cos();
 				break;
 			case "arctan":
-				z0 = z0.inverseTangent(); // z0.tan();
+				z0 = z0.atan();//z0.inverseTangent(); // z0.tan();
+				break;
+			case "cosec":
+				z0 = z0.cosec(); // z0.cosec();
+				break;
+			case "sec":
+				z0 = z0.sec(); // z0.sec();
+				break;
+			case "cot":
+				z0 = z0.cot(); // z0.cot();
+				break;
+			case "sinh":
+				z0 = z0.sinh(); // z0.sinh();
+				break;
+			case "cosh":
+				z0 = z0.cosh(); // z0.cosh();
+				break;
+			case "tanh":
+				z0 = z0.tanh(); // z0.tanh();
+				break;
+			case "arcsinh":
+				z0 = z0.asinh(); // z0.asinh();
+				break;
+			case "arccosh":
+				z0 = z0.acosh(); // z0.acosh();
+				break;
+			case "arctanh":
+				z0 = z0.atanh(); // z0.atanh();
 				break;
 			case "reciprocal":
 				z0 = z0.reciprocal(); // z0.sin();
@@ -693,7 +731,7 @@ public abstract class FractalBase extends JFrame implements Runnable {
 			case	"Minus":	z = new ComplexNumber(x,y*-1.0);	break;
 			case	"Multiply":	z = new ComplexNumber(x,0.0).times(new	ComplexNumber(0.0,y));	break;
 			case	"Divide":	z = new ComplexNumber(x,0.0).divides(new	ComplexNumber(0.0,y));	break;
-			case	"Power":	z = new ComplexNumber(x,0.0).power((int)y);	break;
+			case	"Power":	z = new ComplexNumber(x,0.0).power(/*(int)*/y);	break;
 			default:	z = new ComplexNumber(x,y);	break;	
 		}
 		return z;
@@ -733,6 +771,24 @@ public abstract class FractalBase extends JFrame implements Runnable {
 			case "log(e)":
 				pix = Math.log(pix);
 				break;
+			case "cosec":
+				pix = 1/Math.sin(pix);
+				break;
+			case "sec":
+				pix = 1/Math.cos(pix);
+				break;
+			case "cot":
+				pix = 1/Math.tan(pix);
+				break;
+			case "sinh":
+				pix = Math.sinh(pix);
+				break;
+			case "cosh":
+				pix = Math.cosh(pix);
+				break;
+			case "tanh":
+				pix = Math.tanh(pix);
+				break;
 			case "sine":
 				pix = Math.sin(pix);
 				break;
@@ -741,6 +797,15 @@ public abstract class FractalBase extends JFrame implements Runnable {
 				break;
 			case "tangent":
 				pix = Math.tan(pix);
+				break;
+			case "arcsinh":
+				pix = 1/Math.sinh(pix);
+				break;
+			case "arccosh":
+				pix = 1/Math.cosh(pix);
+				break;
+			case "arctanh":
+				pix = 1/Math.tanh(pix);
 				break;
 			case "arcsine":
 				pix = Math.asin(pix);
@@ -759,41 +824,86 @@ public abstract class FractalBase extends JFrame implements Runnable {
 
 	private double applyPixelYPointTransformation(double pix) {
 		switch (this.getPxYTransformation()) {
-			case "none":
-				break;
-			case "absolute":
-				pix = Math.abs(pix);
-				break;
-			case "reciprocal":
-				pix = 1.0/(pix);
-				break;
-			case "square":
-				pix = Math.pow(pix, 2);
-				break;
-			case "root":
-				pix = Math.sqrt(pix);
-				break;
-			case "exponent":
-				pix = Math.exp(pix);
-				break;	
-			case "log(10)":
-				pix = Math.log10(pix);
-				break;
-			case "log(e)":
-				pix = Math.log(pix);
-				break;
-			case "sine":
-				pix = Math.sin(pix);
-				break;
-			case "cosine":
-				pix = Math.cos(pix);
-				break;
-			case "tangent":
-				pix = Math.tan(pix);
-				break;
-			default:
-				break;
-			}
+		case "none":
+			break;
+		case "absolute":
+			pix = Math.abs(pix);
+			break;
+		case "absoluteSquare":
+			pix = Math.pow(Math.abs(pix),2);
+			break;
+		case "reciprocal":
+			pix = 1.0/(pix);
+			break;
+		case "reciprocalSquare":
+			pix = Math.pow((1.0/(pix)),2);
+			break;
+		case "square":
+			pix = Math.pow(pix, 2);
+			break;
+		case "cube":
+			pix = Math.pow(pix, 3);
+			break;
+		case "root":
+			pix = Math.sqrt(pix);
+			break;
+		case "exponent":
+			pix = Math.exp(pix);
+			break;	
+		case "log(10)":
+			pix = Math.log10(pix);
+			break;
+		case "log(e)":
+			pix = Math.log(pix);
+			break;
+		case "cosec":
+			pix = 1/Math.sin(pix);
+			break;
+		case "sec":
+			pix = 1/Math.cos(pix);
+			break;
+		case "cot":
+			pix = 1/Math.tan(pix);
+			break;
+		case "sinh":
+			pix = Math.sinh(pix);
+			break;
+		case "cosh":
+			pix = Math.cosh(pix);
+			break;
+		case "tanh":
+			pix = Math.tanh(pix);
+			break;
+		case "sine":
+			pix = Math.sin(pix);
+			break;
+		case "cosine":
+			pix = Math.cos(pix);
+			break;
+		case "tangent":
+			pix = Math.tan(pix);
+			break;
+		case "arcsinh":
+			pix = 1/Math.sinh(pix);
+			break;
+		case "arccosh":
+			pix = 1/Math.cosh(pix);
+			break;
+		case "arctanh":
+			pix = 1/Math.tanh(pix);
+			break;
+		case "arcsine":
+			pix = Math.asin(pix);
+			break;
+		case "arccosine":
+			pix = Math.acos(pix);
+			break;
+		case "arctangent":
+			pix = Math.atan(pix);
+			break;
+		default:
+			break;
+		}
 		return pix;
 	}
 	
@@ -2882,5 +2992,93 @@ public abstract class FractalBase extends JFrame implements Runnable {
             System.out.println("Error sleeping");
         }
     }
+    
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		int x = e.getX();
+		int y = e.getY();
+		System.out.println("[-mouseDragged-] x is " + x + " and y is " + y);
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		Point p = MouseInfo.getPointerInfo().getLocation();
+		int x = e.getX();// p.x;
+		int y = e.getY();// p.y;
+		
+		double xC = this.getxC();
+		double yC = this.getyC();
+		
+		System.out.println("[-mouseMoved-] x is " + x + " and y is " + y);
+		int multX = 1, multY = 1;
+
+		if (!this.reversePixelCalculation) {
+			multX = 1;
+			multY = -1;
+		}
+		
+//		locPtTextField.setText("[-mouseMoved-] x is " + x + " and y is " + y);
+		double realPosn = x_min + (x * 1.0 * multX * (x_max - x_min)) / getWidth();
+		
+		double imgPosn = y_min + (y * 1.0 * multY *(y_max - y_min)) / getHeight();
+		String imgSign = imgPosn > 0 ? "+" : "";
+		locPtTextField.setText(realPosn + " " + imgSign + " " + imgPosn + " * i");
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		int x = e.getX();
+		int y = e.getY();
+		System.out.println("[-mouseClicked-] x is " + x + " and y is " + y);
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		int x = e.getX();
+		int y = e.getY();
+		System.out.println("[-mousePressed-] x is " + x + " and y is " + y);
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		int x = e.getX();
+		int y = e.getY();
+		System.out.println("[-mouseReleased-] x is " + x + " and y is " + y);
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		/*Point p = MouseInfo.getPointerInfo().getLocation();
+		int x = p.x;
+		int y = p.y;
+		System.out.println("[-mouseEntered-] x is " + x + " and y is " + y);*/
+	}
+
+    @Override
+    public void mouseExited(MouseEvent e){
+		/*Point p = MouseInfo.getPointerInfo().getLocation();
+		int x = p.x;
+		int y = p.y;
+		System.out.println("[-mouseExited-] x is " + x + " and y is " + y);*/
+	}
+
+
+	protected void setRangeSpace(double xc, double yc, double size, int n) {
+		x_min = xc - size / 2;
+		y_min = yc - size / 2;
+		x_max = xc + size / 2;//xc - size / 2 + size * (n - 1) / n;
+		y_max = yc + size / 2;//yc - size / 2 + size * (n - 1) / n;
+
+		System.out.println("x_min is: " + x_min);
+		System.out.println("y_min is: " + y_min);
+		System.out.println("x_max is: " + x_max);
+		System.out.println("y_max is: " + y_max);
+		
+	}
+	
+	public static double x_min;
+	public static double y_min;
+	public static double x_max;
+	public static double y_max;
 	
 }

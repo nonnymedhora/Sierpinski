@@ -288,9 +288,10 @@ public class AttractorsGenerator extends JFrame {
 				
 				lorenz_Attractor.setAttractors(new Attractor[] { 
 						new LorenzAttractor(0.0, 20.00, 25.0, Color.blue),
-						new LorenzAttractor(0.0, 20.01, 25.0, Color.red) });
+						new LorenzAttractor(0.0, 20.01, 25.0, Color.red),
+						new LorenzAttractor(0.0, 20.00, 25.01, Color.green) });
 				
-				lorenz_Attractor.setMaxIter(500);
+				lorenz_Attractor.setMaxIter(500000);
 				lorenz_Attractor.setSpace2d("x-z");
 				
 				final JFrame frame = lorenz_Attractor;//("dejong");//("aizawa");//

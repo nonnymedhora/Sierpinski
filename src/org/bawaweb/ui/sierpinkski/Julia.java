@@ -399,6 +399,8 @@ public class Julia extends FractalBase {
 				}
 			}
 		}
+
+		this.setRangeSpace(xc, yc, size, n);
 		
 //		System.out.println("this.complexConst===" + this.complexConst);
 //		System.out.println("this.complex==null  " + (this.complex == null));
