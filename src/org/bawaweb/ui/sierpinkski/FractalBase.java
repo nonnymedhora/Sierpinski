@@ -159,6 +159,7 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	
 	protected boolean savePixelInfo2File = false;
 	
+	private boolean useMandelbrotExplorer=false;	//only-for-mandelbrot
 	protected /*final */JTextField locPtTextField = new JTextField(WIDTH);
 	
 
@@ -169,13 +170,15 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		super();
 		this.setSize(WIDTH, HEIGHT+20);
 		this.setVisible(true);
-		this.add(locPtTextField,java.awt.BorderLayout.SOUTH);
-		this.addMouseListener(this);
-		this.addMouseMotionListener(this);
-/******************		
-		this.setRgbStartVals(POW3_3_243);	//POW2_4_200
-		this.setRgbDivisors(FRST_SIX_ODDS);	//FRST_SIX_PRIMES
-*******************/		
+		/*if (this.isUseMandelbrotExplorer()) {
+			this.add(locPtTextField, java.awt.BorderLayout.SOUTH);
+			this.addMouseListener(this);
+			this.addMouseMotionListener(this);
+		}*/
+		/******************
+		 * this.setRgbStartVals(POW3_3_243); //POW2_4_200
+		 * this.setRgbDivisors(FRST_SIX_ODDS); //FRST_SIX_PRIMES
+		 *******************/		
 	}
 	
 	
@@ -3033,19 +3036,29 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		double xC = this.getxC();
 		double yC = this.getyC();
 		
-		System.out.println("[-mouseMoved-] x is " + x + " and y is " + y);
-		int multX = 1, multY = 1;
-
-		if (!this.reversePixelCalculation) {
-			multX = 1;
-			multY = -1;
-		}
+		int scrnCntrX = this.getWidth()/2;
+		int scrnCntrY = this.getHeight()/2;
+		
+		
+		
+		//screen-coordinates
+		//x_min,y_max										x_max,y_max
+		//0,0	--------------width/2,0-------------------	width,0
+		//|		Rl<0[x<width/2]		|	Rl>0[x>width/2]		|
+		//|		Im>0[y<height/2]	|	Im>0[y<height/2]	|
+		//0,height/2-------------width/2,height/2----------	width,height/2
+		//|		Rl<0[x<width/2]		|	Rl>0[x>width/2]		|
+		//|		Im<0[y>height/2]	|	Im<0[y>height/2]	|
+		//0,height------width/2,height-------------			width,height
+		//x_min,y_min										x_max,y_min
+		
+		//System.out.println("[-mouseMoved-] x is " + x + " and y is " + y);
+		
 		
 //		locPtTextField.setText("[-mouseMoved-] x is " + x + " and y is " + y);
-		double realPosn = x_min + (x * 1.0 * multX * (x_max - x_min)) / getWidth();
-		
-		double imgPosn = y_min + (y * 1.0 * multY *(y_max - y_min)) / getHeight();
-		String imgSign = imgPosn > 0 ? "+" : "";
+		double realPosn = x_min + (x * 1.0 * (x_max - x_min)) / getWidth();		
+		double imgPosn = y_max + (y * 1.0 * (y_min - y_max)) / getHeight();
+		String imgSign = imgPosn > 0 ? "+" : "";//"";//y > scrnCntrY ? "-" : "+";//
 		locPtTextField.setText(realPosn + " " + imgSign + " " + imgPosn + " * i");
 	}
 
@@ -3100,6 +3113,19 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		
 	}
 	
+	public boolean isUseMandelbrotExplorer() {
+		return this.useMandelbrotExplorer;
+	}
+
+
+	public void setUseMandelbrotExplorer(boolean useMExplorer) {
+		this.useMandelbrotExplorer = useMExplorer;
+		
+		this.add(locPtTextField, java.awt.BorderLayout.SOUTH);
+		this.addMouseListener(this);
+		this.addMouseMotionListener(this);
+	}
+
 	public static double x_min;
 	public static double y_min;
 	public static double x_max;

@@ -739,8 +739,8 @@ public class Julia extends FractalBase {
 //				final FractalBase frame = new Julia(2,0.279);	//(3,0.4);//(2,0.279);	//f(z) = z2 + 0.279
 //				final FractalBase frame = new Julia(2,true,-0.4,0.59); //new Julia(2,false,-1.29904,-0.75); //new Julia(2,0.279,true/*false*/);
 				//
-				final FractalBase frame = new Julia(2,"C3",true);//
-				frame.setColorChoice("ComputeColor");
+				final FractalBase frame = new Julia(2, new ComplexNumber(-0.4,0.59));//new Julia(2,"C3",true);//
+				frame.setColorChoice("BlackWhite");//("ComputeColor");
 				/*frame.setUseColorPalette(false);
 				frame.setUseBlackWhite(true);*/
 //				frame.setUseFuncConst("Log");
@@ -748,7 +748,7 @@ public class Julia extends FractalBase {
 				frame.setComplex(frame.c1);*/
 //				frame.depth = 5;
 				frame.setTitle(frame.getFractalShapeTitle());
-				frame.setSize(FractalBase.WIDTH, FractalBase.HEIGHT);
+				frame.setSize(FractalBase.WIDTH-300, FractalBase.HEIGHT-300);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setResizable(false);
 				frame.setVisible(true);

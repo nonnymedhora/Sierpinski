@@ -246,6 +246,8 @@ class SierpinskiComboPanel extends JPanel {
 
 	// for Mandelbrot
 
+	private boolean mandExplore = false;
+	private final JCheckBox mandExploreCb = new JCheckBox("Explore Mandelbrot", false);
 	// lyapunov exponent for set determination
 	private final JCheckBox mandUseLyapunovExpCb = new JCheckBox("UseLyapunovExponentOnly", false);
 	private boolean mandUseLyapunovExponent = false;
@@ -395,6 +397,8 @@ class SierpinskiComboPanel extends JPanel {
 	protected double diyMandYC;
 	protected double diyMandScaleSize;
 	
+	private boolean diyMandExplore = false;
+	private final JCheckBox diyMandExploreCb = new JCheckBox("Explore Mandelbrot", false);
 	private final Integer[] diyMandMagOptions = EXPONENTS;
 
 	// lyapunov exponent for set determination
@@ -1953,6 +1957,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyMandPanel.add(this.diyMandExpCombos);
 		this.diyMandPanel.add(this.diyMandUseDiffCb);
 		this.diyMandPanel.add(this.diyMandIsBuddhaCb);
+		this.diyMandPanel.add(this.diyMandExploreCb);
 
 //		this.diyMandPanel.add(this.diyMandUseLyapunovExpCb);
 		
@@ -2129,6 +2134,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.mandOptionsPanel.add(this.mandUseDiffCb);
 		this.mandOptionsPanel.add(this.mandIsBuddhaCb);
 		this.mandOptionsPanel.add(this.mandIsMotionbrotCb);
+		this.mandOptionsPanel.add(this.mandExploreCb);
 		
 		this.mandOptionsPanel.add(this.mandMotionParamLabel);
 		this.mandMotionParamLabel.setVisible(false);
@@ -3106,10 +3112,19 @@ class SierpinskiComboPanel extends JPanel {
 		this.doPolyChoicesCheck();
 	}*/
 
+	private void doSetDiyMandelbrotExploreCommand(boolean explore) {
+		this.diyMandExplore = explore;
+	}
+	
 	private void doSetDiyMandUseLyapunovExpCommand(boolean useLyapunovExpC) {
 		this.diyMandUseLyapunovExponent = useLyapunovExpC;
 		this.formulaArea.setVisible(true);
 		this.doDiyMandelbrotChoicesCheck();
+	}
+	
+
+	private void doSetMandelbrotExploreCommand(boolean explore) {
+		this.mandExplore = explore;
 	}
 	
 
@@ -9230,6 +9245,7 @@ System.out.println("space2DIs __ "+space2D);*/
 	private FractalBase createDIYMandelbrot() {
 		FractalBase ff = null;
 		// for diy mandelbrot
+		boolean doExplore = this.diyMandExplore;
 
 		boolean useCP = this.colorChoice.equals("ColorPalette");
 		boolean useBw = this.colorChoice.equals("BlackWhite");
@@ -9290,6 +9306,10 @@ System.out.println("space2DIs __ "+space2D);*/
 				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
 				return null;
 			}
+		}
+		
+		if (doExplore) {
+			ff.setUseMandelbrotExplorer(true);
 		}
 		
 		if (isBuddha) {
@@ -9452,6 +9472,8 @@ System.out.println("space2DIs __ "+space2D);*/
 	}
 
 	private FractalBase startMandelbrot() {
+		boolean doExplore = this.mandExplore;
+		
 		int mag = this.getMagnification();
 		int exp = this.getExponent();
 		boolean mUseD = this.getMUseDiff();
@@ -9525,6 +9547,10 @@ System.out.println("space2DIs __ "+space2D);*/
 			m.setMotionParam(motParam);
 			m.setMotionParamJumpVal(motParamJumpVal);
 			ff = m;			
+		}
+		
+		if (doExplore) {
+			ff.setUseMandelbrotExplorer(true);
 		}
 		
 		ff.setUseLyapunovExponent(this.mandUseLyapunovExponent);
@@ -11448,6 +11474,17 @@ System.out.println("space2DIs __ "+space2D);*/
 				}
 			}
         });
+		
+		this.diyMandExploreCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetDiyMandelbrotExploreCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetDiyMandelbrotExploreCommand(false);
+				}
+			}
+        });
 
 		this.diyMandelbrotKeepConstRb.addActionListener(this.keepConstRbListener());
 		this.diyMandelbrotCreateConstRb.addActionListener(this.keepConstRbListener());
@@ -12866,6 +12903,19 @@ private void setupPolyGeneratorListeners() {
 					doSetMandUseLyapunovExpCommand(true);
 				} else if(event.getStateChange()==ItemEvent.DESELECTED){
 					doSetMandUseLyapunovExpCommand(false);
+				}
+			}
+        });
+		
+
+		
+		this.mandExploreCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetMandelbrotExploreCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetMandelbrotExploreCommand(false);
 				}
 			}
         });

@@ -939,13 +939,14 @@ public class Mandelbrot extends FractalBase {
 //				frame.depth = 5;
 /*				frame.setUseColorPalette(false);
 				frame.setUseBlackWhite(true);*/
+				frame.setColorChoice("BlackWhite");
 				frame.setPxXTransformation("absolute");
 				frame.setPxYTransformation("absolute");
 
 				frame.setPixXYOperation("Plus");
 				
 				frame.setTitle(frame.getFractalShapeTitle());
-				frame.setSize(FractalBase.WIDTH, FractalBase.HEIGHT);
+				frame.setSize(FractalBase.WIDTH-300, FractalBase.HEIGHT-300);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setResizable(false);
 				frame.setVisible(true);
