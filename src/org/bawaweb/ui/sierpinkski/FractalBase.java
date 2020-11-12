@@ -3059,15 +3059,16 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		locPtTextField.setText(realPosn + " " + imgSign + " " + imgPosn + " * i");
 		
 		Julia jpop = new Julia(mand.power,new ComplexNumber(realPosn,imgPosn));
-		jpop.setColorChoice("BlackWhite");
+		jpop.setColorChoice(mand.colorChoice);
 		jpop.setxC(0.0);
 		jpop.setyC(0.0);
 		jpop.setMaxIter(100);
 		jpop.setSize(300, 300);
 		jpop.setScaleSize(FractalBase.scaleSize);
-		jpop.setUseDiff(false);
+		jpop.setUseDiff(mand.isUseDiff());
 		/////	above are hardCoded values	//////
 		jpop.setRotation(mand.rotation);
+		jpop.setReversePixelCalculation(mand.reversePixelCalculation);
 		jpop.setPxConstOperation(mand.pxConstOperation);
 		jpop.setUseFuncConst(mand.useFuncConst);
 		jpop.setPxXTransformation(mand.pxXTransformation);
