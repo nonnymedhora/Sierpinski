@@ -3028,18 +3028,16 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	}
 
 	@Override
-	public void mouseMoved(MouseEvent e) {
-		Point p = MouseInfo.getPointerInfo().getLocation();
-		int x = e.getX();// p.x;
-		int y = e.getY();// p.y;
+	public void mouseClicked(MouseEvent e) {
+		final Mandelbrot mand = (Mandelbrot) this;
+		jpopFr.dispose();
+		//Point p = MouseInfo.getPointerInfo().getLocation();
+		int x = e.getX();// p.x;	p.x & p.y refer to screen-position
+		int y = e.getY();// p.y;	coordinates
 		
-		double xC = this.getxC();
-		double yC = this.getyC();
-		
-		int scrnCntrX = this.getWidth()/2;
-		int scrnCntrY = this.getHeight()/2;
-		
-		
+		/*Drawing on any GUI component is performed with coordinates 
+		 * that are measured from the upper-left corner (0, 0) of that GUI component, 
+		 * not the upper-left corner of the screen*/
 		
 		//screen-coordinates
 		//x_min,y_max										x_max,y_max
@@ -3053,34 +3051,58 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		//x_min,y_min										x_max,y_min
 		
 		//System.out.println("[-mouseMoved-] x is " + x + " and y is " + y);
-		
-		
+				
 //		locPtTextField.setText("[-mouseMoved-] x is " + x + " and y is " + y);
 		double realPosn = x_min + (x * 1.0 * (x_max - x_min)) / getWidth();		
 		double imgPosn = y_max + (y * 1.0 * (y_min - y_max)) / getHeight();
 		String imgSign = imgPosn > 0 ? "+" : "";//"";//y > scrnCntrY ? "-" : "+";//
 		locPtTextField.setText(realPosn + " " + imgSign + " " + imgPosn + " * i");
+		
+		Julia jpop = new Julia(mand.power,new ComplexNumber(realPosn,imgPosn));
+		jpop.setColorChoice("BlackWhite");
+		jpop.setxC(0.0);
+		jpop.setyC(0.0);
+		jpop.setMaxIter(100);
+		jpop.setSize(300, 300);
+		jpop.setScaleSize(FractalBase.scaleSize);
+		jpop.setUseDiff(false);
+		/////	above are hardCoded values	//////
+		jpop.setRotation(mand.rotation);
+		jpop.setPxConstOperation(mand.pxConstOperation);
+		jpop.setUseFuncConst(mand.useFuncConst);
+		jpop.setPxXTransformation(mand.pxXTransformation);
+		jpop.setPxYTransformation(mand.pxYTransformation);
+		jpop.setPixXYOperation(mand.pixXYOperation);
+		jpop.setUseFuncPixel(mand.useFuncPixel);
+		jpop.setApplyCustomFormula(mand.applyCustomFormula);
+		jpop.setBound(mand.bound);
+		
+		jpop.setResizable(false);
+		jpopFr = jpop;
+		jpopFr.setVisible(true);
 	}
+	
+	private static JFrame jpopFr = new JFrame();
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		int x = e.getX();
+	public void mouseMoved(MouseEvent e) {
+		/*int x = e.getX();
 		int y = e.getY();
-		System.out.println("[-mouseClicked-] x is " + x + " and y is " + y);
+		System.out.println("[-mouseClicked-] x is " + x + " and y is " + y);*/
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		int x = e.getX();
+		/*int x = e.getX();
 		int y = e.getY();
-		System.out.println("[-mousePressed-] x is " + x + " and y is " + y);
+		System.out.println("[-mousePressed-] x is " + x + " and y is " + y);*/
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		int x = e.getX();
+		/*int x = e.getX();
 		int y = e.getY();
-		System.out.println("[-mouseReleased-] x is " + x + " and y is " + y);
+		System.out.println("[-mouseReleased-] x is " + x + " and y is " + y);*/
 	}
 
 	@Override
