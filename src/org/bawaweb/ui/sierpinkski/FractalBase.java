@@ -3029,7 +3029,6 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		final Mandelbrot mand = (Mandelbrot) this;
 		jpopFr.dispose();
 		//Point p = MouseInfo.getPointerInfo().getLocation();
 		int x = e.getX();// p.x;	p.x & p.y refer to screen-position
@@ -3056,14 +3055,22 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		double realPosn = x_min + (x * 1.0 * (x_max - x_min)) / getWidth();		
 		double imgPosn = y_max + (y * 1.0 * (y_min - y_max)) / getHeight();
 		String imgSign = imgPosn > 0 ? "+" : "";//"";//y > scrnCntrY ? "-" : "+";//
-		locPtTextField.setText(realPosn + " " + imgSign + " " + imgPosn + " * i");
+		//locPtTextField.setText(realPosn + " " + imgSign + " " + imgPosn + " * i");
+		
+		createMandelbrotExplorerJuliaSet(realPosn, imgPosn);
+		jpopFr.setVisible(true);
+	}
+
+
+	private void createMandelbrotExplorerJuliaSet(double realPosn, double imgPosn) {
+		final Mandelbrot mand = (Mandelbrot) this;
 		
 		Julia jpop = new Julia(mand.power,new ComplexNumber(realPosn,imgPosn));
 		jpop.setColorChoice(mand.colorChoice);
 		jpop.setxC(0.0);
 		jpop.setyC(0.0);
-		jpop.setMaxIter(100);
-		jpop.setSize(300, 300);
+		jpop.setMaxIter(1000);
+		jpop.setSize(350, 350);
 		jpop.setScaleSize(FractalBase.scaleSize);
 		jpop.setUseDiff(mand.isUseDiff());
 		/////	above are hardCoded values	//////
@@ -3080,16 +3087,20 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		
 		jpop.setResizable(false);
 		jpopFr = jpop;
-		jpopFr.setVisible(true);
 	}
 	
 	private static JFrame jpopFr = new JFrame();
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		/*int x = e.getX();
+		int x = e.getX();
 		int y = e.getY();
-		System.out.println("[-mouseClicked-] x is " + x + " and y is " + y);*/
+		/*System.out.println("[-mouseClicked-] x is " + x + " and y is " + y);*/
+		double realPosn = x_min + (x * 1.0 * (x_max - x_min)) / getWidth();		
+		double imgPosn = y_max + (y * 1.0 * (y_min - y_max)) / getHeight();
+		String imgSign = imgPosn > 0 ? "+" : "";
+		locPtTextField.setText(realPosn + " " + imgSign + " " + imgPosn + " * i");
+		
 	}
 
 	@Override
