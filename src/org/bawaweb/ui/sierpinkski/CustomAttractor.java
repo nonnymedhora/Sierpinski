@@ -111,4 +111,37 @@ public class CustomAttractor extends Attractor {
 		}
 	}
 
+	public Tuple3d update(final Tuple3d existingTuple, final double dt, final int iterTime) {
+		// store original formula to temp
+		final String tempXFormula = this.deltaXFormula;
+		final String tempYFormula = this.deltaYFormula;
+		final String tempZFormula = this.is3D ? null: this.deltaZFormula;
+				
+		// replace all t or T with iterTime value
+		if (this.deltaXFormula.contains("t") || this.deltaXFormula.contains("T")) {
+			this.deltaXFormula = this.deltaXFormula.replaceAll("t|T", String.valueOf(iterTime));
+		}
+		if (this.deltaYFormula.contains("t") || this.deltaYFormula.contains("T")) {
+			this.deltaYFormula = this.deltaYFormula.replaceAll("t|T", String.valueOf(iterTime));
+		}
+		if (this.is3D) {
+			if (this.deltaZFormula.contains("t") || this.deltaZFormula.contains("T")) {
+				this.deltaZFormula = this.deltaZFormula.replaceAll("t|T", String.valueOf(iterTime));
+			}
+		}
+		
+		// do the update
+		Tuple3d updatedTuple = this.update(existingTuple, dt);
+		
+		// revert the original formulas from temp	iterTime value replaced with t|T
+		this.deltaXFormula = tempXFormula;
+		this.deltaYFormula = tempYFormula;
+		if(this.is3D){
+			this.deltaZFormula = tempZFormula;			
+		}
+		
+		return updatedTuple;
+		
+	}
+
 }

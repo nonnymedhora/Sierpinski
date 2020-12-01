@@ -1032,6 +1032,9 @@ class SierpinskiComboPanel extends JPanel {
 	private final JCheckBox attractorTimeInvariantCb = new JCheckBox("TimeInvariant Attractor",false);
 	private boolean isAttractorTimeInvariant = false;
 	
+	private final JCheckBox attractorTimeIterDependantCb = new JCheckBox("TimeIterDependant Attractor(t)",false);
+	private boolean isAttractorTimeIterDependant = false;
+	
 	
 	private String attractorSelectionChoice;
 	
@@ -1119,6 +1122,7 @@ class SierpinskiComboPanel extends JPanel {
 	
 
 	private JLabel attrCustomFormulaStrLabel = new JLabel("Custom Formula: ");
+	
 	private JLabel attrCustomFormulaStrDeltaXLabel = new JLabel("Delta X or dx: ");
 	private JLabel attrCustomFormulaStrDeltaYLabel = new JLabel("Delta Y or dy: ");
 	private JLabel attrCustomFormulaStrDeltaZLabel = new JLabel("Delta Z or dz: ");
@@ -1466,6 +1470,9 @@ class SierpinskiComboPanel extends JPanel {
 		
 		/////CUSTOM	--	staysHiden
 		this.attractorsPanel.add(this.attrCustomFormulaStrLabel );
+		
+		this.attractorsPanel.add(this.attractorTimeIterDependantCb);
+		
 		this.attractorsPanel.add(this.attrCustomFormulaStrDeltaXLabel );
 		this.attractorsPanel.add(this.attrCustom_DeltaXFormula_tf );
 		this.attractorsPanel.add(this.attrCustomFormulaStrDeltaYLabel );
@@ -8276,6 +8283,7 @@ class SierpinskiComboPanel extends JPanel {
 		boolean isSingular = this.isSingularAttractor;
 		boolean isPixellated = this.isAttractorPixellated;
 		boolean isTimeInvariant = this.isAttractorTimeInvariant;
+		boolean isTimeIterDependant = this.isAttractorTimeIterDependant;
 		
 		/*////////removeblow
 		double x1S = Double.NaN;
@@ -8625,6 +8633,8 @@ class SierpinskiComboPanel extends JPanel {
 
 					aCustomAttractor.setTimeInvariant(isTimeInvariant);
 					/*aCustomAttractor.setSpace2dAxes(space2d);*/
+					
+					aCustomAttractor.setTimeIterDependant(isTimeIterDependant);
 
 					customAttractors.add( aCustomAttractor);
 				}
@@ -13273,6 +13283,18 @@ private void setupPolyGeneratorListeners() {
 			}
         });
 		
+
+		this.attractorTimeIterDependantCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSelectAttractorTimeIterDependantCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSelectAttractorTimeIterDependantCommand(false);
+				}
+			}
+        });
+		
 		/*this.attractorSpace2DChoiceCombos.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
 			@Override
@@ -13524,6 +13546,11 @@ private void setupPolyGeneratorListeners() {
 			this.attrDeltaTime_tf.setEnabled(true);
 		}
 	}
+	
+
+	private void doSelectAttractorTimeIterDependantCommand(boolean timeIterDependant) {
+		this.isAttractorTimeIterDependant = timeIterDependant;
+	}
 
 	private void doSelectSingularAttractorChoiceCommand(boolean isSingular) {
 		this.isSingularAttractor = isSingular;
@@ -13602,6 +13629,11 @@ private void setupPolyGeneratorListeners() {
 			this.attractorTimeInvariantCb.setSelected(false);
 			this.isAttractorTimeInvariant = false;
 			
+
+			this.attractorTimeIterDependantCb.setEnabled(true);
+			this.attractorTimeIterDependantCb.setSelected(false);
+			/*this.isAttractorTimeIterDependant = false;*/
+			
 			this.attractorDimChoiceCb.setEnabled(true);
 			this.attractorDimChoiceCb.setSelected(true);
 			this.isAttractorDimSpace3D = true;
@@ -13673,6 +13705,10 @@ private void setupPolyGeneratorListeners() {
 			this.attractorTimeInvariantCb.setEnabled(false);
 			this.attractorTimeInvariantCb.setSelected(false);
 			this.isAttractorTimeInvariant = false;
+
+			this.attractorTimeIterDependantCb.setEnabled(false);
+			this.attractorTimeIterDependantCb.setSelected(false);
+			this.isAttractorTimeIterDependant = false;
 			
 			this.attractorDimChoiceCb.setEnabled(false);
 			this.attractorDimChoiceCb.setSelected(true);
@@ -13730,6 +13766,11 @@ private void setupPolyGeneratorListeners() {
 			this.attractorTimeInvariantCb.setSelected(true);
 			this.isAttractorTimeInvariant = true;
 			
+
+			this.attractorTimeIterDependantCb .setEnabled(false);
+			this.attractorTimeIterDependantCb .setSelected(false);
+			this.isAttractorTimeIterDependant = false;
+			
 			this.attractorDimChoiceCb.setEnabled(false);
 			this.attractorDimChoiceCb.setSelected(true);
 			this.isAttractorDimSpace3D = true;
@@ -13783,6 +13824,10 @@ private void setupPolyGeneratorListeners() {
 			this.attractorTimeInvariantCb.setEnabled(false);
 			this.attractorTimeInvariantCb.setSelected(true);
 			this.isAttractorTimeInvariant = true;
+			
+			this.attractorTimeIterDependantCb.setEnabled(false);
+			this.attractorTimeIterDependantCb.setSelected(false);
+			this.isAttractorTimeIterDependant  = false;
 			
 			this.attractorDimChoiceCb.setEnabled(false);
 			this.attractorDimChoiceCb.setSelected(false);

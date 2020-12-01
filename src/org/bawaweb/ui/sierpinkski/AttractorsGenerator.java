@@ -7,7 +7,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -148,6 +150,13 @@ public class AttractorsGenerator extends JFrame {
 				attrs[j].drawAxes(g);
 				rangeMap = this.setRangeMapVals(rangeMap, attrSpaceMap);
 			}
+			
+			System.out.println(this.checkRangeMap(rangeMap));
+			String isNotOk = "rangeMap is NOT ok    Gr@#$^$";
+			if (isNotOk.equals(this.checkRangeMap(rangeMap))) {
+				System.out.println("Uh-Oh  spaceMap ranges undefined");
+				return null;
+			}
 
 			for (int i = 0; i < this.maxIter; i++) {
 				for (int j = 0; j < attrs.length; j++) {
@@ -208,6 +217,27 @@ public class AttractorsGenerator extends JFrame {
 	}
 	
 	
+	private String checkRangeMap(Map<String, Double> rngMap) {
+		String isOk = "rangeMap is OK   ^__^";
+		String isNotOk = "rangeMap is NOT ok    Gr@#$^$";
+		try {
+			Collection<Double> vals = rngMap.values();
+			Iterator<Double> valsIter = vals.iterator();
+			while(valsIter.hasNext()) {
+				if(valsIter.next() == null) {
+					return isNotOk;
+				}
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return isNotOk;
+		}
+		
+		return isOk;
+	}
+
 	private Map<String, Double> setRangeMapVals(Map<String, Double> rangeMap, Map<String, Double> spaceMap) {
 		if (rangeMap.get("xmin") != null) {
 			if (rangeMap.get("xmin") > spaceMap.get("xmin")) {
