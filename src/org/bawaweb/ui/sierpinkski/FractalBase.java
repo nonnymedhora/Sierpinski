@@ -148,6 +148,7 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	public final String SampleMix = "SampleMix";
 	public final String BlackWhite = "BlackWhite";
 	public final String Random_COLOR = "Random";
+	public final String Color_Palette_Gradient6 = "ColorGradient6";
 	
 	protected String colorChoice=Color_Palette;
 	
@@ -928,6 +929,23 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		final int[] colStart = this.getRgbStartVals();			//	pow 2s till end-200
 		Color color = null;
 		
+		if (this.colorChoice.equals(Color_Palette_Gradient6)) {
+			double colG6 = colorRGB * 6.0;
+			int hI = colorRGB;
+			double hF = hI - colG6;
+			hF = this.correctColorGr6(hF);
+			switch (hI % 6) {
+				case 0:		return new Color(1,(int) hF,0);
+				case 1:		return new Color(1,(int) hF,1,0);
+				case 2:		return new Color(0,1,(int) hF);	
+				case 3:		return new Color(0,1,(int) hF,0);
+				case 4:		return new Color((int) hF,0,1);
+				case 5:		return new Color(1,0,1,(int) hF);				
+
+			}
+
+		}
+		
 		for(int iter = 0; iter < divs.length; iter++) {
 			if (colorRGB % divs[iter] == 0) {
 				if (this.colorChoice.equals(Color_Palette)) {
@@ -1030,6 +1048,15 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	 */
 	protected int correctColor(int start, int num, int sub, int div) {
 		int corrected = start + (num / div) - sub;	//random transformation
+		corrected = corrected > COLORMAXRGB ? COLORMAXRGB : corrected;
+		corrected = corrected < 0 ? 0 : corrected;
+		return corrected;
+	}
+	
+	protected double correctColorGr6(double val) {
+		double corrected = val;
+		if (corrected < 0)
+			corrected = -1 * corrected;
 		corrected = corrected > COLORMAXRGB ? COLORMAXRGB : corrected;
 		corrected = corrected < 0 ? 0 : corrected;
 		return corrected;
@@ -1520,10 +1547,6 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 
 	public void setColorChoice(String choice) {
 		this.colorChoice = choice;
-		
-		if(this.colorChoice.equals(BlackWhite)){
-			
-		}
 	}
 	
 	//	called when SampleMix (single) is selected, NOT when vary color selected
