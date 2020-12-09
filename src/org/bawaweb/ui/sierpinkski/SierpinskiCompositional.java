@@ -8706,7 +8706,10 @@ class SierpinskiComboPanel extends JPanel {
 			if (!this.isAttractorInstantDraw) {
 				generators[i].setPauseTime(this.attractorPauseJump);
 			}
-
+			else{
+				generators[i].setPauseTime(0);
+				
+			}
 			generators[i].setAttractors(attractorClones);
 			generators[i].setSpace2d(space2D);/*
 System.out.println("space2DIs __ "+space2D);*/			
@@ -10216,6 +10219,10 @@ System.out.println("space2DIs __ "+space2D);*/
 					baseInfo += "<font color='red'>Time Invariant Attractor</font>" + eol;
 				} else {
 					baseInfo += "<font color='red'>Delta_Time: " + this.attrDeltaTime_tf.getText() + "</font>" + eol;
+				}
+				
+				if (this.isAttractorTimeIterDependant) {
+					baseInfo += "<font color='red'>TimeIterator Dependant Attractor</font>" + eol;
 				}
 				
 				if (this.isAttractorDimSpace3D) {

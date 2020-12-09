@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -151,9 +152,10 @@ public class AttractorsGenerator extends JFrame {
 				rangeMap = this.setRangeMapVals(rangeMap, attrSpaceMap);
 			}
 			
-			System.out.println(this.checkRangeMap(rangeMap));
+			this.printRangeMap(rangeMap);
+			System.out.println(this.checkRangeMap(rangeMap,attrs[0].is3D()));
 			String isNotOk = "rangeMap is NOT ok    Gr@#$^$";
-			if (isNotOk.equals(this.checkRangeMap(rangeMap))) {
+			if (isNotOk.equals(this.checkRangeMap(rangeMap,attrs[0].is3D()))) {
 				System.out.println("Uh-Oh  spaceMap ranges undefined");
 				return null;
 			}
@@ -217,20 +219,39 @@ public class AttractorsGenerator extends JFrame {
 	}
 	
 	
-	private String checkRangeMap(Map<String, Double> rngMap) {
+	private void printRangeMap(Map<String, Double> rMap) {
+		Set<String> kSet = rMap.keySet();
+		Iterator<String> itr = kSet.iterator();
+		while(itr.hasNext()) {
+			String key = itr.next();
+			Double value = rMap.get(key);
+			
+			System.out.println("["+key+"] ===>  ["+value+"]");
+		}
+		
+	}
+
+	private String checkRangeMap(Map<String, Double> rngMap, boolean is3d) {
 		String isOk = "rangeMap is OK   ^__^";
 		String isNotOk = "rangeMap is NOT ok    Gr@#$^$";
 		try {
-			Collection<Double> vals = rngMap.values();
-			Iterator<Double> valsIter = vals.iterator();
-			while(valsIter.hasNext()) {
-				if(valsIter.next() == null) {
-					return isNotOk;
+			Set<String> kSet = rngMap.keySet();
+			Iterator<String> itr = kSet.iterator();
+			while (itr.hasNext()) {
+				String key = itr.next();
+				Double value = rngMap.get(key);
+
+				if (value == null) {
+					if (is3d) {
+						return isNotOk;
+					} else {
+						if (!key.startsWith("z")) {
+							return isNotOk;
+						}
+					}
 				}
 			}
-			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return isNotOk;
 		}

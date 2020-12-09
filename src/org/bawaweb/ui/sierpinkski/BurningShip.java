@@ -154,13 +154,13 @@ public class BurningShip extends FractalBase {
 //				final BurningShip bS = new BurningShip(0.005,1.941,0.04);		//TinyShipInTail
 //				final BurningShip bS = new BurningShip(0.008, 1.861, 0.005);	//AnotherSmallOne
 				bS.setReversePixelCalculation(false);//setReversePixelCalculation(true);//
-				bS.setUseDiff(true);//setUseDiff(false);//
+				bS.setUseDiff(false);//setUseDiff(true);//
 				
 				final FractalBase frame = bS;		
-				frame.setColorChoice("ComputeColor");/*("ColorPalette");/*("BlackWhite");*/
-				frame.setScaleSize(5);
-				frame.setMaxIter(1000);
-				frame.setBound(2);
+				frame.setColorChoice("ColorGradient6");//("ComputeColor");/*("ColorPalette");/*("BlackWhite");*/
+				frame.setScaleSize(2);
+				frame.setMaxIter(10000);
+				frame.setBound(10);
 				/*frame.setUseColorPalette(false);
 				frame.setUseBlackWhite(true);*/
 				frame.setTitle(frame.getFractalShapeTitle());

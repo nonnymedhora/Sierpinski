@@ -728,6 +728,68 @@ public class Julia extends FractalBase {
 	protected String getFractalShapeTitle() {
 		return "Bawaz JuliaSet";
 	}
+	
+	public void draw_inverse_iteration(int power, ComplexNumber c) {
+		int bailout = 10;
+		ComplexNumber[][] plot_records = new ComplexNumber[getAreaSize()][getAreaSize()];
+		
+		for(int cnt=0; cnt<HEIGHT; cnt++) {
+			plot_records[cnt] = new ComplexNumber[WIDTH];
+		}
+		for(int row = 0; row < HEIGHT; row++) {
+			for(int col = 0; col < WIDTH; col++) { 
+				plot_records[row][col] = new ComplexNumber(0);
+			}
+		}
+		/*
+		//z0	is regular Mandlbrot set's origin	???
+		ComplexNumber z0 = new ComplexNumber(0.12,0.34);
+		for(int cnt = 0; cnt<5; cnt++) {
+				c.times()
+			z0 = Math.sqrt(Math.add(z0,Math.multiply(c,-1)));
+			z0 = math.multiply(math.sqrt(math.add(z0,math.multiply(c,-1))),-1);
+		}
+		var zNode = new JuliaTreeNode(z0);
+		*/
+		
+		
+	}
+	
+	//	to be used by the inverse_iteration algorithm
+	// which sets up the list of JuliaNodes
+	class JuliaNode {
+		private ComplexNumber nodeValCmplx;
+		private JuliaNode left;
+		private JuliaNode right;
+		
+		public JuliaNode(ComplexNumber cNum) {
+			this.nodeValCmplx = cNum != null ? cNum : new ComplexNumber(0);
+			this.left=null;
+			this.right=null;
+		}
+		
+		public String toString() {
+			String lftVal = this.left!=null?this.left.toString():"empty";
+			String rhtVal = this.right!=null?this.right.toString():"empty";
+			return this.left.toString() + "<--[" + this.nodeValCmplx.toString() + "-->" + this.right.toString();
+		}
+
+		public JuliaNode getLeft() {
+			return this.left;
+		}
+
+		public void setLeft(JuliaNode lft) {
+			this.left = lft;
+		}
+
+		public JuliaNode getRight() {
+			return this.right;
+		}
+
+		public void setRight(JuliaNode rht) {
+			this.right = rht;
+		}
+	}
 
 	/**
 	 * @param args
@@ -739,8 +801,10 @@ public class Julia extends FractalBase {
 //				final FractalBase frame = new Julia(2,0.279);	//(3,0.4);//(2,0.279);	//f(z) = z2 + 0.279
 //				final FractalBase frame = new Julia(2,true,-0.4,0.59); //new Julia(2,false,-1.29904,-0.75); //new Julia(2,0.279,true/*false*/);
 				//
-				final FractalBase frame = new Julia(2, new ComplexNumber(-0.4,0.59));//new Julia(2,"C3",true);//
-				frame.setColorChoice("BlackWhite");//("ComputeColor");
+				final FractalBase frame = new Julia(2, new ComplexNumber(0.12,0.34) );//new ComplexNumber(-0.4,0.59));//new Julia(2,"C3",true);//
+				frame.setColorChoice/*("BlackWhite");/*/("ComputeColor");
+				frame.setScaleSize(5);
+				frame.setMaxIter(1000);
 				/*frame.setUseColorPalette(false);
 				frame.setUseBlackWhite(true);*/
 //				frame.setUseFuncConst("Log");

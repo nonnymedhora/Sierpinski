@@ -3188,4 +3188,24 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	public static double x_max;
 	public static double y_max;
 	
+	public static double xminold;
+	public static double xmaxold;
+	public static double yminold;
+	public static double ymaxold;
+	
+	//captures mouse event
+	public static double x_start;
+	public static double x_end;
+	public static double y_start;
+	public static double y_end;
+	
+
+	public static double x_click_start;
+	public static double x_click_end;
+	public static double y_click_start;
+	public static double y_click_end;
+	
+	
+	
+	
 }

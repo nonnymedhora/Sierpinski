@@ -9,7 +9,7 @@ import java.util.Map;
 public abstract class Attractor {
 	
 	private Tuple3d t3d;
-	private Color color;
+	protected Color color;
 	private int maxIter;
 	protected boolean isTimeInvariant;
 	private double timeJump = 0.01;
@@ -18,6 +18,7 @@ public abstract class Attractor {
 	protected boolean is3D = true;
 	String space2dAxes;
 	private Map<Integer,Tuple3d> updatedTuples = new LinkedHashMap<Integer,Tuple3d>();
+	private Map<Integer,Color> updatedColors = new LinkedHashMap<Integer,Color>();
 	private boolean isPixellated = false;		//	Fractal rendered by lines, or pixels
 	
 	private boolean isTimeIterDependant = false;
@@ -116,6 +117,10 @@ public abstract class Attractor {
 		this.isTimeIterDependant = isDependant;
 	}
 	
+	public void setColor(Color clr) {
+		this.color = clr;
+	}
+	
 	/*public Tuple3d update(final Tuple3d tuple, final double dt, final int step) {
 		double newX = this.dx(tuple, dt, step);
 		return tuple;
@@ -172,20 +177,39 @@ public abstract class Attractor {
 		}
 		
 		if (scaledExistingTuple != null && scaledUpdatedTuple != null) {
-			g2.setColor(this.color);
-//			System.out.println("Attractor[draw] space2d is = "+this.space2dAxes);
+			final boolean isCliffordAttr = this.getClass().getName().contains("CliffordAttractor");
+			
+			if (!isCliffordAttr) {
+				g2.setColor(this.color);
+				//			System.out.println("Attractor[draw] space2d is = "+this.space2dAxes);
+			} else {
+				g2.setColor(this.updatedColors.get(index));
+			}
+			
 			
 			if (this.isPixellated) {
 				drawRect(g2, scaledExistingTuple, scaledUpdatedTuple);
 			} else {
 				drawLine(g2, scaledExistingTuple, scaledUpdatedTuple);
 			}
+			
+//			this.drawInfo(g2, scaledUpdatedTuple, index, 50);
 		}
 		
 /*
 		if (!this.isInstantDraw) {
 			pause(10);
 		}*/
+	}
+
+	void drawInfo(Graphics2D g2, Tuple3d tuple, int index, int startPos) {
+		g2.drawString("                                    ", 20, startPos);
+		String info = "("+index+")  "+"X[" + tuple.x + "], Y[" + tuple.y + "]";
+		if (is3D)
+			info += ", Z[" + tuple.z + "]";
+//		System.out.println(info);
+//		g2.setColor(Color.blue);
+		g2.drawString(info, 20, startPos);
 	}
 	
 	private void drawRect(Graphics2D g, Tuple3d existing, Tuple3d updated) {
@@ -365,10 +389,22 @@ public abstract class Attractor {
 		final double dt = this.isTimeInvariant ? 0 : this.getTimeJump();
 		
 		Map<String, Double> spaceMap = new HashMap<String, Double>();
-		boolean isTimeIterCalcNeeded = (this.isTimeIterDependant)&&(this.getClass().getName().contains("CustomAttractor"));
+		boolean isTimeIterCalcNeeded = (this.isTimeIterDependant)&&
+				(this.getClass().getName().contains("CustomAttractor")||
+						this.getClass().getName().contains("CliffordAttractor"));
 		CustomAttractor ca = null;
-		if(isTimeIterCalcNeeded){
-			ca = (CustomAttractor)this;
+		CliffordAttractor clA = null;
+		final boolean isCustomAttr = this.getClass().getName().contains("CustomAttractor");
+		final boolean isCliffordAttr = this.getClass().getName().contains("CliffordAttractor");
+					
+		if (isTimeIterCalcNeeded) {
+			if (isCustomAttr) {
+				ca = (CustomAttractor) this;
+			} else {
+				if (isCliffordAttr) {
+					clA = (CliffordAttractor) this;
+				}
+			}
 		}
 		
 		for (int i = 0; i < this.maxIter; i++) {
@@ -376,17 +412,25 @@ public abstract class Attractor {
 
 			if (! (Double.isNaN(existingTuple.x) || Double.isNaN(existingTuple.y) || Double.isNaN(existingTuple.z) )) {
 				Tuple3d updatedTuple = null;
+				Color updatedColor = null;
 				if (!isTimeIterCalcNeeded) {
 					updatedTuple = this.update(existingTuple, dt);
 				} else {
-					updatedTuple = ca.update(existingTuple, dt, i);
+					if (isCustomAttr) {
+						updatedTuple = ca.update(existingTuple, dt, i);
+					}
+					if (isCliffordAttr) {
+						updatedTuple = clA.update(existingTuple, dt, i);
+						updatedColor = clA.color;
+						
+						this.addUpdatedColors(i,updatedColor);
+					}
 				}
 				if (Double.isNaN(updatedTuple.x) || Double.isNaN(updatedTuple.y) || Double.isNaN(updatedTuple.z)) {
 					return spaceMap;
 				}
 
 				this.addUpdatedTuples(i, existingTuple, updatedTuple);
-				
 				tempDummyTuple = updatedTuple;
 				
 				x_min_r = tempDummyTuple.x < x_min_r ? tempDummyTuple.x : x_min_r;
@@ -424,6 +468,10 @@ public abstract class Attractor {
 	
 	private void addUpdatedTuples(int index, Tuple3d existingTuple, Tuple3d updatedTuple) {
 		this.updatedTuples.put(index,updatedTuple);
+	}
+	
+	private void addUpdatedColors(int index, Color clr) {
+		this.updatedColors.put(index,clr);
 	}
 
 	/**
