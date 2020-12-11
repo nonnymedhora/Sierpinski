@@ -516,23 +516,34 @@ public class Mandelbrot extends FractalBase {
 //
 //				} else {///////////////////////*/
 /////////////////ends///Nov9/////////////////////////////
-					int colorRGB;
-	
+				int colorRGB;
+				Color color = null;
+
+				if (! this.colorChoice.equals(Color_Palette_Blowout)) {
 					if (diff) {
 						colorRGB = mand(z0, max, pow, this.complex, bd, row, col);
 					} else {
-						colorRGB = max - mand(z0, max, pow, this.complex,bd, row, col);
+						colorRGB = max - mand(z0, max, pow, this.complex, bd, row, col);
 					}
-					
-					Color color = null;
-	
-					/*if (!this.isBuddha) {*/
-						color = this.getPixelDisplayColor(row, col, colorRGB, diff);
-						setPixel(row, n - 1 - col, color.getRGB());
-					/*}*/
-					if (this.isSavePixelInfo2File()) {
-						this.appendPixelInfo2File(row, n - 1 - col, color.getRGB());
+					/* if (!this.isBuddha) { */
+					color = this.getPixelDisplayColor(row, col, colorRGB, diff);
+					setPixel(row, n - 1 - col, color.getRGB());
+						/*}*/
+				} else {// colorChoice=="ColorBlowout"
+					if (diff) {
+						colorRGB = mand(z0, max, pow, this.complex, bd, row, col);
+					} else {
+						colorRGB = max - mand(z0, max, pow, this.complex, bd, row, col);
 					}
+
+					colorRGB = this.time2Color(colorRGB);
+					this.pixel[npixel++] = colorRGB;
+
+					setPixel(row, n - 1 - col, colorRGB);
+				}
+				if (this.isSavePixelInfo2File()) {
+					this.appendPixelInfo2File(row, n - 1 - col, color.getRGB());
+				}
 				/*}//////////////////////*/
 
 			}

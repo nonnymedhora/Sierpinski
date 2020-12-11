@@ -16,6 +16,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.awt.image.MemoryImageSource;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
@@ -149,6 +150,7 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	public final String BlackWhite = "BlackWhite";
 	public final String Random_COLOR = "Random";
 	public final String Color_Palette_Gradient6 = "ColorGradient6";
+	public final String Color_Palette_Blowout = "ColorBlowout";
 	
 	protected String colorChoice=Color_Palette;
 	
@@ -163,13 +165,16 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	private boolean useMandelbrotExplorer=false;	//only-for-mandelbrot
 	protected /*final */JTextField locPtTextField = new JTextField(WIDTH);
 	
-
-
+	int[] pixel; // width*height array of pixels
+	MemoryImageSource source = null;
+	int npixel = 0; // tracks current pixel
 
 	/** Constructor: an instance */
 	public FractalBase() {
 		super();
 		this.setSize(WIDTH, HEIGHT+20);
+		this.pixel = new int[WIDTH*HEIGHT];
+		
 		this.setVisible(true);
 		/*if (this.isUseMandelbrotExplorer()) {
 			this.add(locPtTextField, java.awt.BorderLayout.SOUTH);
@@ -944,6 +949,10 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 
 			}
 
+		}
+		
+		if(this.colorChoice.equals(Color_Palette_Blowout)){
+			
 		}
 		
 		for(int iter = 0; iter < divs.length; iter++) {
@@ -3206,6 +3215,129 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	public static double y_click_end;
 	
 	
+
+
+    int blowout_num(double d, double d2) {
+        double d3 = d;
+        double d4 = d2;
+        int n = 0;
+        for (int i = 0; i < FractalBase.maxIter; ++i) {
+            double d5 = d3 * d3 - d4 * d4 + d;
+            d4 = 2.0 * d3 * d4 + d2;
+            d3 = d5;
+            ++n;
+            if ((int)d3 > this.bound) break;
+            if ((int)d3 < -1*this.bound) break;
+        }
+        if (n != FractalBase.maxIter) return n;
+        return -1;
+    }
 	
+	
+	public int time2Color(int n) {
+        final int col1 = -16776961;
+        final int col2 = -256;
+        final int col3 = -65536;
+        
+        int n2;
+        int n3;
+        int n4;
+        int n5;
+        int n6;
+        int n7;
+        int n8;
+        int n9;
+        int n10;
+        
+        int n11 = 10;
+        int n12 = 60;
+        int n13 = 110;
+        int n14 = 160;
+        double d = 1.0;
+        
+        n11 = (int)(d * (double)n11);
+        n12 = (int)(d * (double)n12);
+        n13 = (int)(d * (double)n13);
+        n14 = (int)(d * (double)n14);
+        int n15 = n;
+        int n16 = -1;
+        
+        if (n < n11) {
+            n15 = n;
+            int n17 = (col1 & 16711680) >> 16;
+            int n18 = (col1 & 65280) >> 8;
+            int n19 = col1 & 255;
+            n17 = n17 * n15 / n11;
+            n18 = n18 * n15 / n11;
+            n19 = n19 * n15 / n11;
+            n16 = -16777216 | n17 << 16 | n18 << 8 | n19;
+            return n16;
+        }
+        if ((n15 = (n - n11) % (n14 - n11) + n11) < n12) {
+            n8 = (col1 & 16711680) >> 16;
+            n7 = (col1 & 65280) >> 8;
+            n9 = col1 & 255;
+            n8 = n8 * (n12 - n15) / (n12 - n11);
+            n7 = n7 * (n12 - n15) / (n12 - n11);
+            n9 = n9 * (n12 - n15) / (n12 - n11);
+        } else if (n15 < n13) {
+            n8 = 0;
+            n7 = 0;
+            n9 = 0;
+        } else {
+            n8 = (col1 & 16711680) >> 16;
+            n7 = (col1 & 65280) >> 8;
+            n9 = col1 & 255;
+            n8 = n8 * (n15 - n13) / (n14 - n13);
+            n7 = n7 * (n15 - n13) / (n14 - n13);
+            n9 = n9 * (n15 - n13) / (n14 - n13);
+        }
+        if (n15 < n12) {
+            n2 = (col2 & 16711680) >> 16;
+            n10 = (col2 & 65280) >> 8;
+            n6 = col2 & 255;
+            n2 = n2 * (n15 - n11) / (n12 - n11);
+            n10 = n10 * (n15 - n11) / (n12 - n11);
+            n6 = n6 * (n15 - n11) / (n12 - n11);
+        } else if (n15 < n13) {
+            n2 = (col2 & 16711680) >> 16;
+            n10 = (col2 & 65280) >> 8;
+            n6 = col2 & 255;
+            n2 = n2 * (n13 - n15) / (n13 - n12);
+            n10 = n10 * (n13 - n15) / (n13 - n12);
+            n6 = n6 * (n13 - n15) / (n13 - n12);
+        } else {
+            n2 = 0;
+            n10 = 0;
+            n6 = 0;
+        }
+        if (n15 < n12) {
+            n5 = 0;
+            n3 = 0;
+            n4 = 0;
+        } else if (n15 < n13) {
+            n5 = (col3 & 16711680) >> 16;
+            n3 = (col3 & 65280) >> 8;
+            n4 = col3 & 255;
+            n5 = n5 * (n15 - n12) / (n13 - n12);
+            n3 = n3 * (n15 - n12) / (n13 - n12);
+            n4 = n4 * (n15 - n12) / (n13 - n12);
+        } else {
+            n5 = (col3 & 16711680) >> 16;
+            n3 = (col3 & 65280) >> 8;
+            n4 = col3 & 255;
+            n5 = n5 * (n14 - n15) / (n14 - n13);
+            n3 = n3 * (n14 - n15) / (n14 - n13);
+            n4 = n4 * (n14 - n15) / (n14 - n13);
+        }
+        n16 = -16777216 | this.sum3colors(n8, n2, n5) << 16 | this.sum3colors(n7, n10, n3) << 8 | this.sum3colors(n9, n6, n4);
+        return n16;
+    }
+	
+    public int sum3colors(int n, int n2, int n3) {
+        int n4 = n + n2 + n3;
+        if (n4 > COLORMAXRGB) return COLORMAXRGB;
+        return n4;
+    }
 	
 }

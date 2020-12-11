@@ -350,17 +350,28 @@ System.out.println("type---->"+(type));	*/
 			} else {///////////////////////////////////*/
 
 				int colorRGB;
+				Color color = null;
 
-				if (diff) {
-					colorRGB = polyFract(zx, zy, max, pow, this.compConst, bd);
-				} else {
-					colorRGB = max - polyFract(zx, zy,max, pow, this.compConst,bd);
+				if (!this.colorChoice.equals(Color_Palette_Blowout)) {
+					if (diff) {
+						colorRGB = polyFract(zx, zy, max, pow, this.compConst, bd);
+					} else {
+						colorRGB = max - polyFract(zx, zy, max, pow, this.compConst, bd);
+					}
+					color = this.getPixelDisplayColor(row, col, colorRGB, diff);
+					setPixel(row, n - 1 - col, color.getRGB());
+				} else {// colorChoice=="ColorBlowout"
+					if (diff) {
+						colorRGB = polyFract(zx, zy, max, pow, this.compConst, bd);
+					} else {
+						colorRGB = max - polyFract(zx, zy, max, pow, this.compConst, bd);
+					}
+
+					colorRGB = this.time2Color(colorRGB);
+					this.pixel[npixel++] = colorRGB;
+
+					setPixel(row, n - 1 - col, colorRGB);
 				}
-				
-				Color color = this.getPixelDisplayColor(row, col, colorRGB, diff);
-
-				setPixel(row, n - 1 - col, color.getRGB());
-
 				if (this.isSavePixelInfo2File()) {
 					this.appendPixelInfo2File(row, n - 1 - col, color.getRGB());
 				}

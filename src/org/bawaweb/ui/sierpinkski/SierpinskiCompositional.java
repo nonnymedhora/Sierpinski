@@ -100,8 +100,8 @@ class SierpinskiComboPanel extends JPanel {
 	private static final int[][] 	COLOR_SAMPLE_STARTVAL_ARRAYS 	= new int[][] {FractalBase.POW2_4_200, FractalBase.POW2_2_128, FractalBase.POW2_2_F4, FractalBase.POW3_3_243, FractalBase.EQUAL_PARTS_40, FractalBase.EQUAL_PARTS_50, FractalBase.EQUAL_PARTS_25};
 	private static final int[][] 	COLOR_SAMPLE_DIV_ARRAYS 		= new int[][] {FractalBase.FRST_SIX_PRIMES, FractalBase.FRST_SIX_ODDS, FractalBase.FRST_SIX_FIBS};
 	
-	private static final String[] COLOR_OPTIONS 		= new String[] { "ColorPalette", "ComputeColor", "ColorGradient6" };
-	private static final String[] COLOR_OPTIONS_ALL 	= new String[]{"BlackWhite","ColorPalette","ComputeColor","ColorGradient6"/*,"Random"*/,"SampleMix"};
+	private static final String[] COLOR_OPTIONS 		= new String[] { "ColorPalette", "ComputeColor", "ColorGradient6", "ColorBlowout" };
+	private static final String[] COLOR_OPTIONS_ALL 	= new String[]{"BlackWhite","ColorPalette","ComputeColor","ColorGradient6","ColorBlowout"/*,"Random"*/,"SampleMix"};
 	private static final String[] FUNCTION_OPTIONS 		= {"None","sine","cosine","tan","cosec","sec","cot","sinh","cosh","tanh","arcsine","arccosine","arctan","arcsinh","arccosh","arctanh","reciprocal", "reciprocalSquare","square","cube","exponent(e)", "root",/*"cube-root",*/ "log(e)"};
 	private static final String[] PIX_TRANSFORM_OPTIONS = {"none", "absolute", "absoluteSquare","reciprocal", "reciprocalSquare", "square", "cube","root", "exponent", "log(10)", "log(e)", "sine", "cosine", "tan", "cosec", "sec", "cot", "sinh", "cosh", "tanh", "arcsine", "arccosine", "arctangent", "arcsinh", "arccosh", "arctanh"};
 	
