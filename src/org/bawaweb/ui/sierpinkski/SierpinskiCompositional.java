@@ -102,6 +102,7 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private static final String[] COLOR_OPTIONS 		= new String[] { "ColorPalette", "ComputeColor", "ColorGradient6", "ColorBlowout" };
 	private static final String[] COLOR_OPTIONS_ALL 	= new String[]{"BlackWhite","ColorPalette","ComputeColor","ColorGradient6","ColorBlowout"/*,"Random"*/,"SampleMix"};
+	private static final String[] COLOR_BLOWOUT_TYPES = new String[] { "Default", "Snowy", "Pink", "Matrix" };
 	private static final String[] FUNCTION_OPTIONS 		= {"None","sine","cosine","tan","cosec","sec","cot","sinh","cosh","tanh","arcsine","arccosine","arctan","arcsinh","arccosh","arctanh","reciprocal", "reciprocalSquare","square","cube","exponent(e)", "root",/*"cube-root",*/ "log(e)"};
 	private static final String[] PIX_TRANSFORM_OPTIONS = {"none", "absolute", "absoluteSquare","reciprocal", "reciprocalSquare", "square", "cube","root", "exponent", "log(10)", "log(e)", "sine", "cosine", "tan", "cosec", "sec", "cot", "sinh", "cosh", "tanh", "arcsine", "arccosine", "arctangent", "arcsinh", "arccosh", "arctanh"};
 	
@@ -955,6 +956,10 @@ class SierpinskiComboPanel extends JPanel {
 	private JButton buColorChooser = new JButton("ColorChooser");
 	
 	
+	private final JLabel colorBlowoutChoiceLabel = new JLabel("Color Blowout Types:");	
+	private JComboBox<String> colorBlowoutChoiceCombo = new JComboBox<String>(COLOR_BLOWOUT_TYPES);
+	private String colorBlowoutChoice = "Default";
+	
 	private final JLabel colorSampleMixStartValsLabel = new JLabel("Color Start Vals:");
 	private final JComboBox<String> colorSampleMixStartValsCombo = new JComboBox<String>(COLOR_SAMPLE_STARTVAL_OPTIONS);
 	private String colorSampleMixStartVals = "POW2_4_200";
@@ -1169,7 +1174,12 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(this.colorSampleDivValsLabel);
 		this.colorSampleDivValsLabel.setVisible(false);
 		this.add(this.colorSampleDivValsCombo);
-		this.colorSampleDivValsCombo.setVisible(false);		
+		this.colorSampleDivValsCombo.setVisible(false);			
+
+		this.add(this.colorBlowoutChoiceLabel);
+		this.colorBlowoutChoiceLabel.setVisible(false);
+		this.add(this.colorBlowoutChoiceCombo);
+		this.colorBlowoutChoiceCombo.setVisible(false);
 		
 		this.add(new JLabel("PixelTransformation:  X"));
 		this.add(this.pxXTransformCombo);
@@ -3977,6 +3987,10 @@ class SierpinskiComboPanel extends JPanel {
 
 				this.setSampleStart_DivVals(mands[i]);
 			}
+			
+			if (this.colorChoice.equals("ColorBlowout")) {
+				this.setColorBlowoutTypeVals(mands[i]);
+			}
 
 
 			String pxFunc = mands[i].getUseFuncPixel();
@@ -4530,7 +4544,11 @@ class SierpinskiComboPanel extends JPanel {
 			if (this.colorChoice.equals("SampleMix")) {
 				this.setSampleStart_DivVals(polys[i]);
 			}
-
+			
+			if (this.colorChoice.equals("ColorBlowout")) {
+				this.setColorBlowoutTypeVals(polys[i]);
+			}
+			
 			String pxFunc = polys[i].getUseFuncPixel();
 			this.pxFuncChoice = pxFunc;
 
@@ -5067,6 +5085,12 @@ class SierpinskiComboPanel extends JPanel {
 
 				this.setSampleStart_DivVals(julies[i]);
 			}
+			
+			if (this.colorChoice.equals("ColorBlowout")) {
+				this.setColorBlowoutTypeVals(julies[i]);
+			}
+			
+			
 
 			String pxFunc = julies[i].getUseFuncPixel();
 			this.pxFuncChoice = pxFunc;
@@ -9048,6 +9072,7 @@ System.out.println("space2DIs __ "+space2D);*/
 		boolean useBw = this.colorChoice.equals("BlackWhite");	
 		
 		boolean useSample = this.colorChoice.equals("SampleMix");
+		boolean useColorBlowout = this.colorChoice.equals("ColorBlowout");
 		
 		String pxConstOp = this.pxConstOprnChoice;
 		String func = this.constFuncChoice;
@@ -9141,6 +9166,16 @@ System.out.println("space2DIs __ "+space2D);*/
 		
 		ff.setReversePixelCalculation(this.invertPixelCalculation);
 		
+		ff.setColorChoice(this.colorChoice);
+		if (useSample) {
+			ff.setColorChoice(this.colorChoice);	//	
+			this.setSampleColorMix(ff);
+		}
+		if(useColorBlowout){
+			ff.setColorBlowoutType(this.colorBlowoutChoice);
+		}
+		
+		/*
 		if (useCP) {
 			ff.setColorChoice(this.colorChoice);	//	ff.setUseColorPalette(useCP);
 		} else {
@@ -9156,7 +9191,7 @@ System.out.println("space2DIs __ "+space2D);*/
 				}
 			}
 		}
-		
+		*/
 		ff.setPxConstOperation(pxConstOp);
 		ff.setUseFuncConst(func);
 		ff.setApplyCustomFormula(this.diyJApplyFormulaZ);
@@ -9200,6 +9235,12 @@ System.out.println("space2DIs __ "+space2D);*/
 		jj.setVisible(true);
 		
 		return jj;
+	}
+	
+	
+	
+	private void setColorBlowoutTypeVals(FractalBase ff) {
+		ff.setColorBlowoutType(this.colorBlowoutChoice);
 	}
 	
 	private void setSampleStart_DivVals(FractalBase ff) {
@@ -9265,6 +9306,7 @@ System.out.println("space2DIs __ "+space2D);*/
 		boolean useBw = this.colorChoice.equals("BlackWhite");
 		
 		boolean useSample = this.colorChoice.equals("SampleMix");
+		boolean useColorBlowout = this.colorChoice.equals("ColorBlowout");
 
 		String pxConstOp = this.pxConstOprnChoice;
 		String func = this.constFuncChoice;
@@ -9340,6 +9382,15 @@ System.out.println("space2DIs __ "+space2D);*/
 		ff.setPxConstOperation(pxConstOp);
 		ff.setReversePixelCalculation(this.invertPixelCalculation);
 		
+		ff.setColorChoice(this.colorChoice);
+		if (useSample) {
+			ff.setColorChoice(this.colorChoice);	//	
+			this.setSampleColorMix(ff);
+		}
+		if(useColorBlowout){
+			ff.setColorBlowoutType(this.colorBlowoutChoice);
+		}
+		/*
 		if (useCP) {
 			ff.setColorChoice(this.colorChoice);	//	ff.setUseColorPalette(useCP);
 		} else {
@@ -9355,6 +9406,7 @@ System.out.println("space2DIs __ "+space2D);*/
 				}
 			}
 		}
+		*/
 		ff.setUseFuncConst(func);
 		ff.setApplyCustomFormula(this.diyMandApplyFormulaZ);
 		ff.setUseFuncPixel(pxFunc);
@@ -9391,6 +9443,7 @@ System.out.println("space2DIs __ "+space2D);*/
 		boolean useCP = this.colorChoice.equals("ColorPalette");
 		boolean useBw = this.colorChoice.equals("BlackWhite");
 		boolean useSample = this.colorChoice.equals("SampleMix");
+		boolean useColorBlowout = this.colorChoice.equals("ColorBlowout");
 		
 		String pxConstOp = this.pxConstOprnChoice;
 		String func = this.constFuncChoice;
@@ -9426,6 +9479,15 @@ System.out.println("space2DIs __ "+space2D);*/
 		boolean invertPix = this.invertPixelCalculation;
 		ff.setReversePixelCalculation(invertPix);
 		
+		ff.setColorChoice(this.colorChoice);
+		if (useSample) {
+			ff.setColorChoice(this.colorChoice);	//	
+			this.setSampleColorMix(ff);
+		}
+		if(useColorBlowout){
+			ff.setColorBlowoutType(this.colorBlowoutChoice);
+		}
+		/*
 		if (useCP) {
 			ff.setColorChoice(this.colorChoice);	//	ff.setUseColorPalette(useCP);
 		} else {
@@ -9441,6 +9503,7 @@ System.out.println("space2DIs __ "+space2D);*/
 				}
 			}
 		}
+		*/
 		ff.setUseFuncConst(func);
 		ff.setUseFuncPixel(pxFunc);
 		ff.setRotation(rot);
@@ -9500,6 +9563,7 @@ System.out.println("space2DIs __ "+space2D);*/
 		boolean useCP = this.colorChoice.equals("ColorPalette");
 		boolean useBw = this.colorChoice.equals("BlackWhite");	
 		boolean useSample = this.colorChoice.equals("SampleMix");
+		boolean useColorBlowout = this.colorChoice.equals("ColorBlowout");
 		
 		String pxXTrans = this.pixXTransform;
 		String pxYTrans = this.pixYTransform;
@@ -9577,6 +9641,16 @@ System.out.println("space2DIs __ "+space2D);*/
 
 		ff.setReversePixelCalculation(this.invertPixelCalculation);
 		
+		
+		ff.setColorChoice(this.colorChoice);
+		if (useSample) {
+			ff.setColorChoice(this.colorChoice);	//	
+			this.setSampleColorMix(ff);
+		}
+		if(useColorBlowout){
+			ff.setColorBlowoutType(this.colorBlowoutChoice);
+		}
+		/*
 		if (useCP) {
 			ff.setColorChoice(this.colorChoice);	//	ff.setUseColorPalette(useCP);
 		} else {
@@ -9592,6 +9666,7 @@ System.out.println("space2DIs __ "+space2D);*/
 				}
 			}
 		}
+		*/
 		/*ff.setUseBlackWhite(useBw);		removing_4_now*/
 		ff.setUseFuncConst(func);
 		ff.setUseFuncPixel(pxFunc);
@@ -9611,6 +9686,7 @@ System.out.println("space2DIs __ "+space2D);*/
 		boolean useCP = this.colorChoice.equals("ColorPalette");
 		boolean useBw = this.colorChoice.equals("BlackWhite");
 		boolean useSample = this.colorChoice.equals("sampleMix");
+		boolean useColorBlowout = this.colorChoice.equals("ColorBlowout");
 
 		/*String pxXTrans = this.pixXTransform;
 		String pxYTrans = this.pixYTransform;
@@ -9653,6 +9729,16 @@ System.out.println("space2DIs __ "+space2D);*/
 		
 		ff.setReversePixelCalculation(invertPix);
 		
+		ff.setColorChoice(this.colorChoice);
+		if (useSample) {
+			ff.setColorChoice(this.colorChoice);	//	
+			this.setSampleColorMix(ff);
+		}
+		if(useColorBlowout){
+			ff.setColorBlowoutType(this.colorBlowoutChoice);
+		}
+		
+		/*
 		if (useCP) {
 			ff.setColorChoice(this.colorChoice);	//	ff.setUseColorPalette(useCP);
 		} else {
@@ -9668,6 +9754,7 @@ System.out.println("space2DIs __ "+space2D);*/
 				}
 			}
 		}
+		*/
 		ff.setUseFuncConst(func);
 		ff.setUseFuncPixel(pxFunc);
 		ff.setRotation(rot);
@@ -9981,6 +10068,7 @@ System.out.println("space2DIs __ "+space2D);*/
 			case 	POLY:
 				baseInfo += this.colorChoice + "," + eol;
 				if(this.colorChoice.equals("SampleMix")) { baseInfo += "startVals["+this.colorSampleMixStartVals+"] divVals["+this.colorSampleDivVals+"]" + eol; }
+				if(this.colorChoice.equals("ColorBlowout")) { baseInfo += "["+this.colorBlowoutChoice+"]" + eol; }
 				baseInfo += "Power: " + this.polyPower + ", ";
 				if (this.getPUseDiff()) {
 					baseInfo += "Ud, "+eol;
@@ -10031,6 +10119,7 @@ System.out.println("space2DIs __ "+space2D);*/
 			case	MANDELBROT	:
 				baseInfo += this.colorChoice + "," + eol;
 				if(this.colorChoice.equals("SampleMix")) { baseInfo += "startVals["+this.colorSampleMixStartVals+"] divVals["+this.colorSampleDivVals+"]" + eol; }
+				if(this.colorChoice.equals("ColorBlowout")) { baseInfo += "["+this.colorBlowoutChoice+"]" + eol; }
 				baseInfo += "ImageMagnification: " + this.magnification + eol;
 				baseInfo += "Power: " + this.exponent + ", ";
 				if (this.getMUseDiff()) {
@@ -10051,6 +10140,7 @@ System.out.println("space2DIs __ "+space2D);*/
 			case	JULIA	:
 				baseInfo += this.colorChoice + "," + eol;
 				if(this.colorChoice.equals("SampleMix")) { baseInfo += "startVals["+this.colorSampleMixStartVals+"] divVals["+this.colorSampleDivVals+"]" + eol; }
+				if(this.colorChoice.equals("ColorBlowout")) { baseInfo += "["+this.colorBlowoutChoice+"]" + eol; }
 				baseInfo += "Power: " + this.power + ", ";
 				if (this.getJUseDiff()) {
 					baseInfo += "Ud, ";
@@ -10071,6 +10161,7 @@ System.out.println("space2DIs __ "+space2D);*/
 				baseInfo += MANDELBROT + eol;
 				baseInfo += this.colorChoice + "," + eol;
 				if(this.colorChoice.equals("SampleMix")) { baseInfo += "startVals["+this.colorSampleMixStartVals+"] divVals["+this.colorSampleDivVals+"]" + eol; }
+				if(this.colorChoice.equals("ColorBlowout")) { baseInfo += "["+this.colorBlowoutChoice+"]" + eol; }
 				baseInfo += "ImageMagnification: " + this.diyMandMagnification + eol;
 				baseInfo += "Power: " + this.diyMandExponent + ", ";
 				if (this.getDiyMandUseDiff()) {
@@ -10122,6 +10213,7 @@ System.out.println("space2DIs __ "+space2D);*/
 				baseInfo += JULIA + eol;
 				baseInfo += this.colorChoice + "," + eol;
 				if(this.colorChoice.equals("SampleMix")) { baseInfo += "startVals["+this.colorSampleMixStartVals+"] divVals["+this.colorSampleDivVals+"]" + eol; }
+				if(this.colorChoice.equals("ColorBlowout")) { baseInfo += "["+this.colorBlowoutChoice+"]" + eol; }
 				baseInfo += "Power: " + this.diyJuliaPower + ", ";
 				if (this.getDiyJuliaUseDiff()) {
 					baseInfo += "Ud, ";
@@ -10450,12 +10542,22 @@ System.out.println("space2DIs __ "+space2D);*/
 					colorSampleMixStartValsCombo.setVisible(true);
 					colorSampleDivValsLabel.setVisible(true);
 					colorSampleDivValsCombo.setVisible(true);
+					colorBlowoutChoiceLabel.setVisible(false);
+					colorBlowoutChoiceCombo.setVisible(false); 
+				} else if (comboOption.equals("ColorBlowout")) {
+					colorSampleMixStartValsLabel.setVisible(false);
+					colorSampleMixStartValsCombo.setVisible(false);
+					colorSampleDivValsLabel.setVisible(false);
+					colorSampleDivValsCombo.setVisible(false);
+					colorBlowoutChoiceLabel.setVisible(true);
+					colorBlowoutChoiceCombo.setVisible(true); 
 				} else {
 					colorSampleMixStartValsLabel.setVisible(false);
 					colorSampleMixStartValsCombo.setVisible(false);
 					colorSampleDivValsLabel.setVisible(false);
 					colorSampleDivValsCombo.setVisible(false);
-					
+					colorBlowoutChoiceLabel.setVisible(false);
+					colorBlowoutChoiceCombo.setVisible(false); 
 				}
 			}});
 		
@@ -10487,8 +10589,18 @@ System.out.println("space2DIs __ "+space2D);*/
 				JComboBox<String> cb = (JComboBox<String>)e.getSource();
 		        String comboOption = (String)cb.getSelectedItem();
 		        doSelectColorSampleDivValsComboCommand(comboOption);				
-			}});
-		
+			}
+		});
+
+		this.colorBlowoutChoiceCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<String> cb = (JComboBox<String>) e.getSource();
+				String comboOption = (String) cb.getSelectedItem();
+				doSelectColorBlowoutChoiceComboCommand(comboOption);
+			}
+		});
 		
 		
 //		this.buColorChooser.addActionListener(new ActionListener() {
@@ -11021,6 +11133,7 @@ System.out.println("space2DIs __ "+space2D);*/
 					showAllColorsCb.setEnabled(false);
 					colorSampleMixStartValsCombo.setEnabled(false);
 					colorSampleDivValsCombo.setEnabled(false);
+					colorBlowoutChoiceCombo.setEnabled(false);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
 					doSelectDiyJuliaVaryColorCommand(false);
 					colorChoiceCombo.setEnabled(true);
@@ -11031,11 +11144,22 @@ System.out.println("space2DIs __ "+space2D);*/
 						colorSampleDivValsCombo.setVisible(true);
 						colorSampleMixStartValsCombo.setEnabled(true);
 						colorSampleDivValsCombo.setEnabled(true);
-					} else {
+						colorBlowoutChoiceCombo.setVisible(false);
+						colorBlowoutChoiceCombo.setEnabled(false);
+					} else if(colorChoiceCombo.getSelectedItem().equals("ColorBlowout")) {
 						colorSampleMixStartValsCombo.setVisible(false);
 						colorSampleDivValsCombo.setVisible(false);
 						colorSampleMixStartValsCombo.setEnabled(false);
 						colorSampleDivValsCombo.setEnabled(false);
+						colorBlowoutChoiceCombo.setVisible(true);
+						colorBlowoutChoiceCombo.setEnabled(true);
+					}else {
+						colorSampleMixStartValsCombo.setVisible(false);
+						colorSampleDivValsCombo.setVisible(false);
+						colorSampleMixStartValsCombo.setEnabled(false);
+						colorSampleDivValsCombo.setEnabled(false);
+						colorBlowoutChoiceCombo.setVisible(false);
+						colorBlowoutChoiceCombo.setEnabled(false);
 					}
 				}
 			}
@@ -11738,6 +11862,7 @@ System.out.println("space2DIs __ "+space2D);*/
 					showAllColorsCb.setEnabled(false);
 					colorSampleMixStartValsCombo.setEnabled(false);
 					colorSampleDivValsCombo.setEnabled(false);
+					colorBlowoutChoiceCombo.setEnabled(false);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
 					doSelectDiyMandVaryColorCommand(false);
 					colorChoiceCombo.setEnabled(true);
@@ -11748,11 +11873,22 @@ System.out.println("space2DIs __ "+space2D);*/
 						colorSampleDivValsCombo.setVisible(true);
 						colorSampleMixStartValsCombo.setEnabled(true);
 						colorSampleDivValsCombo.setEnabled(true);
+						colorBlowoutChoiceCombo.setEnabled(false);
+						colorBlowoutChoiceCombo.setVisible(false);
+					} else if(colorChoiceCombo.getSelectedItem().equals("ColorBlowout")) {
+						colorSampleMixStartValsCombo.setVisible(false);
+						colorSampleDivValsCombo.setVisible(false);
+						colorSampleMixStartValsCombo.setEnabled(false);
+						colorSampleDivValsCombo.setEnabled(false);
+						colorBlowoutChoiceCombo.setEnabled(true);
+						colorBlowoutChoiceCombo.setVisible(true);
 					} else {
 						colorSampleMixStartValsCombo.setVisible(false);
 						colorSampleDivValsCombo.setVisible(false);
 						colorSampleMixStartValsCombo.setEnabled(false);
 						colorSampleDivValsCombo.setEnabled(false);
+						colorBlowoutChoiceCombo.setEnabled(false);
+						colorBlowoutChoiceCombo.setVisible(false);
 					}
 				}
 			}
@@ -12421,6 +12557,8 @@ private void setupPolyGeneratorListeners() {
 					showAllColorsCb.setEnabled(false);
 					colorSampleMixStartValsCombo.setEnabled(false);
 					colorSampleDivValsCombo.setEnabled(false);
+					colorBlowoutChoiceCombo.setVisible(false);
+					colorBlowoutChoiceCombo.setEnabled(false);
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
 					doSelectPolyVaryColorCommand(false);
 					colorChoiceCombo.setEnabled(true);
@@ -12431,11 +12569,22 @@ private void setupPolyGeneratorListeners() {
 						colorSampleDivValsCombo.setVisible(true);
 						colorSampleMixStartValsCombo.setEnabled(true);
 						colorSampleDivValsCombo.setEnabled(true);
+						colorBlowoutChoiceCombo.setVisible(false);
+						colorBlowoutChoiceCombo.setEnabled(false);
+					} else if(colorChoiceCombo.getSelectedItem().equals("ColorBlowout")) {
+						colorSampleMixStartValsCombo.setVisible(false);
+						colorSampleDivValsCombo.setVisible(false);
+						colorSampleMixStartValsCombo.setEnabled(false);
+						colorSampleDivValsCombo.setEnabled(false);
+						colorBlowoutChoiceCombo.setVisible(true);
+						colorBlowoutChoiceCombo.setEnabled(true);
 					} else {
 						colorSampleMixStartValsCombo.setVisible(false);
 						colorSampleDivValsCombo.setVisible(false);
 						colorSampleMixStartValsCombo.setEnabled(false);
 						colorSampleDivValsCombo.setEnabled(false);
+						colorBlowoutChoiceCombo.setVisible(false);
+						colorBlowoutChoiceCombo.setEnabled(false);
 					}
 				}
 			}
@@ -13939,6 +14088,10 @@ private void setupPolyGeneratorListeners() {
 		
 	private void doSelectColorSampleDivValsComboCommand(String divVals) {
 		this.colorSampleDivVals = divVals;
+	}
+	
+	private void doSelectColorBlowoutChoiceComboCommand(String clrBlowoutChoice) {
+		this.colorBlowoutChoice = clrBlowoutChoice;
 	}
 	
 	private void doSelectPixXTransformComboChoice(String transform){

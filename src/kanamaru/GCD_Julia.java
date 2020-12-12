@@ -109,7 +109,8 @@ public class GCD_Julia extends GraphCanvasDrag implements Runnable {
                 this.x = this.pix2x((int)v3);
                 this.y = this.pix2y(i);
 //                this.pixel[n++] = (object = this.blowout_num(this.x, this.y)) < 0 ? -16777216 : this.time2Color((int)object);
-                this.pixel[n++] = (this.blowout_num(this.x, this.y)) < 0 ? -16777216 : this.time2Color(this.blowout_num(this.x, this.y));
+                final int blowoutNum = this.blowout_num(this.x, this.y);
+				this.pixel[n++] = blowoutNum < 0 ? -16777216 : this.time2Color(blowoutNum);
                 if (!this.shouldStop) continue;
                 this.shouldStop = false;
                 this.threadActive = false;

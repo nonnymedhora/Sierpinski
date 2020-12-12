@@ -154,6 +154,9 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	
 	protected String colorChoice=Color_Palette;
 	
+	//	others are "Snowy", "Pink", "Matrix"
+	protected String colorBlowoutType = "Default";
+	
 	protected double  bound = 2.0;
 	
 	protected boolean reversePixelCalculation = false;
@@ -3056,7 +3059,12 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	public void mouseDragged(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
-		System.out.println("[-mouseDragged-] x is " + x + " and y is " + y);
+
+		x_click_end = x;
+		y_click_end = y;
+		
+		System.out.println("drawRect -- ("+x_click_start+","+y_click_start+") - to - ("+x_click_end+","+y_click_end+")");
+//		System.out.println("[-mouseDragged-] x is " + x + " and y is " + y);
 	}
 
 	@Override
@@ -3065,6 +3073,9 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		//Point p = MouseInfo.getPointerInfo().getLocation();
 		int x = e.getX();// p.x;	p.x & p.y refer to screen-position
 		int y = e.getY();// p.y;	coordinates
+		
+		x_click_start = e.getX();
+		y_click_start = e.getY();
 		
 		/*Drawing on any GUI component is performed with coordinates 
 		 * that are measured from the upper-left corner (0, 0) of that GUI component, 
@@ -3137,6 +3148,10 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+
+		x_click_start = e.getX();
+		y_click_start = e.getY();
+		
 		/*int x = e.getX();
 		int y = e.getY();
 		System.out.println("[-mousePressed-] x is " + x + " and y is " + y);*/
@@ -3147,6 +3162,41 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		/*int x = e.getX();
 		int y = e.getY();
 		System.out.println("[-mouseReleased-] x is " + x + " and y is " + y);*/
+		//System.out.println("releasedBOUNDEDRect is ("+x_click_start+","+y_click_start+")  ==to== ["+x_click_end+","+y_click_end+"]");
+//not-getting-range-correctly	^__^
+/*******************************		
+		int x_from = (int) ((x_click_start < x_click_end) ? x_click_start : x_click_end);
+		int x_to = (int) ((x_click_start < x_click_end) ? x_click_end : x_click_start);
+		int y_from = (int) ((y_click_start < y_click_end) ? y_click_start : y_click_end);
+		int y_to = (int) ((y_click_start < y_click_end) ? y_click_end : y_click_start);
+		
+		System.out.println("releasedBOUNDEDRect is ("+x_from+","+y_from+")  ==to== ["+x_to+","+y_to+"]");
+		
+		double realFromPosn = x_min + (x_from * 1.0 * (x_max - x_min)) / getWidth();		
+		double imgFromPosn = y_max + (y_from * 1.0 * (y_min - y_max)) / getHeight();
+		double realToPosn = x_min + (x_to * 1.0 * (x_max - x_min)) / getWidth();		
+		double imgToPosn = y_max + (y_to * 1.0 * (y_min - y_max)) / getHeight();
+		
+		System.out.println("releasedComplexRect is ("+realFromPosn+","+imgFromPosn+")  ==to== ["+realToPosn+","+imgToPosn+"]");
+
+		this.setxC((realFromPosn + realToPosn) / 2.0);
+		this.setyC((imgFromPosn + imgToPosn) / 2.0);
+		
+		double pxlXJump = (realFromPosn-realToPosn)/WIDTH;
+		double pxlYJump = (imgFromPosn-imgToPosn)/HEIGHT;
+		
+		System.out.println("xC is "+ getxC()+", yC is "+getyC()+", XJump is "+ pxlXJump+", YJump is "+pxlYJump);
+		
+		
+//		err--output--blow		dragged-left-and-down-diagonally
+//		leftDrag	x-decreases,	downDrag	y-increases
+// 
+//	drawRect -- (397.0,152.0) - to - (348.0,191.0)
+//	releasedBOUNDEDRect is (348,152)  ==to== [397,191]
+//	releasedComplexRect is (-0.2160000000000002,0.784)  ==to== [0.17600000000000016,0.472]
+//	xC is -0.020000000000000018, yC is 0.628, XJump is -4.900000000000004E-4, YJump is 3.9000000000000005E-4
+
+************/
 	}
 
 	@Override
@@ -3217,7 +3267,17 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	
 
 
-    int blowout_num(double d, double d2) {
+    public String getColorBlowoutType() {
+		return this.colorBlowoutType;
+	}
+
+
+	public void setColorBlowoutType(String clrBlowoutType) {
+		this.colorBlowoutType = clrBlowoutType;
+	}
+
+
+	int blowout_num(double d, double d2) {
         double d3 = d;
         double d4 = d2;
         int n = 0;
@@ -3232,8 +3292,130 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
         if (n != FractalBase.maxIter) return n;
         return -1;
     }
+    
+    public int time2Color(int n) {
+    	//Default
+        int clr1 = -16776961;
+        int clr2 = -256;
+        int clr3 = -65536;
+        
+        String colorType = this.getColorBlowoutType();
+        
+        if (colorType.equals("Default")) {
+			clr1 = -16776961;
+			clr2 = -256;
+			clr3 = -65536;
+		} else if (colorType.equals("Snowy")) {
+			clr1 = -16776961;
+            clr2 = -1;
+            clr3 = -5592321;
+		} else if (colorType.equals("Pink")) {
+			clr1 = -65536;
+            clr2 = -1;
+            clr3 = -21846;
+		} else if (colorType.equals("Matrix")) {
+			clr1 = -16711936;
+            clr2 = -16755456;
+            clr3 = -16777216;
+		}
+        
+		int n2;
+        int n3;
+        int n4;
+        int n5;
+        int n6;
+        int n7;
+        int n8;
+        int n9;
+        int n10;
+        
+        int n11 = 10;
+        int n12 = 60;
+        int n13 = 110;
+        int n14 = 160;
+        double d = 1.0;
+        
+        n11 = (int)(d * (double)n11);
+        n12 = (int)(d * (double)n12);
+        n13 = (int)(d * (double)n13);
+        n14 = (int)(d * (double)n14);
+        int n15 = n;
+        int n16 = -1;
+        
+        if (n < n11) {
+            n15 = n;
+            int n17 = (clr1 & 16711680) >> 16;
+            int n18 = (clr1 & 65280) >> 8;
+            int n19 = clr1 & 255;
+            n17 = n17 * n15 / n11;
+            n18 = n18 * n15 / n11;
+            n19 = n19 * n15 / n11;
+            n16 = -16777216 | n17 << 16 | n18 << 8 | n19;
+            return n16;
+        }
+        if ((n15 = (n - n11) % (n14 - n11) + n11) < n12) {
+            n8 = (clr1 & 16711680) >> 16;
+            n7 = (clr1 & 65280) >> 8;
+            n9 = clr1 & 255;
+            n8 = n8 * (n12 - n15) / (n12 - n11);
+            n7 = n7 * (n12 - n15) / (n12 - n11);
+            n9 = n9 * (n12 - n15) / (n12 - n11);
+        } else if (n15 < n13) {
+            n8 = 0;
+            n7 = 0;
+            n9 = 0;
+        } else {
+            n8 = (clr1 & 16711680) >> 16;
+            n7 = (clr1 & 65280) >> 8;
+            n9 = clr1 & 255;
+            n8 = n8 * (n15 - n13) / (n14 - n13);
+            n7 = n7 * (n15 - n13) / (n14 - n13);
+            n9 = n9 * (n15 - n13) / (n14 - n13);
+        }
+        if (n15 < n12) {
+            n2 = (clr2 & 16711680) >> 16;
+            n10 = (clr2 & 65280) >> 8;
+            n6 = clr2 & 255;
+            n2 = n2 * (n15 - n11) / (n12 - n11);
+            n10 = n10 * (n15 - n11) / (n12 - n11);
+            n6 = n6 * (n15 - n11) / (n12 - n11);
+        } else if (n15 < n13) {
+            n2 = (clr2 & 16711680) >> 16;
+            n10 = (clr2 & 65280) >> 8;
+            n6 = clr2 & 255;
+            n2 = n2 * (n13 - n15) / (n13 - n12);
+            n10 = n10 * (n13 - n15) / (n13 - n12);
+            n6 = n6 * (n13 - n15) / (n13 - n12);
+        } else {
+            n2 = 0;
+            n10 = 0;
+            n6 = 0;
+        }
+        if (n15 < n12) {
+            n5 = 0;
+            n3 = 0;
+            n4 = 0;
+        } else if (n15 < n13) {
+            n5 = (clr3 & 16711680) >> 16;
+            n3 = (clr3 & 65280) >> 8;
+            n4 = clr3 & 255;
+            n5 = n5 * (n15 - n12) / (n13 - n12);
+            n3 = n3 * (n15 - n12) / (n13 - n12);
+            n4 = n4 * (n15 - n12) / (n13 - n12);
+        } else {
+            n5 = (clr3 & 16711680) >> 16;
+            n3 = (clr3 & 65280) >> 8;
+            n4 = clr3 & 255;
+            n5 = n5 * (n14 - n15) / (n14 - n13);
+            n3 = n3 * (n14 - n15) / (n14 - n13);
+            n4 = n4 * (n14 - n15) / (n14 - n13);
+        }
+        n16 = -16777216 | this.sum3colors(n8, n2, n5) << 16 | this.sum3colors(n7, n10, n3) << 8 | this.sum3colors(n9, n6, n4);
+        return n16;
+    }
 	
 	
+	/*
 	public int time2Color(int n) {
         final int col1 = -16776961;
         final int col2 = -256;
@@ -3333,7 +3515,7 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
         n16 = -16777216 | this.sum3colors(n8, n2, n5) << 16 | this.sum3colors(n7, n10, n3) << 8 | this.sum3colors(n9, n6, n4);
         return n16;
     }
-	
+	*/
     public int sum3colors(int n, int n2, int n3) {
         int n4 = n + n2 + n3;
         if (n4 > COLORMAXRGB) return COLORMAXRGB;

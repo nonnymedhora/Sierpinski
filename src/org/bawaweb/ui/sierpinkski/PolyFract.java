@@ -368,7 +368,7 @@ System.out.println("type---->"+(type));	*/
 					}
 
 					colorRGB = this.time2Color(colorRGB);
-					this.pixel[npixel++] = colorRGB;
+					//this.pixel[npixel++] = colorRGB;
 
 					setPixel(row, n - 1 - col, colorRGB);
 				}
