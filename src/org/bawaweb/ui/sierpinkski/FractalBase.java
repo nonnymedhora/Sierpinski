@@ -1569,6 +1569,10 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 			this.setRgbStartVals(this.intiFyRgbStartVals(choice[1].replaceAll(WHITESPACE,EMPTY)));
 			this.setRgbDivisors(this.intiFyRgbDivisors(choice[2].replaceAll(WHITESPACE,EMPTY)));
 		}
+		
+		if(this.colorChoice.equals("ColorBlowout")){
+			this.setColorBlowoutType(choice[1]);
+		}
 
 	}
 

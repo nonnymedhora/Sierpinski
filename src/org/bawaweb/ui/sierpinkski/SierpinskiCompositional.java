@@ -6641,29 +6641,39 @@ class SierpinskiComboPanel extends JPanel {
 //		colorChoice
 		final String colorChoice = "colorChoice=";
 		if (this.polyVaryColorCb.isSelected() && this.polyVaryColor) {
-			String[] colr_options_no_sampl = new String[] { colorChoice+"ColorPalette", colorChoice+"ComputeColor" };
-			
+			/*return COLOR_OPTIONS.length;*/
+			String[] colr_options_no_sampl = new String[] { colorChoice+"BlackWhite", colorChoice+"ColorPalette", colorChoice+"ComputeColor", colorChoice+"ColorGradient6", colorChoice+"ColorBlowout|Default", colorChoice+"ColorBlowout|Snowy", colorChoice+"ColorBlowout|Pink", colorChoice+"ColorBlowout|Matrix" };
+		
 			return asList(colr_options_no_sampl);
 
 		} else {
 			final String colorChosen = (String) this.colorChoiceCombo.getSelectedItem();
-			if (!colorChosen.equals("SampleMix")) {
-				return asList(new String[] { colorChoice+colorChosen });
-			} else {
+			if(colorChosen.equals("SampleMix")) {
 				return asList(new String[] {(String) ( 
 						colorChoice+
-						OPEN_BRACK+
+						/*OPEN_BRACK+*/
 						colorChosen+PIPE+ 
 						(String) this.colorSampleMixStartValsCombo.getSelectedItem()+PIPE+
-						(String) this.colorSampleDivValsCombo.getSelectedItem() +
-						CLOSE_BRACK ).replaceAll(BACK_SLASH,EMPTY) });
+						(String) this.colorSampleDivValsCombo.getSelectedItem()/* +
+						CLOSE_BRACK*/ ).replaceAll(BACK_SLASH,EMPTY) });
+			} else if(colorChosen.equals("ColorBlowout")) {
+				return asList(new String[] {(String) ( 
+						colorChoice+
+						/*OPEN_BRACK+*/
+						colorChosen+PIPE+ 
+						(String) this.colorBlowoutChoiceCombo.getSelectedItem() /*+
+						CLOSE_BRACK*/ ).replaceAll(BACK_SLASH,EMPTY) });
+			} else {
+				return asList(new String[] { colorChoice+colorChosen });
 			}
 		}
 	}
 
 	private int getVaryPolyColorCount() {
 		if (this.polyVaryColorCb.isSelected()) {
-			return COLOR_OPTIONS.length;
+			/*return COLOR_OPTIONS.length;*/
+			String[] colr_options_no_sampl = new String[] { colorChoice+"BlackWhite", colorChoice+"ColorPalette", colorChoice+"ComputeColor", colorChoice+"ColorGradient6", colorChoice+"ColorBlowout|Default", colorChoice+"ColorBlowout|Snowy", colorChoice+"ColorBlowout|Pink", colorChoice+"ColorBlowout|Matrix" };
+			return colr_options_no_sampl.length;
 		} else {
 			return 1;
 		}
@@ -6674,12 +6684,31 @@ class SierpinskiComboPanel extends JPanel {
 //		colorChoice
 		final String colorChoice = "colorChoice=";
 		if (this.diyMandVaryColorCb.isSelected() && this.diyMandVaryColor) {
-			String[] colr_options_no_sampl = new String[] { colorChoice+"ColorPalette", colorChoice+"ComputeColor" };
+			String[] colr_options_no_sampl = new String[] { colorChoice+"BlackWhite", colorChoice+"ColorPalette", colorChoice+"ComputeColor", colorChoice+"ColorGradient6", colorChoice+"ColorBlowout|Default", colorChoice+"ColorBlowout|Snowy", colorChoice+"ColorBlowout|Pink", colorChoice+"ColorBlowout|Matrix" };
 			
 			return asList(colr_options_no_sampl);
 
 		} else {
 			final String colorChosen = (String) this.colorChoiceCombo.getSelectedItem();
+			if(colorChosen.equals("SampleMix")) {
+				return asList(new String[] {(String) ( 
+						colorChoice+
+						/*OPEN_BRACK+*/
+						colorChosen+PIPE+ 
+						(String) this.colorSampleMixStartValsCombo.getSelectedItem()+PIPE+
+						(String) this.colorSampleDivValsCombo.getSelectedItem() /*+
+						CLOSE_BRACK*/ ).replaceAll(BACK_SLASH,EMPTY) });
+			} else if(colorChosen.equals("ColorBlowout")) {
+				return asList(new String[] {(String) ( 
+						colorChoice+
+						/*OPEN_BRACK+*/
+						colorChosen+PIPE+ 
+						(String) this.colorBlowoutChoiceCombo.getSelectedItem()/* +
+						CLOSE_BRACK*/ ).replaceAll(BACK_SLASH,EMPTY) });
+			} else {
+				return asList(new String[] { colorChoice+colorChosen });
+			}
+			/*
 			if (!colorChosen.equals("SampleMix")) {
 				return asList(new String[] { colorChoice+colorChosen });
 			} else {
@@ -6690,13 +6719,15 @@ class SierpinskiComboPanel extends JPanel {
 						(String) this.colorSampleMixStartValsCombo.getSelectedItem()+PIPE+
 						(String) this.colorSampleDivValsCombo.getSelectedItem() +
 						CLOSE_BRACK ).replaceAll(BACK_SLASH,EMPTY) });
-			}
+			}*/
 		}
 	}
 
 	private int getVaryMandColorCount() {
 		if (this.diyMandVaryColorCb.isSelected()) {
-			return COLOR_OPTIONS.length;
+			/*return COLOR_OPTIONS.length;*/
+			String[] colr_options_no_sampl = new String[] { colorChoice+"BlackWhite", colorChoice+"ColorPalette", colorChoice+"ComputeColor", colorChoice+"ColorGradient6", colorChoice+"ColorBlowout|Default", colorChoice+"ColorBlowout|Snowy", colorChoice+"ColorBlowout|Pink", colorChoice+"ColorBlowout|Matrix" };
+			return colr_options_no_sampl.length;
 		} else {
 			return 1;
 		}
@@ -6707,7 +6738,7 @@ class SierpinskiComboPanel extends JPanel {
 //		colorChoice
 		final String colorChoice = "colorChoice=";
 		if (this.diyJuliaVaryColorCb.isSelected() && this.diyJuliaVaryColor) {
-			String[] colr_options_no_sampl = new String[] { /*colorChoice+"BlackWhite", */colorChoice+"ColorPalette", colorChoice+"ComputeColor" };
+			String[] colr_options_no_sampl = new String[] { colorChoice+"BlackWhite", colorChoice+"ColorPalette", colorChoice+"ComputeColor", colorChoice+"ColorGradient6", colorChoice+"ColorBlowout|Default", colorChoice+"ColorBlowout|Snowy", colorChoice+"ColorBlowout|Pink", colorChoice+"ColorBlowout|Matrix" };
 			/*List<String> cl1 =*/return asList(colr_options_no_sampl);
 
 			/*List<?> cl2 = product(this.getAppendStr2List("startVals=", asList(COLOR_SAMPLE_STARTVAL_OPTIONS)), this.getAppendStr2List("divVals=",asList(COLOR_SAMPLE_DIV_OPTIONS)));
@@ -6726,16 +6757,23 @@ class SierpinskiComboPanel extends JPanel {
 			return allColrsList;*/
 		} else {
 			final String colorChosen = (String) this.colorChoiceCombo.getSelectedItem();
-			if (!colorChosen.equals("SampleMix")) {
-				return asList(new String[] { colorChoice+colorChosen });
-			} else {
+			if(colorChosen.equals("SampleMix")) {
 				return asList(new String[] {(String) ( 
 						colorChoice+
-						OPEN_BRACK+
+						/*OPEN_BRACK+*/
 						colorChosen+PIPE+ 
 						(String) this.colorSampleMixStartValsCombo.getSelectedItem()+PIPE+
-						(String) this.colorSampleDivValsCombo.getSelectedItem() +
-						CLOSE_BRACK ).replaceAll(BACK_SLASH,EMPTY) });
+						(String) this.colorSampleDivValsCombo.getSelectedItem() /*+
+						CLOSE_BRACK*/ ).replaceAll(BACK_SLASH,EMPTY) });
+			} else if(colorChosen.equals("ColorBlowout")) {
+				return asList(new String[] {(String) ( 
+						colorChoice+
+						/*OPEN_BRACK+*/
+						colorChosen+PIPE+ 
+						(String) this.colorBlowoutChoiceCombo.getSelectedItem()/* +
+						CLOSE_BRACK*/ ).replaceAll(BACK_SLASH,EMPTY) });
+			} else {
+				return asList(new String[] { colorChoice+colorChosen });
 			}
 		}
 	}
@@ -6746,7 +6784,9 @@ class SierpinskiComboPanel extends JPanel {
 			count += (COLOR_SAMPLE_STARTVAL_OPTIONS.length * COLOR_SAMPLE_DIV_OPTIONS.length);
 			System.out.println("In_getVaryColorCount count = " + count);
 			return count;*/
-			return COLOR_OPTIONS.length;
+			/*return COLOR_OPTIONS.length;*/
+			String[] colr_options_no_sampl = new String[] { colorChoice+"BlackWhite", colorChoice+"ColorPalette", colorChoice+"ComputeColor", colorChoice+"ColorGradient6", colorChoice+"ColorBlowout|Default", colorChoice+"ColorBlowout|Snowy", colorChoice+"ColorBlowout|Pink", colorChoice+"ColorBlowout|Matrix" };
+			return colr_options_no_sampl.length;
 		} else {
 			return 1;
 		}
@@ -9168,7 +9208,7 @@ System.out.println("space2DIs __ "+space2D);*/
 		
 		ff.setColorChoice(this.colorChoice);
 		if (useSample) {
-			ff.setColorChoice(this.colorChoice);	//	
+//			ff.setColorChoice(this.colorChoice);	//	
 			this.setSampleColorMix(ff);
 		}
 		if(useColorBlowout){
@@ -9240,7 +9280,7 @@ System.out.println("space2DIs __ "+space2D);*/
 	
 	
 	private void setColorBlowoutTypeVals(FractalBase ff) {
-		ff.setColorBlowoutType(this.colorBlowoutChoice);
+		this.colorBlowoutChoice=ff.getColorBlowoutType();
 	}
 	
 	private void setSampleStart_DivVals(FractalBase ff) {
@@ -9384,7 +9424,7 @@ System.out.println("space2DIs __ "+space2D);*/
 		
 		ff.setColorChoice(this.colorChoice);
 		if (useSample) {
-			ff.setColorChoice(this.colorChoice);	//	
+//			ff.setColorChoice(this.colorChoice);	//	
 			this.setSampleColorMix(ff);
 		}
 		if(useColorBlowout){
@@ -9481,7 +9521,7 @@ System.out.println("space2DIs __ "+space2D);*/
 		
 		ff.setColorChoice(this.colorChoice);
 		if (useSample) {
-			ff.setColorChoice(this.colorChoice);	//	
+//			ff.setColorChoice(this.colorChoice);	//	
 			this.setSampleColorMix(ff);
 		}
 		if(useColorBlowout){
@@ -9644,7 +9684,7 @@ System.out.println("space2DIs __ "+space2D);*/
 		
 		ff.setColorChoice(this.colorChoice);
 		if (useSample) {
-			ff.setColorChoice(this.colorChoice);	//	
+//			ff.setColorChoice(this.colorChoice);	//	
 			this.setSampleColorMix(ff);
 		}
 		if(useColorBlowout){
@@ -9731,7 +9771,7 @@ System.out.println("space2DIs __ "+space2D);*/
 		
 		ff.setColorChoice(this.colorChoice);
 		if (useSample) {
-			ff.setColorChoice(this.colorChoice);	//	
+//			ff.setColorChoice(this.colorChoice);	//	
 			this.setSampleColorMix(ff);
 		}
 		if(useColorBlowout){
