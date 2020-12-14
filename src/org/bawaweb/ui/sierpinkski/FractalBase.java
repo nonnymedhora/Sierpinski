@@ -165,7 +165,9 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	
 	protected boolean savePixelInfo2File = false;
 	
-	private boolean useMandelbrotExplorer=false;	//only-for-mandelbrot
+	private boolean useMandelbrotExplorer = false;
+	private boolean useJuliaExplorer = false;
+	
 	protected /*final */JTextField locPtTextField = new JTextField(WIDTH);
 	
 	int[] pixel; // width*height array of pixels
@@ -430,29 +432,47 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	@Override
 	public void paint(Graphics g1) {
 		super.paint(g1);
-		BufferedImage img = this.createFractalImage();
+
 		Graphics2D g2 = (Graphics2D) g1;
 		
-		// reqd drawing location
-		int drawLocX = (int) getxC();
-		int drawLocY = (int) getyC();
+		if (!this.refocusDraw) {
+			BufferedImage img = this.createFractalImage();
+			// reqd drawing location
+			int drawLocX = (int) getxC();
+			int drawLocY = (int) getyC();
+			// rotation info
+			double rotationReq = Math.toRadians(this.rotation);
+			double locX = getWidth() / 2;
+			double locY = getHeight() / 2;
+			AffineTransform tx = AffineTransform.getRotateInstance(rotationReq, locX, locY);
+			AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+			// Drawing the rotated image at the required drawing locations
+			img = op.filter(img, null);
+			g2.drawImage(img, drawLocX, drawLocY, null);
+			this.setImage(img);
+			g2.dispose();
+		} else {
+			BufferedImage img = this.createRefocussedFractaImage(this);
+			g2.drawImage(img, 0, 0, null);
+			this.setImage(img);
+			g2.dispose();
+		}
+	}
+	
+	private BufferedImage createRefocussedFractaImage(FractalBase frctl) {
+		Graphics2D g = this.getBufferedImage().createGraphics();
+		Julia julia = null;
+		Mandelbrot mand = null;
+		if (frctl.getClass().getName().contains("Julia")) {
+			julia = (Julia) frctl;
+			julia.createFocalFractalShape(frctl, new ComplexNumber(x_start,y_start), new ComplexNumber(x_end,y_end));
+		} else if(frctl.getClass().getName().contains("Mandelbrot")){
+			mand = (Mandelbrot) frctl;
+			mand.createFocalFractalShape(frctl, new ComplexNumber(x_start,y_start), new ComplexNumber(x_end,y_end));
+		}
+		//this.createFocalFractalShape(frctl, new ComplexNumber(x_start,y_start), new ComplexNumber(x_end,y_end));
+		return this.getBufferedImage();
 		
-		// rotation info
-		double rotationReq = Math.toRadians(this.rotation);
-
-		double locX = getWidth() / 2;
-		double locY = getHeight() / 2;
-
-		AffineTransform tx = AffineTransform.getRotateInstance(rotationReq, locX, locY);
-		AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
-
-		// Drawing the rotated image at the required drawing locations
-		img = op.filter(img, null);
-		g2.drawImage(img, drawLocX, drawLocY, null);
-
-		this.setImage(img);
-
-		g2.dispose();
 	}
 
 	private BufferedImage createFractalImage(){
@@ -588,6 +608,7 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	}
 
 	public abstract void createFractalShape(Graphics2D g);
+	//public abstract void createFocalFractalShape(FractalBase fb, ComplexNumber start, ComplexNumber end);
 
 	protected abstract String getFractalShapeTitle();
 	
@@ -3061,18 +3082,39 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
     
 	@Override
 	public void mouseDragged(MouseEvent e) {
+		if (!this.isDragging)
+			return;
+		/*this.x_click_end = e.getX();
+		this.y_click_end = e.getY();
+
+		if (this.x_click_start == this.x_click_end || this.y_click_start == this.y_click_end) {
+			this.isDragging = false;
+			return;
+		}
+		
+		Graphics g = this.bufferedImage.getGraphics();
+		g.setColor(Color.white);
+		g.drawRect((int) this.x_click_start, (int) this.y_click_start,
+				(int) Math.abs(this.x_click_end - this.x_click_start),
+				(int) Math.abs(this.y_click_end - this.y_click_start));
+*/
+		
+
 		int x = e.getX();
 		int y = e.getY();
 
 		x_click_end = x;
 		y_click_end = y;
 		
-		System.out.println("drawRect -- ("+x_click_start+","+y_click_start+") - to - ("+x_click_end+","+y_click_end+")");
+//		System.out.println("drawRect -- ("+x_click_start+","+y_click_start+") - to - ("+x_click_end+","+y_click_end+")");
 //		System.out.println("[-mouseDragged-] x is " + x + " and y is " + y);
+		
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		/*if (!this.isDragging)
+			return;*/
 		jpopFr.dispose();
 		//Point p = MouseInfo.getPointerInfo().getLocation();
 		int x = e.getX();// p.x;	p.x & p.y refer to screen-position
@@ -3104,9 +3146,12 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		String imgSign = imgPosn > 0 ? "+" : "";//"";//y > scrnCntrY ? "-" : "+";//
 		//locPtTextField.setText(realPosn + " " + imgSign + " " + imgPosn + " * i");
 		
-		createMandelbrotExplorerJuliaSet(realPosn, imgPosn);
-		jpopFr.setVisible(true);
+		if (this.getClass().getName().contains("Mandelbrot")) {
+			createMandelbrotExplorerJuliaSet(realPosn, imgPosn);
+			jpopFr.setVisible(true);
+		}
 	}
+	
 
 
 	private void createMandelbrotExplorerJuliaSet(double realPosn, double imgPosn) {
@@ -3117,7 +3162,7 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		jpop.setxC(0.0);
 		jpop.setyC(0.0);
 		jpop.setMaxIter(1000);
-		jpop.setSize(350, 350);
+		jpop.setSize(400, 400);
 		jpop.setScaleSize(FractalBase.scaleSize);
 		jpop.setUseDiff(mand.isUseDiff());
 		/////	above are hardCoded values	//////
@@ -3152,7 +3197,7 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-
+		this.isDragging = true;
 		x_click_start = e.getX();
 		y_click_start = e.getY();
 		
@@ -3161,8 +3206,72 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		System.out.println("[-mousePressed-] x is " + x + " and y is " + y);*/
 	}
 
+	
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		int x = e.getX();
+		int y = e.getY();
+
+		if (!this.isDragging) {
+			if (this.getClass().getName().contains("Mandelbrot")) {
+				jpopFr.dispose();
+				x_click_start = e.getX();
+				y_click_start = e.getY();
+				double realPosn = x_min + (x * 1.0 * (x_max - x_min)) / getWidth();
+				double imgPosn = y_max + (y * 1.0 * (y_min - y_max)) / getHeight();
+				createMandelbrotExplorerJuliaSet(realPosn, imgPosn);
+				jpopFr.setVisible(true);
+			}
+			return;
+		}
+		
+		x_click_end = x;
+		y_click_end = y;
+		
+		double realPosnStart = x_min + (x_click_start * 1.0 * (x_max - x_min)) / getWidth();		
+		double imgPosnStart = y_max + (y_click_start * 1.0 * (y_min - y_max)) / getHeight();
+		double realPosnEnd = x_min + (x_click_end * 1.0 * (x_max - x_min)) / getWidth();		
+		double imgPosnEnd = y_max + (y_click_end * 1.0 * (y_min - y_max)) / getHeight();
+		
+		if (imgPosnEnd == imgPosnStart || realPosnEnd == realPosnStart) {
+			this.isDragging = false;
+			return;
+		}
+		
+		refocusDraw=true;
+//		System.out.println("new rect focus range ["+realPosnStart+","+imgPosnStart+"] == to == ["+realPosnEnd+","+imgPosnEnd+"]");
+        createExplorerFocussedFractalImg(realPosnStart,imgPosnStart,realPosnEnd,imgPosnEnd);
+		this.isDragging=false;
+		
+		/*if (!this.isDragging)
+			return;
+		this.x_click_end = e.getX();
+		this.y_click_end = e.getY();
+
+		if (this.x_click_start == this.x_click_end || this.y_click_start == this.y_click_end) {
+			this.isDragging = false;
+			return;
+		}
+		
+		Graphics g = this.bufferedImage.getGraphics();
+		g.setColor(Color.white);
+		g.drawRect((int) this.x_click_start, (int) this.y_click_start,
+				(int) Math.abs(this.x_click_end - this.x_click_start),
+				(int) Math.abs(this.y_click_end - this.y_click_start));
+
+        this.isDragging = false;
+        
+        //range
+
+        double realPosnStart = x_min + (x_click_start * 1.0 * (x_max - x_min)) / getWidth();		
+		double imgPosnStart = y_max + (y_click_start * 1.0 * (y_min - y_max)) / getHeight();
+		double realPosnEnd = x_min + (x_click_end * 1.0 * (x_max - x_min)) / getWidth();		
+		double imgPosnEnd = y_max + (y_click_end * 1.0 * (y_min - y_max)) / getHeight();
+		
+		System.out.println("new rect focus range ["+realPosnStart+","+imgPosnStart+"] == to == ["+realPosnEnd+","+imgPosnEnd+"]");
+        
+        */
+        
 		/*int x = e.getX();
 		int y = e.getY();
 		System.out.println("[-mouseReleased-] x is " + x + " and y is " + y);*/
@@ -3203,6 +3312,16 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 ************/
 	}
 
+	private void createExplorerFocussedFractalImg(double xStart, double yStart, double xEnd, double yEnd) {
+		x_start = xStart;
+		x_end = xEnd;
+		y_start = yStart;
+		y_end = yEnd;
+		refocusDraw = true;
+		repaint();
+	}
+
+
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		/*Point p = MouseInfo.getPointerInfo().getLocation();
@@ -3226,11 +3345,25 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		x_max = xc + size / 2;//xc - size / 2 + size * (n - 1) / n;
 		y_max = yc + size / 2;//yc - size / 2 + size * (n - 1) / n;
 
-		System.out.println("x_min is: " + x_min);
+		/*System.out.println("x_min is: " + x_min);
 		System.out.println("y_min is: " + y_min);
 		System.out.println("x_max is: " + x_max);
-		System.out.println("y_max is: " + y_max);
+		System.out.println("y_max is: " + y_max);*/
 		
+	}
+	
+	public boolean isUseJuliaExplorer() {
+		return this.useJuliaExplorer;
+	}
+	
+	
+
+	public void setUseJuliaExplorer(boolean useJExplorer) {
+		this.useJuliaExplorer = useJExplorer;
+		
+		this.add(locPtTextField, java.awt.BorderLayout.SOUTH);
+		this.addMouseListener(this);
+		this.addMouseMotionListener(this);
 	}
 	
 	public boolean isUseMandelbrotExplorer() {
@@ -3267,8 +3400,9 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	public static double x_click_end;
 	public static double y_click_start;
 	public static double y_click_end;
-	
-	
+
+	boolean isDragging = false;
+	boolean refocusDraw = false;
 
 
     public String getColorBlowoutType() {

@@ -1058,4 +1058,77 @@ public class Mandelbrot extends FractalBase {
 		this.magnification = mg;
 	}
 
+	public void createFocalFractalShape(FractalBase fBase, ComplexNumber cStart, ComplexNumber cEnd) {
+		Mandelbrot mand = (Mandelbrot) fBase;
+		double xc = (cStart.real+cEnd.real)/2.0;
+		double yc = (cStart.imaginary+cEnd.imaginary)/2.0;
+		double size = mand.magnification;
+		double bd = mand.getBound();
+		int max = mand.getMaxIter();
+//		System.out.println("in__Mandelbrot__createFocalFractalShape");		
+
+		String func2Apply = mand.useFuncConst;
+		String pxFunc2Apply = mand.useFuncPixel;
+
+		int n = FractalBase.getAreaSize();
+		int pow = mand.power;
+		
+		this.setRangeSpace(xc, yc, size, n);
+
+		double xStart = cStart.real<cEnd.real?cStart.real:cEnd.real;
+		double yStart = cStart.imaginary<cEnd.imaginary?cStart.imaginary:cEnd.imaginary;
+
+		double xEnd = cStart.real>cEnd.real?cStart.real:cEnd.real;
+		double yEnd = cStart.imaginary>cEnd.imaginary?cStart.imaginary:cEnd.imaginary;
+		
+		FractalBase.x_min=xStart;
+		FractalBase.x_max=xEnd;
+		FractalBase.y_min=yStart;
+		FractalBase.y_max=yEnd;
+		
+		if(xStart==xEnd||yStart==yEnd)	return;
+		
+		double xColJump = 1.0 * (xEnd-xStart)/n;
+		double yRowJump = 1.0 * (yEnd-yStart)/n;
+		
+		for (int row = 0; row < n; row++) {
+			for (int col = 0; col < n; col++) {
+				double x0 = xStart+col*xColJump;	//xc - size / 2 + size * row / n;
+				double y0 = yStart+row*yRowJump;	//yc - size / 2 + size * col / n;
+				
+				ComplexNumber z0 = this.getZValue(func2Apply, pxFunc2Apply, x0, y0);	
+				if (z0.isNaN()) {
+					continue;
+				}
+				
+				int colorRGB;
+				Color color = null;
+
+				if (! mand.colorChoice.equals(Color_Palette_Blowout)) {
+					if (mand.useDiff) {
+						colorRGB = mand(z0, max, pow, this.complex, bd, row, col);
+					} else {
+						colorRGB = max - mand(z0, max, pow, this.complex, bd, row, col);
+					}
+					/* if (!this.isBuddha) { */
+					color = mand.getPixelDisplayColor(row, col, colorRGB, mand.useDiff);
+					setPixel(row, n - 1 - col, color.getRGB());
+						/*}*/
+				} else {// colorChoice=="ColorBlowout"
+					if (mand.useDiff) {
+						colorRGB = mand(z0, max, pow, this.complex, bd, row, col);
+					} else {
+						colorRGB = max - mand(z0, max, pow, this.complex, bd, row, col);
+					}
+
+					colorRGB = this.time2Color(colorRGB);
+					//this.pixel[npixel++] = colorRGB;
+
+					setPixel(row, n - 1 - col, colorRGB);
+				}
+			}
+		}
+		
+	}
+
 }

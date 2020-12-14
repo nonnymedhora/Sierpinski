@@ -211,6 +211,10 @@ class SierpinskiComboPanel extends JPanel {
 	private boolean kochSpreadOuter = false;
 	
 	// for Julia
+
+	private boolean juliaExplore = false;
+	private final JCheckBox juliaExploreCb = new JCheckBox("Explore Julia", false);
+
 	private final String[] juliaOptions = new String[] { J1, J2, J3, J4, J5, J6, J7, J8, J9, J10, J11};
 	private final JComboBox<String> juliaCombos = new JComboBox<String>(juliaOptions);
 	
@@ -452,6 +456,9 @@ class SierpinskiComboPanel extends JPanel {
 	protected double diyJuliaXC;
 	protected double diyJuliaYC;
 	protected double diyJuliaScaleSize;
+	
+	private boolean diyJuliaExplore = false;
+	private final JCheckBox diyJuliaExploreCb = new JCheckBox("Explore Julia", false);
 
 	//lyapunov exponent for set determination
 	private final JCheckBox diyJuliaUseLyapunovExpCb = new JCheckBox("UseLyapunovExponentOnly", false);
@@ -1783,6 +1790,8 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyJuliaPanel.add(this.diyJuliaPowerCombos);
 		this.diyJuliaPanel.add(this.diyJuliaUseDiffCb);
 		
+		this.diyJuliaPanel.add(this.diyJuliaExploreCb);
+		
 
 
 //		this.diyJuliaPanel.add(this.diyJuliaUseLyapunovExpCb);
@@ -2199,6 +2208,8 @@ class SierpinskiComboPanel extends JPanel {
 		this.juliaOptionsPanel.add(new JLabel("Power-Constant:"));
 		this.juliaOptionsPanel.add(this.juliaCombos);		
 		this.juliaOptionsPanel.add(this.juliaUseDiffCb);
+		
+		this.juliaOptionsPanel.add(this.juliaExploreCb);
 
 //		this.juliaOptionsPanel.add(this.juliaUseLyapunovExpCb);
 		
@@ -3129,6 +3140,12 @@ class SierpinskiComboPanel extends JPanel {
 		this.formulaArea.setVisible(true);
 		this.doPolyChoicesCheck();
 	}*/
+	
+
+
+	private void doSetDiyJuliaExploreCommand(boolean explore) {
+		this.diyJuliaExplore = explore;
+	}
 
 	private void doSetDiyMandelbrotExploreCommand(boolean explore) {
 		this.diyMandExplore = explore;
@@ -3138,6 +3155,13 @@ class SierpinskiComboPanel extends JPanel {
 		this.diyMandUseLyapunovExponent = useLyapunovExpC;
 		this.formulaArea.setVisible(true);
 		this.doDiyMandelbrotChoicesCheck();
+	}
+	
+
+	
+
+	private void doSetJuliaExploreCommand(boolean explore) {
+		this.juliaExplore = explore;
 	}
 	
 
@@ -9108,6 +9132,7 @@ System.out.println("space2DIs __ "+space2D);*/
 	private FractalBase createDIYJulia() {
 		FractalBase ff;
 		//diyJulia
+		boolean doExplore = this.diyJuliaExplore;
 		boolean useCP = this.colorChoice.equals("ColorPalette");
 		boolean useBw = this.colorChoice.equals("BlackWhite");	
 		
@@ -9197,6 +9222,10 @@ System.out.println("space2DIs __ "+space2D);*/
 			ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJuliaRealVal, diyJuliaImgVal);
 		}
 		
+
+		if (doExplore) {
+			ff.setUseJuliaExplorer(true);
+		}
 
 		ff.setUseLyapunovExponent(this.diyJuliaUseLyapunovExponent);
 		ff.setPxXTransformation(this.pixXTransform);
@@ -9463,6 +9492,8 @@ System.out.println("space2DIs __ "+space2D);*/
 	}
 
 	private FractalBase startJulia() {
+		boolean doExplore = this.juliaExplore;
+		
 		int pow = this.getPower();
 		double con = this.getComplexConst();
 		String comp = this.getComplex();
@@ -9507,6 +9538,10 @@ System.out.println("space2DIs __ "+space2D);*/
 			ff = new Julia(pow, comp, jBound, jUseD);
 		}
 		
+
+		if (doExplore) {
+			ff.setUseJuliaExplorer(true);
+		}
 		
 		
 		ff.setUseLyapunovExponent(this.juliaUseLyapunovExponent);
@@ -10920,6 +10955,17 @@ System.out.println("space2DIs __ "+space2D);*/
 					doSetDiyJuliaUseLyapunovExpCommand(true);
 				} else if(event.getStateChange()==ItemEvent.DESELECTED){
 					doSetDiyJuliaUseLyapunovExpCommand(false);
+				}
+			}
+        });
+		
+		this.diyJuliaExploreCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetDiyJuliaExploreCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetDiyJuliaExploreCommand(false);
 				}
 			}
         });
@@ -13208,7 +13254,16 @@ private void setupPolyGeneratorListeners() {
 			}
         });
 		
-
+		this.juliaExploreCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetJuliaExploreCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetJuliaExploreCommand(false);
+				}
+			}
+        });
 		
 		this.juliaUseLyapunovExpCb.addItemListener(new ItemListener() {
             @Override

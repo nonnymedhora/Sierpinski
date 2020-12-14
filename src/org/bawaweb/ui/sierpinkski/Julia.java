@@ -359,6 +359,7 @@ public class Julia extends FractalBase {
 		}
 	}
 	
+	
 
 	/* (non-Javadoc)
 	 * @see org.bawaweb.ui.sierpinkski.FractalBase#createFractalShape(java.awt.Graphics2D)
@@ -853,6 +854,120 @@ public class Julia extends FractalBase {
 		
 	}
 */
+
+
+	public void createFocalFractalShape(FractalBase fbase, ComplexNumber cStart, ComplexNumber cEnd) {
+		Julia julie = (Julia) fbase;
+		double xc = (cStart.real+cEnd.real)/2.0;
+		double yc = (cStart.imaginary+cEnd.imaginary)/2.0;
+		double size = getScaleSize();
+		double bd = julie.getBound();
+		int max = julie.getMaxIter();
+//		System.out.println("in__Julia__createFocalFractalShape");		
+
+		String func2Apply = julie.useFuncConst;
+		String pxFunc2Apply = julie.useFuncPixel;
+
+		int n = getAreaSize();
+		int pow = julie.power;
+		
+		boolean pxFuncHasConst = this.applyCustomFormula
+				&& this.checkForConstInAppliedFormula(pxFunc2Apply);//(pxFunc2Apply.indexOf('c') > -1 || pxFunc2Apply.indexOf('C') > -1);
+
+		
+		this.setRangeSpace(xc, yc, size, n);
+
+		double xStart = cStart.real<cEnd.real?cStart.real:cEnd.real;
+		double yStart = cStart.imaginary<cEnd.imaginary?cStart.imaginary:cEnd.imaginary;
+
+		double xEnd = cStart.real>cEnd.real?cStart.real:cEnd.real;
+		double yEnd = cStart.imaginary>cEnd.imaginary?cStart.imaginary:cEnd.imaginary;
+		
+		FractalBase.x_min=xStart;
+		FractalBase.x_max=xEnd;
+		FractalBase.y_min=yStart;
+		FractalBase.y_max=yEnd;
+		
+		if(xStart==xEnd||yStart==yEnd)	return;
+		
+		double xColJump = 1.0 * (xEnd-xStart)/n;
+		double yRowJump = 1.0 * (yEnd-yStart)/n;
+		
+		for (int row = 0; row < n; row++) {
+			for (int col = 0; col < n; col++) {
+				double x0 = xStart+col*xColJump;
+				double y0 = yStart+row*yRowJump;				
+
+				if (this.isReversePixelCalculation()) {
+					double tmp = x0;
+					x0 = y0;
+					y0 = tmp;
+				}
+				
+				//ComplexNumber z0 = new ComplexNumber(x0,y0);
+				ComplexNumber z0;
+				if (!this.isReversePixelCalculation()) {
+					z0 = new ComplexNumber(x0, y0);
+					z0 = this.getPixelComplexValue(x0, y0);					
+				} else {
+					z0 = new ComplexNumber(y0, x0);
+					z0 = this.getPixelComplexValue(y0, x0);
+				}
+				
+				if (!pxFuncHasConst) {
+					z0 = this.computePixel(pxFunc2Apply, z0);
+				} else {
+					ComplexNumber cConst;
+
+					if (isComplexNumConst || this.complex == null) {
+						if (!preStringComplexConstConstruct) {
+							cConst = new ComplexNumber(this.complexConst, 0);
+						} else {
+							cConst = this.complex;
+						}
+					} else {
+						cConst = this.complex;
+					}
+
+					z0 = this.computePixel(pxFunc2Apply, z0, cConst);
+				}
+				
+				if (this.isFatou()) {
+					z0 = this.getFatouValue(z0);
+				} else if (this.isZSq()) {
+					z0 = this.getZSqValue(z0);
+				} else if (this.isClassicJulia()) {
+					z0 = this.getClassicJulia(z0);
+				} else {
+					z0 = z0;//new ComplexNumber(x0, y0);
+				}
+				
+				int colorRGB;
+				Color color = null;
+					
+				if (! this.colorChoice.equals(Color_Palette_Blowout)) {
+					if (julie.useDiff) {
+						colorRGB = this.julia(z0, max, bd);
+					} else {
+						colorRGB = max - this.julia(z0, max, bd);
+					}
+					color = getPixelDisplayColor(row, col, colorRGB, julie.useDiff);
+					setPixel(row, n - 1 - col, color.getRGB());
+				} else {	//colorChoice=="ColorBlowout"
+					if (julie.useDiff) {
+						colorRGB = this.julia(z0, max, bd);
+					} else {
+						colorRGB = max - this.julia(z0, max, bd);
+					}
+
+					colorRGB = this.time2Color(colorRGB);
+					//this.pixel[npixel++] = colorRGB;
+
+					setPixel(row, n - 1 - col, colorRGB);
+				}
+			}
+		}
+	}
 }
 
 
