@@ -3109,6 +3109,11 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		
 //		System.out.println("drawRect -- ("+x_click_start+","+y_click_start+") - to - ("+x_click_end+","+y_click_end+")");
 //		System.out.println("[-mouseDragged-] x is " + x + " and y is " + y);
+		drawDraggedWhiteSquare();
+	}
+
+
+	private void drawDraggedWhiteSquare() {
 		/*Image im = this.createImage(WIDTH, HEIGHT);*/
 		Graphics g = this.getGraphics();
 		g.drawImage(bufferedImage, 0, 0, (ImageObserver)this);
