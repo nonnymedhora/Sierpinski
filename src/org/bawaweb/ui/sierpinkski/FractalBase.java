@@ -16,6 +16,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import java.awt.image.MemoryImageSource;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
@@ -3108,7 +3109,15 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		
 //		System.out.println("drawRect -- ("+x_click_start+","+y_click_start+") - to - ("+x_click_end+","+y_click_end+")");
 //		System.out.println("[-mouseDragged-] x is " + x + " and y is " + y);
-		
+		/*Image im = this.createImage(WIDTH, HEIGHT);*/
+		Graphics g = this.getGraphics();
+		g.drawImage(bufferedImage, 0, 0, (ImageObserver)this);
+		g.setColor(Color.white);
+		int squareEdge = Math.abs(x_click_end - x_click_start) < Math.abs(y_click_end - y_click_start)
+				? (int) Math.abs(x_click_end - x_click_start) : (int) Math.abs(y_click_end - y_click_start);
+		g.drawRect((int) x_click_start, (int) y_click_start, squareEdge, squareEdge);
+				/*(int) Math.abs(x_click_end - x_click_start),
+				(int) Math.abs(y_click_end - y_click_start));*/
 	}
 
 	@Override
