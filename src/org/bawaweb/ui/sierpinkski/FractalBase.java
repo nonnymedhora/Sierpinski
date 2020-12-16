@@ -3109,7 +3109,39 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		
 //		System.out.println("drawRect -- ("+x_click_start+","+y_click_start+") - to - ("+x_click_end+","+y_click_end+")");
 //		System.out.println("[-mouseDragged-] x is " + x + " and y is " + y);
-		drawDraggedWhiteSquare();
+//		drawDraggedWhiteSquare();	
+		drawDraggedWhiteRectangle();
+	}
+	
+	private void drawDraggedWhiteRectangle() {
+		/*Image im = this.createImage(WIDTH, HEIGHT);*/
+		Graphics g = this.getGraphics();
+		g.drawImage(bufferedImage, 0, 0, (ImageObserver)this);
+		g.setColor(Color.white);
+		
+		int xRectStart;
+		int yRectStart;
+		
+		if (x_click_start < x_click_end) {
+			xRectStart = (int) x_click_start;
+			if (y_click_start < y_click_end) {
+				yRectStart = (int) y_click_start;
+			} else {
+				yRectStart = (int) y_click_end;
+			}
+		} else {
+			xRectStart = (int) x_click_end;
+			if (y_click_start < y_click_end) {
+				yRectStart = (int) y_click_start;
+			} else {
+				yRectStart = (int) y_click_end;
+			}
+		}
+		
+		
+		g.drawRect(xRectStart, yRectStart, 
+				(int) Math.abs(x_click_end - x_click_start),
+				(int) Math.abs(y_click_end - y_click_start));
 	}
 
 
@@ -3118,11 +3150,35 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		Graphics g = this.getGraphics();
 		g.drawImage(bufferedImage, 0, 0, (ImageObserver)this);
 		g.setColor(Color.white);
+		
 		int squareEdge = Math.abs(x_click_end - x_click_start) < Math.abs(y_click_end - y_click_start)
 				? (int) Math.abs(x_click_end - x_click_start) : (int) Math.abs(y_click_end - y_click_start);
-		g.drawRect((int) x_click_start, (int) y_click_start, squareEdge, squareEdge);
-				/*(int) Math.abs(x_click_end - x_click_start),
-				(int) Math.abs(y_click_end - y_click_start));*/
+
+
+		int xSqrStart;
+		int ySqrStart;
+
+		if (x_click_start < x_click_end) {
+			xSqrStart = (int) x_click_start;
+			if (y_click_start < y_click_end) {
+				ySqrStart = (int) y_click_start;
+			} else {
+				ySqrStart = (int) y_click_end;
+			}
+		} else {
+			xSqrStart = (int) x_click_end;
+			if (y_click_start < y_click_end) {
+				ySqrStart = (int) y_click_start;
+			} else {
+				ySqrStart = (int) y_click_end;
+			}
+		}
+		
+		g.drawRect(xSqrStart,ySqrStart,squareEdge,squareEdge);
+		
+//		g.drawRect((int) x_click_start, (int) y_click_start, squareEdge, squareEdge);
+//				/*(int) Math.abs(x_click_end - x_click_start),
+//				(int) Math.abs(y_click_end - y_click_start));*/
 	}
 
 	@Override
@@ -3172,6 +3228,7 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		final Mandelbrot mand = (Mandelbrot) this;
 		
 		Julia jpop = new Julia(mand.power,new ComplexNumber(realPosn,imgPosn));
+		jpop.setTitle(jpop.getFractalShapeTitle()+" R: ("+realPosn+"), I: ("+imgPosn+")");
 		jpop.setColorChoice(mand.colorChoice);
 		jpop.setxC(0.0);
 		jpop.setyC(0.0);
