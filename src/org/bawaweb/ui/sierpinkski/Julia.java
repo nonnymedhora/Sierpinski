@@ -366,10 +366,12 @@ public class Julia extends FractalBase {
 	 */
 	@Override
 	public void createFractalShape(Graphics2D g) {
+		/*this.npixel = 0;
+		this.pixel = new int[WIDTH*HEIGHT];*/
 		createJulia(g, this.useDiff);
 	}
 
-	private void createJulia(Graphics2D g, boolean diff) {
+	private void createJulia(Graphics2D g, boolean diff) {		
 		double xc = getxC();//0;
 		double yc = getyC();//0;
 		double size = getScaleSize();//this.power;//this.mag;//2;
@@ -506,6 +508,8 @@ public class Julia extends FractalBase {
 						colorRGB = max - this.julia(z0, max, bd);
 					}
 					color = getPixelDisplayColor(row, col, colorRGB, diff);
+					/*this.pixel[npixel++] = colorRGB;*/
+					
 					setPixel(row, n - 1 - col, color.getRGB());
 				} else {	//colorChoice=="ColorBlowout"
 					if (diff) {
@@ -515,7 +519,7 @@ public class Julia extends FractalBase {
 					}
 
 					colorRGB = this.time2Color(colorRGB);
-					//this.pixel[npixel++] = colorRGB;
+					/*this.pixel[npixel++] = colorRGB;*/
 
 					setPixel(row, n - 1 - col, colorRGB);
 				}
@@ -952,6 +956,7 @@ public class Julia extends FractalBase {
 						colorRGB = max - this.julia(z0, max, bd);
 					}
 					color = getPixelDisplayColor(row, col, colorRGB, julie.useDiff);
+					/*this.pixel[npixel++] = colorRGB;*/
 					setPixel(row, n - 1 - col, color.getRGB());
 				} else {	//colorChoice=="ColorBlowout"
 					if (julie.useDiff) {
@@ -961,7 +966,7 @@ public class Julia extends FractalBase {
 					}
 
 					colorRGB = this.time2Color(colorRGB);
-					//this.pixel[npixel++] = colorRGB;
+					/*this.pixel[npixel++] = colorRGB;*/
 
 					setPixel(row, n - 1 - col, colorRGB);
 				}

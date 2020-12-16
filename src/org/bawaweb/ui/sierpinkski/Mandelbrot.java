@@ -157,6 +157,8 @@ public class Mandelbrot extends FractalBase {
 	 */
 	@Override
 	public void createFractalShape(Graphics2D g) {
+		/*this.npixel = 0;
+		this.pixel = new int[WIDTH*HEIGHT];*/
 		/*System.out.println("increatefractalshape");*/
 		if (this.isBuddha) {
 			createBuddhabrot(g, this.useDiff);
@@ -527,6 +529,8 @@ public class Mandelbrot extends FractalBase {
 					}
 					/* if (!this.isBuddha) { */
 					color = this.getPixelDisplayColor(row, col, colorRGB, diff);
+					/*this.pixel[npixel++] = colorRGB;*/
+					
 					setPixel(row, n - 1 - col, color.getRGB());
 						/*}*/
 				} else {// colorChoice=="ColorBlowout"
@@ -537,7 +541,7 @@ public class Mandelbrot extends FractalBase {
 					}
 
 					colorRGB = this.time2Color(colorRGB);
-					//this.pixel[npixel++] = colorRGB;
+					/*this.pixel[npixel++] = colorRGB;*/
 
 					setPixel(row, n - 1 - col, colorRGB);
 				}
@@ -1112,6 +1116,7 @@ public class Mandelbrot extends FractalBase {
 					}
 					/* if (!this.isBuddha) { */
 					color = mand.getPixelDisplayColor(row, col, colorRGB, mand.useDiff);
+					/*this.pixel[npixel++] = colorRGB;*/
 					setPixel(row, n - 1 - col, color.getRGB());
 						/*}*/
 				} else {// colorChoice=="ColorBlowout"
@@ -1122,8 +1127,7 @@ public class Mandelbrot extends FractalBase {
 					}
 
 					colorRGB = this.time2Color(colorRGB);
-					//this.pixel[npixel++] = colorRGB;
-
+					/*this.pixel[npixel++] = colorRGB;*/
 					setPixel(row, n - 1 - col, colorRGB);
 				}
 			}

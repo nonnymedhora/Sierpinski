@@ -16,7 +16,9 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
 import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
 import java.awt.image.MemoryImageSource;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
@@ -171,15 +173,16 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	
 	protected /*final */JTextField locPtTextField = new JTextField(WIDTH);
 	
-	int[] pixel; // width*height array of pixels
+	/*int[] pixel; // width*height array of pixels
 	MemoryImageSource source = null;
 	int npixel = 0; // tracks current pixel
-
+*/
 	/** Constructor: an instance */
 	public FractalBase() {
 		super();
 		this.setSize(WIDTH, HEIGHT+20);
-		this.pixel = new int[WIDTH*HEIGHT];
+		/*this.npixel = 0;
+		this.pixel = new int[WIDTH*HEIGHT];*/
 		
 		this.setVisible(true);
 		/*if (this.isUseMandelbrotExplorer()) {
@@ -472,11 +475,15 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 			mand.createFocalFractalShape(frctl, new ComplexNumber(x_start,y_start), new ComplexNumber(x_end,y_end));
 		}
 		//this.createFocalFractalShape(frctl, new ComplexNumber(x_start,y_start), new ComplexNumber(x_end,y_end));
-		return this.getBufferedImage();
+/*
+		this.source=null;
+		this.source=new MemoryImageSource(WIDTH,HEIGHT,this.pixel,0,WIDTH);
+		this.setImage(this.createImage((ImageProducer)this.source));
+*/		return this.getBufferedImage();
 		
 	}
 
-	private BufferedImage createFractalImage(){
+	private BufferedImage createFractalImage() {
 		Graphics2D g = this.getBufferedImage().createGraphics();
 		// Clear the frame
 		g.setColor(getBGColor());
@@ -489,9 +496,25 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		if (this.running) {
 			this.addDepthInfo(g);
 		}
-		
-		return this.getBufferedImage();
+/*		this.source=null;
+		this.source=new MemoryImageSource(WIDTH,HEIGHT,this.pixel,0,WIDTH);
+		this.setImage(this.convertImage(this.createImage((ImageProducer)this.source)));
+*/		return this.getBufferedImage();
 	}
+	
+
+    
+    public BufferedImage convertImage(Image original) {
+        ColorModel cm = ColorModel.getRGBdefault();
+        int width = original.getWidth(null);
+        int height = original.getHeight(null);
+        BufferedImage image = new BufferedImage (cm,cm.createCompatibleWritableRaster(width, height),cm.isAlphaPremultiplied(), null);
+        Graphics2D bg = image.createGraphics();
+        bg.drawImage(original, 0, 0, width, height, null);
+        bg.dispose();
+        
+        return image;
+    }
 
 	private void addDepthInfo(Graphics2D g) {
 		g.setColor(Color.red);
