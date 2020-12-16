@@ -1093,8 +1093,8 @@ public class Mandelbrot extends FractalBase {
 		
 		for (int row = 0; row < n; row++) {
 			for (int col = 0; col < n; col++) {
-				double x0 = xStart+col*xColJump;	//xc - size / 2 + size * row / n;
-				double y0 = yStart+row*yRowJump;	//yc - size / 2 + size * col / n;
+				double x0 = xStart+row*xColJump;//col*xColJump;	//xc - size / 2 + size * row / n;
+				double y0 = yStart+col*yRowJump;//row*yRowJump;	//yc - size / 2 + size * col / n;
 				
 				ComplexNumber z0 = this.getZValue(func2Apply, pxFunc2Apply, x0, y0);	
 				if (z0.isNaN()) {

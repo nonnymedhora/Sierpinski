@@ -895,8 +895,8 @@ public class Julia extends FractalBase {
 		
 		for (int row = 0; row < n; row++) {
 			for (int col = 0; col < n; col++) {
-				double x0 = xStart+col*xColJump;
-				double y0 = yStart+row*yRowJump;				
+				double x0 = xStart+row*xColJump;
+				double y0 = yStart+col*yRowJump;				
 
 				if (this.isReversePixelCalculation()) {
 					double tmp = x0;
