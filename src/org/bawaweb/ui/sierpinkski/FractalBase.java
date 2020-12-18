@@ -438,6 +438,7 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		super.paint(g1);
 
 		Graphics2D g2 = (Graphics2D) g1;
+//		this.drawAxis(g2);
 		
 		if (!this.refocusDraw) {
 			BufferedImage img = this.createFractalImage();
@@ -453,11 +454,13 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 			// Drawing the rotated image at the required drawing locations
 			img = op.filter(img, null);
 			g2.drawImage(img, drawLocX, drawLocY, null);
+//			this.drawAxis(g2);
 			this.setImage(img);
 			g2.dispose();
 		} else {
 			BufferedImage img = this.createRefocussedFractaImage(this);
 			g2.drawImage(img, 0, 0, null);
+//			this.drawAxis(g2);
 			this.setImage(img);
 			g2.dispose();
 		}
@@ -474,6 +477,11 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 			mand = (Mandelbrot) frctl;
 			mand.createFocalFractalShape(frctl, new ComplexNumber(x_start,y_start), new ComplexNumber(x_end,y_end));
 		}
+
+		FractalBase.x_min = x_start < x_end ? x_start : x_end;
+		FractalBase.x_max = x_start > x_end ? x_start : x_end;
+		FractalBase.y_min = y_start < y_end ? y_start : y_end;
+		FractalBase.y_max = y_start > y_end ? y_start : y_end;
 		//this.createFocalFractalShape(frctl, new ComplexNumber(x_start,y_start), new ComplexNumber(x_end,y_end));
 /*
 		this.source=null;
@@ -3249,9 +3257,9 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 
 	private void createMandelbrotExplorerJuliaSet(double realPosn, double imgPosn) {
 		final Mandelbrot mand = (Mandelbrot) this;
-		
-		Julia jpop = new Julia(mand.power,new ComplexNumber(realPosn,imgPosn));
-		jpop.setTitle(jpop.getFractalShapeTitle()+" R: ("+realPosn+"), I: ("+imgPosn+")");
+
+		Julia jpop = new Julia(mand.power, new ComplexNumber(realPosn, imgPosn));
+		jpop.setTitle(jpop.getFractalShapeTitle() + " R: (" + realPosn + "), I: (" + imgPosn + ")");
 		jpop.setColorChoice(mand.colorChoice);
 		jpop.setxC(0.0);
 		jpop.setyC(0.0);
@@ -3259,7 +3267,7 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		jpop.setSize(400, 400);
 		jpop.setScaleSize(FractalBase.scaleSize);
 		jpop.setUseDiff(mand.isUseDiff());
-		/////	above are hardCoded values	//////
+		///// above are hardCoded values //////
 		jpop.setRotation(mand.rotation);
 		jpop.setReversePixelCalculation(mand.reversePixelCalculation);
 		jpop.setPxConstOperation(mand.pxConstOperation);
@@ -3270,7 +3278,7 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		jpop.setUseFuncPixel(mand.useFuncPixel);
 		jpop.setApplyCustomFormula(mand.applyCustomFormula);
 		jpop.setBound(mand.bound);
-		
+
 		jpop.setResizable(false);
 		jpopFr = jpop;
 	}
@@ -3411,6 +3419,12 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		x_end = xEnd;
 		y_start = yStart;
 		y_end = yEnd;
+
+		x_min = x_start < x_end ? x_start : x_end;
+		x_max = x_start > x_end ? x_start : x_end;
+		y_min = y_start < y_end ? y_start : y_end;
+		y_max = y_start > y_end ? y_start : y_end;
+		
 		refocusDraw = true;
 		repaint();
 	}
@@ -3752,6 +3766,46 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
         int n4 = n + n2 + n3;
         if (n4 > COLORMAXRGB) return COLORMAXRGB;
         return n4;
+    }
+    
+    /**
+     * 
+     * @param n	--	n,	the	number
+     * @param exponent	--	the	exponent,	power
+     * @return	n	^	exponent	(for	exponent	>	0)
+     */
+	public int intpower(int n, int exponent) {
+		int num = 1;
+		for (int i = 0; i < exponent; ++i) {
+			num *= n;
+		}
+		return num;
+	}
+	
+	public void drawAxis(Graphics graphics) {
+        int n = this.intpower(10, 6);	//	using 6-digit precision
+        int n2 = this.intpower(10, 6);
+        int n3 = (int)(x_min * (double)n);
+        int n4 = (int)(x_max * (double)n);
+        float f = (float)n3 / (float)n;
+        float f2 = (float)n4 / (float)n;
+        String string = "" + f;
+        String string2 = "" + f2;
+        graphics.setColor(Color.black);
+        graphics.drawLine(0, getHeight() - 12, getWidth() - 1, getHeight() - 12);
+        graphics.drawString(string, 20 + 8, getHeight() - 1);
+        graphics.drawString("cr", 20 + (getWidth() - 20) / 2 - "cr".length() * 8 / 2, getHeight() - 1);
+        graphics.drawString(string2, getWidth() - string2.length() * 8, getHeight() - 1);
+        n3 = (int)(y_min * (double)n2);
+        n4 = (int)(y_max * (double)n2);
+        f = (float)n3 / (float)n2;
+        f2 = (float)n4 / (float)n2;
+        String string3 = "" + f;
+        String string4 = "" + f2;
+        graphics.drawLine(20 - 1, 0, 20 - 1, getHeight() - 1);
+        graphics.drawString(string4, 0, 12);
+        graphics.drawString("ci", 10, (int)((double)getHeight() / 2.0));
+        graphics.drawString(string3, 0, getHeight() - 12);
     }
 	
 }
