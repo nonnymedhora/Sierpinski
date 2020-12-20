@@ -39,6 +39,7 @@ import java.util.Random;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageOutputStream;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -11001,6 +11002,35 @@ System.out.println("space2DIs __ "+space2D);*/
 			JLabel label = new JLabel(new ImageIcon(resizedImages.get(j)));
 			imgsPanel.add(label);
 		}
+		
+		JButton buSaveAllImages = new JButton("SaveAllImages");
+		imgsPanel.add(buSaveAllImages);
+		
+		buSaveAllImages.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doSaveAllFbImagesCommand();				
+			}
+
+			private void doSaveAllFbImagesCommand() {
+				BufferedImage[] resizedImagesArr=new BufferedImage[resizedImages.size()];
+				for(int i = 0; i < resizedImages.size(); i++) {
+					resizedImagesArr[i] = resizedImages.get(i);
+				}
+				BufferedImage joinedImage = FractalBase.joinAdjacentBufferedImages(resizedImagesArr);
+				
+				File outputfile = new File("C:\\Users\\Navroz\\Desktop\\"+System.currentTimeMillis() + ".png");
+				try {
+					ImageIO.write(joinedImage, "png", outputfile);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+			}});
+		
+		
+		
 		imagesFr.getContentPane().add(imgsPanel);
 		imagesFr.setVisible(true);
 		
