@@ -3995,6 +3995,7 @@ class SierpinskiComboPanel extends JPanel {
 
 			try {
 				mands[i] = new Mandelbrot(this.correctProperties(props[i]));
+				mands[i].setGenerated(true);
 			} catch (IllegalArgumentException e1) {
 				e1.printStackTrace();
 				System.out.println(e1.getMessage());
@@ -4551,6 +4552,7 @@ class SierpinskiComboPanel extends JPanel {
 
 			try {
 				polys[i] = new PolyFract(this.correctProperties(props[i]));
+				polys[i].setGenerated(true);
 			} catch (IllegalArgumentException e1) {
 				e1.printStackTrace();
 				System.out.println(e1.getMessage());
@@ -5092,6 +5094,7 @@ class SierpinskiComboPanel extends JPanel {
 			}
 			try {
 				julies[i] = new Julia(this.correctProperties(props[i]));
+				julies[i].setGenerated(true);
 			} catch (IllegalArgumentException e1) {
 				e1.printStackTrace();
 				System.out.println(e1.getMessage());
@@ -10980,6 +10983,7 @@ System.out.println("space2DIs __ "+space2D);*/
 
 	protected void showFBImages() {
 		List<BufferedImage> images = this.fBase.getImages();
+		images = this.removeDuplicates(images);
 		List<BufferedImage> resizedImages = new ArrayList<BufferedImage>();
 		JFrame imagesFr = new JFrame();
 		imagesFr.setMinimumSize(new java.awt.Dimension(300,300));
@@ -11000,6 +11004,17 @@ System.out.println("space2DIs __ "+space2D);*/
 		imagesFr.getContentPane().add(imgsPanel);
 		imagesFr.setVisible(true);
 		
+	}
+
+	private List<BufferedImage> removeDuplicates(List<BufferedImage> imgs) {
+		List<BufferedImage> imgsList = new ArrayList<BufferedImage>();
+		for(int i = 0; i < imgs.size(); i++) {
+			BufferedImage bI = imgs.get(i);
+			if(!imgsList.contains(bI)) {
+				imgsList.add(bI);
+			}
+		}
+		return imgsList;
 	}
 
 	private void setupDIYApolloListeners() {

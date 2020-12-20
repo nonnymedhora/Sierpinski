@@ -180,7 +180,8 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	int npixel = 0; // tracks current pixel
 */
 	
-	List<BufferedImage> fbImages = new ArrayList<BufferedImage>();
+	static List<BufferedImage> fbImages = new ArrayList<BufferedImage>();
+	private boolean generated = false;
 	
 	/** Constructor: an instance */
 	public FractalBase() {
@@ -444,9 +445,9 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 
 		Graphics2D g2 = (Graphics2D) g1;
 //		this.drawAxis(g2);
-		
+		BufferedImage img;
 		if (!this.refocusDraw) {
-			BufferedImage img = this.createFractalImage();
+			img = this.createFractalImage();
 			// reqd drawing location
 			int drawLocX = (int) getxC();
 			int drawLocY = (int) getyC();
@@ -460,17 +461,22 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 			img = op.filter(img, null);
 			g2.drawImage(img, drawLocX, drawLocY, null);
 //			this.drawAxis(g2);
-			this.setImage(img);
+			/*this.setImage(img);
 			this.add2FbImages(img);
-			g2.dispose();
+			g2.dispose();*/
 		} else {
-			BufferedImage img = this.createRefocussedFractaImage(this);
+			img = this.createRefocussedFractaImage(this);
 			g2.drawImage(img, 0, 0, null);
 //			this.drawAxis(g2);
-			this.setImage(img);
+			/*this.setImage(img);
 			this.add2FbImages(img);
-			g2.dispose();
+			g2.dispose();*/
 		}
+		this.setImage(img);
+		if (!this.generated) {
+			this.add2FbImages(img);
+		}
+		g2.dispose();
 	}
 	
 	private BufferedImage createRefocussedFractaImage(FractalBase frctl) {
@@ -1288,12 +1294,13 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		FractalBase.scaleSize = scaleSize;
 	}
 
-	public synchronized BufferedImage getBufferedImage() {
+	public /*synchronized */BufferedImage getBufferedImage() {
 		return this.bufferedImage;
 	}
 
-	public synchronized void setImage(Image img) {
+	public /*synchronized */void setImage(Image img) {
 		this.bufferedImage = (BufferedImage) img;
+		/*this.add2FbImages(this.bufferedImage);*/
 	}
 	
 	public void reset() {
@@ -3290,6 +3297,8 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		jpop.setBound(mand.bound);
 
 		jpop.setResizable(false);
+		
+		jpop.add2FbImages(jpop.getBufferedImage());
 		jpopFr = jpop;
 	}
 	
@@ -3818,18 +3827,30 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
         graphics.drawString(string3, 0, getHeight() - 12);
     }
 	
-	private void add2FbImages(BufferedImage bImage) {
-		this.fbImages.add(bImage);
-		/*int i = 0;
-		for (; i < this.fbImages.size(); i++) {
-			if (this.fbImages.get(i) == null)
-				break;
+	protected void add2FbImages(BufferedImage bImage) {
+		if (!fbImages.contains(bImage)) {
+			fbImages.add(bImage);
+			/*int i = 0;
+			for (; i < this.fbImages.size(); i++) {
+				if (this.fbImages.get(i) == null)
+					break;
+			}
+			this.fbImages.set(i,bImage);*/
 		}
-		this.fbImages.set(i,bImage);*/
 	}
 	
 	public List<BufferedImage> getImages() {
-		return this.fbImages;
+		return fbImages;
+	}
+
+
+	public boolean isGenerated() {
+		return this.generated;
+	}
+
+
+	public void setGenerated(boolean gen) {
+		this.generated = gen;
 	}
 	
 }
