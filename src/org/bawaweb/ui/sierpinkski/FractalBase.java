@@ -29,6 +29,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Random;
@@ -177,6 +179,9 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	MemoryImageSource source = null;
 	int npixel = 0; // tracks current pixel
 */
+	
+	List<BufferedImage> fbImages = new ArrayList<BufferedImage>();
+	
 	/** Constructor: an instance */
 	public FractalBase() {
 		super();
@@ -456,12 +461,14 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 			g2.drawImage(img, drawLocX, drawLocY, null);
 //			this.drawAxis(g2);
 			this.setImage(img);
+			this.add2FbImages(img);
 			g2.dispose();
 		} else {
 			BufferedImage img = this.createRefocussedFractaImage(this);
 			g2.drawImage(img, 0, 0, null);
 //			this.drawAxis(g2);
 			this.setImage(img);
+			this.add2FbImages(img);
 			g2.dispose();
 		}
 	}
@@ -487,7 +494,10 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		this.source=null;
 		this.source=new MemoryImageSource(WIDTH,HEIGHT,this.pixel,0,WIDTH);
 		this.setImage(this.createImage((ImageProducer)this.source));
-*/		return this.getBufferedImage();
+		
+*/		
+		/*this.add2FbImages(this.getBufferedImage());*/
+		return this.getBufferedImage();
 		
 	}
 
@@ -3214,8 +3224,8 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		/*if (!this.isDragging)
-			return;*/
+		if (this.isDragging)
+			return;
 		jpopFr.dispose();
 		//Point p = MouseInfo.getPointerInfo().getLocation();
 		int x = e.getX();// p.x;	p.x & p.y refer to screen-position
@@ -3244,7 +3254,7 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 //		locPtTextField.setText("[-mouseMoved-] x is " + x + " and y is " + y);
 		double realPosn = x_min + (x * 1.0 * (x_max - x_min)) / getWidth();		
 		double imgPosn = y_max + (y * 1.0 * (y_min - y_max)) / getHeight();
-		String imgSign = imgPosn > 0 ? "+" : "";//"";//y > scrnCntrY ? "-" : "+";//
+		//String imgSign = imgPosn > 0 ? "+" : "";//"";//y > scrnCntrY ? "-" : "+";//
 		//locPtTextField.setText(realPosn + " " + imgSign + " " + imgPosn + " * i");
 		
 		if (this.getClass().getName().contains("Mandelbrot")) {
@@ -3290,8 +3300,8 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		int x = e.getX();
 		int y = e.getY();
 		/*System.out.println("[-mouseClicked-] x is " + x + " and y is " + y);*/
-		double realPosn = x_min + (x * 1.0 * (x_max - x_min)) / getWidth();		
-		double imgPosn = y_max + (y * 1.0 * (y_min - y_max)) / getHeight();
+		double realPosn = FractalBase.x_min + (x * 1.0 * (FractalBase.x_max - FractalBase.x_min)) / getWidth();		
+		double imgPosn = FractalBase.y_max + (y * 1.0 * (FractalBase.y_min - FractalBase.y_max)) / getHeight();
 		String imgSign = imgPosn > 0 ? "+" : "";
 		locPtTextField.setText(realPosn + " " + imgSign + " " + imgPosn + " * i");
 		
@@ -3807,5 +3817,19 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
         graphics.drawString("ci", 10, (int)((double)getHeight() / 2.0));
         graphics.drawString(string3, 0, getHeight() - 12);
     }
+	
+	private void add2FbImages(BufferedImage bImage) {
+		this.fbImages.add(bImage);
+		/*int i = 0;
+		for (; i < this.fbImages.size(); i++) {
+			if (this.fbImages.get(i) == null)
+				break;
+		}
+		this.fbImages.set(i,bImage);*/
+	}
+	
+	public List<BufferedImage> getImages() {
+		return this.fbImages;
+	}
 	
 }

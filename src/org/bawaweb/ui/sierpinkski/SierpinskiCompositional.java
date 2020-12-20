@@ -1021,6 +1021,12 @@ class SierpinskiComboPanel extends JPanel {
 
 	private String fieldLines = "None";
 	
+	//for---explore--zoom-focus
+	Image[] fbImages = new Image[10];
+	//private JPanel fbImagesPanel = new JPanel(new GridLayout(1,0),true);
+	private JButton buShowFbImages = new JButton("Show all Images");
+
+	
 	
 	
 //////////////////////////////ATTRACTOR////////////////////////////
@@ -1237,6 +1243,8 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.buClose.setEnabled(false);
 		this.add(this.buClose);
+		
+		this.add(this.buShowFbImages);
 
 	}
 
@@ -1267,6 +1275,9 @@ class SierpinskiComboPanel extends JPanel {
 		
 		//	diy	panel	--	does add
 		this.createDIYPanel();
+		
+		
+		/*this.createFBImagesPanel();*/
 	}
 
 	private void createRotationCombo() {
@@ -1720,6 +1731,11 @@ class SierpinskiComboPanel extends JPanel {
 		this.polyOptionsPanel.add(this.polyGenBu);
 		this.polyOptionsPanel.add(this.diyPolyGen2FolderBu);
 	}
+	/*
+	private void createFBImagesPanel() {
+		this.fbImagesPanel.add(this.buShowFbImages);
+		this.add(this.fbImagesPanel);
+	}*/
 
 	
 
@@ -9907,7 +9923,7 @@ System.out.println("space2DIs __ "+space2D);*/
 //		this.startProgress();
 		final FractalBase frame = ff;
 
-		ff.setVisible(true);
+//		ff.setVisible(true);
 		
 		frame.setTitle(ff.getFractalShapeTitle());
 		
@@ -9921,7 +9937,8 @@ System.out.println("space2DIs __ "+space2D);*/
 		frame.setResizable(false);
 		frame.setVisible(true);
 
-		this.setFractalImage(frame.getBufferedImage());
+		final BufferedImage bImage = frame.getBufferedImage();
+		this.setFractalImage(bImage);
 		this.setFractalBase(frame);
 		
 		this.buClose.setEnabled(true);
@@ -9946,7 +9963,7 @@ System.out.println("space2DIs __ "+space2D);*/
 			this.fbf = new Thread(frame);
 			this.fbf.start();
 			
-			this.setFractalImage(frame.getBufferedImage());
+			this.setFractalImage(bImage);
 			this.setFractalBase(frame);
 			
 			this.buClose.setEnabled(true);
@@ -9955,14 +9972,84 @@ System.out.println("space2DIs __ "+space2D);*/
 		
 
 		if (this.doMagnify) {
-			this.setFractalImage(frame.getBufferedImage());
+			this.setFractalImage(bImage);
 			new ZoomInBox(frame);
 		}
+		
+
+		/*
+		boolean explore = (this.juliaExplore&&this.juliaExploreCb.isSelected())||
+							(this.mandExplore&&this.mandExploreCb.isSelected())||
+							(this.diyJuliaExplore&&this.diyJuliaExploreCb.isSelected())||
+							(this.diyMandExplore&&this.diyMandExploreCb.isSelected());
+		if(explore){
+			this.add2FbImages(bImage);
+			this.addImage2FBImagesPanel(frame.getImages());
+		}
+		*/
 		return;
 		
 //		this.endProgress();
 	}
 
+	/*private void addImage2FBImagesPanel(BufferedImage[] images) {
+		//this.fbImagesPanel.removeAll();// = new JPanel(new GridLayout(1,0),true);
+		
+		for (int i = 0; i < images.length; i++) {
+			BufferedImage anImage = images[i];
+			try {
+				anImage = this.resizeImage(anImage, 150, 150);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			JLabel label = new JLabel(new ImageIcon(anImage));
+			this.fbImagesPanel.add(label);
+		}
+		
+		this.fbImagesPanel.revalidate();
+		this.fbImagesPanel.repaint();
+	}*/
+
+	private void add2FbImages(BufferedImage bImage) {
+		int i = 0;
+		for (; i < this.fbImages.length; i++) {
+			if (this.fbImages[i] == null)
+				break;
+		}
+		this.fbImages[i] = bImage;
+	}
+
+	/*
+	private void addImage2FBImagesPanel(BufferedImage bImage) {
+		BufferedImage resized = null;
+		try {
+			resized = this.resizeImage(bImage,150,150);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		JLabel label = new JLabel(new ImageIcon(resized));
+		this.fbImagesPanel.add(label);
+	}*/
+	
+	public BufferedImage resizedImage(BufferedImage img, int newW, int newH) { 
+	    Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
+	    BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+
+	    Graphics2D g2d = dimg.createGraphics();
+	    g2d.drawImage(tmp, 0, 0, null);
+	    g2d.dispose();
+
+	    return dimg;
+	}  
+	
+	BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) throws IOException {
+	    BufferedImage resizedImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
+	    Graphics2D graphics2D = resizedImage.createGraphics();
+	    graphics2D.drawImage(originalImage, 0, 0, targetWidth, targetHeight, null);
+	    graphics2D.dispose();
+	    return resizedImage;
+	}
 	private int closeIt(/*FractalBase*/ JFrame frame) {
 		this.buStart.setEnabled(false);
 		this.buSavePxStart.setEnabled(false);
@@ -10881,7 +10968,38 @@ System.out.println("space2DIs __ "+space2D);*/
 				}			
 			}
 		});
+		
+		this.buShowFbImages.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showFBImages();
+			}
+		});
 
+	}
+
+	protected void showFBImages() {
+		List<BufferedImage> images = this.fBase.getImages();
+		List<BufferedImage> resizedImages = new ArrayList<BufferedImage>();
+		JFrame imagesFr = new JFrame();
+		imagesFr.setMinimumSize(new java.awt.Dimension(300,300));
+		JPanel imgsPanel = new JPanel();
+		
+		for (int i = 0; i < images.size(); i++) {
+			try {
+				BufferedImage resizedImage = this.resizeImage(images.get(i), 250, 250);
+				resizedImages.add(resizedImage);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		for (int j = 0; j < resizedImages.size(); j++) {
+			JLabel label = new JLabel(new ImageIcon(resizedImages.get(j)));
+			imgsPanel.add(label);
+		}
+		imagesFr.getContentPane().add(imgsPanel);
+		imagesFr.setVisible(true);
+		
 	}
 
 	private void setupDIYApolloListeners() {
@@ -14505,6 +14623,17 @@ private void setupPolyGeneratorListeners() {
 
 	public void setFractalImage(BufferedImage fImage) {
 		this.fractalImage = fImage;
+		
+		
+/*
+		
+		boolean explore = (this.juliaExplore&&this.juliaExploreCb.isSelected())||
+							(this.mandExplore&&this.mandExploreCb.isSelected())||
+							(this.diyJuliaExplore&&this.diyJuliaExploreCb.isSelected())||
+							(this.diyMandExplore&&this.diyMandExploreCb.isSelected());
+		if(explore){
+			
+		}*/
 	}
 
 	public void setFractalImage(Image fImage) {
