@@ -4,6 +4,7 @@
 package org.bawaweb.ui.sierpinkski;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -36,6 +37,7 @@ import java.util.Properties;
 import java.util.Random;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 
@@ -186,7 +188,7 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	/** Constructor: an instance */
 	public FractalBase() {
 		super();
-		this.setSize(WIDTH, HEIGHT+20);
+		this.setSize(new java.awt.Dimension(WIDTH, HEIGHT+20));
 		/*this.npixel = 0;
 		this.pixel = new int[WIDTH*HEIGHT];*/
 		
@@ -442,7 +444,6 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	@Override
 	public void paint(Graphics g1) {
 		super.paint(g1);
-
 		Graphics2D g2 = (Graphics2D) g1;
 //		this.drawAxis(g2);
 		BufferedImage img;
@@ -465,22 +466,25 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 			this.add2FbImages(img);
 			g2.dispose();*/
 		} else {
-			img = this.createRefocussedFractaImage(this);
+			this.createRefocussedFractaImage(this);
+			img = this.bufferedImage;
 			g2.drawImage(img, 0, 0, null);
 //			this.drawAxis(g2);
 			/*this.setImage(img);
 			this.add2FbImages(img);
 			g2.dispose();*/
 		}
-		this.setImage(img);
+		
 		if (!this.generated) {
 			this.add2FbImages(img);
 		}
+		this.setImage(img);
+		
 		g2.dispose();
 	}
 	
-	private BufferedImage createRefocussedFractaImage(FractalBase frctl) {
-		Graphics2D g = this.getBufferedImage().createGraphics();
+	private void createRefocussedFractaImage(FractalBase frctl) {
+//		Graphics2D g = this.getBufferedImage().createGraphics();
 		Julia julia = null;
 		Mandelbrot mand = null;
 		if (frctl.getClass().getName().contains("Julia")) {
@@ -491,10 +495,10 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 			mand.createFocalFractalShape(frctl, new ComplexNumber(x_start,y_start), new ComplexNumber(x_end,y_end));
 		}
 
-		FractalBase.x_min = x_start < x_end ? x_start : x_end;
-		FractalBase.x_max = x_start > x_end ? x_start : x_end;
-		FractalBase.y_min = y_start < y_end ? y_start : y_end;
-		FractalBase.y_max = y_start > y_end ? y_start : y_end;
+		x_min = x_start < x_end ? x_start : x_end;
+		x_max = x_start > x_end ? x_start : x_end;
+		y_min = y_start < y_end ? y_start : y_end;
+		y_max = y_start > y_end ? y_start : y_end;
 		//this.createFocalFractalShape(frctl, new ComplexNumber(x_start,y_start), new ComplexNumber(x_end,y_end));
 /*
 		this.source=null;
@@ -503,7 +507,7 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		
 */		
 		/*this.add2FbImages(this.getBufferedImage());*/
-		return this.getBufferedImage();
+		/*return this.getBufferedImage();*/
 		
 	}
 
@@ -3070,6 +3074,49 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		return this.pxConstOperation;
 	}
 	
+	private BufferedImage createStringImage(final String info) {
+		BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = img.createGraphics();
+        /*int width = this.getFractalImage().getWidth();
+        int height = 300;*/
+        g2d.dispose();
+
+		JLabel textLabel = new JLabel(info);
+		Dimension d = textLabel.getPreferredSize();
+		textLabel.setSize(d);
+		
+		img = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
+
+		g2d = img.createGraphics();
+        g2d.setColor(new Color(255, 255, 255, 128));
+
+		g2d.setColor(Color.black);
+		textLabel.paint(g2d);
+        
+        g2d.dispose();
+        
+		return img;
+	}
+	
+	
+	protected String fractalDtlInfo = "";
+	public String getFractalDtlInfo() {
+		return this.fractalDtlInfo;
+		
+	}
+	
+	protected void setFractalDtlInfo() {
+		String info = "<font color='black'>";
+		final String eol = "<br/>";
+		info += "Class: " + this.getClass().getName() + eol;
+		info += "</font>";
+		/*info += "Power (Exponent): " + this.power + eol;
+		info += "[XC,YC]:	[" + this.getxC() +", "+ this.getyC() +"]" + eol;
+		info += "Range: (xmin,ymin) to (xmax, ymax) is ["+ this.x_min + ", "+ this.y_min + "] to [" + this.x_max + ", " + this.y_max +"]" + eol;
+		info += "Constant: " + */
+		this.fractalDtlInfo = info;
+	}
+	
 
 	public final /* abstract */ String getFractalDetails() {
 		String info = "";
@@ -3298,7 +3345,7 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 
 		jpop.setResizable(false);
 		
-		jpop.add2FbImages(jpop.getBufferedImage());
+		//jpop.add2FbImages(jpop.getBufferedImage());
 		jpopFr = jpop;
 	}
 	
@@ -3309,8 +3356,8 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		int x = e.getX();
 		int y = e.getY();
 		/*System.out.println("[-mouseClicked-] x is " + x + " and y is " + y);*/
-		double realPosn = FractalBase.x_min + (x * 1.0 * (FractalBase.x_max - FractalBase.x_min)) / getWidth();		
-		double imgPosn = FractalBase.y_max + (y * 1.0 * (FractalBase.y_min - FractalBase.y_max)) / getHeight();
+		double realPosn = x_min + (x * 1.0 * (x_max - x_min)) / getWidth();		
+		double imgPosn = y_max + (y * 1.0 * (y_min - y_max)) / getHeight();
 		String imgSign = imgPosn > 0 ? "+" : "";
 		locPtTextField.setText(realPosn + " " + imgSign + " " + imgPosn + " * i");
 		
@@ -3439,6 +3486,11 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		y_start = yStart;
 		y_end = yEnd;
 
+		xminold = x_min;
+		xmaxold = x_max;
+		yminold = y_min;
+		ymaxold = y_max;
+
 		x_min = x_start < x_end ? x_start : x_end;
 		x_max = x_start > x_end ? x_start : x_end;
 		y_min = y_start < y_end ? y_start : y_end;
@@ -3476,6 +3528,18 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		System.out.println("y_min is: " + y_min);
 		System.out.println("x_max is: " + x_max);
 		System.out.println("y_max is: " + y_max);*/
+
+		xminold = x_min;
+		xmaxold = x_max;
+		yminold = y_min;		
+		ymaxold = y_max;
+		
+		xminorig = x_min;
+		xmaxorig = x_max;
+		yminorig = y_min;
+		ymaxorig = y_max;
+		
+		
 		
 	}
 	
@@ -3506,27 +3570,31 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		this.addMouseMotionListener(this);
 	}
 
-	public static double x_min;
-	public static double y_min;
-	public static double x_max;
-	public static double y_max;
+	public  double x_min;
+	public  double y_min;
+	public  double x_max;
+	public  double y_max;
 	
-	public static double xminold;
-	public static double xmaxold;
-	public static double yminold;
-	public static double ymaxold;
+	public  double xminold;
+	public  double xmaxold;
+	public  double yminold;
+	public  double ymaxold;
+	
+	public  double xminorig;
+	public  double xmaxorig;
+	public  double yminorig;
+	public  double ymaxorig;
 	
 	//captures mouse event
-	public static double x_start;
-	public static double x_end;
-	public static double y_start;
-	public static double y_end;
-	
+	public  double x_start;
+	public  double x_end;
+	public  double y_start;
+	public  double y_end;
 
-	public static double x_click_start;
-	public static double x_click_end;
-	public static double y_click_start;
-	public static double y_click_end;
+	public  double x_click_start;
+	public  double x_click_end;
+	public  double y_click_start;
+	public  double y_click_end;
 
 	boolean isDragging = false;
 	boolean refocusDraw = false;
@@ -3828,15 +3896,14 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
     }
 	
 	protected void add2FbImages(BufferedImage bImage) {
-		if (!fbImages.contains(bImage)) {
-			fbImages.add(bImage);
-			/*int i = 0;
-			for (; i < this.fbImages.size(); i++) {
-				if (this.fbImages.get(i) == null)
-					break;
-			}
-			this.fbImages.set(i,bImage);*/
-		}
+		fbImages.add(bImage);
+//		
+//		this.setFractalDtlInfo();
+//		BufferedImage stringImage = this.createStringImage(this.getFractalDtlInfo());
+//		/*if (!fbImages.contains(bImage)) {*/
+//			fbImages.add(joinBufferedImages(bImage,stringImage));
+//		/*}*/
+//			
 	}
 	
 	public List<BufferedImage> getImages() {

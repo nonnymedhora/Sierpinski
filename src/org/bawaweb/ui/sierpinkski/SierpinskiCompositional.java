@@ -1023,7 +1023,7 @@ class SierpinskiComboPanel extends JPanel {
 	private String fieldLines = "None";
 	
 	//for---explore--zoom-focus
-	Image[] fbImages = new Image[10];
+//	Image[] fbImages = new Image[10];
 	//private JPanel fbImagesPanel = new JPanel(new GridLayout(1,0),true);
 	private JButton buShowFbImages = new JButton("Show all Images");
 
@@ -10015,14 +10015,14 @@ System.out.println("space2DIs __ "+space2D);*/
 		this.fbImagesPanel.repaint();
 	}*/
 
-	private void add2FbImages(BufferedImage bImage) {
+	/*private void add2FbImages(BufferedImage bImage) {
 		int i = 0;
 		for (; i < this.fbImages.length; i++) {
 			if (this.fbImages[i] == null)
 				break;
 		}
 		this.fbImages[i] = bImage;
-	}
+	}*/
 
 	/*
 	private void addImage2FBImagesPanel(BufferedImage bImage) {
@@ -10982,13 +10982,19 @@ System.out.println("space2DIs __ "+space2D);*/
 
 	}
 
-	protected void showFBImages() {
-		List<BufferedImage> images = this.fBase.getImages();
-		images = this.removeDuplicates(images);
+	private void showFBImages() {
+		List<BufferedImage> images = this.removeDuplicates(this.fBase.getImages());//this.fBase.getImages();//
+		
 		List<BufferedImage> resizedImages = new ArrayList<BufferedImage>();
 		JFrame imagesFr = new JFrame();
-		imagesFr.setMinimumSize(new java.awt.Dimension(300,300));
+//		imagesFr.setMinimumSize(new java.awt.Dimension(300,300));
 		JPanel imgsPanel = new JPanel();
+		
+		JButton buSaveAllImages = new JButton("SaveAllImages");
+		imgsPanel.add(buSaveAllImages);
+		
+		JButton buSaveAllIcons = new JButton("SaveAllIcons");
+		imgsPanel.add(buSaveAllIcons);
 		
 		for (int i = 0; i < images.size(); i++) {
 			try {
@@ -11003,9 +11009,6 @@ System.out.println("space2DIs __ "+space2D);*/
 			imgsPanel.add(label);
 		}
 		
-		JButton buSaveAllImages = new JButton("SaveAllImages");
-		imgsPanel.add(buSaveAllImages);
-		
 		buSaveAllImages.addActionListener(new ActionListener() {
 			@SuppressWarnings("unchecked")
 			@Override
@@ -11014,6 +11017,29 @@ System.out.println("space2DIs __ "+space2D);*/
 			}
 
 			private void doSaveAllFbImagesCommand() {
+				BufferedImage[] imagesArr=new BufferedImage[images.size()];
+				for(int i = 0; i < images.size(); i++) {
+					imagesArr[i] = images.get(i);
+				}
+				BufferedImage joinedImage = FractalBase.joinAdjacentBufferedImages(imagesArr);
+				
+				File outputfile = new File("C:\\Users\\Navroz\\Desktop\\"+System.currentTimeMillis() + ".png");
+				try {
+					ImageIO.write(joinedImage, "png", outputfile);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+			}});
+		
+		buSaveAllIcons.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doSaveAllFbIconsCommand();				
+			}
+
+			private void doSaveAllFbIconsCommand() {
 				BufferedImage[] resizedImagesArr=new BufferedImage[resizedImages.size()];
 				for(int i = 0; i < resizedImages.size(); i++) {
 					resizedImagesArr[i] = resizedImages.get(i);
@@ -11031,8 +11057,9 @@ System.out.println("space2DIs __ "+space2D);*/
 		
 		
 		
-		imagesFr.getContentPane().add(imgsPanel);
+		imagesFr.getContentPane().add(new JScrollPane(imgsPanel));
 		imagesFr.setVisible(true);
+		imagesFr.pack();
 		
 	}
 

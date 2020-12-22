@@ -858,6 +858,27 @@ public class Julia extends FractalBase {
 		
 	}
 */
+	@Override
+	public void setFractalDtlInfo() {
+		String info = "<font color='black'>";
+		final String eol = "<br/>";
+		info += "Class: " + this.getClass().getName() + eol;
+		info += "ScaleSize = " + scaleSize + eol;
+		info += "Power (Exponent): " + this.power + ", Boundary = " + this.bound + eol;
+		info += "ColorScheme: " + this.colorChoice + eol;
+		info += "[XC,YC]:	[" + this.getxC() +", "+ this.getyC() +"]" + eol;
+		info += "Range: (xmin,ymin) to (xmax, ymax) is ["+ this.x_min + ", "+ this.y_min + "] to [" + this.x_max + ", " + this.y_max +"]" + eol;
+		info += "Constant: (cr,ci)  is (" + this.complex.real + ", " + this.complex.imaginary + ")" + eol;
+		info += "MaxIterations: " + maxIter + "  - Ud = " + this.useDiff + eol;
+		info += "Pixel_Constant Operation Z --> C is " + this.pxConstOperation + eol;
+		info += "Pixel Function F(Z) is " + this.useFuncPixel + eol;
+		info += "Constant Function F(C) is " + this.useFuncConst + eol;
+		info += "X Transform f(X) = " + this.pxXTransformation + ", Y Transform f(Y) = " + this.pxYTransformation + eol;
+		info += "X_Y Operation f(X,Y) " + this.pixXYOperation + eol;
+		info += "</font>";
+		
+		this.fractalDtlInfo = info;
+	}
 
 
 	public void createFocalFractalShape(FractalBase fbase, ComplexNumber cStart, ComplexNumber cEnd) {
@@ -887,10 +908,10 @@ public class Julia extends FractalBase {
 		double xEnd = cStart.real>cEnd.real?cStart.real:cEnd.real;
 		double yEnd = cStart.imaginary>cEnd.imaginary?cStart.imaginary:cEnd.imaginary;
 		
-		FractalBase.x_min=xStart;
-		FractalBase.x_max=xEnd;
-		FractalBase.y_min=yStart;
-		FractalBase.y_max=yEnd;
+		x_min=xStart;
+		x_max=xEnd;
+		y_min=yStart;
+		y_max=yEnd;
 		
 		if(xStart==xEnd||yStart==yEnd)	return;
 		
