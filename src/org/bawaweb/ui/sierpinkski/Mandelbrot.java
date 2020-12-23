@@ -57,6 +57,8 @@ public class Mandelbrot extends FractalBase {
 	private String motionParam = "bd";	//	others are exponent/power/magnification/scaleSize
 	private double motionParamJumpVal = 0.25;
 	private Image[] motionImages = new Image[MAX_DEPTH];//[this.depth];	//[10];;
+
+	/*private boolean useOrbitTrap=true;*/
 	
 	
 	public Mandelbrot() {
@@ -480,74 +482,48 @@ public class Mandelbrot extends FractalBase {
 				if (z0.isNaN()) {
 					continue;
 				}
-				
-/******NOV9***************************************/
-//
-//
-//				if (this.colorChoice.equals(BlackWhite)) {
-//					int bOrW = 0;
-//					
-//					if (diff) {
-//						bOrW = this.mand(z0, max, pow, this.complex, bd, row, col);
-//						/*if (!this.isBuddha) {*/
-//							if (bOrW != max) {
-//								bOrW = 0;
-//							} else {
-//								bOrW = COLORMAXRGB;
-//							} 
-//						/*}*/
-//					} else {
-//						int res = this.mand(z0, max, pow, this.complex, bd, row, col);
-//						/*if (!this.isBuddha) {*/
-//							bOrW = max - res;
-//							if (bOrW != res) {
-//								bOrW = 0;
-//							} else {
-//								bOrW = COLORMAXRGB;
-//							} 
-//						/*}*/
-//
-//					}
-//					
-//					/*if (!this.isBuddha) {*/
-//						setPixel(row, n - 1 - col, bOrW);
-//					/*}*/
-//					if (this.isSavePixelInfo2File()) {
-//						this.appendPixelInfo2File(row, n - 1 - col, bOrW);
-//					}
-//
-//				} else {///////////////////////*/
-/////////////////ends///Nov9/////////////////////////////
-				int colorRGB;
-				Color color = null;
 
-				if (! this.colorChoice.equals(Color_Palette_Blowout)) {
-					if (diff) {
-						colorRGB = mand(z0, max, pow, this.complex, bd, row, col);
-					} else {
-						colorRGB = max - mand(z0, max, pow, this.complex, bd, row, col);
-					}
-					/* if (!this.isBuddha) { */
-					color = this.getPixelDisplayColor(row, col, colorRGB, diff);
-					/*this.pixel[npixel++] = colorRGB;*/
-					
-					setPixel(row, n - 1 - col, color.getRGB());
+				Color color;
+
+				/*if (!useOrbitTrap) {*/
+					int colorRGB;
+					color = null;
+					if (!this.colorChoice.equals(Color_Palette_Blowout)) {
+						if (diff) {
+							colorRGB = mand(z0, max, pow, this.complex, bd, row, col);
+						} else {
+							colorRGB = max - mand(z0, max, pow, this.complex, bd, row, col);
+						}
+						/* if (!this.isBuddha) { */
+						color = this.getPixelDisplayColor(row, col, colorRGB, diff);
+						/*this.pixel[npixel++] = colorRGB;*/
+
+						setPixel(row, n - 1 - col, color.getRGB());
 						/*}*/
-				} else {// colorChoice=="ColorBlowout"
-					if (diff) {
-						colorRGB = mand(z0, max, pow, this.complex, bd, row, col);
-					} else {
-						colorRGB = max - mand(z0, max, pow, this.complex, bd, row, col);
+					} else {// colorChoice=="ColorBlowout"
+						if (diff) {
+							colorRGB = mand(z0, max, pow, this.complex, bd, row, col);
+						} else {
+							colorRGB = max - mand(z0, max, pow, this.complex, bd, row, col);
+						}
+
+						colorRGB = this.time2Color(colorRGB);
+						/*this.pixel[npixel++] = colorRGB;*/
+
+						setPixel(row, n - 1 - col, colorRGB);
 					}
-
-					colorRGB = this.time2Color(colorRGB);
-					/*this.pixel[npixel++] = colorRGB;*/
-
-					setPixel(row, n - 1 - col, colorRGB);
-				}
-				if (this.isSavePixelInfo2File()) {
-					this.appendPixelInfo2File(row, n - 1 - col, color.getRGB());
-				}
+					if (this.isSavePixelInfo2File()) {
+						this.appendPixelInfo2File(row, n - 1 - col, color.getRGB());
+					}
+				/*} else {
+					// use orbit trap
+					double trapVal = this.iterate(z0,new ComplexNumber(1.0,0.0));
+					setPixel(row, n - 1 - col, (int)trapVal);
+				}*/
+				
+				
+				
+				
 				/*}//////////////////////*/
 
 			}
@@ -1064,7 +1040,7 @@ public class Mandelbrot extends FractalBase {
 	
 	@Override
 	public void setFractalDtlInfo() {
-		String info = "<font color='black'>";
+		String info = "<html><font color='black'>";
 		final String eol = "<br/>";
 		info += "Class: " + this.getClass().getName() + eol;
 		info += "Magnification: " + this.magnification + eol;
@@ -1080,8 +1056,7 @@ public class Mandelbrot extends FractalBase {
 		info += "Constant Function F(C) is " + this.useFuncConst + eol;
 		info += "X Transform f(X) = " + this.pxXTransformation + ", Y Transform f(Y) = " + this.pxYTransformation + eol;
 		info += "X_Y Operation f(X,Y) " + this.pixXYOperation + eol;
-		info += "</font>";
-		
+		info += "</font></html>";
 		this.fractalDtlInfo = info;
 	}
 

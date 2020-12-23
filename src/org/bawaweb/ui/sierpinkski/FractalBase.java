@@ -5,6 +5,8 @@ package org.bawaweb.ui.sierpinkski;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -3074,9 +3076,33 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		return this.pxConstOperation;
 	}
 	
+
+
+    private BufferedImage addFractalInfo2Image(BufferedImage image, String info) {
+        int w = image.getWidth() / 3;
+        int h = image.getHeight() / 3;
+        BufferedImage img = new BufferedImage(
+            w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = img.createGraphics();
+        g2d.drawImage(image, 0, 0, w, h, this);
+        g2d.setPaint(Color.red);
+        g2d.setFont(new Font("Serif", Font.BOLD, 20));
+        FontMetrics fm = g2d.getFontMetrics();
+        int x = img.getWidth() - fm.stringWidth(info) - 5;
+        int y = fm.getHeight();
+        g2d.drawString(info, x, y);
+        g2d.dispose();
+        return img;
+    }
+	
 	private BufferedImage createStringImage(final String info) {
 		BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = img.createGraphics();
+        Font font = new Font("Arial", Font.PLAIN, 12);
+        g2d.setFont(font);
+        FontMetrics fm = g2d.getFontMetrics();
+        int width = fm.stringWidth(info);
+        int height = fm.getHeight();
         /*int width = this.getFractalImage().getWidth();
         int height = 300;*/
         g2d.dispose();
@@ -3105,11 +3131,16 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		
 	}
 	
+	public String getMinFractalDtlInfo() {
+		String info = "";
+		return info;
+	}
+	
 	protected void setFractalDtlInfo() {
-		String info = "<font color='black'>";
+		String info = "<html><font color='black'>";
 		final String eol = "<br/>";
 		info += "Class: " + this.getClass().getName() + eol;
-		info += "</font>";
+		info += "</font></html>";
 		/*info += "Power (Exponent): " + this.power + eol;
 		info += "[XC,YC]:	[" + this.getxC() +", "+ this.getyC() +"]" + eol;
 		info += "Range: (xmin,ymin) to (xmax, ymax) is ["+ this.x_min + ", "+ this.y_min + "] to [" + this.x_max + ", " + this.y_max +"]" + eol;
@@ -3344,8 +3375,16 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		jpop.setBound(mand.bound);
 
 		jpop.setResizable(false);
-		
-		//jpop.add2FbImages(jpop.getBufferedImage());
+//		BufferedImage bImage = jpop.getBufferedImage();
+//		Graphics g = bImage.createGraphics();
+//		g.setColor(Color.white);
+//		
+//		String juliaInfo="Julia R: (" + realPosn + "), I: (" + imgPosn + ")";
+//		g.drawString(juliaInfo,10,380);
+//		
+//		g.dispose();
+//		
+//		jpop.add2FbImages(bImage);
 		jpopFr = jpop;
 	}
 	
@@ -3607,6 +3646,24 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 
 	public void setColorBlowoutType(String clrBlowoutType) {
 		this.colorBlowoutType = clrBlowoutType;
+	}
+	
+	/**
+	 * for orbit-trap calculation
+	 * @param c
+	 * @return
+	 */
+	double iterate(ComplexNumber c, ComplexNumber zPoint) {
+		double dist = 1e20f;
+		ComplexNumber z = new ComplexNumber(0.0f, 0.0f);
+		for (int i = 0; i < maxIter; i++) {
+			z = z.times(z).plus(c);
+			if (z.abs() > bound * 1.0f) {
+				return 0.0f;
+			}
+			dist = Math.min(dist, (Math.pow(zPoint.real, 2.0) + Math.pow(zPoint.imaginary, 2.0)));
+		}
+		return Math.sqrt(dist) * 1.0f;
 	}
 
 
@@ -3896,13 +3953,20 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
     }
 	
 	protected void add2FbImages(BufferedImage bImage) {
-		fbImages.add(bImage);
+		/*if(!fbImages.add(bImage)){
+			System.out.println("Couldnt_add_image___"+bImage);
+		}*/
 //		
-//		this.setFractalDtlInfo();
-//		BufferedImage stringImage = this.createStringImage(this.getFractalDtlInfo());
+		this.setFractalDtlInfo();
+		
+		BufferedImage stringImage = this.createStringImage(this.getFractalDtlInfo());
 //		/*if (!fbImages.contains(bImage)) {*/
-//			fbImages.add(joinBufferedImages(bImage,stringImage));
+		if(!fbImages.add(joinBufferedImages(bImage,stringImage)))
+			System.out.println("Couldnt_add_Joinedimage___"+bImage);
+				
 //		/*}*/
+			
+		//BufferedImage fbInfoImage = 	
 //			
 	}
 	

@@ -860,7 +860,7 @@ public class Julia extends FractalBase {
 */
 	@Override
 	public void setFractalDtlInfo() {
-		String info = "<font color='black'>";
+		String info = "<html><font color='black'>";
 		final String eol = "<br/>";
 		info += "Class: " + this.getClass().getName() + eol;
 		info += "ScaleSize = " + scaleSize + eol;
@@ -875,7 +875,7 @@ public class Julia extends FractalBase {
 		info += "Constant Function F(C) is " + this.useFuncConst + eol;
 		info += "X Transform f(X) = " + this.pxXTransformation + ", Y Transform f(Y) = " + this.pxYTransformation + eol;
 		info += "X_Y Operation f(X,Y) " + this.pixXYOperation + eol;
-		info += "</font>";
+		info += "</font></html>";
 		
 		this.fractalDtlInfo = info;
 	}
