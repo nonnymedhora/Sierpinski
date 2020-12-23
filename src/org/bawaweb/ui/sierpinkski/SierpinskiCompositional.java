@@ -1026,6 +1026,21 @@ class SierpinskiComboPanel extends JPanel {
 //	Image[] fbImages = new Image[10];
 	//private JPanel fbImagesPanel = new JPanel(new GridLayout(1,0),true);
 	private JButton buShowFbImages = new JButton("Show all Images");
+	
+	private JCheckBox useRangeCb = new JCheckBox("Use Range Estimates: ",false);
+	private boolean useRangeEstimation = false;
+	
+	private JTextField xMinTf = new JTextField(5);
+	private double xMinVal;	
+	private JTextField yMinTf = new JTextField(5);
+	private double yMinVal;
+	
+	private JTextField xMaxTf = new JTextField(5);
+	private double xMaxVal;	
+	private JTextField yMaxTf = new JTextField(5);
+	private double yMaxVal;
+	
+	
 
 	
 	
@@ -1246,6 +1261,27 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(this.buClose);
 		
 		this.add(this.buShowFbImages);
+		
+		this.add(this.useRangeCb);
+
+		this.add(new JLabel("Minimum (x,y) :  X:"));
+		this.add(this.xMinTf);
+		this.add(new JLabel("   Y:"));
+		this.add(this.yMinTf);
+
+
+		this.add(new JLabel("Maximum (x,y) :  X:"));
+		this.add(this.xMaxTf);
+		this.add(new JLabel("   Y:"));
+		this.add(this.yMaxTf);
+		
+		this.xMinTf.setEnabled(false);
+		this.yMinTf.setEnabled(false);
+		this.xMaxTf.setEnabled(false);
+		this.yMaxTf.setEnabled(false);
+		
+		
+		
 
 	}
 
@@ -9153,6 +9189,7 @@ System.out.println("space2DIs __ "+space2D);*/
 		FractalBase ff;
 		//diyJulia
 		boolean doExplore = this.diyJuliaExplore;
+		boolean useRngEst = this.useRangeEstimation;
 		boolean useCP = this.colorChoice.equals("ColorPalette");
 		boolean useBw = this.colorChoice.equals("BlackWhite");	
 		
@@ -9318,7 +9355,29 @@ System.out.println("space2DIs __ "+space2D);*/
 		
 		this.addJuliaConstInfo(jj);
 		ff.setSavePixelInfo2File(this.savePixelInfo2File);
+
 		
+		if (useRngEst) {
+			try {
+				double xMinRealVal = Double.parseDouble(this.xMinTf.getText());
+				double yMinImgVal = Double.parseDouble(this.yMinTf.getText());
+				double xMaxRealVal = Double.parseDouble(this.xMaxTf.getText());
+				double yMaxImgVal = Double.parseDouble(this.yMaxTf.getText());
+
+				if (xMinRealVal >= xMaxRealVal || yMinImgVal >= yMaxImgVal) {
+					String err = (xMinRealVal < xMaxRealVal) ? "xMin > xMax" : "yMin > yMax";
+					JOptionPane.showMessageDialog(null, "Please enter a valid Range value", err, JOptionPane.ERROR_MESSAGE);
+					return null;
+				}
+
+				jj.setRefocusDraw(true);
+				jj.createFocalFractalShape(ff, new ComplexNumber(xMinRealVal,yMinImgVal), new ComplexNumber(xMaxRealVal,yMaxImgVal));
+			} catch (NumberFormatException  | NullPointerException e2) {
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+				return null;
+			}
+		}
 		ff = null;
 
 		jj.setVisible(true);
@@ -9390,7 +9449,7 @@ System.out.println("space2DIs __ "+space2D);*/
 		FractalBase ff = null;
 		// for diy mandelbrot
 		boolean doExplore = this.diyMandExplore;
-
+		boolean useRngEst = this.useRangeEstimation;
 		boolean useCP = this.colorChoice.equals("ColorPalette");
 		boolean useBw = this.colorChoice.equals("BlackWhite");
 		
@@ -9508,6 +9567,31 @@ System.out.println("space2DIs __ "+space2D);*/
 
 		this.addMandelbrotConstInfo(ff);
 		ff.setSavePixelInfo2File(this.savePixelInfo2File);
+
+		
+		if (useRngEst) {
+			try {
+				double xMinRealVal = Double.parseDouble(this.xMinTf.getText());
+				double yMinImgVal = Double.parseDouble(this.yMinTf.getText());
+				double xMaxRealVal = Double.parseDouble(this.xMaxTf.getText());
+				double yMaxImgVal = Double.parseDouble(this.yMaxTf.getText());
+
+				if (xMinRealVal >= xMaxRealVal || yMinImgVal >= yMaxImgVal) {
+					String err = (xMinRealVal < xMaxRealVal) ? "xMin > xMax" : "yMin > yMax";
+					JOptionPane.showMessageDialog(null, "Please enter a valid Range value", err, JOptionPane.ERROR_MESSAGE);
+					return null;
+				}
+				Mandelbrot mand = (Mandelbrot)ff;
+				mand.setRefocusDraw(true);
+				mand.createFocalFractalShape(ff, new ComplexNumber(xMinRealVal,yMinImgVal), new ComplexNumber(xMaxRealVal,yMaxImgVal));
+				
+				//ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD,diyMandB, diyMRealVal, diyMImgVal);
+			} catch (NumberFormatException  | NullPointerException e2) {
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+				return null;
+			}
+		}
 		return ff;
 	}
 
@@ -10979,7 +11063,35 @@ System.out.println("space2DIs __ "+space2D);*/
 				showFBImages();
 			}
 		});
+		
+		this.useRangeCb.setActionCommand("UseRange");
+		this.useRangeCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doUseRangeExtimates(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doUseRangeExtimates(false);
+				}
+			}
+        });
 
+	}
+
+	protected void doUseRangeExtimates(boolean useRangeE) {
+		this.useRangeEstimation = useRangeE;
+
+		if (this.useRangeEstimation) {
+			this.xMinTf.setEnabled(true);
+			this.yMinTf.setEnabled(true);
+			this.xMaxTf.setEnabled(true);
+			this.yMaxTf.setEnabled(true);
+		} else {
+			this.xMinTf.setEnabled(false);
+			this.yMinTf.setEnabled(false);
+			this.xMaxTf.setEnabled(false);
+			this.yMaxTf.setEnabled(false);
+		}
 	}
 
 	private void showFBImages() {

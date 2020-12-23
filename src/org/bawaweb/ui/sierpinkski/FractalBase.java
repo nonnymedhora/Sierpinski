@@ -3639,7 +3639,17 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	boolean refocusDraw = false;
 
 
-    public String getColorBlowoutType() {
+    public boolean isRefocusDraw() {
+		return this.refocusDraw;
+	}
+
+
+	public void setRefocusDraw(boolean reDraw) {
+		this.refocusDraw = reDraw;
+	}
+
+
+	public String getColorBlowoutType() {
 		return this.colorBlowoutType;
 	}
 
