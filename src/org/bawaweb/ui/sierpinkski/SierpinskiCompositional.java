@@ -9371,6 +9371,7 @@ System.out.println("space2DIs __ "+space2D);*/
 				}
 
 				jj.setRefocusDraw(true);
+				jj.setRangeMinMaxVals(xMinRealVal, yMinImgVal, xMaxRealVal, yMaxImgVal);
 				jj.createFocalFractalShape(ff, new ComplexNumber(xMinRealVal,yMinImgVal), new ComplexNumber(xMaxRealVal,yMaxImgVal));
 			} catch (NumberFormatException  | NullPointerException e2) {
 				e2.printStackTrace();
@@ -9583,6 +9584,7 @@ System.out.println("space2DIs __ "+space2D);*/
 				}
 				Mandelbrot mand = (Mandelbrot)ff;
 				mand.setRefocusDraw(true);
+				mand.setRangeMinMaxVals(xMinRealVal, yMinImgVal, xMaxRealVal, yMaxImgVal);
 				mand.createFocalFractalShape(ff, new ComplexNumber(xMinRealVal,yMinImgVal), new ComplexNumber(xMaxRealVal,yMaxImgVal));
 				
 				//ff = new Mandelbrot(diyMag, diyMandExp, diyMandUseD,diyMandB, diyMRealVal, diyMImgVal);

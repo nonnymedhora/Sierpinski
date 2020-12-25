@@ -1049,7 +1049,7 @@ public class Mandelbrot extends FractalBase {
 		info += "ColorScheme: " + this.colorChoice + eol;
 		info += "[XC,YC]:	[" + this.getxC() +", "+ this.getyC() +"]" + eol;
 		info += "Range: (xmin,ymin) to (xmax, ymax) is ["+ this.x_min + ", "+ this.y_min + "] to [" + this.x_max + ", " + this.y_max +"]" + eol;
-		info += "Constant: (cr,ci)  is (" + this.complex.real + ", " + this.complex.imaginary + ")" + eol;
+		//info += "Constant: (cr,ci)  is (" + this.complex.real + ", " + this.complex.imaginary + ")" + eol;
 		info += "MaxIterations: " + maxIter + "  - Ud = " + this.useDiff + eol;
 		info += "Pixel_Constant Operation Z --> C is " + this.pxConstOperation + eol;
 		info += "Pixel Function F(Z) is " + this.useFuncPixel + eol;

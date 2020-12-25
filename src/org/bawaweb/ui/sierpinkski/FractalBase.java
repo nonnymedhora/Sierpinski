@@ -3555,6 +3555,19 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		int y = p.y;
 		System.out.println("[-mouseExited-] x is " + x + " and y is " + y);*/
 	}
+    
+    
+    protected void setRangeMinMaxVals(double xMinVal, double yMinVal, double xMaxVal, double yMaxVal) {
+    	x_start = xMinVal;
+    	y_start = yMinVal;
+    	x_end = xMaxVal;
+    	y_end = yMaxVal;
+    	
+    	x_min = xMinVal;
+    	y_min = yMinVal;
+    	x_max = xMaxVal;
+    	y_max = yMaxVal;
+    }
 
 
 	protected void setRangeSpace(double xc, double yc, double size, int n) {
