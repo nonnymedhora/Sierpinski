@@ -3742,10 +3742,17 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
         int n9;
         int n10;
         
-        int n11 = 10;
-        int n12 = 60;
-        int n13 = 110;
-        int n14 = 160;
+//        Oooooo
+//        int n11 = 10;
+//        int n12 = 60;
+//        int n13 = 110;
+//        int n14 = 160;
+
+        boolean isJulia = this.getClass().getName().contains("Julia");
+        int n11 = isJulia ? 5 : 10;
+        int n12 = isJulia ? 30 :  60;
+        int n13 = isJulia ? 55 : 110;
+        int n14 = isJulia ? 80 : 160;
         double d = 1.0;
         
         n11 = (int)(d * (double)n11);

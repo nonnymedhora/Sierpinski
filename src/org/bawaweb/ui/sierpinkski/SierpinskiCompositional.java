@@ -3994,6 +3994,7 @@ class SierpinskiComboPanel extends JPanel {
 		if (this.diyMandVaryPixYCentr)				subDirName += "Cy,";
 		if (this.diyMandVaryBoundary)				subDirName += "Bd,";
 		if (this.diyMandVaryScaleSize)				subDirName += "Sz,";
+		if (this.useRangeEstimation)				subDirName += "__RngEstSet";
 		
 		subDirName = subDirName.substring(0, subDirName.length() - 1) + "]_" + System.currentTimeMillis();
 		
@@ -4115,6 +4116,32 @@ class SierpinskiComboPanel extends JPanel {
 			Graphics2D g = mands[i].getBufferedImage().createGraphics();
 //			System
 			try {
+				
+				
+				boolean useRngEst = this.useRangeEstimation;
+				if (useRngEst) { //
+					try {
+						double xMinRealVal = Double.parseDouble(this.xMinTf.getText());
+						double yMinImgVal = Double.parseDouble(this.yMinTf.getText());
+						double xMaxRealVal = Double.parseDouble(this.xMaxTf.getText());
+						double yMaxImgVal = Double.parseDouble(this.yMaxTf.getText());
+
+						if (xMinRealVal >= xMaxRealVal || yMinImgVal >= yMaxImgVal) {
+							String err = (xMinRealVal < xMaxRealVal) ? "xMin > xMax" : "yMin > yMax";
+							JOptionPane.showMessageDialog(null, "Please enter a valid Range value", err, JOptionPane.ERROR_MESSAGE);
+							return;
+						}
+
+						mands[i].setRefocusDraw(true);
+						mands[i].setRangeMinMaxVals(xMinRealVal, yMinImgVal, xMaxRealVal, yMaxImgVal);
+						//mands[i].createFocalFractalShape(ff, new ComplexNumber(xMinRealVal,yMinImgVal), new ComplexNumber(xMaxRealVal,yMaxImgVal));
+					} catch (NumberFormatException  | NullPointerException e2) {
+						e2.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+				}
+
 				mands[i].paint(g);
 			} catch (NullPointerException e1) {
 				e1.printStackTrace();
@@ -5098,6 +5125,7 @@ class SierpinskiComboPanel extends JPanel {
 		if (this.diyJuliaVaryPixYCentr)				subDirName += "Cy,";
 		if (this.diyJuliaVaryBoundary)				subDirName += "Bd,";
 		if (this.diyJuliaVaryScaleSize)				subDirName += "Sz,";
+		if (this.useRangeEstimation)				subDirName += "__RngEstSet";
 		
 		subDirName = subDirName.substring(0, subDirName.length() - 1) + "]_" + System.currentTimeMillis();
 		
@@ -5218,7 +5246,33 @@ class SierpinskiComboPanel extends JPanel {
 			Graphics2D g = julies[i].getBufferedImage().createGraphics();
 //			System
 			try {
+
+				boolean useRngEst = this.useRangeEstimation;
+				if (useRngEst) { //
+					try {
+						double xMinRealVal = Double.parseDouble(this.xMinTf.getText());
+						double yMinImgVal = Double.parseDouble(this.yMinTf.getText());
+						double xMaxRealVal = Double.parseDouble(this.xMaxTf.getText());
+						double yMaxImgVal = Double.parseDouble(this.yMaxTf.getText());
+
+						if (xMinRealVal >= xMaxRealVal || yMinImgVal >= yMaxImgVal) {
+							String err = (xMinRealVal < xMaxRealVal) ? "xMin > xMax" : "yMin > yMax";
+							JOptionPane.showMessageDialog(null, "Please enter a valid Range value", err, JOptionPane.ERROR_MESSAGE);
+							return;
+						}
+
+						julies[i].setRefocusDraw(true);
+						julies[i].setRangeMinMaxVals(xMinRealVal, yMinImgVal, xMaxRealVal, yMaxImgVal);
+						//julies[i].createFocalFractalShape(ff, new ComplexNumber(xMinRealVal,yMinImgVal), new ComplexNumber(xMaxRealVal,yMaxImgVal));
+					} catch (NumberFormatException  | NullPointerException e2) {
+						e2.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+				}
+
 				julies[i].paint(g);
+				
 			} catch (NullPointerException e1) {
 				e1.printStackTrace();
 				System.out.println(e1.getMessage() + "+this.pxFuncChoiceIs\n" + this.pxFuncChoice);
@@ -10362,6 +10416,11 @@ System.out.println("space2DIs __ "+space2D);*/
 				baseInfo += "Rotation: " + this.getRotation() + eol;
 				baseInfo += "Row-Column Mix-Type: " + this.polyType + eol;
 				baseInfo += "Center: P(x,y): (" + this.polyXC + ", " + this.polyYC + ")" + eol;
+
+				if(this.useRangeEstimation) {
+					baseInfo += "Range: (xmin,ymin) to (xmax, ymax) is ["+ this.xMinTf.getText() + ", "+ this.yMinTf.getText() + "] to [" + this.xMaxTf.getText() + ", " + this.yMaxTf.getText() +"]" + eol;
+				}
+				
 				baseInfo += "Maximum Iterations: " + this.polyMaxIter + eol;
 				baseInfo += " Scaled Size: " + this.polyScaleSize + "}" + eol + eol;
 	
@@ -10383,6 +10442,11 @@ System.out.println("space2DIs __ "+space2D);*/
 				
 				baseInfo += "Rotation: " + this.getRotation() + eol;
 				baseInfo += "Center: P(x,y): (" + this.mandXC + ", " + this.mandYC + ")" + eol;
+				
+				if(this.useRangeEstimation) {
+					baseInfo += "Range: (xmin,ymin) to (xmax, ymax) is ["+ this.xMinTf.getText() + ", "+ this.yMinTf.getText() + "] to [" + this.xMaxTf.getText() + ", " + this.yMaxTf.getText() +"]" + eol;
+				}
+				
 				baseInfo += "Maximum Iterations: " + this.mandMaxIter + eol;
 				baseInfo += " Scaled Size: " + this.mandScaleSize + "}" + eol + eol;
 	
@@ -10403,6 +10467,11 @@ System.out.println("space2DIs __ "+space2D);*/
 				
 				baseInfo += "Rotation: " + this.getRotation() + eol;
 				baseInfo += "Center: P(x,y): (" + this.juliaXC + ", " + this.juliaYC + ")" + eol;
+				
+				if(this.useRangeEstimation) {
+					baseInfo += "Range: (xmin,ymin) to (xmax, ymax) is ["+ this.xMinTf.getText() + ", "+ this.yMinTf.getText() + "] to [" + this.xMaxTf.getText() + ", " + this.yMaxTf.getText() +"]" + eol;
+				}
+				
 				baseInfo += "Maximum Iterations: " + this.juliaMaxIter + eol;
 				baseInfo += " Scaled Size: " + this.juliaScaleSize + "}" + eol + eol;
 	
@@ -10455,6 +10524,11 @@ System.out.println("space2DIs __ "+space2D);*/
 				
 				baseInfo += "Rotation: " + this.getRotation() + eol;
 				baseInfo += "Center: P(x,y): (" + this.diyMandXC + ", " + this.diyMandYC + ")" + eol;
+
+				if(this.useRangeEstimation) {
+					baseInfo += "Range: (xmin,ymin) to (xmax, ymax) is ["+ this.xMinTf.getText() + ", "+ this.yMinTf.getText() + "] to [" + this.xMaxTf.getText() + ", " + this.yMaxTf.getText() +"]" + eol;
+				}
+				
 				baseInfo += "Maximum Iterations: " + this.diyMandMaxIter + eol;
 				baseInfo += " Scaled Size: " + this.diyMandScaleSize + "}" + eol + eol;
 	
@@ -10494,6 +10568,11 @@ System.out.println("space2DIs __ "+space2D);*/
 
 				baseInfo += "Rotation: " + this.getRotation() + eol;
 				baseInfo += "Center: P(x,y): (" + this.diyJuliaXC + ", " + this.diyJuliaYC + ")" + eol;
+
+				if(this.useRangeEstimation) {
+					baseInfo += "Range: (xmin,ymin) to (xmax, ymax) is ["+ this.xMinTf.getText() + ", "+ this.yMinTf.getText() + "] to [" + this.xMaxTf.getText() + ", " + this.yMaxTf.getText() +"]" + eol;
+				}
+				
 				baseInfo += "Maximum Iterations: " + this.diyJuliaMaxIter + eol;
 				baseInfo += " Scaled Size: " + this.diyJuliaScaleSize + "}" + eol + eol;
 	
