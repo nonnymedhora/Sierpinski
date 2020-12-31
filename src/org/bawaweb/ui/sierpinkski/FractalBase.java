@@ -187,6 +187,10 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	static List<BufferedImage> fbImages = new ArrayList<BufferedImage>();
 	private boolean generated = false;
 	
+	static List<BufferedImage> rawFbImages = new ArrayList<BufferedImage>();
+	static List<FractalDtlInfo> fbDTlsList = new ArrayList<FractalDtlInfo>();
+	static int fbCurrCount = 0;
+	
 	/** Constructor: an instance */
 	public FractalBase() {
 		super();
@@ -195,6 +199,7 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		this.pixel = new int[WIDTH*HEIGHT];*/
 		
 		this.setVisible(true);
+//		fbCurrCount+=1;
 		/*if (this.isUseMandelbrotExplorer()) {
 			this.add(locPtTextField, java.awt.BorderLayout.SOUTH);
 			this.addMouseListener(this);
@@ -439,6 +444,8 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		depth = d;
 		this.repaint();
 	}
+	
+	private boolean isFbCreated = false;
 
 	/* (non-Javadoc)
 	 * @see java.awt.Window#paint(java.awt.Graphics)
@@ -481,8 +488,9 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 			this.add2FbImages(img);
 		}
 		this.setImage(img);
-		
+		this.isFbCreated = true;
 		g2.dispose();
+		this.isFbCreated = false;
 	}
 	
 	private void createRefocussedFractaImage(FractalBase frctl) {
@@ -501,6 +509,7 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		x_max = x_start > x_end ? x_start : x_end;
 		y_min = y_start < y_end ? y_start : y_end;
 		y_max = y_start > y_end ? y_start : y_end;
+		
 		//this.createFocalFractalShape(frctl, new ComplexNumber(x_start,y_start), new ComplexNumber(x_end,y_end));
 /*
 		this.source=null;
@@ -3135,8 +3144,16 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		String info = "";
 		return info;
 	}
+
+	protected void createFractalDtlInfoObject() {
+		return;
+
+	}
+	
 	
 	protected void setFractalDtlInfo() {
+//		createFractalDtlInfoObject();
+		
 		String info = "<html><font color='black'>";
 		final String eol = "<br/>";
 		info += "Class: " + this.getClass().getName() + eol;
@@ -3373,7 +3390,10 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		jpop.setUseFuncPixel(mand.useFuncPixel);
 		jpop.setApplyCustomFormula(mand.applyCustomFormula);
 		jpop.setBound(mand.bound);
-
+		jpop.setRefocusDraw(false);
+		
+		jpop.setCreatedViaMandelbrotExplorer(true);
+		
 		jpop.setResizable(false);
 //		BufferedImage bImage = jpop.getBufferedImage();
 //		Graphics g = bImage.createGraphics();
@@ -3650,6 +3670,7 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 
 	boolean isDragging = false;
 	boolean refocusDraw = false;
+	boolean createdViaMandelbrotExplorer = false;
 
 
     public boolean isRefocusDraw() {
@@ -3660,6 +3681,11 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	public void setRefocusDraw(boolean reDraw) {
 		this.refocusDraw = reDraw;
 	}
+	public void setCreatedViaMandelbrotExplorer(boolean isViaMandelbrot) {
+		this.createdViaMandelbrotExplorer = isViaMandelbrot;
+	}
+	
+	
 
 
 	public String getColorBlowoutType() {
@@ -3982,11 +4008,16 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
         graphics.drawString(string3, 0, getHeight() - 12);
     }
 	
-	protected void add2FbImages(BufferedImage bImage) {
-		/*if(!fbImages.add(bImage)){
-			System.out.println("Couldnt_add_image___"+bImage);
-		}*/
-//		
+	protected synchronized void add2FbImages(BufferedImage bImage) {
+		if (!this.createdViaMandelbrotExplorer && !this.isFbCreated) {
+			if (!rawFbImages.add(bImage)) {
+				System.out.println("Couldnt_add_raw_image___" + bImage);
+			}
+			this.createFractalDtlInfoObject();
+			fbCurrCount += 1;
+//			System.out.println("In add2FbImages fbCurrCount = " + fbCurrCount + " and size is " + FractalBase.rawFbImages.size());
+		}
+		//		
 		this.setFractalDtlInfo();
 		
 		BufferedImage stringImage = this.createStringImage(this.getFractalDtlInfo());

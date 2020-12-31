@@ -1038,8 +1038,41 @@ public class Mandelbrot extends FractalBase {
 		this.magnification = mg;
 	}
 	
+	/*@Override*/
+	public void createFractalDtlInfoObject() {
+		FractalDtlInfo fd = new FractalDtlInfo("Mandelbrot");
+
+		fd.setMagnification(this.magnification);
+		fd.setScaleSize(scaleSize);
+		fd.setPower(this.power);
+		fd.setBound(this.bound);
+		fd.setColorChoice(this.colorChoice);
+		fd.setxC(this.getxC());
+		fd.setyC(this.getyC());
+		fd.setX_min(this.x_min);
+		fd.setX_max(this.x_max);
+		fd.setY_min(this.y_min);
+		fd.setY_max(this.y_max);
+		fd.setMaxIter(maxIter);
+		fd.setUseDiff(this.useDiff);
+		fd.setPxConstOperation(this.pxConstOperation);
+		fd.setUseFuncPixel(this.useFuncPixel);
+		fd.setUseFuncConst(this.useFuncConst);
+		fd.setPxXTransformation(this.pxXTransformation);
+		fd.setPxYTransformation(this.pxYTransformation);
+		fd.setPixXYOperation(this.pixXYOperation);
+		fd.setApplyCustomFormula(this.applyCustomFormula);
+		
+		fd.setfBase(this);
+		
+		fbDTlsList.add(fd);
+
+	}
+
 	@Override
 	public void setFractalDtlInfo() {
+//		this.createFractalDtlInfoObject();
+		
 		String info = "<html><font color='black'>";
 		final String eol = "<br/>";
 		info += "Class: " + this.getClass().getName() + eol;

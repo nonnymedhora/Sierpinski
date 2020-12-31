@@ -1041,7 +1041,17 @@ class SierpinskiComboPanel extends JPanel {
 	private double yMaxVal;
 	
 	
+	//	navigation controls
 
+	private JButton buFirst = new JButton("||<| First");
+	private JButton buBack = new JButton("<|| Back");
+	private JButton buStep = new JButton("Step ||>");
+	private JButton buLast = new JButton("Last |>||");
+	private JTextField tfCount = new JTextField(3);
+	
+	/*J10static List<BufferedImage> rawFbZoomedImages = new ArrayList<BufferedImage>();
+	static List<FractalDtlInfo> fbDTlsList = new ArrayList<FractalDtlInfo>();
+	static int currentIndex = 0;*/
 	
 	
 	
@@ -1280,6 +1290,19 @@ class SierpinskiComboPanel extends JPanel {
 		this.xMaxTf.setEnabled(false);
 		this.yMaxTf.setEnabled(false);
 		
+		
+		///
+		/*this.add(this.buFirst);
+		this.add(this.buBack);
+		this.add(this.buStep);
+		this.add(this.buLast);
+		this.add(this.tfCount);
+		
+		this.buFirst.setEnabled(true);
+		this.buBack.setEnabled(true);
+		this.buStep.setEnabled(false);
+		this.buLast.setEnabled(true);
+		this.tfCount.setEnabled(false);*/
 		
 		
 
@@ -10084,7 +10107,16 @@ System.out.println("space2DIs __ "+space2D);*/
 		final BufferedImage bImage = frame.getBufferedImage();
 		this.setFractalImage(bImage);
 		this.setFractalBase(frame);
-		
+//		/*J10
+//		rawFbZoomedImages.add(bImage);
+//		fbDTlsList.add(frame.createFractalDtlInfoObject());
+//		currentIndex+=1;*/
+//		
+//		this.tfCount.setText(String.valueOf(1/*J9FractalBase.fbDTlsList.size()*/));
+//		/*J9if (FractalBase.fbDTlsList.size() > 1) {*/
+//			this.buBack.setEnabled(true);
+//		/*J9}*/
+//
 		this.buClose.setEnabled(true);
 		
 		/*
@@ -11156,10 +11188,124 @@ System.out.println("space2DIs __ "+space2D);*/
 				}
 			}
         });
+		
+		this.buFirst.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doGoFirstCommand();
+			}
+		});
+		
+		this.buBack.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doBackCommand();
+			}
+		});
+
+		this.buStep.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doStepCommand();
+			}
+		});
+		
+		this.buLast.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doGoLastCommand();
+			}
+		});
 
 	}
 
-	protected void doUseRangeExtimates(boolean useRangeE) {
+	private void doGoLastCommand() {
+		/*J9int last = FractalBase.rawFbImages.size()-1;
+		FractalBase.fbCurrCount=last;
+		System.out.println("inGoLast  fbCurrCount = "+FractalBase.fbCurrCount+ " and size is "+FractalBase.rawFbImages.size());
+		BufferedImage bI = FractalBase.rawFbImages.get(last);
+		FractalDtlInfo fD = FractalBase.fbDTlsList.get(last);
+		FractalBase fB = fD.getfBase();
+
+		this.doSetup(fB, bI);*/
+		this.buStep.setEnabled(false);
+		this.buBack.setEnabled(true);
+		this.buFirst.setEnabled(true);
+	}
+
+	private void doGoFirstCommand() {
+		FractalBase.fbCurrCount=0;
+		System.out.println("inGoFirst  fbCurrCount = "+FractalBase.fbCurrCount+ " and size is "+FractalBase.rawFbImages.size());
+		BufferedImage bI = FractalBase.rawFbImages.get(0);
+		FractalDtlInfo fD = FractalBase.fbDTlsList.get(0);
+		FractalBase fB = fD.getfBase();
+
+		this.doSetup(fB, bI);
+		this.buBack.setEnabled(false);
+		this.buStep.setEnabled(true);
+		this.buLast.setEnabled(true);
+	}
+
+	private void doStepCommand() {
+		int numF = FractalBase.fbCurrCount;
+		if (numF < FractalBase.rawFbImages.size()) {
+			int curr = numF + 1;
+			FractalBase.fbCurrCount = curr;
+			System.out.println("inDoStep n<size  fbCurrCount = "+FractalBase.fbCurrCount+ " and size is "+FractalBase.rawFbImages.size());
+			BufferedImage bI = FractalBase.rawFbImages.get(curr);
+			FractalDtlInfo fD = FractalBase.fbDTlsList.get(curr);
+			FractalBase fB = fD.getfBase();
+
+			this.doSetup(fB, bI);
+		} else {
+			int curr = FractalBase.rawFbImages.size() - 1;
+			System.out.println("inDoStep n>=size  fbCurrCount = "+FractalBase.fbCurrCount+ " and size is "+FractalBase.rawFbImages.size());
+			FractalBase.fbCurrCount = curr;
+			BufferedImage bI = FractalBase.rawFbImages.get(curr);
+			FractalDtlInfo fD = FractalBase.fbDTlsList.get(curr);
+			FractalBase fB = fD.getfBase();
+
+			this.doSetup(fB, bI);
+		}
+		this.buBack.setEnabled(true);
+		this.buFirst.setEnabled(true);
+	}
+
+	private void doBackCommand() {
+		int numF = FractalBase.fbCurrCount;// FractalBase.fbDTlsList.size();
+
+		if (numF > 1) {
+			int curr = numF - 1;
+			FractalBase.fbCurrCount = curr;
+			System.out.println("inDoBACK n>1  fbCurrCount = "+FractalBase.fbCurrCount+ " and size is "+FractalBase.rawFbImages.size());
+			BufferedImage bI = FractalBase.rawFbImages.get(curr);
+			FractalDtlInfo fD = FractalBase.fbDTlsList.get(curr);
+			FractalBase fB = fD.getfBase();
+
+			this.doSetup(fB, bI);
+		} else {
+			FractalBase.fbCurrCount = 0;
+			System.out.println("inDoBACK n<=1  fbCurrCount = "+FractalBase.fbCurrCount+ " and size is "+FractalBase.rawFbImages.size());
+			BufferedImage bI = FractalBase.rawFbImages.get(0);
+			FractalDtlInfo fD = FractalBase.fbDTlsList.get(0);
+			FractalBase fB = fD.getfBase();
+
+			this.doSetup(fB, bI);
+		}
+		
+		this.buStep.setEnabled(true);
+		this.buLast.setEnabled(true);
+	}
+
+	private void doSetup(FractalBase fB, BufferedImage bI) {
+		this.fBase.dispose();
+		this.fractalImage=bI;
+		this.fBase = fB;
+		//System.out.println(this.fBase.bufferedImage.equals(this.fractalImage));
+		this.fBase.setVisible(true);
+	}
+
+	private void doUseRangeExtimates(boolean useRangeE) {
 		this.useRangeEstimation = useRangeE;
 
 		if (this.useRangeEstimation) {
