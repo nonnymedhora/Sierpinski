@@ -1026,6 +1026,7 @@ class SierpinskiComboPanel extends JPanel {
 //	Image[] fbImages = new Image[10];
 	//private JPanel fbImagesPanel = new JPanel(new GridLayout(1,0),true);
 	private JButton buShowFbImages = new JButton("Show all Images");
+	private JButton buShowFbInfo = new JButton("Show Info");
 	
 	private JCheckBox useRangeCb = new JCheckBox("Use Range Estimates: ",false);
 	private boolean useRangeEstimation = false;
@@ -1269,8 +1270,9 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.buClose.setEnabled(false);
 		this.add(this.buClose);
-		
+
 		this.add(this.buShowFbImages);
+		this.add(this.buShowFbInfo);
 		
 		this.add(this.useRangeCb);
 
@@ -10312,6 +10314,8 @@ System.out.println("space2DIs __ "+space2D);*/
 		
 		outputfile = new File(imageFilePath);
 		
+		fractalImage = (this.fBase.isRefocusDraw()&&!this.fBase.isGenerated())?this.fBase.getBufferedImage():fractalImage;
+		
 	    try {
 			if (saveCommand.equals("saveWithData") || saveCommand.equals("save2FileWithData")) {
 				final BufferedImage joinedFractalDataImage = FractalBase.joinBufferedImages(fractalImage, dataInfoImg);
@@ -10449,9 +10453,11 @@ System.out.println("space2DIs __ "+space2D);*/
 				baseInfo += "Row-Column Mix-Type: " + this.polyType + eol;
 				baseInfo += "Center: P(x,y): (" + this.polyXC + ", " + this.polyYC + ")" + eol;
 
-				if(this.useRangeEstimation) {
+				/*if(this.useRangeEstimation) {
 					baseInfo += "Range: (xmin,ymin) to (xmax, ymax) is ["+ this.xMinTf.getText() + ", "+ this.yMinTf.getText() + "] to [" + this.xMaxTf.getText() + ", " + this.yMaxTf.getText() +"]" + eol;
-				}
+				}*/
+				baseInfo += "Range: (xmin,ymin) to (xmax, ymax) is ["+ this.fBase.x_min + ", "+ this.fBase.y_min + "] to [" + this.fBase.x_max + ", " + this.fBase.y_max +"]" + eol;
+				
 				
 				baseInfo += "Maximum Iterations: " + this.polyMaxIter + eol;
 				baseInfo += " Scaled Size: " + this.polyScaleSize + "}" + eol + eol;
@@ -10475,9 +10481,10 @@ System.out.println("space2DIs __ "+space2D);*/
 				baseInfo += "Rotation: " + this.getRotation() + eol;
 				baseInfo += "Center: P(x,y): (" + this.mandXC + ", " + this.mandYC + ")" + eol;
 				
-				if(this.useRangeEstimation) {
+				/*if(this.useRangeEstimation) {
 					baseInfo += "Range: (xmin,ymin) to (xmax, ymax) is ["+ this.xMinTf.getText() + ", "+ this.yMinTf.getText() + "] to [" + this.xMaxTf.getText() + ", " + this.yMaxTf.getText() +"]" + eol;
-				}
+				}*/
+				baseInfo += "Range: (xmin,ymin) to (xmax, ymax) is ["+ this.fBase.x_min + ", "+ this.fBase.y_min + "] to [" + this.fBase.x_max + ", " + this.fBase.y_max +"]" + eol;
 				
 				baseInfo += "Maximum Iterations: " + this.mandMaxIter + eol;
 				baseInfo += " Scaled Size: " + this.mandScaleSize + "}" + eol + eol;
@@ -10500,9 +10507,10 @@ System.out.println("space2DIs __ "+space2D);*/
 				baseInfo += "Rotation: " + this.getRotation() + eol;
 				baseInfo += "Center: P(x,y): (" + this.juliaXC + ", " + this.juliaYC + ")" + eol;
 				
-				if(this.useRangeEstimation) {
+				/*if(this.useRangeEstimation) {
 					baseInfo += "Range: (xmin,ymin) to (xmax, ymax) is ["+ this.xMinTf.getText() + ", "+ this.yMinTf.getText() + "] to [" + this.xMaxTf.getText() + ", " + this.yMaxTf.getText() +"]" + eol;
-				}
+				}*/
+				baseInfo += "Range: (xmin,ymin) to (xmax, ymax) is ["+ this.fBase.x_min + ", "+ this.fBase.y_min + "] to [" + this.fBase.x_max + ", " + this.fBase.y_max +"]" + eol;
 				
 				baseInfo += "Maximum Iterations: " + this.juliaMaxIter + eol;
 				baseInfo += " Scaled Size: " + this.juliaScaleSize + "}" + eol + eol;
@@ -10557,9 +10565,10 @@ System.out.println("space2DIs __ "+space2D);*/
 				baseInfo += "Rotation: " + this.getRotation() + eol;
 				baseInfo += "Center: P(x,y): (" + this.diyMandXC + ", " + this.diyMandYC + ")" + eol;
 
-				if(this.useRangeEstimation) {
+				/*if(this.useRangeEstimation) {
 					baseInfo += "Range: (xmin,ymin) to (xmax, ymax) is ["+ this.xMinTf.getText() + ", "+ this.yMinTf.getText() + "] to [" + this.xMaxTf.getText() + ", " + this.yMaxTf.getText() +"]" + eol;
-				}
+				}*/
+				baseInfo += "Range: (xmin,ymin) to (xmax, ymax) is ["+ this.fBase.x_min + ", "+ this.fBase.y_min + "] to [" + this.fBase.x_max + ", " + this.fBase.y_max +"]" + eol;
 				
 				baseInfo += "Maximum Iterations: " + this.diyMandMaxIter + eol;
 				baseInfo += " Scaled Size: " + this.diyMandScaleSize + "}" + eol + eol;
@@ -10601,9 +10610,10 @@ System.out.println("space2DIs __ "+space2D);*/
 				baseInfo += "Rotation: " + this.getRotation() + eol;
 				baseInfo += "Center: P(x,y): (" + this.diyJuliaXC + ", " + this.diyJuliaYC + ")" + eol;
 
-				if(this.useRangeEstimation) {
+				/*if(this.useRangeEstimation) {
 					baseInfo += "Range: (xmin,ymin) to (xmax, ymax) is ["+ this.xMinTf.getText() + ", "+ this.yMinTf.getText() + "] to [" + this.xMaxTf.getText() + ", " + this.yMaxTf.getText() +"]" + eol;
-				}
+				}*/
+				baseInfo += "Range: (xmin,ymin) to (xmax, ymax) is ["+ this.fBase.x_min + ", "+ this.fBase.y_min + "] to [" + this.fBase.x_max + ", " + this.fBase.y_max +"]" + eol;
 				
 				baseInfo += "Maximum Iterations: " + this.diyJuliaMaxIter + eol;
 				baseInfo += " Scaled Size: " + this.diyJuliaScaleSize + "}" + eol + eol;
@@ -11177,6 +11187,13 @@ System.out.println("space2DIs __ "+space2D);*/
 			}
 		});
 		
+		this.buShowFbInfo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showFBInfo();
+			}
+		});
+		
 		this.useRangeCb.setActionCommand("UseRange");
 		this.useRangeCb.addItemListener(new ItemListener() {
             @Override
@@ -11319,6 +11336,13 @@ System.out.println("space2DIs __ "+space2D);*/
 			this.xMaxTf.setEnabled(false);
 			this.yMaxTf.setEnabled(false);
 		}
+	}
+	
+	private void showFBInfo() {
+		this.formulaArea.setText("");		
+		this.formulaArea.setEditable(true);		
+		this.formulaArea.setText(this.fBase.getFractalDtlInfo());
+		this.formulaArea.setVisible(true);
 	}
 
 	private void showFBImages() {
