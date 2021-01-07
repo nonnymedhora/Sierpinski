@@ -3624,9 +3624,11 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	public void setUseJuliaExplorer(boolean useJExplorer) {
 		this.useJuliaExplorer = useJExplorer;
 		
-		this.add(locPtTextField, java.awt.BorderLayout.SOUTH);
-		this.addMouseListener(this);
-		this.addMouseMotionListener(this);
+		if (useJExplorer) {
+			this.add(locPtTextField, java.awt.BorderLayout.SOUTH);
+			this.addMouseListener(this);
+			this.addMouseMotionListener(this);
+		}
 	}
 	
 	public boolean isUseMandelbrotExplorer() {
@@ -3637,9 +3639,11 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	public void setUseMandelbrotExplorer(boolean useMExplorer) {
 		this.useMandelbrotExplorer = useMExplorer;
 		
-		this.add(locPtTextField, java.awt.BorderLayout.SOUTH);
-		this.addMouseListener(this);
-		this.addMouseMotionListener(this);
+		if (useMExplorer) {
+			this.add(locPtTextField, java.awt.BorderLayout.SOUTH);
+			this.addMouseListener(this);
+			this.addMouseMotionListener(this);
+		}
 	}
 
 	public  double x_min;
