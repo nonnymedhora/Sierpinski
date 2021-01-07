@@ -4194,6 +4194,8 @@ class SierpinskiComboPanel extends JPanel {
 					return;
 				}
 			}
+			
+			this.setFractalBase(mands[i]);
 
 			this.setFractalImage(mands[i].getBufferedImage());
 
@@ -4747,6 +4749,8 @@ class SierpinskiComboPanel extends JPanel {
 					return;
 				}
 			}
+			
+			this.setFractalBase(polys[i]);
 
 			this.setFractalImage(polys[i].getBufferedImage());
 
@@ -5324,6 +5328,8 @@ class SierpinskiComboPanel extends JPanel {
 					return;
 				}
 			}
+			
+			this.setFractalBase(julies[i]);
 
 			this.setFractalImage(julies[i].getBufferedImage());
 
