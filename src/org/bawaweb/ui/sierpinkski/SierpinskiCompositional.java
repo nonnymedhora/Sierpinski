@@ -1209,7 +1209,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(this.colorChoiceCombo);
 		this.add(this.showAllColorsCb);
 //		this.add(this.buColorChooser);
-		this.add(this.smoothenColorCb);
+//dec15		this.add(this.smoothenColorCb);
 		
 		this.add(this.colorSampleMixStartValsLabel);
 		this.colorSampleMixStartValsLabel.setVisible(false);

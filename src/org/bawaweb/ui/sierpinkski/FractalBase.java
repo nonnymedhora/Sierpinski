@@ -50,7 +50,7 @@ import javax.swing.JTextField;
 public abstract class FractalBase extends JFrame implements Runnable, MouseMotionListener, MouseListener {
 	private static final long serialVersionUID = 123456543L;
 	
-	private boolean smoothen = true;
+	private boolean smoothen = false;
 	//for computecolors
 	//	for divisors
 	public static final int[] FRST_SIX_PRIMES 	= new int[] { 2, 3, 5, 7, 11, 13 };
@@ -1024,11 +1024,11 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		final int[] colStart = this.getRgbStartVals();			//	pow 2s till end-200
 		Color color = null;
 
-		boolean toSmoothen = this.isSmoothen();
-		if (toSmoothen) {
-			colorRGB = this.smoothenRGB(row,col,colorRGB);
-//			return new Color(colorRGB);
-		}
+//dec15		boolean toSmoothen = this.isSmoothen();
+//		if (toSmoothen) {
+//			colorRGB = this.smoothenRGB(row,col,colorRGB);
+////			return new Color(colorRGB);
+//dec15		}
 
 		if (this.colorChoice.equals(Color_Palette_Gradient6)) {
 			double colG6 = colorRGB * 6.0;
