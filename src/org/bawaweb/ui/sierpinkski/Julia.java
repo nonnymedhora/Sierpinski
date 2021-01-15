@@ -502,7 +502,7 @@ public class Julia extends FractalBase {
 				int colorRGB;
 				Color color = null;
 					
-				if (! this.colorChoice.equals(Color_Palette_Blowout)) {
+//				if (! this.colorChoice.equals(Color_Palette_Blowout)) {
 					if (diff) {
 						colorRGB = this.julia(z0, max, bd);
 					} else {
@@ -512,18 +512,18 @@ public class Julia extends FractalBase {
 					/*this.pixel[npixel++] = colorRGB;*/
 					
 					setPixel(row, n - 1 - col, color.getRGB());
-				} else {	//colorChoice=="ColorBlowout"
-					if (diff) {
-						colorRGB = this.julia(z0, max, bd);
-					} else {
-						colorRGB = max - this.julia(z0, max, bd);
-					}
-
-					colorRGB = this.time2Color(colorRGB);
-					/*this.pixel[npixel++] = colorRGB;*/
-
-					setPixel(row, n - 1 - col, colorRGB);
-				}
+//				} else {	//colorChoice=="ColorBlowout"
+//					if (diff) {
+//						colorRGB = this.julia(z0, max, bd);
+//					} else {
+//						colorRGB = max - this.julia(z0, max, bd);
+//					}
+//
+//					colorRGB = this.time2Color(colorRGB);
+//					/*this.pixel[npixel++] = colorRGB;*/
+//
+//					setPixel(row, n - 1 - col, colorRGB);
+//				}
 				
 				if (this.isSavePixelInfo2File()) {
 					this.appendPixelInfo2File(row, n - 1 - col, color.getRGB());

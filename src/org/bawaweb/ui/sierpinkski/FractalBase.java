@@ -1024,11 +1024,11 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		final int[] colStart = this.getRgbStartVals();			//	pow 2s till end-200
 		Color color = null;
 
-//		boolean toSmoothen = this.isSmoothen();
-//		if (toSmoothen) {
-//			colorRGB = this.smoothenRGB(row,col,colorRGB);
+		boolean toSmoothen = this.isSmoothen();
+		if (toSmoothen) {
+			colorRGB = this.smoothenRGB(row,col,colorRGB);
 //			return new Color(colorRGB);
-//		}
+		}
 
 		if (this.colorChoice.equals(Color_Palette_Gradient6)) {
 			double colG6 = colorRGB * 6.0;
@@ -1048,7 +1048,7 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		}
 		
 		if(this.colorChoice.equals(Color_Palette_Blowout)){
-			
+			return new Color(this.time2Color(colorRGB));
 		}
 		
 		for(int iter = 0; iter < divs.length; iter++) {
@@ -1120,6 +1120,8 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	}
 
 	private int smoothenRGB(int x, int y, int colorRGB) {
+		//https://github.com/cslarsen/mandelbrot-js
+		//https://stackoverflow.com/questions/369438/smooth-spectrum-for-mandelbrot-set-rendering
 		//nsmooth := n + 1 - Math.log(Math.log(zn.abs()))/Math.log(2)
 		//x-row,y-col
 		int smoothened = 0;
@@ -1130,19 +1132,41 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		if (isMandelbrot) {
 			smoothened = (int) (colorRGB + 1 - Math.log(Math.log(Math.abs(colorRGB))) / Math.log(2));
 		} else if(isJulia) {
-			ComplexNumber z = new ComplexNumber(x, y);
-			Julia julie = (Julia) this;
-			ComplexNumber c = julie.getComplex();//computeComplexConstant();
-			double smoothColor = Math.exp(-z.abs());
-
-			for (int i = 0; i < maxIter && z.abs() < 30; i++) {
-				z = julie.processJuliaZValue(z, c);
-				smoothColor += Math.exp(-z.abs());
-			}
-			smoothened = Color.HSBtoRGB((float) (0.95f + 10 * smoothColor/maxIter),0.6f,1.0f);
+			
+			smoothened = colorRGB/maxIter;
+			
+//			ComplexNumber z = new ComplexNumber(x, y);
+//			Julia julie = (Julia) this;
+//			ComplexNumber c = julie.getComplex();//computeComplexConstant();
+//			double smoothColor = Math.exp(-z.abs());
+//
+//			for (int i = 0; i < maxIter && z.abs() < 30; i++) {
+//				z = julie.processJuliaZValue(z, c);
+//				smoothColor += Math.exp(-z.abs());
+//			}
+//			smoothened = Color.HSBtoRGB((float) (0.95f + 10 * smoothColor/maxIter),0.6f,1.0f);
 		}
 		
 		return smoothened;
+	}
+	
+	// alex russel : http://stackoverflow.com/users/2146829/alex-russell
+	private Color mapColor(int i, double r, double c) {
+		double di = (double) i;
+		double zn;
+		double hue;
+
+		zn = Math.sqrt(r + c);
+        // 2 is escape radius
+        hue = di + 1.0 - Math.log(Math.log(Math.abs(zn))) / Math.log(2.0);  
+        hue = 0.95 + 20.0 * hue; // adjust to make it prettier
+        // the hsv function expects values from 0 to 360
+		while (hue > 360.0)
+			hue -= 360.0;
+		while (hue < 0.0)
+			hue += 360.0;
+
+		return new Color((float)hue, (float)0.8*1.0f, 1.0f);
 	}
 
 

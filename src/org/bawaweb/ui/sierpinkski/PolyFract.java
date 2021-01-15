@@ -352,7 +352,7 @@ System.out.println("type---->"+(type));	*/
 				int colorRGB;
 				Color color = null;
 
-				if (!this.colorChoice.equals(Color_Palette_Blowout)) {
+//				if (!this.colorChoice.equals(Color_Palette_Blowout)) {
 					if (diff) {
 						colorRGB = polyFract(zx, zy, max, pow, this.compConst, bd);
 					} else {
@@ -360,18 +360,18 @@ System.out.println("type---->"+(type));	*/
 					}
 					color = this.getPixelDisplayColor(row, col, colorRGB, diff);
 					setPixel(row, n - 1 - col, color.getRGB());
-				} else {// colorChoice=="ColorBlowout"
-					if (diff) {
-						colorRGB = polyFract(zx, zy, max, pow, this.compConst, bd);
-					} else {
-						colorRGB = max - polyFract(zx, zy, max, pow, this.compConst, bd);
-					}
-
-					colorRGB = this.time2Color(colorRGB);
-					//this.pixel[npixel++] = colorRGB;
-
-					setPixel(row, n - 1 - col, colorRGB);
-				}
+//				} else {// colorChoice=="ColorBlowout"
+//					if (diff) {
+//						colorRGB = polyFract(zx, zy, max, pow, this.compConst, bd);
+//					} else {
+//						colorRGB = max - polyFract(zx, zy, max, pow, this.compConst, bd);
+//					}
+//
+//					colorRGB = this.time2Color(colorRGB);
+//					//this.pixel[npixel++] = colorRGB;
+//
+//					setPixel(row, n - 1 - col, colorRGB);
+//				}
 				if (this.isSavePixelInfo2File()) {
 					this.appendPixelInfo2File(row, n - 1 - col, color.getRGB());
 				}
