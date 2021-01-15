@@ -107,6 +107,10 @@ class SierpinskiComboPanel extends JPanel {
 	private static final String[] FUNCTION_OPTIONS 		= {"None","sine","cosine","tan","cosec","sec","cot","sinh","cosh","tanh","arcsine","arccosine","arctan","arcsinh","arccosh","arctanh","reciprocal", "reciprocalSquare","square","cube","exponent(e)", "root",/*"cube-root",*/ "log(e)"};
 	private static final String[] PIX_TRANSFORM_OPTIONS = {"none", "absolute", "absoluteSquare","reciprocal", "reciprocalSquare", "square", "cube","root", "exponent", "log(10)", "log(e)", "sine", "cosine", "tan", "cosec", "sec", "cot", "sinh", "cosh", "tanh", "arcsine", "arccosine", "arctangent", "arcsinh", "arccosh", "arctanh"};
 	
+	private boolean smoothenColor = false;
+	private final JCheckBox smoothenColorCb = new JCheckBox("SmoothenColor", false);
+	
+	
 	private static final Integer[] EXPONENTS 			= new Integer[] { -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	private static final Integer[] MAX_ITERATIONS 		= new Integer[] { 10, 50, 100, 200, 225, 255, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 2000, 3000, 5000, 7500, 10000 };
 	private static final Integer[] AREA_SIZES 			= new Integer[] { 10, 50, 100, 200, 225, 255, 500, 512, 599, 800, Integer.MAX_VALUE };
@@ -1205,6 +1209,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(this.colorChoiceCombo);
 		this.add(this.showAllColorsCb);
 //		this.add(this.buColorChooser);
+		this.add(this.smoothenColorCb);
 		
 		this.add(this.colorSampleMixStartValsLabel);
 		this.colorSampleMixStartValsLabel.setVisible(false);
@@ -9281,6 +9286,8 @@ System.out.println("space2DIs __ "+space2D);*/
 		boolean useSample = this.colorChoice.equals("SampleMix");
 		boolean useColorBlowout = this.colorChoice.equals("ColorBlowout");
 		
+		boolean doSmoothen = this.smoothenColor;
+		
 		String pxConstOp = this.pxConstOprnChoice;
 		String func = this.constFuncChoice;
 		String pxFunc = !this.diyJApplyFormulaZ ? this.pxFuncChoice : this.diyJApplyFormulaTf.getText().trim();
@@ -9363,7 +9370,7 @@ System.out.println("space2DIs __ "+space2D);*/
 			this.formulaArea.append("<br/>Constant = " + diyJuliaRealVal + " + (" + diyJuliaImgVal + " * i)</font>");
 			ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJuliaRealVal, diyJuliaImgVal);
 		}
-		
+		ff.setSmoothen(doSmoothen);
 
 		if (doExplore) {
 			ff.setUseJuliaExplorer(true);
@@ -9542,6 +9549,8 @@ System.out.println("space2DIs __ "+space2D);*/
 		boolean useSample = this.colorChoice.equals("SampleMix");
 		boolean useColorBlowout = this.colorChoice.equals("ColorBlowout");
 
+		boolean doSmoothen = this.smoothenColor;
+
 		String pxConstOp = this.pxConstOprnChoice;
 		String func = this.constFuncChoice;
 		String pxFunc = !this.diyMandApplyFormulaZ ? this.pxFuncChoice : this.diyMandApplyFormulaTf.getText().trim();
@@ -9597,6 +9606,8 @@ System.out.println("space2DIs __ "+space2D);*/
 				return null;
 			}
 		}
+
+		ff.setSmoothen(doSmoothen);
 		
 		if (doExplore) {
 			ff.setUseMandelbrotExplorer(true);
@@ -9684,6 +9695,7 @@ System.out.println("space2DIs __ "+space2D);*/
 
 	private FractalBase startJulia() {
 		boolean doExplore = this.juliaExplore;
+		boolean doSmoothen = this.smoothenColor;
 		
 		int pow = this.getPower();
 		double con = this.getComplexConst();
@@ -9728,7 +9740,7 @@ System.out.println("space2DIs __ "+space2D);*/
 		} else {
 			ff = new Julia(pow, comp, jBound, jUseD);
 		}
-		
+		ff.setSmoothen(doSmoothen);
 
 		if (doExplore) {
 			ff.setUseJuliaExplorer(true);
@@ -9816,6 +9828,7 @@ System.out.println("space2DIs __ "+space2D);*/
 
 	private FractalBase startMandelbrot() {
 		boolean doExplore = this.mandExplore;
+		boolean doSmoothen = this.smoothenColor;
 		
 		int mag = this.getMagnification();
 		int exp = this.getExponent();
@@ -9879,6 +9892,8 @@ System.out.println("space2DIs __ "+space2D);*/
 
 		ff = new Mandelbrot(mag, exp, mUseD, mBound, true);
 
+		ff.setSmoothen(doSmoothen);
+		
 		if (isBuddha) {
 			Mandelbrot m = (Mandelbrot) ff;
 			m.setBuddha(isBuddha);
@@ -9954,6 +9969,7 @@ System.out.println("space2DIs __ "+space2D);*/
 		boolean useSample = this.colorChoice.equals("sampleMix");
 		boolean useColorBlowout = this.colorChoice.equals("ColorBlowout");
 
+		boolean doSmoothen = this.smoothenColor;
 		/*String pxXTrans = this.pixXTransform;
 		String pxYTrans = this.pixYTransform;
 		String pxIntraOp = this.pixIntraXYOperation;*/
@@ -9984,6 +10000,8 @@ System.out.println("space2DIs __ "+space2D);*/
 				return null;
 			}
 		}
+
+		ff.setSmoothen(doSmoothen);
 
 		/*ff.setUseLyapunovExponent(this.polyUseLyapunovExponent)*/;
 
@@ -10948,6 +10966,18 @@ System.out.println("space2DIs __ "+space2D);*/
 					colorChoiceCombo.setModel(new DefaultComboBoxModel<String>(COLOR_OPTIONS_ALL));
 				} else if(event.getStateChange()==ItemEvent.DESELECTED){
 					colorChoiceCombo.setModel(new DefaultComboBoxModel<String>(COLOR_OPTIONS));
+				}
+			}
+        });
+		
+		this.smoothenColorCb.setActionCommand("SmoothenColors");
+		this.smoothenColorCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetColorSmoothening(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetColorSmoothening(false);
 				}
 			}
         });
@@ -14730,6 +14760,10 @@ private void setupPolyGeneratorListeners() {
 			this.applyZSq = false;
 			this.applyClassicJulia = false;
 		}
+	}
+	
+	private void doSetColorSmoothening(boolean smoothen) {
+		this.smoothenColor = smoothen;
 	}
 	
 	private void doSelectFractalColorChoiceCommand(String choice) {

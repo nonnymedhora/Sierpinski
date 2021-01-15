@@ -50,7 +50,7 @@ import javax.swing.JTextField;
 public abstract class FractalBase extends JFrame implements Runnable, MouseMotionListener, MouseListener {
 	private static final long serialVersionUID = 123456543L;
 	
-
+	private boolean smoothen = true;
 	//for computecolors
 	//	for divisors
 	public static final int[] FRST_SIX_PRIMES 	= new int[] { 2, 3, 5, 7, 11, 13 };
@@ -1019,11 +1019,17 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		}	
 	}
 	
-	protected Color getPixelDisplayColor(final int row, final  int col, final int colorRGB, final boolean useD) {
+	protected Color getPixelDisplayColor(final int row, final  int col, /*final*/ int colorRGB, final boolean useD) {
 		final int[] divs = this.getRgbDivisors();				//	1st 6 primes
 		final int[] colStart = this.getRgbStartVals();			//	pow 2s till end-200
 		Color color = null;
-		
+
+//		boolean toSmoothen = this.isSmoothen();
+//		if (toSmoothen) {
+//			colorRGB = this.smoothenRGB(row,col,colorRGB);
+//			return new Color(colorRGB);
+//		}
+
 		if (this.colorChoice.equals(Color_Palette_Gradient6)) {
 			double colG6 = colorRGB * 6.0;
 			int hI = colorRGB;
@@ -1112,6 +1118,33 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		
 		return color;
 	}
+
+	private int smoothenRGB(int x, int y, int colorRGB) {
+		//nsmooth := n + 1 - Math.log(Math.log(zn.abs()))/Math.log(2)
+		//x-row,y-col
+		int smoothened = 0;
+		
+		boolean isMandelbrot = this.getClass().getName().contains("Mandelbrot");
+		boolean isJulia = this.getClass().getName().contains("Julia");
+		
+		if (isMandelbrot) {
+			smoothened = (int) (colorRGB + 1 - Math.log(Math.log(Math.abs(colorRGB))) / Math.log(2));
+		} else if(isJulia) {
+			ComplexNumber z = new ComplexNumber(x, y);
+			Julia julie = (Julia) this;
+			ComplexNumber c = julie.getComplex();//computeComplexConstant();
+			double smoothColor = Math.exp(-z.abs());
+
+			for (int i = 0; i < maxIter && z.abs() < 30; i++) {
+				z = julie.processJuliaZValue(z, c);
+				smoothColor += Math.exp(-z.abs());
+			}
+			smoothened = Color.HSBtoRGB((float) (0.95f + 10 * smoothColor/maxIter),0.6f,1.0f);
+		}
+		
+		return smoothened;
+	}
+
 
 	int[] getRgbStartVals() {
 		return this.rgbStartVals;// POW2_4_200;
@@ -4050,6 +4083,14 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 
 	public void setGenerated(boolean gen) {
 		this.generated = gen;
+	}
+
+	public boolean isSmoothen() {
+		return this.smoothen;
+	}
+	
+	public void setSmoothen(boolean toSmoothen) {
+		this.smoothen = toSmoothen;
 	}
 	
 }

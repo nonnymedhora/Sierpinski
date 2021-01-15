@@ -553,17 +553,7 @@ public class Julia extends FractalBase {
 				return t;
 			}
 			
-			if (this.pxConstOperation.equals("Plus")) {
-				z = z.power(this.power).plus(complexConstant);
-			} else if (this.pxConstOperation.equals("Minus")) {
-				z = z.power(this.power).minus(complexConstant);
-			} else if (this.pxConstOperation.equals("Multiply")) {
-				z = z.power(this.power).times(complexConstant);
-			} else if (this.pxConstOperation.equals("Divide")) {
-				z = z.power(this.power).divides(complexConstant);
-			} else if (this.pxConstOperation.equals("Power")) {
-				z = z.power(this.power).power(complexConstant);
-			}
+			z = this.processJuliaZValue(z, complexConstant);
 		}
 			
 		/*	============	Field lines - Fatou Domain	======================
@@ -584,6 +574,22 @@ public class Julia extends FractalBase {
 		
 		return max;
 	}
+
+
+	/*private*/ ComplexNumber processJuliaZValue(ComplexNumber zz, ComplexNumber aComplexConstant) {
+		if (this.pxConstOperation.equals("Plus")) {
+			zz = zz.power(this.power).plus(aComplexConstant);
+		} else if (this.pxConstOperation.equals("Minus")) {
+			zz = zz.power(this.power).minus(aComplexConstant);
+		} else if (this.pxConstOperation.equals("Multiply")) {
+			zz = zz.power(this.power).times(aComplexConstant);
+		} else if (this.pxConstOperation.equals("Divide")) {
+			zz = zz.power(this.power).divides(aComplexConstant);
+		} else if (this.pxConstOperation.equals("Power")) {
+			zz = zz.power(this.power).power(aComplexConstant);
+		}
+		return zz;
+	}
 	
 	
 	/*private int julia(ComplexNumber z0, int maxIterations, int pwr, ComplexNumber constant, double bd) {
@@ -596,7 +602,7 @@ public class Julia extends FractalBase {
 		return maxIterations;
 	}*/
 
-	private ComplexNumber computeComplexConstant() {
+	/*private*/ ComplexNumber computeComplexConstant() {
 		ComplexNumber cConst = null;
 		
 		if (isComplexNumConst || this.complex == null) {
