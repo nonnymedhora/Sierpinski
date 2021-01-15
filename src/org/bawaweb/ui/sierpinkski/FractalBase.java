@@ -66,8 +66,11 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	public static final int[] EQUAL_PARTS_50 	= new int[] { 10, 50, 100, 150, 200, 250 };
 	public static final int[] EQUAL_PARTS_25 	= new int[] { 25, 65, 105, 145, 185, 225 };
 
-	private int[] rgbDivisors = FRST_SIX_PRIMES;
-	private int[] rgbStartVals = POW2_4_200;
+	public static final int[] FRST_FOUR_PRIMES = new int[] { 2, 3, 5, 7 };
+	public static final int[] POW2_4_32 		= new int[] { 4, 8, 16,32 };
+	
+	private int[] rgbDivisors = FRST_FOUR_PRIMES; //FRST_SIX_PRIMES;
+	private int[] rgbStartVals = POW2_4_32; //POW2_4_200;
 	//endsfor computecolors
 	
 

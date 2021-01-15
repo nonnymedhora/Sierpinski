@@ -96,10 +96,10 @@ class SierpinskiComboPanel extends JPanel {
 	private static final String[] OPERATIONS = getOperations();
 
 	private static final Double[] 	BOUNDARIES = getBoundaryOptions();
-	private static final String[] 	COLOR_SAMPLE_STARTVAL_OPTIONS 	= new String[] {"POW2_4_200", "POW2_2_128", "POW2_2_F4", "POW3_3_243", "EQUAL_PARTS_40", "EQUAL_PARTS_50", "EQUAL_PARTS_25"};
-	private static final String[] 	COLOR_SAMPLE_DIV_OPTIONS 		= new String[] {"FRST_SIX_PRIMES", "FRST_SIX_ODDS", "FRST_SIX_FIBS"};
-	private static final int[][] 	COLOR_SAMPLE_STARTVAL_ARRAYS 	= new int[][] {FractalBase.POW2_4_200, FractalBase.POW2_2_128, FractalBase.POW2_2_F4, FractalBase.POW3_3_243, FractalBase.EQUAL_PARTS_40, FractalBase.EQUAL_PARTS_50, FractalBase.EQUAL_PARTS_25};
-	private static final int[][] 	COLOR_SAMPLE_DIV_ARRAYS 		= new int[][] {FractalBase.FRST_SIX_PRIMES, FractalBase.FRST_SIX_ODDS, FractalBase.FRST_SIX_FIBS};
+	private static final String[] 	COLOR_SAMPLE_STARTVAL_OPTIONS 	= new String[] {"POW2_4_32", "POW2_4_200", "POW2_2_128", "POW2_2_F4", "POW3_3_243", "EQUAL_PARTS_40", "EQUAL_PARTS_50", "EQUAL_PARTS_25"};
+	private static final String[] 	COLOR_SAMPLE_DIV_OPTIONS 		= new String[] {"FRST_FOUR_PRIMES", "FRST_SIX_PRIMES", "FRST_SIX_ODDS", "FRST_SIX_FIBS"};
+	private static final int[][] 	COLOR_SAMPLE_STARTVAL_ARRAYS 	= new int[][] {FractalBase.POW2_4_32, FractalBase.POW2_4_200, FractalBase.POW2_2_128, FractalBase.POW2_2_F4, FractalBase.POW3_3_243, FractalBase.EQUAL_PARTS_40, FractalBase.EQUAL_PARTS_50, FractalBase.EQUAL_PARTS_25};
+	private static final int[][] 	COLOR_SAMPLE_DIV_ARRAYS 		= new int[][] {FractalBase.FRST_FOUR_PRIMES, FractalBase.FRST_SIX_PRIMES, FractalBase.FRST_SIX_ODDS, FractalBase.FRST_SIX_FIBS};
 	
 	private static final String[] COLOR_OPTIONS 		= new String[] { "ColorPalette", "ComputeColor", "ColorGradient6", "ColorBlowout" };
 	private static final String[] COLOR_OPTIONS_ALL 	= new String[]{"BlackWhite","ColorPalette","ComputeColor","ColorGradient6","ColorBlowout"/*,"Random"*/,"SampleMix"};
