@@ -5,6 +5,8 @@ package org.bawaweb.ui.sierpinkski;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Properties;
 import javax.swing.JFrame;
@@ -370,7 +372,11 @@ public class Julia extends FractalBase {
 		/*this.npixel = 0;
 		this.pixel = new int[WIDTH*HEIGHT];*/
 		createJulia(g, this.useDiff);
+		
+		if(isCaptureOrbit())
+			printOrbitMap();
 	}
+
 
 	private void createJulia(Graphics2D g, boolean diff) {		
 		double xc = getxC();//0;
@@ -547,14 +553,26 @@ public class Julia extends FractalBase {
 		if (complexConstant.isNaN()) {
 			return 0;		//	for now
 		}
+		
+		List<Double> zList = null;
+		if (isCaptureOrbit()) {
+			zList = new ArrayList<Double>();
+		}
 
 		for (int t = 0; t < max; t++) {
+			if (isCaptureOrbit()) {
+				if (zList.size() < 20)
+					zList.add(z.abs());
+			}
 			if (z.abs() > bd) {
 				return t;
 			}
 			
 			z = this.processJuliaZValue(z, complexConstant);
 		}
+		
+		if(isCaptureOrbit())
+			orbitMap.put(zz,zList);
 			
 		/*	============	Field lines - Fatou Domain	======================
 		 //((1-z^3)/6)/(z-z^2/2)^2)+c}
@@ -830,7 +848,8 @@ public class Julia extends FractalBase {
 				final FractalBase frame = new Julia(2, new ComplexNumber(0.12,0.34) );//new ComplexNumber(-0.4,0.59));//new Julia(2,"C3",true);//
 				frame.setColorChoice/*("BlackWhite");/*/("ComputeColor");
 				frame.setScaleSize(5);
-				frame.setMaxIter(1000);
+				frame.setMaxIter(50);//1000
+				frame.setCaptureOrbit(true);
 				/*frame.setUseColorPalette(false);
 				frame.setUseBlackWhite(true);*/
 //				frame.setUseFuncConst("Log");
@@ -838,7 +857,7 @@ public class Julia extends FractalBase {
 				frame.setComplex(frame.c1);*/
 //				frame.depth = 5;
 				frame.setTitle(frame.getFractalShapeTitle());
-				frame.setSize(FractalBase.WIDTH-300, FractalBase.HEIGHT-300);
+				frame.setSize(300,300);//(FractalBase.WIDTH-300, FractalBase.HEIGHT-300);
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setResizable(false);
 				frame.setVisible(true);

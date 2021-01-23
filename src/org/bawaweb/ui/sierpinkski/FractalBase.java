@@ -29,9 +29,12 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
+import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -46,6 +49,9 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	private static final long serialVersionUID = 123456543L;
 	
 	private boolean smoothen = false;
+	
+	private boolean captureOrbit = false;
+	protected LinkedHashMap<ComplexNumber, List<Double>> orbitMap = new LinkedHashMap<ComplexNumber,List<Double>>();
 	//for computecolors
 	//	for divisors
 	public static final int[] FRST_SIX_PRIMES 	= new int[] { 2, 3, 5, 7, 11, 13 };
@@ -287,6 +293,10 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		if (p.getProperty("applyCustomFormula") != null) {
 			this.setApplyCustomFormula(Boolean.parseBoolean(p.getProperty("applyCustomFormula").replaceAll(WHITESPACE,EMPTY)));
 		}
+		
+		if (p.getProperty("smoothen") != null)
+			this.setSmoothen(Boolean.parseBoolean(p.getProperty("smoothen").replaceAll(WHITESPACE,EMPTY)));
+	
 		
 		
 	}
@@ -1026,11 +1036,11 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		
 		
 
-//dec15		boolean toSmoothen = this.isSmoothen();
-//		if (toSmoothen) {
-//			colorRGB = this.smoothenRGB(row,col,colorRGB);
-////			return new Color(colorRGB);
-//dec15		}
+		boolean toSmoothen = this.isSmoothen();
+		if (toSmoothen) {
+			colorRGB = this.smoothenRGB(row,col,colorRGB);
+//			return new Color(colorRGB);
+		}
 
 		if (this.colorChoice.equals(Color_Palette_Gradient6)) {
 			double colG6 = colorRGB * 6.0;
@@ -1136,10 +1146,12 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		boolean isJulia = this.getClass().getName().contains("Julia");
 		
 		if (isMandelbrot) {
-			smoothened = (int) (colorRGB + 1 - Math.log(Math.log(Math.abs(colorRGB))) / Math.log(2));
-		} else if(isJulia) {
-			
-			smoothened = colorRGB/maxIter;
+			final double log2 = Math.log(2);
+			smoothened = (int) (colorRGB + 1 - Math.log(Math.log(Math.abs(colorRGB))) / log2);
+		} else if(isJulia) {//n+1-log(log2(abs(z)))		log2N=log10n/log102
+			return (int) (colorRGB + 1 - Math.log10(Math.log10(Math.abs(new ComplexNumber(x,y).abs()))/Math.log10(2)));
+			//return 0.5 + 0.5 * Math.sin(value * frequency);
+			//smoothened = (int) (0.5 + 0.5 * Math.sin(colorRGB/maxIter));
 			
 //			ComplexNumber z = new ComplexNumber(x, y);
 //			Julia julie = (Julia) this;
@@ -4426,4 +4438,44 @@ vga=[0,43520,11141120,11184640,2852126720,2852170240,2857697280,2863311360,14316
 	public void setSmoothen(boolean toSmoothen) {
 		this.smoothen = toSmoothen;
 	}
+
+
+	public boolean isCaptureOrbit() {
+		return this.captureOrbit;
+	}
+
+
+	public void setCaptureOrbit(boolean capOrbit) {
+		this.captureOrbit = capOrbit;		
+	}
+	
+	protected void printOrbitMap() {
+		System.out.println("orbitMap.size()"+orbitMap.size());
+		Set<ComplexNumber> set = orbitMap.keySet();
+		Iterator<ComplexNumber> iter = set.iterator();
+		while(iter.hasNext()) {
+			ComplexNumber k = iter.next();
+			List<Double> l = orbitMap.get(k);
+			printKeyValueList(k,l);
+		}
+	}
+
+
+	private void printKeyValueList(ComplexNumber k, List<Double> l) {
+		String ll = "[";
+		for(int i = 0; i < l.size(); i++) {
+			if(i==l.size()-1) {
+				ll += l.get(i)+"]";
+			} else {
+				ll += l.get(i) + ",";
+			}
+		}
+		System.out.println(k + " ==> "+ll);
+//		Iterator<Double> iter = l.iterator();
+//		while(iter.hasNext()) {
+//			ll += iter.next()+",";
+//		}
+		
+	}
+
 }

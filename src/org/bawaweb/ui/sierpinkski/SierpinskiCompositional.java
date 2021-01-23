@@ -1214,7 +1214,7 @@ class SierpinskiComboPanel extends JPanel {
 		this.add(this.colorChoiceCombo);
 		this.add(this.showAllColorsCb);
 //		this.add(this.buColorChooser);
-//dec15		this.add(this.smoothenColorCb);
+		this.add(this.smoothenColorCb);
 		
 		this.add(this.colorSampleMixStartValsLabel);
 		this.colorSampleMixStartValsLabel.setVisible(false);
@@ -5550,6 +5550,13 @@ class SierpinskiComboPanel extends JPanel {
 			ps[i].put("isClassicJulia", String.valueOf(this.applyClassicJulia));*/
 			
 			ps[i].setProperty("rotation",String.valueOf(this.rotation));
+
+			boolean doSmoothen = this.smoothenColor;
+			if(doSmoothen) {
+				ps[i].setProperty("smoothen","true");
+			} else {
+				ps[i].setProperty("smoothen","false");
+			}
 				
 			
 		}
