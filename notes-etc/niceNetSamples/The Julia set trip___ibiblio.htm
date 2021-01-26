@@ -1,0 +1,41 @@
+<HTML><HEAD>
+<TITLE>CPU based Julia set animation</TITLE>
+ <style type="text/css">
+   H1{ font-size: 120%; color: green}
+   canvas{ position: relative;}
+ </style>
+ <script src="js/anim.js" type="text/javascript"></script>
+</HEAD>
+<BODY>
+
+<h1>The Julia set trip</h1>
+
+<table><tr><td>
+ <canvas id="cnvJ"></canvas>
+</td><td valign="top">
+ <canvas id="cnvM"></canvas>
+ <div id="c"></div>
+it<input size="2" value="500" onchange="maxIt=parseInt(this.value)">
+<input type="checkbox" onclick="bStar=checked">orbit
+</td></tr></table>
+<script type="text/javascript">
+  new Anim({scX:.95, scY:.6, Xmid:-.75, Ymid:0, DX:3, maxIt:500, maxCol:96,
+  path:[[.249,0,5],[.27,0,15],[.33,.033,10],[.42,.228,20],[.27,.564,15],
+  [-.162,.78,10,],[-.534,.612,10],[-.726,.3,20],[-.75,0,25]], Star:false });
+</script>
+Click into the Mandelbrot set to see the corresponding Julia set.
+Drag or zoom the Mandelbrot set by 2 fingers (better Stop animation before).
+Click it by mouse with <i>Alt/Ctrl</i> key to zoom <i>In/Out</i>.
+<i>it</i> is the maximum iterations number, <i>n</i> is period of
+attractor.
+<br>CPU based Julia set animation with the
+<a href="big_m.htm">boundary tracing algorithm</a>.
+
+<p>See also <a href="orbit-anim.htm">5* Julia trip</a> and
+<a href="../webgl/julia.html">GPU</a> based animations.
+
+<hr><a href="Contents.htm">Contents</a>
+<br><i>updated</i> 18 Dec 2013
+
+</BODY>
+</HTML>
