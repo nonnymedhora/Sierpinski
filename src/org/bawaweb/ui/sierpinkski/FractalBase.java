@@ -1148,8 +1148,8 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		if (isMandelbrot) {
 			final double log2 = Math.log(2);
 			smoothened = (int) (colorRGB + 1 - Math.log(Math.log(Math.abs(colorRGB))) / log2);
-		} else if(isJulia) {//n+1-log(log2(abs(z)))		log2N=log10n/log102
-			return (int) (colorRGB + 1 - Math.log10(Math.log10(Math.abs(new ComplexNumber(x,y).abs()))/Math.log10(2)));
+		} else if(isJulia) {//n+1-log(log2(abs(z)))		log2N=log10n/log102		getPixelComplexValue
+			return (int) (colorRGB + 1 - Math.log10(Math.log10(Math.abs(this.getPixelComplexValue(x,y).abs()))/Math.log10(2)));
 			//return 0.5 + 0.5 * Math.sin(value * frequency);
 			//smoothened = (int) (0.5 + 0.5 * Math.sin(colorRGB/maxIter));
 			
