@@ -4420,6 +4420,14 @@ vga=[0,43520,11141120,11184640,2852126720,2852170240,2857697280,2863311360,14316
 	public List<BufferedImage> getImages() {
 		return fbImages;
 	}
+	
+	public void flushImages() {
+		fbImages = null;
+		System.gc();
+		System.gc();
+		System.gc();
+		fbImages = new ArrayList<BufferedImage>();
+	}
 
 
 	public boolean isGenerated() {

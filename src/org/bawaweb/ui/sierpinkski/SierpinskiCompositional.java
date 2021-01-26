@@ -1036,6 +1036,7 @@ class SierpinskiComboPanel extends JPanel {
 	//private JPanel fbImagesPanel = new JPanel(new GridLayout(1,0),true);
 	private JButton buShowFbImages = new JButton("Show all Images");
 	private JButton buShowFbInfo = new JButton("Show Info");
+	private JButton buFlushFbImages = new JButton("Flush all Images");
 	
 	private JCheckBox useRangeCb = new JCheckBox("Use Range Estimates: ",false);
 	private boolean useRangeEstimation = false;
@@ -1288,6 +1289,7 @@ class SierpinskiComboPanel extends JPanel {
 
 		this.add(this.buShowFbImages);
 		this.add(this.buShowFbInfo);
+		this.add(this.buFlushFbImages);
 		
 		this.add(this.useRangeCb);
 
@@ -11419,6 +11421,13 @@ System.out.println("space2DIs __ "+space2D);*/
 			}
 		});
 		
+		this.buFlushFbImages.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				flushFBImages();
+			}
+		});
+		
 		this.useRangeCb.setActionCommand("UseRange");
 		this.useRangeCb.addItemListener(new ItemListener() {
             @Override
@@ -11568,6 +11577,10 @@ System.out.println("space2DIs __ "+space2D);*/
 		this.formulaArea.setEditable(true);		
 		this.formulaArea.setText(this.fBase.getFractalDtlInfo());
 		this.formulaArea.setVisible(true);
+	}
+	
+	private void flushFBImages() {
+		this.fBase.flushImages();
 	}
 
 	private void showFBImages() {
