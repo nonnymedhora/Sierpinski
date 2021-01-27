@@ -50,8 +50,10 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	
 	private boolean smoothen = false;
 	
-	private boolean captureOrbit = false;
-	protected LinkedHashMap<ComplexNumber, List<Double>> orbitMap = new LinkedHashMap<ComplexNumber,List<Double>>();
+	private boolean captureOrbit = true;//todo	settoFalse
+	protected LinkedHashMap<ComplexNumber, List<Double>> orbitDistanceMap = new LinkedHashMap<ComplexNumber,List<Double>>();
+	protected LinkedHashMap<ComplexNumber, List<ComplexNumber>> orbitPixelMap = new LinkedHashMap<ComplexNumber,List<ComplexNumber>>();
+	private final ComplexNumber orbitTrapPoint = new ComplexNumber(0,0);
 	//for computecolors
 	//	for divisors
 	public static final int[] FRST_SIX_PRIMES 	= new int[] { 2, 3, 5, 7, 11, 13 };
@@ -468,6 +470,10 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		Graphics2D g2 = (Graphics2D) g1;
 //		this.drawAxis(g2);
 		BufferedImage img;
+		orbitDistanceMap = new LinkedHashMap<ComplexNumber,List<Double>>();
+		orbitPixelMap = new LinkedHashMap<ComplexNumber,List<ComplexNumber>>();
+		
+		
 		if (!this.refocusDraw) {
 			img = this.createFractalImage();
 			// reqd drawing location
@@ -3514,8 +3520,43 @@ vga=[0,43520,11141120,11184640,2852126720,2852170240,2857697280,2863311360,14316
 		double imgPosn = y_max + (y * 1.0 * (y_min - y_max)) / getHeight();
 		String imgSign = imgPosn > 0 ? "+" : "";
 		locPtTextField.setText(realPosn + " " + imgSign + " " + imgPosn + " * i");
-		
+		/*//TODO	l8r
+		ComplexNumber z = new ComplexNumber(realPosn,imgPosn);
+		List<ComplexNumber> zList = orbitPixelMap.get(z);
+		if (zList!=null) {
+			showOrbitDistances(z, zList);
+		}
+		*/
 	}
+
+	private void showOrbitDistances(ComplexNumber zz,List<ComplexNumber> zList) {
+		Graphics g = this.getGraphics();
+		g.drawImage(bufferedImage, 0, 0, (ImageObserver)this);
+		g.setColor(Color.white);
+		
+		for(int i = 0; i < zList.size(); i++) {			
+			if(i>10) break;
+			ComplexNumber z = zList.get(i);	/*	
+			
+		((xmax-xmin)/(canvas.width-1))*ij[0]+xmin, 
+		((ymin-ymax)/(canvas.height-1))*ij[1]+ymax
+			
+			double realPosn = x_min + (x * 1.0 * (x_max - x_min)) / getWidth();		
+			double imgPosn = y_max + (y * 1.0 * (y_min - y_max)) / getHeight();
+*/
+			
+			//TODO	figure formula z2p
+			/*int xRectStart = (int) (((x_max - x_min) / (getWidth() - 1)) * z.real + x_min);
+
+			int yRectStart = (int) (((y_min - y_max) / (getHeight() - 1)) * z.imaginary + y_max);
+			*/int xRectStart = (int) (((z.real * getWidth()) - x_min) / (x_max - x_min));
+
+			int yRectStart = (int) (((z.imaginary * getHeight()) - y_max) / (y_min - y_max));
+			g.drawRect(xRectStart, yRectStart, 2, 2);
+			
+		}
+	}
+
 
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -4458,12 +4499,12 @@ vga=[0,43520,11141120,11184640,2852126720,2852170240,2857697280,2863311360,14316
 	}
 	
 	protected void printOrbitMap() {
-		System.out.println("orbitMap.size()"+orbitMap.size());
-		Set<ComplexNumber> set = orbitMap.keySet();
+		System.out.println("orbitMap.size()"+orbitDistanceMap.size());
+		Set<ComplexNumber> set = orbitDistanceMap.keySet();
 		Iterator<ComplexNumber> iter = set.iterator();
 		while(iter.hasNext()) {
 			ComplexNumber k = iter.next();
-			List<Double> l = orbitMap.get(k);
+			List<Double> l = orbitDistanceMap.get(k);
 			printKeyValueList(k,l);
 		}
 	}
@@ -4485,5 +4526,28 @@ vga=[0,43520,11141120,11184640,2852126720,2852170240,2857697280,2863311360,14316
 //		}
 		
 	}
+	
+/*	//wikipeadia---orbit-distance
+	private double getMandDistance(ComplexNumber c, ComplexNumber point) {
+		double distance = 1e20;
+		ComplexNumber z = new ComplexNumber(0, 0);
+		
 
+		for (int i = 0; i < maxIter; i++) {
+			// Perform Mandelbrot iteration
+			z = z.times(z);
+			z = z.plus(c);
+
+			// Set new distance dist = min( dist, |z-point| )
+			ComplexNumber zMinusPoint = z;
+			zMinusPoint = zMinusPoint.minus(point);
+
+			double zMinusPointModulus = zMinusPoint.abs();
+			if (zMinusPointModulus < distance)
+				distance = zMinusPointModulus;
+		}
+
+		return distance;
+	}
+*/
 }

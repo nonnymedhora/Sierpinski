@@ -555,14 +555,17 @@ public class Julia extends FractalBase {
 		}
 		
 		List<Double> zList = null;
+		List<ComplexNumber> zPxList = null;
 		if (isCaptureOrbit()) {
 			zList = new ArrayList<Double>();
+			zPxList = new ArrayList<ComplexNumber>();
 		}
 
 		for (int t = 0; t < max; t++) {
 			if (isCaptureOrbit()) {
-				if (zList.size() < 20)
+				if (zList.size() < 20) {
 					zList.add(z.abs());
+					zPxList.add(z);}
 			}
 			if (z.abs() > bd) {
 				return t;
@@ -570,9 +573,11 @@ public class Julia extends FractalBase {
 			
 			z = this.processJuliaZValue(z, complexConstant);
 		}
-		
-		if(isCaptureOrbit())
-			orbitMap.put(zz,zList);
+
+		if (isCaptureOrbit()) {
+			orbitPixelMap.put(zz, zPxList);
+			orbitDistanceMap.put(zz, zList);
+		}
 			
 		/*	============	Field lines - Fatou Domain	======================
 		 //((1-z^3)/6)/(z-z^2/2)^2)+c}

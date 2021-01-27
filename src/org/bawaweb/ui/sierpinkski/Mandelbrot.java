@@ -879,28 +879,55 @@ public class Mandelbrot extends FractalBase {
 
 	private int mand(ComplexNumber z0, int maxIterations, int pwr, ComplexNumber constant, double bd, int r, int c) {
 		ComplexNumber z = z0;
+
+		List<Double> zList = null;
+		List<ComplexNumber> zPxList = null;
+		if (isCaptureOrbit()) {
+			zList = new ArrayList<Double>();
+			zPxList = new ArrayList<ComplexNumber>();
+		}
+
 		for (int t = 0; t < maxIterations; t++) {
+			if (isCaptureOrbit()) {
+				if (zList.size() < 20) {
+					zList.add(z.abs());
+					zPxList.add(z);
+				}
+			}
+			
 			if (z.abs() > bd)
 				return t;
 
-			if (this.pxConstOperation.equals("Plus")) {
-				z = z.power(pwr).plus(constant);
-			} else if (this.pxConstOperation.equals("Minus")) {
-				z = z.power(pwr).minus(constant);
-			} else if (this.pxConstOperation.equals("Multiply")) {
-				z = z.power(pwr).times(constant);
-			} else if (this.pxConstOperation.equals("Divide")) {
-				z = z.power(pwr).divides(constant);
-			} else if (this.pxConstOperation.equals("Power")) {
-				z = z.power(pwr).power(constant);
-			}
+			z = processMandelbrotZValue(pwr, constant, z);
 		}
+		
+		if (isCaptureOrbit()) {
+			orbitDistanceMap.put(z0, zList);
+			orbitPixelMap.put(z0, zPxList);
+		}
+		
 		if (!this.isBuddha) {
 			return maxIterations;
 		} else {
 			return IM_BUDDHA;//this.populateBuddha(r,c);
 		}
 		/*return maxIterations;*/
+	}
+
+	ComplexNumber processMandelbrotZValue(int pwr, ComplexNumber constant, ComplexNumber z) {
+		//here	pwr=this.power
+		if (this.pxConstOperation.equals("Plus")) {
+			z = z.power(pwr).plus(constant);
+		} else if (this.pxConstOperation.equals("Minus")) {
+			z = z.power(pwr).minus(constant);
+		} else if (this.pxConstOperation.equals("Multiply")) {
+			z = z.power(pwr).times(constant);
+		} else if (this.pxConstOperation.equals("Divide")) {
+			z = z.power(pwr).divides(constant);
+		} else if (this.pxConstOperation.equals("Power")) {
+			z = z.power(pwr).power(constant);
+		}
+		return z;
 	}
 
 	/*private int populateBuddha(int row, int col) {
