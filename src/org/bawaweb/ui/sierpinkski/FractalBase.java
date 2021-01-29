@@ -54,6 +54,7 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	protected LinkedHashMap<ComplexNumber, List<Double>> orbitDistanceMap = new LinkedHashMap<ComplexNumber,List<Double>>();
 	protected LinkedHashMap<ComplexNumber, List<ComplexNumber>> orbitPixelMap = new LinkedHashMap<ComplexNumber,List<ComplexNumber>>();
 	protected ComplexNumber orbitTrapPoint = new ComplexNumber(-0.5,0.0);
+	protected String trapShape = "Circle";	//	"Circle", "Square", "Cross", "Diamond"
 	protected double trapSize = 0.5;
 	//for computecolors
 	//	for divisors
@@ -311,6 +312,9 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 				}
 				if (p.getProperty("orbitTrapSize") != null) {
 					this.setTrapSize(Double.parseDouble(p.getProperty("orbitTrapSize").replaceAll(WHITESPACE, EMPTY)));
+				}
+				if (p.getProperty("orbitTrapShape") != null) {
+					this.setTrapShape(p.getProperty("orbitTrapShape").replaceAll(WHITESPACE, EMPTY));
 				}
 			}
 
@@ -4547,6 +4551,16 @@ vga=[0,43520,11141120,11184640,2852126720,2852170240,2857697280,2863311360,14316
 	}
 
 
+	public String getTrapShape() {
+		return this.trapShape;
+	}
+
+
+	public void setTrapShape(String shape) {
+		this.trapShape = shape;
+	}
+
+
 	protected void printOrbitMap() {
 		System.out.println("orbitMap.size()"+orbitDistanceMap.size());
 		Set<ComplexNumber> set = orbitDistanceMap.keySet();
@@ -4574,6 +4588,53 @@ vga=[0,43520,11141120,11184640,2852126720,2852170240,2857697280,2863311360,14316
 //			ll += iter.next()+",";
 //		}
 		
+	}
+	
+	protected boolean isInOrbitCross(ComplexNumber c) {
+		double minX = orbitTrapPoint.real-trapSize/2;
+		double maxX = orbitTrapPoint.real+trapSize/2;
+		double minY = orbitTrapPoint.imaginary-trapSize/2;
+		double maxY = orbitTrapPoint.imaginary+trapSize/2;
+		
+		//cross--sq1	
+		//			x_min,maxY======================x_max,maxY
+		//				|							|
+		//			x_min,minY======================x_max,minY
+		boolean inSqCrs1 = false;
+		inSqCrs1 = x_min<=c.real&&minY<=c.imaginary&&c.real<=x_max&&c.imaginary<=maxY;
+		if(inSqCrs1)
+			return true;
+		
+		//crosssq2
+		//					minX,y_max=====maxX,y_max
+		//							|		|
+		//							|		|
+		//							|		|
+		//							|		|
+		//							|		|
+		//							|		|
+		//					minX,y_min=====maxX,y_min
+		
+		return minX<=c.real&&y_min<=c.imaginary&&c.real<=maxX&&c.imaginary<=y_max;
+		
+	}
+	
+	/**
+	 * 
+	 * @param c	-	the complexNumber
+	 * @return true: if is in square specified at centre - orbitTrapPoint,
+	 * with size of @see {trapSize}
+	 * 
+	 */
+	protected boolean isInOrbitSquare(ComplexNumber c) {
+		double minSqX = orbitTrapPoint.real-trapSize/2;
+		double maxSqX = orbitTrapPoint.real+trapSize/2;
+		double minSqY = orbitTrapPoint.imaginary-trapSize/2;
+		double maxSqY = orbitTrapPoint.imaginary+trapSize/2;
+		
+		if(c.real>=minSqX&&c.real<=maxSqX&&c.imaginary>=minSqY&&c.imaginary<=maxSqY)
+			return true;
+		return false;
 	}
 	
 	//wikipeadia---orbit-distance

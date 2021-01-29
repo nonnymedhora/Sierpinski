@@ -109,7 +109,8 @@ class SierpinskiComboPanel extends JPanel {
 	private static final String[] PIX_TRANSFORM_OPTIONS = {"none", "absolute", "absoluteSquare","reciprocal", "reciprocalSquare", "square", "cube","root", "exponent", "log(10)", "log(e)", "sine", "cosine", "tan", "cosec", "sec", "cot", "sinh", "cosh", "tanh", "arcsine", "arccosine", "arctangent", "arcsinh", "arccosh", "arctanh"};
 	private static final String[] ORBIT_POINT_OPTIONS = { "[0.0, 0.0]", "[-0.5, 0.0]", "[0.5, 0.0]", "[0.0, -0.5]", "[0.0, 0.5]", "[-0.5, -0.5]", "[-0.5, 0.5]", "[0.5, -0.5]", "[0.5, 0.5]" };
 	private static final Double[] TRAP_SIZE_OPTIONS = { 0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.75, 1.0 };
-	
+	private static final String[] TRAP_SHAPE_OPTIONS = { "Circle", "Square", "Cross", "Diamond" };
+
 	private boolean smoothenColor = false;
 	private final JCheckBox smoothenColorCb = new JCheckBox("SmoothenColor", false);
 	
@@ -1060,6 +1061,9 @@ class SierpinskiComboPanel extends JPanel {
 	private JLabel trapSizeLbl = new JLabel("Trap Size");
 	private JComboBox<Double> trapSizeCombo = new JComboBox<Double>(TRAP_SIZE_OPTIONS);
 	private Double trapSizeChoice;
+	private JLabel trapShapeLbl = new JLabel("Trap Shape");
+	private JComboBox<String> trapShapeCombo = new JComboBox<String>(TRAP_SHAPE_OPTIONS);
+	private String trapShapeChoice;
 
 	
 	//	navigation controls
@@ -1327,6 +1331,9 @@ class SierpinskiComboPanel extends JPanel {
 		this.trapSizeLbl.setVisible(false);
 		this.add(this.trapSizeCombo);
 		this.trapSizeCombo.setVisible(false);
+		this.trapShapeLbl.setVisible(false);
+		this.add(this.trapShapeCombo);
+		this.trapShapeCombo.setVisible(false);
 		
 		
 		///
@@ -5585,6 +5592,7 @@ class SierpinskiComboPanel extends JPanel {
 
 				ps[i].setProperty("orbitTrapPoint", this.orbitTrapPointChoice.toString());
 				ps[i].setProperty("orbitTrapSize", String.valueOf(this.trapSizeChoice));
+				ps[i].setProperty("orbitTrapShape", String.valueOf(this.trapShapeChoice));
 			} else {
 				ps[i].setProperty("captureOrbit", "false");
 			}
@@ -8580,7 +8588,10 @@ class SierpinskiComboPanel extends JPanel {
 	private void doSetTrapSizeCombosCommand(Double size) {
 		this.trapSizeChoice = size;
 	}
-	
+
+	private void doSetTrapShapeCombosCommand(String shape) {
+		this.trapShapeChoice = shape;
+	}
 
 	private void doSetOrbitPointCombosCommand(String orb){
 		orb = orb.replaceAll(OPEN_BRACK,EMPTY).replaceAll(CLOSE_BRACK,EMPTY);
@@ -9555,6 +9566,7 @@ System.out.println("space2DIs __ "+space2D);*/
 		if(capOrb){
 			ff.setOrbitTrapPoint(this.orbitTrapPointChoice);
 			ff.setTrapSize(this.trapSizeChoice);
+			ff.setTrapShape(this.trapShapeChoice);
 		}
 		
 		ff.setSmoothen(doSmoothen);
@@ -9808,6 +9820,7 @@ System.out.println("space2DIs __ "+space2D);*/
 		if(capOrb){
 			ff.setOrbitTrapPoint(this.orbitTrapPointChoice);
 			ff.setTrapSize(this.trapSizeChoice);
+			ff.setTrapShape(this.trapShapeChoice);
 		}
 
 		ff.setSmoothen(doSmoothen);
@@ -9955,6 +9968,7 @@ System.out.println("space2DIs __ "+space2D);*/
 		if(capOrb){
 			ff.setOrbitTrapPoint(this.orbitTrapPointChoice);
 			ff.setTrapSize(this.trapSizeChoice);
+			ff.setTrapShape(this.trapShapeChoice);
 		}
 
 		ff.setSmoothen(doSmoothen);
@@ -10119,6 +10133,7 @@ System.out.println("space2DIs __ "+space2D);*/
 		if(capOrb){
 			ff.setOrbitTrapPoint(this.orbitTrapPointChoice);
 			ff.setTrapSize(this.trapSizeChoice);
+			ff.setTrapShape(this.trapShapeChoice);
 		}
 
 		ff.setSmoothen(doSmoothen);
@@ -10240,6 +10255,7 @@ System.out.println("space2DIs __ "+space2D);*/
 		if(capOrb){
 			ff.setOrbitTrapPoint(this.orbitTrapPointChoice);
 			ff.setTrapSize(this.trapSizeChoice);
+			ff.setTrapShape(this.trapShapeChoice);
 		}
 
 		ff.setSmoothen(doSmoothen);
@@ -11552,6 +11568,15 @@ System.out.println("space2DIs __ "+space2D);*/
 				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
 				Double trapSizeOption = (Double)cb.getSelectedItem();
 				doSetTrapSizeCombosCommand(trapSizeOption);				
+			}});
+
+		this.trapShapeCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<String> cb = (JComboBox<String>)e.getSource();
+				String trapShapeOption = (String)cb.getSelectedItem();
+				doSetTrapShapeCombosCommand(trapShapeOption);				
 			}});
 		
 		this.buFirst.addActionListener(new ActionListener() {
@@ -15198,12 +15223,18 @@ private void setupPolyGeneratorListeners() {
 			this.trapSizeLbl.setVisible(true);
 			this.trapSizeCombo.setVisible(true);
 			this.trapSizeCombo.setEnabled(true);
+			this.trapShapeLbl.setVisible(true);
+			this.trapShapeCombo.setVisible(true);
+			this.trapShapeCombo.setEnabled(true);
 		} else {
 			this.orbitPointsCombo.setVisible(false);
 			this.orbitPointsCombo.setEnabled(false);
 			this.trapSizeLbl.setVisible(false);
 			this.trapSizeCombo.setVisible(false);
 			this.trapSizeCombo.setEnabled(false);
+			this.trapShapeLbl.setVisible(false);
+			this.trapShapeCombo.setVisible(false);
+			this.trapShapeCombo.setEnabled(false);
 		}
 	}
 
