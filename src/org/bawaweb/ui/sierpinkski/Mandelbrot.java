@@ -877,26 +877,32 @@ public class Mandelbrot extends FractalBase {
 		
 	}
 
-		private int mand(ComplexNumber z0, int maxIterations, int pwr, ComplexNumber constant, double bd, int r, int c) {
+	private int mand(ComplexNumber z0, int maxIterations, int pwr, ComplexNumber constant, double bd, int r, int c) {
 		ComplexNumber z = z0;
 
 		List<Double> zList = null;
 		List<ComplexNumber> zPxList = null;
-		boolean trapped=false;
-		if (isCaptureOrbit()) {
+		boolean trapped = false;
+		double trapDist = 0.0;
+		
+		if (this.isCaptureOrbit()) {
 			zList = new ArrayList<Double>();
 			zPxList = new ArrayList<ComplexNumber>();
 		}
-
-		for (int t = 0; t < maxIterations; t++) {
-			if (isCaptureOrbit()) {
+		
+		int t = 0;
+		for (; t < maxIterations; t++) {
+			if (this.isCaptureOrbit()) {
 				if (zList.size() < 20) {
 					zList.add(z.abs());
 					zPxList.add(z);
 				}
-				if (getDistance(z, orbitTrapPoint) < trapSize) {
+				trapDist = this.getDistance(z, orbitTrapPoint);
+				
+				if (trapDist < trapSize) {
 					trapped = true;
-					return (int) getDistance(z, orbitTrapPoint)*getWidth();
+					break;
+					//return (int) getDistance(z, orbitTrapPoint) * getWidth();
 				}
 			}
 
@@ -904,17 +910,25 @@ public class Mandelbrot extends FractalBase {
 				return t;
 
 			z = processMandelbrotZValue(pwr, constant, z);
+		}	//	ends-for-loop
+		
+		if (this.isCaptureOrbit()) {
+			this.orbitDistanceMap.put(z0, zList);
+			this.orbitPixelMap.put(z0, zPxList);
 		}
 		
-		if (isCaptureOrbit()) {
-			orbitDistanceMap.put(z0, zList);
-			orbitPixelMap.put(z0, zPxList);
+		if (this.isCaptureOrbit() && trapped) {
+			return (int) (this.getDistance(z, this.orbitTrapPoint) * getWidth() / this.trapSize);
 		}
 		
 		if (!this.isBuddha) {
-			return maxIterations;
+			if (!this.isCaptureOrbit()) {
+				return maxIterations;
+			} else {
+				return (int) (t + 1 - ((Math.log(Math.log(Math.sqrt(trapDist))) / Math.log(2.0))));
+			}
 		} else {
-			return IM_BUDDHA;//this.populateBuddha(r,c);
+			return IM_BUDDHA;// this.populateBuddha(r,c);
 		}
 		/*return maxIterations;*/
 	}

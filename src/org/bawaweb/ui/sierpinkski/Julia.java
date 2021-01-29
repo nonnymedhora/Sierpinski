@@ -373,8 +373,8 @@ public class Julia extends FractalBase {
 		this.pixel = new int[WIDTH*HEIGHT];*/
 		createJulia(g, this.useDiff);
 		
-		if(isCaptureOrbit())
-			printOrbitMap();
+		if(this.isCaptureOrbit())
+			this.printOrbitMap();
 	}
 
 
@@ -556,21 +556,26 @@ public class Julia extends FractalBase {
 		
 		List<Double> zList = null;
 		List<ComplexNumber> zPxList = null;
-		boolean trapped=false;
-		if (isCaptureOrbit()) {
+		boolean trapped = false;
+		double trapDist = 0.0;
+		
+		if (this.isCaptureOrbit()) {
 			zList = new ArrayList<Double>();
 			zPxList = new ArrayList<ComplexNumber>();
 		}
-
-		for (int t = 0; t < max; t++) {
-			if (isCaptureOrbit()) {
+		
+		int t = 0;
+		for (; t < max; t++) {
+			if (this.isCaptureOrbit()) {
 				if (zList.size() < 20) {
 					zList.add(z.abs());
 					zPxList.add(z);
 				}
-				if (getDistance(z, orbitTrapPoint) < trapSize) {
+				trapDist = this.getDistance(z, orbitTrapPoint);
+
+				if (trapDist < trapSize) {
 					trapped = true;
-					return (int) getDistance(z, orbitTrapPoint)*getWidth();
+					break;
 				}
 			}
 			if (z.abs() > bd) {
@@ -580,9 +585,9 @@ public class Julia extends FractalBase {
 			z = this.processJuliaZValue(z, complexConstant);
 		}
 
-		if (isCaptureOrbit()) {
-			orbitPixelMap.put(zz, zPxList);
-			orbitDistanceMap.put(zz, zList);
+		if (this.isCaptureOrbit()) {
+			this.orbitPixelMap.put(zz, zPxList);
+			this.orbitDistanceMap.put(zz, zList);
 		}
 			
 		/*	============	Field lines - Fatou Domain	======================
@@ -600,8 +605,16 @@ public class Julia extends FractalBase {
 			z = (((one.minus(z.power(3))).divides(six)).divides(((z.minus(z.power(2))).divides(two)).power(2))).plus(complexConstant);
 		}
 		=========================================================================*/
+
 		
-		return max;
+		if (this.isCaptureOrbit() && trapped) {
+			return (int) (this.getDistance(z, this.orbitTrapPoint) * getWidth() / this.trapSize);
+		}
+		if (!this.isCaptureOrbit()) {
+			return max;
+		} else {
+			return (int) (t + 1 - ((Math.log(Math.log(Math.sqrt(trapDist))) / Math.log(2.0))));
+		}
 	}
 
 
