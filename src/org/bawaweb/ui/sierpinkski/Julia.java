@@ -556,6 +556,7 @@ public class Julia extends FractalBase {
 		
 		List<Double> zList = null;
 		List<ComplexNumber> zPxList = null;
+		boolean trapped=false;
 		if (isCaptureOrbit()) {
 			zList = new ArrayList<Double>();
 			zPxList = new ArrayList<ComplexNumber>();
@@ -566,6 +567,10 @@ public class Julia extends FractalBase {
 				if (zList.size() < 20) {
 					zList.add(z.abs());
 					zPxList.add(z);}
+			}
+			if (getDistance(z, orbitTrapPoint) < trapSize) {
+				trapped = true;
+				return (int) getDistance(z, orbitTrapPoint);
 			}
 			if (z.abs() > bd) {
 				return t;

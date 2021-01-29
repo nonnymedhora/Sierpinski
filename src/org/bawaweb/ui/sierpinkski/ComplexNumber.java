@@ -136,14 +136,14 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
 					} 
 				} else {
 					String c2 = c.substring(1,c.length()-1);	//remove leading minus
-					System.out.println("C2 us "+c2);
+					//System.out.println("C2 us "+c2);
 					final int c2MinusIndex = c2.indexOf(minus);
-					if (c2MinusIndex>0) {
+					if (c2MinusIndex > 0) {
 						this.real = Double.parseDouble(c2.substring(0, c2MinusIndex)) * -1;
 						this.imaginary = Double.parseDouble(c2.substring(c2MinusIndex).replace(I, EMPTY));
-					}else{
-						this.real = Double.parseDouble(c.replace(I,EMPTY));
-						this.imaginary=0;
+					} else {
+						this.real = Double.parseDouble(c.replace(I, EMPTY));
+						this.imaginary = 0;
 					}
 				}
 			}

@@ -107,6 +107,8 @@ class SierpinskiComboPanel extends JPanel {
 	private static final String[] COLOR_SUPER_BLOWOUT_TYPES = FractalBase.COLOR_SUPER_BLOWOUT_TYPES;///new String[] { "Original","Fire","Black & White","Electric Blue","Toon","Gold","Classic VGA","CGA 1","CGA 2","Primary (RGB)","Secondary (CMY)","Tertiary 1","Tertiary 2","Neon"};
 	private static final String[] FUNCTION_OPTIONS 		= {"None","sine","cosine","tan","cosec","sec","cot","sinh","cosh","tanh","arcsine","arccosine","arctan","arcsinh","arccosh","arctanh","reciprocal", "reciprocalSquare","square","cube","exponent(e)", "root",/*"cube-root",*/ "log(e)"};
 	private static final String[] PIX_TRANSFORM_OPTIONS = {"none", "absolute", "absoluteSquare","reciprocal", "reciprocalSquare", "square", "cube","root", "exponent", "log(10)", "log(e)", "sine", "cosine", "tan", "cosec", "sec", "cot", "sinh", "cosh", "tanh", "arcsine", "arccosine", "arctangent", "arcsinh", "arccosh", "arctanh"};
+	private static final String[] ORBIT_POINT_OPTIONS = { "[0.0, 0.0]", "[-0.5, 0.0]", "[0.5, 0.0]", "[0.0, -0.5]", "[0.0, 0.5]", "[-0.5, -0.5]", "[-0.5, 0.5]", "[0.5, -0.5]", "[0.5, 0.5]" };
+	private static final Double[] TRAP_SIZE_OPTIONS = { 0.1, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.75, 1.0 };
 	
 	private boolean smoothenColor = false;
 	private final JCheckBox smoothenColorCb = new JCheckBox("SmoothenColor", false);
@@ -1051,6 +1053,14 @@ class SierpinskiComboPanel extends JPanel {
 	private JTextField yMaxTf = new JTextField(5);
 	private double yMaxVal;
 	
+	private JCheckBox captureOrbitCb = new JCheckBox("Capture Orbit",false);
+	private boolean captureOrbit = false;
+	private JComboBox<String> orbitPointsCombo = new JComboBox<String>(ORBIT_POINT_OPTIONS);
+	private ComplexNumber orbitTrapPointChoice;
+	private JLabel trapSizeLbl = new JLabel("Trap Size");
+	private JComboBox<Double> trapSizeCombo = new JComboBox<Double>(TRAP_SIZE_OPTIONS);
+	private Double trapSizeChoice;
+
 	
 	//	navigation controls
 
@@ -1308,6 +1318,15 @@ class SierpinskiComboPanel extends JPanel {
 		this.yMinTf.setEnabled(false);
 		this.xMaxTf.setEnabled(false);
 		this.yMaxTf.setEnabled(false);
+		
+		
+		this.add(this.captureOrbitCb);
+		this.add(this.orbitPointsCombo);
+		this.orbitPointsCombo.setVisible(false);
+		this.add(this.trapSizeLbl);
+		this.trapSizeLbl.setVisible(false);
+		this.add(this.trapSizeCombo);
+		this.trapSizeCombo.setVisible(false);
 		
 		
 		///
@@ -5559,7 +5578,16 @@ class SierpinskiComboPanel extends JPanel {
 			} else {
 				ps[i].setProperty("smoothen","false");
 			}
-				
+			
+			boolean capOrb = this.captureOrbit;
+			if (capOrb) {
+				ps[i].setProperty("captureOrbit", "true");
+
+				ps[i].setProperty("orbitTrapPoint", this.orbitTrapPointChoice.toString());
+				ps[i].setProperty("orbitTrapSize", String.valueOf(this.trapSizeChoice));
+			} else {
+				ps[i].setProperty("captureOrbit", "false");
+			}
 			
 		}
 			
@@ -8544,9 +8572,21 @@ class SierpinskiComboPanel extends JPanel {
 			this.doPolyChoicesCheck();
 		}
 	}
-	
+
 	private void doSetRotationCombosCommand(Double rot){
 		this.setRotation(rot);
+	}
+
+	private void doSetTrapSizeCombosCommand(Double size) {
+		this.trapSizeChoice = size;
+	}
+	
+
+	private void doSetOrbitPointCombosCommand(String orb){
+		orb = orb.replaceAll(OPEN_BRACK,EMPTY).replaceAll(CLOSE_BRACK,EMPTY);
+		String[] orbs = orb.split(",");
+		this.orbitTrapPointChoice = new ComplexNumber(Double.parseDouble(orbs[0]),Double.parseDouble(orbs[1]));
+		//System.out.println(" doSetOrbitPointCombosCommand==="+this.orbitTrapPointChoice);
 	}
 	
 	private void doCloseCommand(){
@@ -9444,6 +9484,8 @@ System.out.println("space2DIs __ "+space2D);*/
 		boolean diyJApplyZSq = this.applyZSq;
 		boolean diyJApplyClassic = this.applyClassicJulia;
 		
+		boolean capOrb = this.captureOrbit;
+		
 		this.formulaArea.setVisible(true);
 		this.formulaArea.setText("");
 		this.formulaArea.setText("<font color='blue'>(DIY)Julia Set:<br/>");
@@ -9508,6 +9550,13 @@ System.out.println("space2DIs __ "+space2D);*/
 			this.formulaArea.append("<br/>Constant = " + diyJuliaRealVal + " + (" + diyJuliaImgVal + " * i)</font>");
 			ff = new Julia(diyJuliaP, diyJuliaUseD, diyJuliaBd, diyJuliaRealVal, diyJuliaImgVal);
 		}
+		
+		ff.setCaptureOrbit(capOrb);
+		if(capOrb){
+			ff.setOrbitTrapPoint(this.orbitTrapPointChoice);
+			ff.setTrapSize(this.trapSizeChoice);
+		}
+		
 		ff.setSmoothen(doSmoothen);
 
 		if (doExplore) {
@@ -9714,6 +9763,8 @@ System.out.println("space2DIs __ "+space2D);*/
 		double diyMScale = this.diyMandScaleSize;
 		
 		boolean isBuddha = this.diyMandIsBuddhabrot;
+		
+		boolean capOrb = this.captureOrbit;
 
 		this.formulaArea.setVisible(true);
 		this.formulaArea.setText("");
@@ -9751,6 +9802,12 @@ System.out.println("space2DIs __ "+space2D);*/
 				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
 				return null;
 			}
+		}
+		
+		ff.setCaptureOrbit(capOrb);
+		if(capOrb){
+			ff.setOrbitTrapPoint(this.orbitTrapPointChoice);
+			ff.setTrapSize(this.trapSizeChoice);
 		}
 
 		ff.setSmoothen(doSmoothen);
@@ -9878,6 +9935,9 @@ System.out.println("space2DIs __ "+space2D);*/
 		String pxIntraOp = this.pixIntraXYOperation;
 		
 		double rot = this.getRotation();
+		boolean capOrb = this.captureOrbit;
+		
+		
 		FractalBase ff;
 		this.formulaArea.setVisible(true);
 		this.formulaArea.setText("");
@@ -9890,6 +9950,13 @@ System.out.println("space2DIs __ "+space2D);*/
 		} else {
 			ff = new Julia(pow, comp, jBound, jUseD);
 		}
+		
+		ff.setCaptureOrbit(capOrb);
+		if(capOrb){
+			ff.setOrbitTrapPoint(this.orbitTrapPointChoice);
+			ff.setTrapSize(this.trapSizeChoice);
+		}
+
 		ff.setSmoothen(doSmoothen);
 
 		if (doExplore) {
@@ -10011,6 +10078,8 @@ System.out.println("space2DIs __ "+space2D);*/
 		boolean isInMotion = this.isMandIsMotionbrot();
 		String motParam = this.getMandMotionParam();
 		double motParamJumpVal = this.getMandMotionParamJumpVal();
+
+		boolean capOrb = this.captureOrbit;
 		
 		FractalBase ff;
 		this.formulaArea.setVisible(true);
@@ -10045,6 +10114,12 @@ System.out.println("space2DIs __ "+space2D);*/
 		this.addMandelbrotUseDiffInfo();
 
 		ff = new Mandelbrot(mag, exp, mUseD, mBound, true);
+		
+		ff.setCaptureOrbit(capOrb);
+		if(capOrb){
+			ff.setOrbitTrapPoint(this.orbitTrapPointChoice);
+			ff.setTrapSize(this.trapSizeChoice);
+		}
 
 		ff.setSmoothen(doSmoothen);
 		
@@ -10139,6 +10214,8 @@ System.out.println("space2DIs __ "+space2D);*/
 		double rot = this.getRotation();
 		boolean invertPix = this.invertPixelCalculation;
 		
+		boolean capOrb = this.captureOrbit;
+		
 		FractalBase ff = null;
 		this.setUpPolyDetailInfo(pxConstOp, pxFunc, invertPix);
 
@@ -10157,6 +10234,12 @@ System.out.println("space2DIs __ "+space2D);*/
 				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
 				return null;
 			}
+		}
+		
+		ff.setCaptureOrbit(capOrb);
+		if(capOrb){
+			ff.setOrbitTrapPoint(this.orbitTrapPointChoice);
+			ff.setTrapSize(this.trapSizeChoice);
 		}
 
 		ff.setSmoothen(doSmoothen);
@@ -11439,6 +11522,37 @@ System.out.println("space2DIs __ "+space2D);*/
 				}
 			}
         });
+		
+
+		this.captureOrbitCb.setActionCommand("CaptureOrbits");
+		this.captureOrbitCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doSetCaptueOrbitCommand(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doSetCaptueOrbitCommand(false);
+				}
+			}
+        });
+
+		this.orbitPointsCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<String> cb = (JComboBox<String>)e.getSource();
+				String orbitPointOption = (String)cb.getSelectedItem();
+				doSetOrbitPointCombosCommand(orbitPointOption);				
+			}});
+
+		this.trapSizeCombo.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Double> cb = (JComboBox<Double>)e.getSource();
+				Double trapSizeOption = (Double)cb.getSelectedItem();
+				doSetTrapSizeCombosCommand(trapSizeOption);				
+			}});
 		
 		this.buFirst.addActionListener(new ActionListener() {
 			@Override
@@ -15071,6 +15185,26 @@ private void setupPolyGeneratorListeners() {
 	
 	private void doSetInvertPixelsCommand(boolean invert) {
 		this.invertPixelCalculation = invert;
+	}
+	
+
+	
+	private void doSetCaptueOrbitCommand(boolean capture) {
+		this.captureOrbit = capture;
+
+		if (capture) {
+			this.orbitPointsCombo.setVisible(true);
+			this.orbitPointsCombo.setEnabled(true);
+			this.trapSizeLbl.setVisible(true);
+			this.trapSizeCombo.setVisible(true);
+			this.trapSizeCombo.setEnabled(true);
+		} else {
+			this.orbitPointsCombo.setVisible(false);
+			this.orbitPointsCombo.setEnabled(false);
+			this.trapSizeLbl.setVisible(false);
+			this.trapSizeCombo.setVisible(false);
+			this.trapSizeCombo.setEnabled(false);
+		}
 	}
 
 	private void doMagnify(boolean mag) {

@@ -50,10 +50,11 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 	
 	private boolean smoothen = false;
 	
-	private boolean captureOrbit = true;//todo	settoFalse
+	private boolean captureOrbit = false;//todo	settoFalse
 	protected LinkedHashMap<ComplexNumber, List<Double>> orbitDistanceMap = new LinkedHashMap<ComplexNumber,List<Double>>();
 	protected LinkedHashMap<ComplexNumber, List<ComplexNumber>> orbitPixelMap = new LinkedHashMap<ComplexNumber,List<ComplexNumber>>();
-	private final ComplexNumber orbitTrapPoint = new ComplexNumber(0,0);
+	protected ComplexNumber orbitTrapPoint = new ComplexNumber(-0.5,0.0);
+	protected double trapSize = 0.5;
 	//for computecolors
 	//	for divisors
 	public static final int[] FRST_SIX_PRIMES 	= new int[] { 2, 3, 5, 7, 11, 13 };
@@ -295,11 +296,25 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 		if (p.getProperty("applyCustomFormula") != null) {
 			this.setApplyCustomFormula(Boolean.parseBoolean(p.getProperty("applyCustomFormula").replaceAll(WHITESPACE,EMPTY)));
 		}
-		
-		if (p.getProperty("smoothen") != null)
-			this.setSmoothen(Boolean.parseBoolean(p.getProperty("smoothen").replaceAll(WHITESPACE,EMPTY)));
-	
-		
+
+		if (p.getProperty("smoothen") != null) {
+			this.setSmoothen(Boolean.parseBoolean(p.getProperty("smoothen").replaceAll(WHITESPACE, EMPTY)));
+		}
+
+		if (p.getProperty("captureOrbit") != null) {
+			boolean capOrb = Boolean.parseBoolean(p.getProperty("captureOrbit").replaceAll(WHITESPACE, EMPTY));
+			this.setCaptureOrbit(capOrb);
+			
+			if(capOrb){
+				if (p.getProperty("orbitTrapPoint") != null) {
+					this.setOrbitTrapPoint(new ComplexNumber(p.getProperty("orbitTrapPoint").replaceAll(WHITESPACE, EMPTY)));
+				}
+				if (p.getProperty("orbitTrapSize") != null) {
+					this.setTrapSize(Double.parseDouble(p.getProperty("orbitTrapSize").replaceAll(WHITESPACE, EMPTY)));
+				}
+			}
+
+		}
 		
 	}
 
@@ -4512,6 +4527,26 @@ vga=[0,43520,11141120,11184640,2852126720,2852170240,2857697280,2863311360,14316
 		this.captureOrbit = capOrbit;		
 	}
 	
+	public ComplexNumber getOrbitTrapPoint() {
+		return this.orbitTrapPoint;
+	}
+
+
+	public void setOrbitTrapPoint(ComplexNumber oTrapPoint) {
+		this.orbitTrapPoint = oTrapPoint;
+	}
+
+
+	public double getTrapSize() {
+		return this.trapSize;
+	}
+
+
+	public void setTrapSize(double size) {
+		this.trapSize = size;
+	}
+
+
 	protected void printOrbitMap() {
 		System.out.println("orbitMap.size()"+orbitDistanceMap.size());
 		Set<ComplexNumber> set = orbitDistanceMap.keySet();
@@ -4541,9 +4576,15 @@ vga=[0,43520,11141120,11184640,2852126720,2852170240,2857697280,2863311360,14316
 		
 	}
 	
-/*	//wikipeadia---orbit-distance
-	private double getMandDistance(ComplexNumber c, ComplexNumber point) {
-		double distance = 1e20;
+	//wikipeadia---orbit-distance
+	protected double getDistance(ComplexNumber c, ComplexNumber point) {
+//		double distance = 1e20;
+		ComplexNumber cMinusPoint = c.minus(point);
+		double cMinusPointModulus = cMinusPoint.abs();
+		/*if (cMinusPointModulus < distance)
+			distance = cMinusPointModulus;*/
+		return cMinusPointModulus;//distance;
+		/*///////////////////////////////////////////////
 		ComplexNumber z = new ComplexNumber(0, 0);
 		
 
@@ -4560,8 +4601,8 @@ vga=[0,43520,11141120,11184640,2852126720,2852170240,2857697280,2863311360,14316
 			if (zMinusPointModulus < distance)
 				distance = zMinusPointModulus;
 		}
-
 		return distance;
+///////////////////////////////////////*/
 	}
-*/
+
 }

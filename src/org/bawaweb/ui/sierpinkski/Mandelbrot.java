@@ -877,11 +877,12 @@ public class Mandelbrot extends FractalBase {
 		
 	}
 
-	private int mand(ComplexNumber z0, int maxIterations, int pwr, ComplexNumber constant, double bd, int r, int c) {
+		private int mand(ComplexNumber z0, int maxIterations, int pwr, ComplexNumber constant, double bd, int r, int c) {
 		ComplexNumber z = z0;
 
 		List<Double> zList = null;
 		List<ComplexNumber> zPxList = null;
+		boolean trapped=false;
 		if (isCaptureOrbit()) {
 			zList = new ArrayList<Double>();
 			zPxList = new ArrayList<ComplexNumber>();
@@ -892,6 +893,10 @@ public class Mandelbrot extends FractalBase {
 				if (zList.size() < 20) {
 					zList.add(z.abs());
 					zPxList.add(z);
+				}
+				if (getDistance(z, orbitTrapPoint) < trapSize) {
+					trapped = true;
+					return (int) getDistance(z, orbitTrapPoint);
 				}
 			}
 			
