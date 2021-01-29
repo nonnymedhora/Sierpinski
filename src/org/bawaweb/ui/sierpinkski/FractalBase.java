@@ -3520,13 +3520,13 @@ vga=[0,43520,11141120,11184640,2852126720,2852170240,2857697280,2863311360,14316
 		double imgPosn = y_max + (y * 1.0 * (y_min - y_max)) / getHeight();
 		String imgSign = imgPosn > 0 ? "+" : "";
 		locPtTextField.setText(realPosn + " " + imgSign + " " + imgPosn + " * i");
-		/*//TODO	l8r
+		//TODO	l8r
 		ComplexNumber z = new ComplexNumber(realPosn,imgPosn);
 		List<ComplexNumber> zList = orbitPixelMap.get(z);
 		if (zList!=null) {
 			showOrbitDistances(z, zList);
 		}
-		*/
+		
 	}
 
 	private void showOrbitDistances(ComplexNumber zz,List<ComplexNumber> zList) {
@@ -3549,10 +3549,19 @@ vga=[0,43520,11141120,11184640,2852126720,2852170240,2857697280,2863311360,14316
 			/*int xRectStart = (int) (((x_max - x_min) / (getWidth() - 1)) * z.real + x_min);
 
 			int yRectStart = (int) (((y_min - y_max) / (getHeight() - 1)) * z.imaginary + y_max);
-			*/int xRectStart = (int) (((z.real * getWidth()) - x_min) / (x_max - x_min));
+			*/
+			/*
+			int xRectStart = (int) (((z.real * getWidth()) - x_min) / (x_max - x_min));
 
 			int yRectStart = (int) (((z.imaginary * getHeight()) - y_max) / (y_min - y_max));
-			g.drawRect(xRectStart, yRectStart, 2, 2);
+*/			
+			
+			
+
+int real = (int)((z.real-x_min)*getWidth()/(1.0*(x_max-x_min)));
+int imag=(int)((z.imaginary-y_max)*getHeight()/(1.0*(y_min-y_max)));
+			
+			g.drawRect(real, imag, 2, 2);
 			
 		}
 	}
