@@ -896,10 +896,10 @@ public class Mandelbrot extends FractalBase {
 				}
 				if (getDistance(z, orbitTrapPoint) < trapSize) {
 					trapped = true;
-					return (int) getDistance(z, orbitTrapPoint);
+					return (int) getDistance(z, orbitTrapPoint)*getWidth();
 				}
 			}
-			
+
 			if (z.abs() > bd)
 				return t;
 

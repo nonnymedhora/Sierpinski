@@ -4578,12 +4578,16 @@ vga=[0,43520,11141120,11184640,2852126720,2852170240,2857697280,2863311360,14316
 	
 	//wikipeadia---orbit-distance
 	protected double getDistance(ComplexNumber c, ComplexNumber point) {
+		return c.distance(point);
+		
+		
 //		double distance = 1e20;
-		ComplexNumber cMinusPoint = c.minus(point);
-		double cMinusPointModulus = cMinusPoint.abs();
+		
+		//ComplexNumber cMinusPoint = c.minus(point);
+		//double cMinusPointModulus = cMinusPoint.abs();
 		/*if (cMinusPointModulus < distance)
 			distance = cMinusPointModulus;*/
-		return cMinusPointModulus;//distance;
+	//	return cMinusPointModulus;//distance;
 		/*///////////////////////////////////////////////
 		ComplexNumber z = new ComplexNumber(0, 0);
 		

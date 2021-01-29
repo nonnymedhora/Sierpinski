@@ -431,6 +431,24 @@ this.real=Double.NaN;this.imaginary=Double.NaN;
     }
     
 
+/**
+ * Returns the distance from another point in the complex place
+ * from this.
+ * @param point	-	the comparison point to test distance to
+ * @return the distance
+ */
+	public double distance(ComplexNumber point) {
+		// returns distance from another point
+		double x = this.real;
+		double y = this.imaginary;
+		
+		double a = point.real;
+		double b = point.imaginary;
+		
+		return Math.sqrt(Math.pow((x-a),2)+Math.pow(y-b,2));
+	}
+    
+
     // return a / b
     public ComplexNumber dividesOLD(ComplexNumber b) {
         ComplexNumber a = this;

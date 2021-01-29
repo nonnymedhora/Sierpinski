@@ -566,16 +566,17 @@ public class Julia extends FractalBase {
 			if (isCaptureOrbit()) {
 				if (zList.size() < 20) {
 					zList.add(z.abs());
-					zPxList.add(z);}
-			}
-			if (getDistance(z, orbitTrapPoint) < trapSize) {
-				trapped = true;
-				return (int) getDistance(z, orbitTrapPoint);
+					zPxList.add(z);
+				}
+				if (getDistance(z, orbitTrapPoint) < trapSize) {
+					trapped = true;
+					return (int) getDistance(z, orbitTrapPoint)*getWidth();
+				}
 			}
 			if (z.abs() > bd) {
 				return t;
 			}
-			
+
 			z = this.processJuliaZValue(z, complexConstant);
 		}
 
