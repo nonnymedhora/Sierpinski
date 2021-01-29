@@ -3522,11 +3522,35 @@ vga=[0,43520,11141120,11184640,2852126720,2852170240,2857697280,2863311360,14316
 		locPtTextField.setText(realPosn + " " + imgSign + " " + imgPosn + " * i");
 		//TODO	l8r
 		ComplexNumber z = new ComplexNumber(realPosn,imgPosn);
-		List<ComplexNumber> zList = orbitPixelMap.get(z);
+		List<ComplexNumber> zList = this.getOrbitList(z);
 		if (zList!=null) {
 			showOrbitDistances(z, zList);
+		}else{
+			Graphics g = this.getGraphics();
+			g.drawImage(bufferedImage, 0, 0, (ImageObserver)this);
 		}
 		
+	}
+
+
+	List<ComplexNumber> getOrbitList(ComplexNumber zz) {
+		if (orbitPixelMap.get(zz) != null)
+			return orbitPixelMap.get(zz);
+		double realStart = zz.real-((x_max-x_min)/getWidth())*0.01;
+		double realEnd = zz.real+((x_max-x_min)/getWidth())*0.01;
+		double imagStart = zz.imaginary -((y_max-y_min)/getHeight())*0.01;
+		double imagEnd = zz.imaginary +((y_max-y_min)/getHeight())*0.01;
+		
+		int jump = 20;
+		for (double x = realStart; x <= realEnd; x += jump) {
+			for (double y = imagStart; y <= imagEnd; y += jump) {
+				ComplexNumber z = new ComplexNumber(x,y);
+				if(orbitPixelMap.get(z) != null)
+					return orbitPixelMap.get(z);
+			}
+		}
+
+		return null;
 	}
 
 	private void showOrbitDistances(ComplexNumber zz,List<ComplexNumber> zList) {
@@ -3534,35 +3558,16 @@ vga=[0,43520,11141120,11184640,2852126720,2852170240,2857697280,2863311360,14316
 		g.drawImage(bufferedImage, 0, 0, (ImageObserver)this);
 		g.setColor(Color.white);
 		
-		for(int i = 0; i < zList.size(); i++) {			
-			if(i>10) break;
-			ComplexNumber z = zList.get(i);	/*	
+		for (int i = 0; i < zList.size(); i++) {
+			if (i > 10)
+				break;
 			
-		((xmax-xmin)/(canvas.width-1))*ij[0]+xmin, 
-		((ymin-ymax)/(canvas.height-1))*ij[1]+ymax
+			ComplexNumber z = zList.get(i);
 			
-			double realPosn = x_min + (x * 1.0 * (x_max - x_min)) / getWidth();		
-			double imgPosn = y_max + (y * 1.0 * (y_min - y_max)) / getHeight();
-*/
+			int real = (int) ((z.real - x_min) * getWidth() / (1.0 * (x_max - x_min)));
+			int imag = (int) ((z.imaginary - y_max) * getHeight() / (1.0 * (y_min - y_max)));
 			
-			//TODO	figure formula z2p
-			/*int xRectStart = (int) (((x_max - x_min) / (getWidth() - 1)) * z.real + x_min);
-
-			int yRectStart = (int) (((y_min - y_max) / (getHeight() - 1)) * z.imaginary + y_max);
-			*/
-			/*
-			int xRectStart = (int) (((z.real * getWidth()) - x_min) / (x_max - x_min));
-
-			int yRectStart = (int) (((z.imaginary * getHeight()) - y_max) / (y_min - y_max));
-*/			
-			
-			
-
-int real = (int)((z.real-x_min)*getWidth()/(1.0*(x_max-x_min)));
-int imag=(int)((z.imaginary-y_max)*getHeight()/(1.0*(y_min-y_max)));
-			
-			g.drawRect(real, imag, 2, 2);
-			
+			g.drawRect(real, imag, 2, 2);			
 		}
 	}
 
