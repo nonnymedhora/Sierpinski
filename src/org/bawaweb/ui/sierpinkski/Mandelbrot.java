@@ -897,11 +897,10 @@ public class Mandelbrot extends FractalBase {
 					zList.add(z.abs());
 					zPxList.add(z);
 				}
-				trapDist = this.getDistance(z, orbitTrapPoint);
 				
-				switch(this.trapShape){
+				switch (this.trapShape) {
 					case "Circle":
-						trapped = trapDist < trapSize;
+						trapped = isInOrbitCircle(z);
 						break;
 					case "Square":
 						trapped = isInOrbitSquare(z);
@@ -910,7 +909,8 @@ public class Mandelbrot extends FractalBase {
 						trapped = isInOrbitCross(z);
 						break;
 					case "Diamond":
-//						break;
+						trapped = isInOrbitDiamond(z);
+						break;
 					default:
 						trapped = trapDist < trapSize;
 						break;

@@ -4590,18 +4590,94 @@ vga=[0,43520,11141120,11184640,2852126720,2852170240,2857697280,2863311360,14316
 		
 	}
 	
-	protected boolean isInOrbitCross(ComplexNumber c) {
+	protected boolean isInOrbitCircle(ComplexNumber c) {
+		return this.getDistance(c, this.orbitTrapPoint) < this.trapSize;
+	}
+	
+	protected boolean isInOrbitDiamond(ComplexNumber c) {
 		double minX = orbitTrapPoint.real-trapSize/2;
 		double maxX = orbitTrapPoint.real+trapSize/2;
 		double minY = orbitTrapPoint.imaginary-trapSize/2;
 		double maxY = orbitTrapPoint.imaginary+trapSize/2;
 		
+		//diamond	=	4 triangles, each having orbitTrapPoint as a vertex,
+		//	non-overlapping, similar, equal-in-area, side-length=trapSize/2
+		//	orbitTrapPoint=o
+		//triangle1				O.real,maxY
+		//					  /		|
+		//					 /		|
+		//			   	    /		|
+		//			  	   /		|
+		//		minX,O.imaginary=====O		
+		
+		//triangle2				O.real,maxY
+		//						|	\
+		//						|	 \
+		//						|	  \
+		//						O=====maxX,O.imaginary
+		
+		//triangle3		minX,O.imaginary=====O
+		//					\				|
+		//					 \				|
+		//					  \  			|
+		//						O.real,minY
+		
+		//triangle4			O=======maxX,O.imaginary
+		//					|		/
+		//					|	   /
+		//					O.real,minY
+		
+		boolean isInTriangle1 = this.IsPointInTriangle(c,new ComplexNumber(orbitTrapPoint.real,maxY),new ComplexNumber(minX,orbitTrapPoint.imaginary),orbitTrapPoint);
+		if(isInTriangle1)
+			return true;
+		boolean isInTriangle2 = this.IsPointInTriangle(c,new ComplexNumber(orbitTrapPoint.real,maxY),new ComplexNumber(maxX,orbitTrapPoint.imaginary),orbitTrapPoint);
+		if(isInTriangle2)
+			return true;
+		boolean isInTriangle3 =  this.IsPointInTriangle(c,new ComplexNumber(orbitTrapPoint.real,minY),new ComplexNumber(minX,orbitTrapPoint.imaginary),orbitTrapPoint);
+		if(isInTriangle3)
+			return true;
+		
+		boolean isInTriangle4 = this.IsPointInTriangle(c,new ComplexNumber(orbitTrapPoint.real,minY),new ComplexNumber(maxX,orbitTrapPoint.imaginary),orbitTrapPoint);
+		if(isInTriangle4)
+			return true;
+		
+		
+		return false;
+		
+	}
+	
+	boolean IsPointInTriangle (ComplexNumber pt, ComplexNumber v1, ComplexNumber v2, ComplexNumber v3)	{
+	    double d1, d2, d3;
+	    boolean has_neg, has_pos;
+
+	    d1 = sign(pt, v1, v2);
+	    d2 = sign(pt, v2, v3);
+	    d3 = sign(pt, v3, v1);
+
+	    has_neg = (d1 < 0) || (d2 < 0) || (d3 < 0);
+	    has_pos = (d1 > 0) || (d2 > 0) || (d3 > 0);
+
+	    return !(has_neg && has_pos);
+	}
+	
+	
+	double sign (ComplexNumber p1, ComplexNumber p2, ComplexNumber p3)	{
+	    return (p1.real - p3.real) * (p2.imaginary - p3.imaginary) - (p2.real - p3.real) * (p1.imaginary - p3.imaginary);
+	}
+
+	
+	protected boolean isInOrbitCross(ComplexNumber c) {
+		double minX = orbitTrapPoint.real-trapSize/2;
+		double maxX = orbitTrapPoint.real+trapSize/2;
+		double minY = orbitTrapPoint.imaginary-trapSize/2;
+		double maxY = orbitTrapPoint.imaginary+trapSize/2;
+		//		cross	=	2 squares	overlapping at orbitTrapPoint
 		//cross--sq1	
 		//			x_min,maxY======================x_max,maxY
 		//				|							|
 		//			x_min,minY======================x_max,minY
 		boolean inSqCrs1 = false;
-		inSqCrs1 = x_min<=c.real&&minY<=c.imaginary&&c.real<=x_max&&c.imaginary<=maxY;
+		inSqCrs1 = (x_min<=c.real&&minY<=c.imaginary&&c.real<=x_max&&c.imaginary<=maxY);
 		if(inSqCrs1)
 			return true;
 		
@@ -4615,7 +4691,7 @@ vga=[0,43520,11141120,11184640,2852126720,2852170240,2857697280,2863311360,14316
 		//							|		|
 		//					minX,y_min=====maxX,y_min
 		
-		return minX<=c.real&&y_min<=c.imaginary&&c.real<=maxX&&c.imaginary<=y_max;
+		return (minX<=c.real&&y_min<=c.imaginary&&c.real<=maxX&&c.imaginary<=y_max);
 		
 	}
 	
