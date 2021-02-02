@@ -107,9 +107,9 @@ class SierpinskiComboPanel extends JPanel {
 	private static final String[] COLOR_SUPER_BLOWOUT_TYPES = FractalBase.COLOR_SUPER_BLOWOUT_TYPES;///new String[] { "Original","Fire","Black & White","Electric Blue","Toon","Gold","Classic VGA","CGA 1","CGA 2","Primary (RGB)","Secondary (CMY)","Tertiary 1","Tertiary 2","Neon"};
 	private static final String[] FUNCTION_OPTIONS 		= {"None","sine","cosine","tan","cosec","sec","cot","sinh","cosh","tanh","arcsine","arccosine","arctan","arcsinh","arccosh","arctanh","reciprocal", "reciprocalSquare","square","cube","exponent(e)", "root",/*"cube-root",*/ "log(e)"};
 	private static final String[] PIX_TRANSFORM_OPTIONS = {"none", "absolute", "absoluteSquare","reciprocal", "reciprocalSquare", "square", "cube","root", "exponent", "log(10)", "log(e)", "sine", "cosine", "tan", "cosec", "sec", "cot", "sinh", "cosh", "tanh", "arcsine", "arccosine", "arctangent", "arcsinh", "arccosh", "arctanh"};
-	private static final String[] ORBIT_POINT_OPTIONS = { "[0.0, 0.0]", "[-0.5, 0.0]", "[0.5, 0.0]", "[0.0, -0.5]", "[0.0, 0.5]", "[-0.5, -0.5]", "[-0.5, 0.5]", "[0.5, -0.5]", "[0.5, 0.5]" };
-	private static final Double[] TRAP_SIZE_OPTIONS = { 0.05, 0.075, 0.1, 0.125, 0.15, 0.2, 0.25, 0.3, 0.4, 0.5, 0.75, 1.0 };
-	private static final String[] TRAP_SHAPE_OPTIONS = { "Circle", "Square", "Cross", "Diamond" };
+	private static final String[] ORBIT_POINT_OPTIONS = { "[0.0, 0.0]", "[-0.5, 0.0]", "[0.5, 0.0]", "[0.0, -0.5]", "[0.0, 0.5]", "[-0.5, -0.5]", "[-0.5, 0.5]", "[0.5, -0.5]", "[0.5, 0.5]", "[-0.25, 0.0]", "[0.25, 0.0]", "[0.0, -0.25]", "[0.0, 0.25]", "[-0.25, -0.25]", "[-0.25, 0.25]", "[0.25, -0.25]", "[0.25, 0.25]" };
+	private static final Double[] TRAP_SIZE_OPTIONS = { 0.05, 0.075, 0.1, 0.125, 0.15, 0.2, 0.225, 0.25, 0.275, 0.3, 0.35, 0.4, 0.45, 0.5, 0.6, 0.7, 0.75, 0.8, 0.9, 1.0 };
+	private static final String[] TRAP_SHAPE_OPTIONS = { "Circle", "Square", "Cross", "Diamond", "TrianglUP", "TrianglDWN" };
 
 	private boolean smoothenColor = false;
 	private final JCheckBox smoothenColorCb = new JCheckBox("SmoothenColor", false);
@@ -8570,14 +8570,18 @@ class SierpinskiComboPanel extends JPanel {
 				this.polyImgTf.setEnabled(true);
 			}
 		}
-		this.formulaArea.setVisible(true);
-
 		if (choice.equals(diyJulia)) {
 			this.doDiyJuliaChoicesCheck();
 		} else if (choice.equals(diyMand)) {
 			this.doDiyMandelbrotChoicesCheck();
 		} else if (choice.equals(POLY)) {
 			this.doPolyChoicesCheck();
+		}
+		
+		if (!((this.polyGenCb.isSelected()||this.polyGen)||(this.diyMandGenCb.isSelected()||this.diyMandGen)||(this.diyJuliaGenCb.isSelected()||this.diyJuliaGen))) {
+			this.formulaArea.setVisible(true);
+		}else{
+			this.formulaArea.setVisible(false);
 		}
 	}
 
@@ -11976,6 +11980,8 @@ System.out.println("space2DIs __ "+space2D);*/
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSetDiyJuliaGenCommand(true);
 					
+					formulaArea.setVisible(false);
+					
 					diyJuliaVaryColorCb.setVisible(true);
 					diyJuliaVaryPixXTranCb.setVisible(true);
 					diyJuliaVaryPixYTranCb.setVisible(true);
@@ -12066,6 +12072,8 @@ System.out.println("space2DIs __ "+space2D);*/
 
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
 					doSetDiyJuliaGenCommand(false);
+					
+					formulaArea.setVisible(true);
 
 					diyJuliaVaryColorCb.setVisible(false);
 					diyJuliaVaryPixXTranCb.setVisible(false);
@@ -12731,6 +12739,8 @@ System.out.println("space2DIs __ "+space2D);*/
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
 					doSetDiyMandGenCommand(true);
+
+					formulaArea.setVisible(false);
 					
 					diyMandVaryColorCb.setVisible(true);
 					diyMandVaryPixXTranCb.setVisible(true);
@@ -12817,6 +12827,8 @@ System.out.println("space2DIs __ "+space2D);*/
 
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
 					doSetDiyMandGenCommand(false);
+
+					formulaArea.setVisible(true);
 
 					diyMandVaryColorCb.setVisible(false);
 					diyMandVaryPixXTranCb.setVisible(false);
@@ -13439,7 +13451,9 @@ private void setupPolyGeneratorListeners() {
             @Override
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
-					doSetPolyGenCommand(true);
+					doSetPolyGenCommand(true);					
+
+					formulaArea.setVisible(false);
 					
 					polyVaryColorCb.setVisible(true);
 					polyVaryPixXTranCb.setVisible(true);
@@ -13527,6 +13541,8 @@ private void setupPolyGeneratorListeners() {
 
 				} else if (event.getStateChange() == ItemEvent.DESELECTED) {
 					doSetPolyGenCommand(false);
+
+					formulaArea.setVisible(true);
 
 					polyVaryColorCb.setVisible(false);
 					polyVaryPixXTranCb.setVisible(false);

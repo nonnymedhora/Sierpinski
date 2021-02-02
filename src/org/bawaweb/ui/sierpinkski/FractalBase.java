@@ -4590,6 +4590,43 @@ vga=[0,43520,11141120,11184640,2852126720,2852170240,2857697280,2863311360,14316
 		
 	}
 	
+	protected boolean isInOrbitTriangle(ComplexNumber c, String dir) {
+		if(dir.equalsIgnoreCase("Up")) {
+			//				v1						v1				v1=O.real,O.imaginary+sqrt(3)/4
+			//			   /	\					|	\			|	
+			//			 1/  O   \1		  sqrt(3)/2 |O	 \1			O
+			//			 /		  \					|	  \
+			//		   v2====1====v3				b==1/2=v3
+			//		v1->	O.real,(O.imaginary+((sqrt(3)/4)*trapSize))
+			//		v2->	(O.real-((1/2)*trapSize)),(O.imaginary-((sqrt(3)/4)*trapSize))
+			//		v3->	(O.real+((1/2)*trapSize)),(O.imaginary-((sqrt(3)/4)*trapSize))
+			final ComplexNumber o = orbitTrapPoint;
+			final double size = trapSize;
+			ComplexNumber v1 = new ComplexNumber(o.real, (o.imaginary + (Math.sqrt(3) / 4) * size));
+			ComplexNumber v2 = new ComplexNumber((o.real - (0.5 * size)), (o.imaginary - (Math.sqrt(3) / 4) * size));
+			ComplexNumber v3 = new ComplexNumber((o.real + (0.5 * size)), (o.imaginary - (Math.sqrt(3) / 4) * size));
+			
+			return this.IsPointInTriangle(c,v1,v2,v3);
+		} else if(dir.equalsIgnoreCase("Down")){
+			//			v2====1=====v3
+			//			 \			/
+			//			 1\	  O	   /
+			//			   \	  /
+			//				  v1
+			//		v1->	O.real,(O.imaginary-((sqrt(3)/4)*trapSize))
+			//		v2->	(O.real-((1/2)*trapSize)),(O.imaginary+((sqrt(3)/4)*trapSize))
+			//		v3->	(O.real+((1/2)*trapSize)),(O.imaginary+((sqrt(3)/4)*trapSize))
+			final ComplexNumber o = orbitTrapPoint;
+			final double size = trapSize;
+			ComplexNumber v1 = new ComplexNumber(o.real, (o.imaginary - (Math.sqrt(3) / 4) * size));
+			ComplexNumber v2 = new ComplexNumber((o.real - (0.5 * size)), (o.imaginary + (Math.sqrt(3) / 4) * size));
+			ComplexNumber v3 = new ComplexNumber((o.real + (0.5 * size)), (o.imaginary + (Math.sqrt(3) / 4) * size));
+			
+			return this.IsPointInTriangle(c,v1,v2,v3);
+		}
+		return false;		
+	}
+	
 	protected boolean isInOrbitCircle(ComplexNumber c) {
 		return this.getDistance(c, this.orbitTrapPoint) < this.trapSize;
 	}

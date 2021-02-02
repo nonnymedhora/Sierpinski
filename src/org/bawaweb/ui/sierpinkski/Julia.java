@@ -585,6 +585,12 @@ public class Julia extends FractalBase {
 					case "Diamond":
 						trapped = isInOrbitDiamond(z);
 						break;
+					case "TrianglUP":
+						trapped = isInOrbitTriangle(z,"UP");
+						break;
+					case "TrianglDWN":
+						trapped = isInOrbitTriangle(z,"DOWN");
+						break;
 					default:
 						trapped = trapDist < trapSize;
 						break;
