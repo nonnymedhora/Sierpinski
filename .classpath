@@ -4,5 +4,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk8"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX"/>
 	<classpathentry kind="lib" path="lib/lwjgl.jar"/>
+	<classpathentry kind="lib" path="C:/jdk8/jre/lib/ext/JRI.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JRI"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

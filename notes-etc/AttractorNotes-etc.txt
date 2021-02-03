@@ -6,3 +6,70 @@ DeJong		(Peter DeJong)
 sin(a * y) - cos(b *x)
 sin(c * x) - cos(d * y)
 
+
+
+
+------
+
+http://www.monogon.net/orbittrap/
+ln((((1-i)*Z^6)+(7+i)*z)/((2*Z^5)+6))
+
+https://softologyblog.wordpress.com/category/strange-attractors/
+Hopalong Attractor
+
+The Hopalong attractor was discovered by Barry Martin.
+
+
+x and y both start at 0
+
+xnew=y-1-sqrt(abs(b*x-1-c))*sign(x-1)
+ynew=a-x-1
+
+The parameters a, b and c can be any floating point value between 0 and +10.
+
+Hopalong Attractor
+
+A=7.16878197155893 B=8.43659746693447 C=2.55983412731439
+
+
+y-1-sqrt(abs(8.43659746693447*x-1-2.55983412731439))*sine(x-1)
+7.16878197155893-x-1
+----------
+
+Jason Rampe 2
+
+Another variation I discovered while trying random formula changes.
+
+
+x and y both start at 0.1
+
+xnew=cos(y*b)+c*cos(x*b)
+ynew=cos(x*a)+d*cos(y*a)
+
+Variables a, b, c and d are floating point values between -3 and +3
+
+Jason Rampe 2 Attractor
+
+A=1.546 B=1.929 C=1.09 D=1.41
+
+
+500000
+xnew=cos(y*1.929)+1.09*cos(x*1.929)
+ynew=cos(x*1.546)+1.41*cos(y*1.546)
+
+
+dejong
+x and y both start at 0.1
+
+xnew=d*sin(x*a)-sin(y*b)
+ynew=c*cos(x*a)+cos(y*b)
+
+Variables a, b, c and d are floating point values between -3 and +3
+
+Johnny Svensson Attractor
+
+A=1.40 B=1.56 C=1.40 D=-6.56
+
+
+xnew=-6.56*sin(x*1.40)-sin(y*1.56)
+ynew=1.40*cos(x*1.40)+cos(y*1.56)
