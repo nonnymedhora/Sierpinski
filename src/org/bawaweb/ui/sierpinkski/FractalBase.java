@@ -4035,7 +4035,7 @@ vga=[0,43520,11141120,11184640,2852126720,2852170240,2857697280,2863311360,14316
 			break;
 			
 		case	"Classic VGA":
-			return new Color(vga[n%COLORMAXRGB]);
+			return new Color(vga[Math.abs(n)%COLORMAXRGB]);
 			
 		case	"CGA 1":
 			if (n % 4 == 0)
