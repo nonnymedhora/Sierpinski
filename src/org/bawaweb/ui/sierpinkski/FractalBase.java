@@ -864,7 +864,8 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 			case	"Minus":	z = new ComplexNumber(x,y*-1.0);	break;
 			case	"Multiply":	z = new ComplexNumber(x,0.0).times(new	ComplexNumber(0.0,y));	break;
 			case	"Divide":	z = new ComplexNumber(x,0.0).divides(new	ComplexNumber(0.0,y));	break;
-			case	"Power":	z = new ComplexNumber(x,0.0).power(/*(int)*/y);	break;
+			case	"PowerX^Y":	z = new ComplexNumber(x,0.0).power(/*(int)*/y);	break;
+			case	"PowerY^X":	z = new ComplexNumber(y,0.0).power(/*(int)*/x);	break;
 			default:	z = new ComplexNumber(x,y);	break;	
 		}
 		return z;

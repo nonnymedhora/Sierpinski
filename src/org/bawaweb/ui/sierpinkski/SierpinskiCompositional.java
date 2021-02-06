@@ -126,10 +126,10 @@ class SierpinskiComboPanel extends JPanel {
 	private static final Integer[] APOLLO_MULTS 		= new Integer[]{ 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
 	private static final Integer[] APOLLO_CURVES 		= new Integer[]{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 };
 	
-	//	for	z+C, z-C, z*C, z/C, z^C
-	private static final String[] PIX_CONST_OPRNS = OPERATIONS;
-	//	for	x+iy,	x-iy,	x*iy,	x/iy
-	private static final String[] PIX_INTRA_OPRNS = OPERATIONS;
+	//	for	z+C, z-C, z*C, z/C, z^C, C^z
+	private static final String[] PIX_CONST_OPRNS = {"Plus","Minus","Divide","Multiply","PowerZ^C","PowerC^Z"};
+	//	for	x+iy, x-iy,	x*iy, x/iy, x^y, y^x
+	private static final String[] PIX_INTRA_OPRNS = {"Plus","Minus","Divide","Multiply","PowerX^Y","PowerY^X"};
 	
 	// for Julia
 	private static final String J1 = "P[2] C[0.279]";	//f(z) = z^2 + 0.279
@@ -1416,13 +1416,13 @@ class SierpinskiComboPanel extends JPanel {
 			OpsEnum.Minus.getOperation(),
 			OpsEnum.Multiply.getOperation(),
 			OpsEnum.Divide.getOperation(),
-			OpsEnum.Power.getOperation()
+			/*OpsEnum.Power.getOperation()*/
 		};
 	}
 	
 	
 	private enum OpsEnum {
-		Plus("Plus"),Minus("Minus"),Multiply("Multiply"),Divide("Divide"),Power("Power");
+		Plus("Plus"),Minus("Minus"),Multiply("Multiply"),Divide("Divide")/*,Power("Power")*/;
 		
 		private String operation;
 
@@ -9307,6 +9307,16 @@ System.out.println("space2DIs __ "+space2D);*/
 						this.pxConstOprnChoice+
 						"<br/>   f(Z) = z / C</font><br/>");
 				break;
+			case	"PowerZ^C"	:	
+				this.formulaArea.append("<br/><font color='blue'>Pixel Constant Operation "+
+						this.pxConstOprnChoice+
+						"<br/>   f(Z) = z ^ C</font><br/>");
+				break;
+			case	"PowerC^Z"	:	
+				this.formulaArea.append("<br/><font color='blue'>Pixel Constant Operation "+
+						this.pxConstOprnChoice+
+						"<br/>   f(Z) = C ^ z</font><br/>");
+				break;
 			default:
 				this.formulaArea.append("<br/><font color='blue'>Pixel Constant Operation "+
 						this.pxConstOprnChoice+
@@ -9396,10 +9406,17 @@ System.out.println("space2DIs __ "+space2D);*/
 			case "Minus":		opVal = " - "; break;
 			case "Multiply":	opVal = " * "; break;
 			case "Divide":		opVal = " / "; break;
-			case "Power":		opVal = " ^ "; yVal="<sup> "+yVal+"</sup> ";break;
+			case "PowerX^Y":	opVal = " ^ "; yVal="<sup> "+yVal+"</sup> ";break;
+			case "PowerY^X":	opVal = " ^ ";	xVal = "<sup> " + xVal + "</sup>"; break;
 		}
 			
-		this.formulaArea.append(eol+"<font color='black'>z = "+xVal+" "+opVal+" "+yVal+"</font>"+eol);	
+		if (!xyOp.equals("PowerY^X")) {
+			this.formulaArea
+					.append(eol + "<font color='black'>z = " + xVal + " " + opVal + " " + yVal + "</font>" + eol);
+		} else {
+			this.formulaArea
+					.append(eol + "<font color='black'>z = " + yVal + " " + opVal + " " + xVal + "</font>" + eol);
+		}
 	}
 	
 	private void addInvertPixelCalcInfo() {
@@ -9410,20 +9427,34 @@ System.out.println("space2DIs __ "+space2D);*/
 			case "Minus":		opVal = " - "; break;
 			case "Multiply":	opVal = " * "; break;
 			case "Divide":		opVal = " / "; break;
-			case "Power":		opVal = " ^ "; ;break;
+			case "PowerX^Y":	opVal = " ^ "; ;break;
+			case "PowerY^X":	opVal = " ^ "; ;break;
 		}
 			
 		if (invertPix) {
-			if (!this.pixIntraXYOperation.equals("Power")) {
+			if (!this.pixIntraXYOperation.contains("Power")) {
 				this.formulaArea.append(eol + "<font color='red'>Pixel Calculation reversed  z = y " + opVal + " i*x + C</font>" + eol);
 			} else {
-				this.formulaArea.append(eol + "<font color='red'>Pixel Calculation reversed  z = y " + opVal + "<sup> i*x</sup> + C</font>" + eol);
+				if (this.pixIntraXYOperation.equals("PowerX^Y")) {
+					this.formulaArea.append(eol + "<font color='red'>Pixel Calculation reversed  z = y " + opVal
+							+ "<sup> i*x</sup> + C</font>" + eol);
+				} else {
+					this.formulaArea.append(eol + "<font color='red'>Pixel Calculation reversed  z = x " + opVal
+							+ "<sup> i*y</sup> + C</font>" + eol);
+				}
 			}
 		} else {
-			if (!this.pixIntraXYOperation.equals("Power")) {
+			if (!this.pixIntraXYOperation.contains("Power")) {
 				this.formulaArea.append(eol + "<font color='red'>Pixel Calculation z = x " + opVal + " i*y + C</font>" + eol);
 			} else {
-				this.formulaArea.append(eol + "<font color='red'>Pixel Calculation z = x " + opVal + "<sup> i*y</sup> + C</font>" + eol);
+				if (this.pixIntraXYOperation.equals("PowerX^Y")) {
+					this.formulaArea.append(eol + "<font color='red'>Pixel Calculation z = x " + opVal
+							+ "<sup> i*y</sup> + C</font>" + eol);
+				}else{
+					this.formulaArea.append(eol + "<font color='red'>Pixel Calculation z = y " + opVal
+							+ "<sup> i*x</sup> + C</font>" + eol);
+					
+				}
 			}
 		}
 	}

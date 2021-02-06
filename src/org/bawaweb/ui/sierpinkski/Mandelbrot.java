@@ -962,8 +962,10 @@ public class Mandelbrot extends FractalBase {
 			z = z.power(pwr).times(constant);
 		} else if (this.pxConstOperation.equals("Divide")) {
 			z = z.power(pwr).divides(constant);
-		} else if (this.pxConstOperation.equals("Power")) {
+		} else if (this.pxConstOperation.equals("PowerZ^C")) {
 			z = z.power(pwr).power(constant);
+		} else if (this.pxConstOperation.equals("PowerC^Z")) {
+			z = constant.power(pwr).power(z);
 		}
 		return z;
 	}

@@ -649,8 +649,10 @@ public class Julia extends FractalBase {
 			zz = zz.power(this.power).times(aComplexConstant);
 		} else if (this.pxConstOperation.equals("Divide")) {
 			zz = zz.power(this.power).divides(aComplexConstant);
-		} else if (this.pxConstOperation.equals("Power")) {
+		} else if (this.pxConstOperation.equals("PowerZ^C")) {
 			zz = zz.power(this.power).power(aComplexConstant);
+		} else if (this.pxConstOperation.equals("PowerC^Z")) {
+			zz = aComplexConstant.power(this.power).power(zz);
 		}
 		return zz;
 	}
