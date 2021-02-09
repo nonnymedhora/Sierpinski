@@ -118,7 +118,7 @@ class SierpinskiComboPanel extends JPanel {
 	private static final Integer[] EXPONENTS 			= new Integer[] { -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	private static final Integer[] MAX_ITERATIONS 		= new Integer[] { 10, 50, 75, 100, 200, 225, 255, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 7500, 10000, 50000, 100000 };
 	private static final Integer[] AREA_SIZES 			= new Integer[] { 10, 50, 100, 200, 225, 255, 300, 350, 400, 450, 500, 512, 599, 800, Integer.MAX_VALUE };
-	private static final Double[] CENTER_XY 			= new Double[] { -5.0, -4.5, -4.0, -3.5, -3.0, -2.5, -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0 };
+	private static final Double[] CENTER_XY 			= new Double[] { -5.0, -4.5, -4.0, -3.5, -3.0, -2.5, -2.0, -1.5, -1.0, -0.5, -0.45, -0.4, -0.3, -0.25, -0.2, -0.1, 0.0, 0.1, 0.2, 0.25, 0.3, 0.4, 0.45, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0 };
 	private static final Double[] SCALE_SIZES 			= getScaleSizeOptions();//new Double[] { -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0 };
 	private static final String[] POLY_RCMT_TYPES 		= new String[] { "Reverse", "Exchange", "Single", "Duplicate", "Exponent", "Power", "Default" };
 	private static final Integer[] FANNY_RATIOS 		= new Integer[] { 1, 2, 3, 4, 5, 6, 7 };
