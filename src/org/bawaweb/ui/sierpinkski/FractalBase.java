@@ -4036,7 +4036,9 @@ vga=[0,43520,11141120,11184640,2852126720,2852170240,2857697280,2863311360,14316
 			break;
 			
 		case	"Classic VGA":
-			return new Color(vga[Math.abs(n)%COLORMAXRGB]);
+			if (Math.abs(n) < COLORMAXRGB)
+				return new Color(vga[Math.abs(n)]);
+			return new Color(vga[Math.abs(n) % COLORMAXRGB]);
 			
 		case	"CGA 1":
 			if (n % 4 == 0)
@@ -4105,6 +4107,7 @@ vga=[0,43520,11141120,11184640,2852126720,2852170240,2857697280,2863311360,14316
 				b = 127 - (n - 170) * 3 / 2;
 			}
 			break;
+			
 		case	"Tertiary 2":
 			if (n < 85) {
 				r = 255 - n * 3;
