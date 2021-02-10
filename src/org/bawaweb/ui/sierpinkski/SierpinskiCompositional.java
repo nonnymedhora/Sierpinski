@@ -109,7 +109,7 @@ class SierpinskiComboPanel extends JPanel {
 	private static final String[] PIX_TRANSFORM_OPTIONS = {"none", "absolute", "absoluteSquare","reciprocal", "reciprocalSquare", "square", "cube","root", "exponent", "log(10)", "log(e)", "sine", "cosine", "tan", "cosec", "sec", "cot", "sinh", "cosh", "tanh", "arcsine", "arccosine", "arctangent", "arcsinh", "arccosh", "arctanh"};
 	private static final String[] ORBIT_POINT_OPTIONS = { "[0.0, 0.0]", "[-0.5, 0.0]", "[0.5, 0.0]", "[0.0, -0.5]", "[0.0, 0.5]", "[-0.5, -0.5]", "[-0.5, 0.5]", "[0.5, -0.5]", "[0.5, 0.5]", "[-0.25, 0.0]", "[0.25, 0.0]", "[0.0, -0.25]", "[0.0, 0.25]", "[-0.25, -0.25]", "[-0.25, 0.25]", "[0.25, -0.25]", "[0.25, 0.25]" };
 	private static final Double[] TRAP_SIZE_OPTIONS = { 0.05, 0.075, 0.1, 0.125, 0.15, 0.2, 0.225, 0.25, 0.275, 0.3, 0.35, 0.4, 0.45, 0.5, 0.6, 0.7, 0.75, 0.8, 0.9, 1.0 };
-	private static final String[] TRAP_SHAPE_OPTIONS = { "Circle", "Square", "Cross", "Diamond", "TrianglUP", "TrianglDWN" };
+	private static final String[] TRAP_SHAPE_OPTIONS = { "Circle", "Square", "Cross", "Diamond", "TrianglUP", "TrianglDWN", "LineLR", "LineUD" };
 
 	private boolean smoothenColor = false;
 	private final JCheckBox smoothenColorCb = new JCheckBox("SmoothenColor", false);

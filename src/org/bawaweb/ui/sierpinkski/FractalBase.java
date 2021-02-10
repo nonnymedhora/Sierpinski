@@ -4594,6 +4594,21 @@ vga=[0,43520,11141120,11184640,2852126720,2852170240,2857697280,2863311360,14316
 		
 	}
 	
+	protected boolean isInOrbitLine(ComplexNumber c, String dir) {
+		double minX = orbitTrapPoint.real - trapSize / 2;
+		double maxX = orbitTrapPoint.real + trapSize / 2;
+		double minY = orbitTrapPoint.imaginary - trapSize / 2;
+		double maxY = orbitTrapPoint.imaginary + trapSize / 2;
+
+		if (dir.equalsIgnoreCase("UD")) {
+			return (minX <= c.real && y_min <= c.imaginary && c.real <= maxX && c.imaginary <= y_max);
+		} else if (dir.equalsIgnoreCase("LR")) {
+			return (x_min <= c.real && minY <= c.imaginary && c.real <= x_max && c.imaginary <= maxY);
+		}
+		return false;
+
+	}
+	
 	protected boolean isInOrbitTriangle(ComplexNumber c, String dir) {
 		if(dir.equalsIgnoreCase("Up")) {
 			//				v1						v1				v1=O.real,O.imaginary+sqrt(3)/4
@@ -4713,16 +4728,16 @@ vga=[0,43520,11141120,11184640,2852126720,2852170240,2857697280,2863311360,14316
 		double minY = orbitTrapPoint.imaginary-trapSize/2;
 		double maxY = orbitTrapPoint.imaginary+trapSize/2;
 		//		cross	=	2 squares	overlapping at orbitTrapPoint
-		//cross--sq1	
+		//cross--sq1	LR
 		//			x_min,maxY======================x_max,maxY
 		//				|							|
 		//			x_min,minY======================x_max,minY
 		boolean inSqCrs1 = false;
-		inSqCrs1 = (x_min<=c.real&&minY<=c.imaginary&&c.real<=x_max&&c.imaginary<=maxY);
-		if(inSqCrs1)
+		inSqCrs1 = (x_min <= c.real && minY <= c.imaginary && c.real <= x_max && c.imaginary <= maxY);
+		if (inSqCrs1)
 			return true;
 		
-		//crosssq2
+		//crosssq2		UD
 		//					minX,y_max=====maxX,y_max
 		//							|		|
 		//							|		|
@@ -4732,7 +4747,7 @@ vga=[0,43520,11141120,11184640,2852126720,2852170240,2857697280,2863311360,14316
 		//							|		|
 		//					minX,y_min=====maxX,y_min
 		
-		return (minX<=c.real&&y_min<=c.imaginary&&c.real<=maxX&&c.imaginary<=y_max);
+		return (minX <= c.real && y_min <= c.imaginary && c.real <= maxX && c.imaginary <= y_max);
 		
 	}
 	

@@ -591,6 +591,12 @@ public class Julia extends FractalBase {
 					case "TrianglDWN":
 						trapped = isInOrbitTriangle(z,"DOWN");
 						break;
+					case "LineLR":
+						trapped = isInOrbitLine(z,"LR");
+						break;
+					case "LineUD":
+						trapped = isInOrbitLine(z,"UD");
+						break;
 					default:
 						trapped = trapDist < trapSize;
 						break;
