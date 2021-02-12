@@ -981,6 +981,9 @@ public class Julia extends FractalBase {
 		info += "ColorScheme: " + this.colorChoice + eol;
 		info += "[XC,YC]:	[" + this.getxC() +", "+ this.getyC() +"]" + eol;
 		info += "Range: (xmin,ymin) to (xmax, ymax) is ["+ this.x_min + ", "+ this.y_min + "] to [" + this.x_max + ", " + this.y_max +"]" + eol;
+		info += "Center [x,y] is  (" + ((this.x_min + this.x_max) / 2) + ", " + ((this.y_min + this.y_max) / 2) + ")" + eol;
+		if(this.isCaptureOrbit())
+			info += "Orbit Trap Captured at "+ this.orbitTrapPoint + ", TrapShape is " + this.trapShape + ", TrapSize is " + this.trapSize + eol;
 		info += "Constant: (cr,ci)  is (" + this.complex.real + ", " + this.complex.imaginary + ")" + eol;
 		info += "MaxIterations: " + maxIter + "  - Ud = " + this.useDiff + eol;
 		info += "Pixel_Constant Operation Z --> C is " + this.pxConstOperation + eol;
