@@ -996,8 +996,8 @@ public class Julia extends FractalBase {
 
 	public void createFocalFractalShape(FractalBase fbase, ComplexNumber cStart, ComplexNumber cEnd) {
 		Julia julie = (Julia) fbase;
-		double xc = (cStart.real+cEnd.real)/2.0;
-		double yc = (cStart.imaginary+cEnd.imaginary)/2.0;
+		double xc = (cStart.real + cEnd.real) / 2.0;
+		double yc = (cStart.imaginary + cEnd.imaginary) / 2.0;
 		double size = getScaleSize();
 		double bd = julie.getBound();
 		int max = julie.getMaxIter();
@@ -1015,26 +1015,27 @@ public class Julia extends FractalBase {
 		
 		this.setRangeSpace(xc, yc, size, n);
 
-		double xStart = cStart.real<cEnd.real?cStart.real:cEnd.real;
-		double yStart = cStart.imaginary<cEnd.imaginary?cStart.imaginary:cEnd.imaginary;
+		double xStart = cStart.real < cEnd.real ? cStart.real : cEnd.real;
+		double yStart = cStart.imaginary < cEnd.imaginary ? cStart.imaginary : cEnd.imaginary;
 
-		double xEnd = cStart.real>cEnd.real?cStart.real:cEnd.real;
-		double yEnd = cStart.imaginary>cEnd.imaginary?cStart.imaginary:cEnd.imaginary;
+		double xEnd = cStart.real > cEnd.real ? cStart.real : cEnd.real;
+		double yEnd = cStart.imaginary > cEnd.imaginary ? cStart.imaginary : cEnd.imaginary;
+
+		x_min = xStart;
+		x_max = xEnd;
+		y_min = yStart;
+		y_max = yEnd;
+
+		if (xStart == xEnd || yStart == yEnd)
+			return;
 		
-		x_min=xStart;
-		x_max=xEnd;
-		y_min=yStart;
-		y_max=yEnd;
-		
-		if(xStart==xEnd||yStart==yEnd)	return;
-		
-		double xColJump = 1.0 * (xEnd-xStart)/n;
-		double yRowJump = 1.0 * (yEnd-yStart)/n;
-		
+		double xColJump = 1.0 * (xEnd - xStart) / n;
+		double yRowJump = 1.0 * (yEnd - yStart) / n;
+
 		for (int row = 0; row < n; row++) {
 			for (int col = 0; col < n; col++) {
-				double x0 = xStart+row*xColJump;
-				double y0 = yStart+col*yRowJump;				
+				double x0 = xStart + row * xColJump;
+				double y0 = yStart + col * yRowJump;			
 
 				if (this.isReversePixelCalculation()) {
 					double tmp = x0;

@@ -26,6 +26,9 @@ public class BurningShip extends FractalBase {
 	
 	public BurningShip() {
 		super();
+
+		this.addMouseListener(this);
+		this.addMouseMotionListener(this);
 	}
 	
 	public BurningShip(double range, double xc, double yc) {
@@ -147,7 +150,9 @@ public class BurningShip extends FractalBase {
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
-			public void run() {				
+			public void run() {		
+//				final BurningShip bS = new BurningShip(0.02,-1.66,0.0055);	
+//				final BurningShip bS = new BurningShip(5.7,0.45,0.5);			//wholeShip
 				final BurningShip bS = new BurningShip(1.7,0.45,0.5);			//wholeShip
 //				final BurningShip bS = new BurningShip(0.04, 1.755, 0.03);		//firstSmallShip
 //				final BurningShip bS = new BurningShip(0.04, 1.625, 0.035);	//secondSmallShip
@@ -159,8 +164,8 @@ public class BurningShip extends FractalBase {
 				final FractalBase frame = bS;		
 				frame.setColorChoice("ColorGradient6");//("ComputeColor");/*("ColorPalette");/*("BlackWhite");*/
 				frame.setScaleSize(2);
-				frame.setMaxIter(10000);
-				frame.setBound(10);
+				frame.setMaxIter(10000);//(100);//
+				frame.setBound(10);//(40);//
 				/*frame.setUseColorPalette(false);
 				frame.setUseBlackWhite(true);*/
 				frame.setTitle(frame.getFractalShapeTitle());
@@ -172,6 +177,59 @@ public class BurningShip extends FractalBase {
 			}
 		});
 	
+	}
+
+	public void createFocalFractalShape(FractalBase fBase, ComplexNumber cStart, ComplexNumber cEnd) {
+		BurningShip bS = (BurningShip) fBase;
+		double xc = (cStart.real + cEnd.real) / 2.0;
+		double yc = (cStart.imaginary + cEnd.imaginary) / 2.0;
+		double size = getScaleSize();
+		double bd = bS.getBound();
+		int max = bS.getMaxIter();
+		int n = getAreaSize();
+
+		this.setRangeSpace(xc, yc, size, n);
+
+		double xStart = cStart.real < cEnd.real ? cStart.real : cEnd.real;
+		double yStart = cStart.imaginary < cEnd.imaginary ? cStart.imaginary : cEnd.imaginary;
+
+		double xEnd = cStart.real > cEnd.real ? cStart.real : cEnd.real;
+		double yEnd = cStart.imaginary > cEnd.imaginary ? cStart.imaginary : cEnd.imaginary;
+
+		x_min = xStart;
+		x_max = xEnd;
+		y_min = yStart;
+		y_max = yEnd;
+
+		if (xStart == xEnd || yStart == yEnd)
+			return;
+		
+		double xColJump = 1.0 * (xEnd - xStart) / n;
+		double yRowJump = 1.0 * (yEnd - yStart) / n;
+
+		for (int row = 0; row < n; row++) {
+			for (int col = 0; col < n; col++) {
+				double x0 = xStart + row * xColJump;
+				double y0 = yStart + col * yRowJump;
+
+				double cX = xc;// + 2 * this.rangeWidth * (row / (double) n - 0.5);
+				double cY = yc;// + 2 * this.rangeWidth * (col / (double) n - 0.5);
+				
+
+				int colorRGB;
+				if (this.useDiff) {
+					colorRGB = this.burnShip(max, bd, x0, y0, cX, cY);
+				} else {
+					colorRGB = max - this.burnShip(max, bd, x0, y0, cX, cY);
+				}
+
+				Color color = getPixelDisplayColor(row, col, colorRGB, this.useDiff);
+				
+				setPixel(row, n - 1 - col, color.getRGB());	
+				
+			}
+		}
+		
 	}
 
 }

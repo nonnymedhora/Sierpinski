@@ -534,13 +534,19 @@ public abstract class FractalBase extends JFrame implements Runnable, MouseMotio
 //		Graphics2D g = this.getBufferedImage().createGraphics();
 		Julia julia = null;
 		Mandelbrot mand = null;
+		BurningShip bS = null;
 		if (frctl.getClass().getName().contains("Julia")) {
 			julia = (Julia) frctl;
 			julia.createFocalFractalShape(frctl, new ComplexNumber(x_start,y_start), new ComplexNumber(x_end,y_end));
 		} else if(frctl.getClass().getName().contains("Mandelbrot")){
 			mand = (Mandelbrot) frctl;
 			mand.createFocalFractalShape(frctl, new ComplexNumber(x_start,y_start), new ComplexNumber(x_end,y_end));
+		} else if(frctl.getClass().getName().contains("BurningShip")){
+			bS = (BurningShip) frctl;
+			bS.createFocalFractalShape(frctl, new ComplexNumber(x_start,y_start), new ComplexNumber(x_end,y_end));
 		}
+		System.out.println(" createRefocussedFractaImage  "+frctl.getClass().getName());
+		
 
 		x_min = x_start < x_end ? x_start : x_end;
 		x_max = x_start > x_end ? x_start : x_end;

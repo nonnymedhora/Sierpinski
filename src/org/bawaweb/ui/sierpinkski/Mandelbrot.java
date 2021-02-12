@@ -1168,8 +1168,8 @@ public class Mandelbrot extends FractalBase {
 
 	public void createFocalFractalShape(FractalBase fBase, ComplexNumber cStart, ComplexNumber cEnd) {
 		Mandelbrot mand = (Mandelbrot) fBase;
-		double xc = (cStart.real+cEnd.real)/2.0;
-		double yc = (cStart.imaginary+cEnd.imaginary)/2.0;
+		double xc = (cStart.real + cEnd.real) / 2.0;
+		double yc = (cStart.imaginary + cEnd.imaginary) / 2.0;
 		double size = mand.magnification;
 		double bd = mand.getBound();
 		int max = mand.getMaxIter();
@@ -1183,26 +1183,27 @@ public class Mandelbrot extends FractalBase {
 		
 		this.setRangeSpace(xc, yc, size, n);
 
-		double xStart = cStart.real<cEnd.real?cStart.real:cEnd.real;
-		double yStart = cStart.imaginary<cEnd.imaginary?cStart.imaginary:cEnd.imaginary;
+		double xStart = cStart.real < cEnd.real ? cStart.real : cEnd.real;
+		double yStart = cStart.imaginary < cEnd.imaginary ? cStart.imaginary : cEnd.imaginary;
 
-		double xEnd = cStart.real>cEnd.real?cStart.real:cEnd.real;
-		double yEnd = cStart.imaginary>cEnd.imaginary?cStart.imaginary:cEnd.imaginary;
+		double xEnd = cStart.real > cEnd.real ? cStart.real : cEnd.real;
+		double yEnd = cStart.imaginary > cEnd.imaginary ? cStart.imaginary : cEnd.imaginary;
+
+		x_min = xStart;
+		x_max = xEnd;
+		y_min = yStart;
+		y_max = yEnd;
 		
-		x_min=xStart;
-		x_max=xEnd;
-		y_min=yStart;
-		y_max=yEnd;
+		if (xStart == xEnd || yStart == yEnd)
+			return;
 		
-		if(xStart==xEnd||yStart==yEnd)	return;
-		
-		double xColJump = 1.0 * (xEnd-xStart)/n;
-		double yRowJump = 1.0 * (yEnd-yStart)/n;
+		double xColJump = 1.0 * (xEnd - xStart) / n;
+		double yRowJump = 1.0 * (yEnd - yStart) / n;
 		
 		for (int row = 0; row < n; row++) {
 			for (int col = 0; col < n; col++) {
-				double x0 = xStart+row*xColJump;//col*xColJump;	//xc - size / 2 + size * row / n;
-				double y0 = yStart+col*yRowJump;//row*yRowJump;	//yc - size / 2 + size * col / n;
+				double x0 = xStart + row * xColJump;//col*xColJump;	//xc - size / 2 + size * row / n;
+				double y0 = yStart + col * yRowJump;//row*yRowJump;	//yc - size / 2 + size * col / n;
 				
 				ComplexNumber z0 = this.getZValue(func2Apply, pxFunc2Apply, x0, y0);	
 				if (z0.isNaN()) {
