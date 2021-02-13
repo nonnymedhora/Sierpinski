@@ -10780,7 +10780,7 @@ System.out.println("space2DIs __ "+space2D);*/
 
 				baseInfo += "Center [x,y] is  (" + ((this.fBase.x_min + this.fBase.x_max) / 2) + ", " + ((this.fBase.y_min + this.fBase.y_max) / 2) + ")" + eol;
 				if(this.fBase.isCaptureOrbit())
-					baseInfo += "Orbit Trap Captured at "+ this.fBase.orbitTrapPoint + ", TrapShape is " + this.fBase.trapShape + ", TrapSize is " + this.fBase.trapSize + eol;
+					baseInfo += "Orbit Trap Captured at " + this.orbitPointsCombo.getSelectedItem() + ", TrapShape is " + this.fBase.trapShape + ", TrapSize is " + this.fBase.trapSize + eol;
 				
 				baseInfo += "Maximum Iterations: " + this.polyMaxIter + eol;
 				baseInfo += " Scaled Size: " + this.polyScaleSize + "}" + eol + eol;
@@ -10812,7 +10812,7 @@ System.out.println("space2DIs __ "+space2D);*/
 
 				baseInfo += "Center [x,y] is  (" + ((this.fBase.x_min + this.fBase.x_max) / 2) + ", " + ((this.fBase.y_min + this.fBase.y_max) / 2) + ")" + eol;
 				if(this.fBase.isCaptureOrbit())
-					baseInfo += "Orbit Trap Captured at "+ this.fBase.orbitTrapPoint + ", TrapShape is " + this.fBase.trapShape + ", TrapSize is " + this.fBase.trapSize + eol;
+					baseInfo += "Orbit Trap Captured at " + this.orbitPointsCombo.getSelectedItem() + ", TrapShape is " + this.fBase.trapShape + ", TrapSize is " + this.fBase.trapSize + eol;
 				
 				baseInfo += "Maximum Iterations: " + this.mandMaxIter + eol;
 				baseInfo += " Scaled Size: " + this.mandScaleSize + "}" + eol + eol;
@@ -10843,7 +10843,7 @@ System.out.println("space2DIs __ "+space2D);*/
 
 				baseInfo += "Center [x,y] is  (" + ((this.fBase.x_min + this.fBase.x_max) / 2) + ", " + ((this.fBase.y_min + this.fBase.y_max) / 2) + ")" + eol;
 				if(this.fBase.isCaptureOrbit())
-					baseInfo += "Orbit Trap Captured at "+ this.fBase.orbitTrapPoint + ", TrapShape is " + this.fBase.trapShape + ", TrapSize is " + this.fBase.trapSize + eol;
+					baseInfo += "Orbit Trap Captured at " + this.orbitPointsCombo.getSelectedItem() + ", TrapShape is " + this.fBase.trapShape + ", TrapSize is " + this.fBase.trapSize + eol;
 				
 				baseInfo += "Maximum Iterations: " + this.juliaMaxIter + eol;
 				baseInfo += " Scaled Size: " + this.juliaScaleSize + "}" + eol + eol;
@@ -10906,7 +10906,7 @@ System.out.println("space2DIs __ "+space2D);*/
 
 				baseInfo += "Center [x,y] is  (" + ((this.fBase.x_min + this.fBase.x_max) / 2) + ", " + ((this.fBase.y_min + this.fBase.y_max) / 2) + ")" + eol;
 				if(this.fBase.isCaptureOrbit())
-					baseInfo += "Orbit Trap Captured at "+ this.fBase.orbitTrapPoint + ", TrapShape is " + this.fBase.trapShape + ", TrapSize is " + this.fBase.trapSize + eol;
+					baseInfo += "Orbit Trap Captured at " + this.orbitPointsCombo.getSelectedItem() + ", TrapShape is " + this.fBase.trapShape + ", TrapSize is " + this.fBase.trapSize + eol;
 				
 				baseInfo += "Maximum Iterations: " + this.diyMandMaxIter + eol;
 				baseInfo += " Scaled Size: " + this.diyMandScaleSize + "}" + eol + eol;
@@ -10956,7 +10956,7 @@ System.out.println("space2DIs __ "+space2D);*/
 
 				baseInfo += "Center [x,y] is  (" + ((this.fBase.x_min + this.fBase.x_max) / 2) + ", " + ((this.fBase.y_min + this.fBase.y_max) / 2) + ")" + eol;
 				if(this.fBase.isCaptureOrbit())
-					baseInfo += "Orbit Trap Captured at "+ this.fBase.orbitTrapPoint + ", TrapShape is " + this.fBase.trapShape + ", TrapSize is " + this.fBase.trapSize + eol;
+					baseInfo += "Orbit Trap Captured at " + this.orbitPointsCombo.getSelectedItem() + ", TrapShape is " + this.fBase.trapShape + ", TrapSize is " + this.fBase.trapSize + eol;
 				
 				baseInfo += "Maximum Iterations: " + this.diyJuliaMaxIter + eol;
 				baseInfo += " Scaled Size: " + this.diyJuliaScaleSize + "}" + eol + eol;
