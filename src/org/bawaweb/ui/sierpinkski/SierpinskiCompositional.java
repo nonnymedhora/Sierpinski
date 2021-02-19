@@ -1064,6 +1064,25 @@ class SierpinskiComboPanel extends JPanel {
 	private JLabel trapShapeLbl = new JLabel("Trap Shape");
 	private JComboBox<String> trapShapeCombo = new JComboBox<String>(TRAP_SHAPE_OPTIONS);
 	private String trapShapeChoice;
+	
+	//	for	CenterCalc
+	
+	private JCheckBox zoomCntrCb = new JCheckBox("Set Center",false);
+	private boolean zoomCntr = false;
+	private JTextField xCntrTf = new JTextField(5);
+	private double xCntrVal;	
+	private JTextField yCntrTf = new JTextField(5);
+	private double yCntrVal;
+	private JTextField zoomCntrTf = new JTextField(5);
+	private double zoomCntrVal;
+	
+	private final JLabel labelCentrX = new JLabel("Center (x,y) : X:");
+	private final JLabel labelCntrY = new JLabel("  Y:");
+	private final JLabel labelCentrZoom = new JLabel("ZoomLevel : ");
+	
+	private static final String[] CENTER_ZOOM_OPTIONS = new String[]{"1:1","1:10","1:1000","1:1000000"};
+	private JComboBox<String> centrZoomCombo = new JComboBox<String>(CENTER_ZOOM_OPTIONS);
+	private String centrZoomChoice = "1:1";
 
 	
 	//	navigation controls
@@ -1334,6 +1353,18 @@ class SierpinskiComboPanel extends JPanel {
 		this.trapShapeLbl.setVisible(false);
 		this.add(this.trapShapeCombo);
 		this.trapShapeCombo.setVisible(false);
+		
+		
+		this.add(this.zoomCntrCb);
+		this.add(this.labelCentrX);
+		this.xCntrTf.setEnabled(false);
+		this.add(this.xCntrTf);
+		this.add(this.labelCntrY);
+		this.yCntrTf.setEnabled(false);
+		this.add(this.yCntrTf);
+		this.add(this.labelCentrZoom);
+		this.zoomCntrTf.setEnabled(false);
+		this.add(this.zoomCntrTf);
 		
 		
 		///
@@ -3966,10 +3997,10 @@ class SierpinskiComboPanel extends JPanel {
 		
 		final int varyUseDiffCount = 2;
 		final List<?> varyUseDiffList = this.getAppendStr2List("useDiffChoice=",this.getTrueFalseList());
-		
-		final int varyInvertPixelCount = 2;
-		final List<?> varyInvertPixelList = this.getAppendStr2List("invertPixelCalcChoice=", this.getTrueFalseList());
-
+		//rem4nowfeb19
+//		final int varyInvertPixelCount = 2;
+//		final List<?> varyInvertPixelList = this.getAppendStr2List("invertPixelCalcChoice=", this.getTrueFalseList());
+		//endsrem4nowfeb19
 		final double scaleSizeFrom = this.diyMandVaryScaleSizeFromVal;
 		final double scaleSizeTo = this.diyMandVaryScaleSizeToVal;
 		final double scaleSizeJump = this.diyMandVaryScaleSizeJumpVal;
@@ -4007,7 +4038,7 @@ class SierpinskiComboPanel extends JPanel {
 				varyZFuncCount * varyConstCFuncCount * varyPixelConstOpZCCount  * 
 				varyPowerCount  * varyPixXCenterCount * varyPixYCenterCount  * 
 				varyScaleSizeCount * varyBoundaryCount  * varyIterCount * 
-				varyUseDiffCount * varyInvertPixelCount *
+				varyUseDiffCount *//rem4nowfeb19 varyInvertPixelCount *
 				varyRealConstantCount * varyImagConstantCount;
 				
 		System.out.println("getTotalVaryCount=" + totalVaryCount);
@@ -4025,7 +4056,7 @@ class SierpinskiComboPanel extends JPanel {
 				varyZFuncList, varyConstCFuncList, varyPixelConstOpZCList,
 				varyPowerList, varyPixXCenterList, varyPixYCenterList,
 				varyScaleSizeList, varyBoundaryList, varyIterList,
-				varyUseDiffList, varyInvertPixelList,
+				varyUseDiffList, //rem4nowfeb19varyInvertPixelList,
 				varyConstList);
 		
 		System.out.println("allCombinationsListSize==totalVaryCount  "+(allCombinationsList.size()==totalVaryCount ));
@@ -4063,6 +4094,8 @@ class SierpinskiComboPanel extends JPanel {
 		if (this.diyMandVaryBoundary)				subDirName += "Bd,";
 		if (this.diyMandVaryScaleSize)				subDirName += "Sz,";
 		if (this.useRangeEstimation)				subDirName += "__RngEstSet";
+		if (this.captureOrbit)						subDirName += "__OrbTrp";
+		if (this.zoomCntr)							subDirName += "__ZoomCntr";
 		
 		subDirName = subDirName.substring(0, subDirName.length() - 1) + "]_" + System.currentTimeMillis();
 		
@@ -4211,6 +4244,30 @@ class SierpinskiComboPanel extends JPanel {
 						e2.printStackTrace();
 						JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
 						return;
+					}
+				}
+				
+				boolean useZoomCntr = this.zoomCntr;
+				if (useZoomCntr) {
+					try {
+						double xCntrVal = Double.parseDouble(this.xCntrTf.getText());
+						double yCntrVal = Double.parseDouble(this.yCntrTf.getText());
+						double zoomCntrVal = Double.parseDouble(this.zoomCntrTf.getText());
+						
+						
+
+						double xMinRealVal = xCntrVal - mands[i].getAreaSize() / zoomCntrVal;
+						double yMinImgVal = yCntrVal - mands[i].getAreaSize() / zoomCntrVal;
+						double xMaxRealVal = xCntrVal + mands[i].getAreaSize() / zoomCntrVal;
+						double yMaxImgVal = yCntrVal + mands[i].getAreaSize() / zoomCntrVal;
+						
+						mands[i].setRefocusDraw(true);
+						mands[i].setRangeMinMaxVals(xMinRealVal, yMinImgVal, xMaxRealVal, yMaxImgVal);
+						//jj.createFocalFractalShape(ff, new ComplexNumber(xMinRealVal,yMinImgVal), new ComplexNumber(xMaxRealVal,yMaxImgVal));
+					} catch (NumberFormatException  | NullPointerException e2) {
+						e2.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+						return;// null;
 					}
 				}
 
@@ -4536,10 +4593,10 @@ class SierpinskiComboPanel extends JPanel {
 
 		final int varyUseDiffCount = 2;
 		final List<?> varyUseDiffList = this.getAppendStr2List("useDiffChoice=", this.getTrueFalseList());
-
-		final int varyInvertPixelCount = 2;
-		final List<?> varyInvertPixelList = this.getAppendStr2List("invertPixelCalcChoice=", this.getTrueFalseList());
-
+		//rem4nowfeb19
+//		final int varyInvertPixelCount = 2;
+//		final List<?> varyInvertPixelList = this.getAppendStr2List("invertPixelCalcChoice=", this.getTrueFalseList());
+		//ends	rem4nowfeb19
 		final double scaleSizeFrom = this.polyVaryScaleSizeFromVal;
 		final double scaleSizeTo = this.polyVaryScaleSizeToVal;
 		final double scaleSizeJump = this.polyVaryScaleSizeJumpVal;
@@ -4581,7 +4638,7 @@ class SierpinskiComboPanel extends JPanel {
 		int totalVaryCount = varyColorCount * varyPixXTransCount * varyPixYTransCount * varyIntraPixXYOpCount
 				* varyZFuncCount * varyConstCFuncCount * varyPixelConstOpZCCount * varyPowerCount * varyPixXCenterCount
 				* varyPixYCenterCount * varyScaleSizeCount * varyBoundaryCount * varyIterCount * varyPolyTypeCount
-				* varyUseDiffCount * varyInvertPixelCount * varyRealConstantCount * varyImagConstantCount;
+				* varyUseDiffCount /*rem4nowfeb19* varyInvertPixelCount*/ * varyRealConstantCount * varyImagConstantCount;
 
 		System.out.println("getTotalVaryCount=" + totalVaryCount);
 
@@ -4597,7 +4654,7 @@ class SierpinskiComboPanel extends JPanel {
 		final List<?> allCombinationsList = this.product(varyColorList, varyPixXTrList, varyPixYTrList,
 				varyIntraPixXYOpList, varyZFuncList, varyConstCFuncList, varyPixelConstOpZCList, varyPowerList,
 				varyPixXCenterList, varyPixYCenterList, varyScaleSizeList, varyBoundaryList, varyIterList,
-				varyPolyTypeList, varyUseDiffList, varyInvertPixelList, varyConstList);
+				varyPolyTypeList, varyUseDiffList, /*rem4nowfeb19 varyInvertPixelList,*/ varyConstList);
 
 		System.out
 				.println("allCombinationsListSize_is_"+allCombinationsList.size()+"________allCombinationsListSize==totalVaryCount  " + (allCombinationsList.size() == totalVaryCount));
@@ -5103,10 +5160,10 @@ class SierpinskiComboPanel extends JPanel {
 		
 		final int varyUseDiffCount = 2;
 		final List<?> varyUseDiffList = this.getAppendStr2List("useDiffChoice=",this.getTrueFalseList());
-		
-		final int varyInvertPixelCount = 2;
-		final List<?> varyInvertPixelList = this.getAppendStr2List("invertPixelCalcChoice=", this.getTrueFalseList());
-
+///////////////////rem4nowfeb19/////////////////////////		
+//		final int varyInvertPixelCount = 2;
+//		final List<?> varyInvertPixelList = this.getAppendStr2List("invertPixelCalcChoice=", this.getTrueFalseList());
+//////////////endsrem4nowfeb19//////////////////////////
 		final double scaleSizeFrom = this.diyJuliaVaryScaleSizeFromVal;
 		final double scaleSizeTo = this.diyJuliaVaryScaleSizeToVal;
 		final double scaleSizeJump = this.diyJuliaVaryScaleSizeJumpVal;
@@ -5144,7 +5201,7 @@ class SierpinskiComboPanel extends JPanel {
 				varyZFuncCount * varyConstCFuncCount * varyPixelConstOpZCCount  * 
 				varyPowerCount  * varyPixXCenterCount * varyPixYCenterCount  * 
 				varyScaleSizeCount * varyBoundaryCount  * varyIterCount * 
-				varyUseDiffCount * varyInvertPixelCount *
+				varyUseDiffCount * //rem4nowfeb19varyInvertPixelCount *
 				varyRealConstantCount * varyImagConstantCount;
 				
 		System.out.println("getTotalVaryCount=" + totalVaryCount);
@@ -5162,7 +5219,7 @@ class SierpinskiComboPanel extends JPanel {
 				varyZFuncList, varyConstCFuncList, varyPixelConstOpZCList,
 				varyPowerList, varyPixXCenterList, varyPixYCenterList,
 				varyScaleSizeList, varyBoundaryList, varyIterList,
-				varyUseDiffList, varyInvertPixelList,
+				varyUseDiffList,//rem4nowfeb19 varyInvertPixelList,
 				varyConstList);
 		
 		System.out.println("allCombinationsListSize==totalVaryCount  "+(allCombinationsList.size()==totalVaryCount ));
@@ -5206,6 +5263,8 @@ class SierpinskiComboPanel extends JPanel {
 		if (this.diyJuliaVaryBoundary)				subDirName += "Bd,";
 		if (this.diyJuliaVaryScaleSize)				subDirName += "Sz,";
 		if (this.useRangeEstimation)				subDirName += "__RngEstSet";
+		if (this.captureOrbit)						subDirName += "__OrbTrp";
+		if (this.zoomCntr)							subDirName += "__ZoomCntr";
 		
 		subDirName = subDirName.substring(0, subDirName.length() - 1) + "]_" + System.currentTimeMillis();
 		
@@ -5353,6 +5412,24 @@ class SierpinskiComboPanel extends JPanel {
 						JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
 						return;
 					}
+				}
+				
+				boolean useZoomCntr = this.zoomCntr;
+				if(useZoomCntr){
+					double xCntrVal = Double.parseDouble(this.xCntrTf.getText());
+					double yCntrVal = Double.parseDouble(this.yCntrTf.getText());
+					double zoomCntrVal = Double.parseDouble(this.zoomCntrTf.getText());
+					
+					
+
+					double xMinRealVal = xCntrVal - julies[i].getAreaSize() / zoomCntrVal;
+					double yMinImgVal = yCntrVal - julies[i].getAreaSize() / zoomCntrVal;
+					double xMaxRealVal = xCntrVal + julies[i].getAreaSize() / zoomCntrVal;
+					double yMaxImgVal = yCntrVal + julies[i].getAreaSize() / zoomCntrVal;
+					
+					julies[i].setRefocusDraw(true);
+					julies[i].setRangeMinMaxVals(xMinRealVal, yMinImgVal, xMaxRealVal, yMaxImgVal);
+//					julies[i].createFocalFractalShape(ff, new ComplexNumber(xMinRealVal,yMinImgVal), new ComplexNumber(xMaxRealVal,yMaxImgVal));
 				}
 
 				julies[i].paint(g);
@@ -9503,6 +9580,8 @@ System.out.println("space2DIs __ "+space2D);*/
 		//diyJulia
 		boolean doExplore = this.diyJuliaExplore;
 		boolean useRngEst = this.useRangeEstimation;
+		boolean useZoomCntr = this.zoomCntr;
+		
 		boolean useCP = this.colorChoice.equals("ColorPalette");
 		boolean useBw = this.colorChoice.equals("BlackWhite");	
 		
@@ -9707,7 +9786,31 @@ System.out.println("space2DIs __ "+space2D);*/
 				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
 				return null;
 			}
+		}	//else if
+		
+		if (useZoomCntr) {
+			try {
+				double xCntrVal = Double.parseDouble(this.xCntrTf.getText());
+				double yCntrVal = Double.parseDouble(this.yCntrTf.getText());
+				double zoomCntrVal = Double.parseDouble(this.zoomCntrTf.getText());
+				
+				
+
+				double xMinRealVal = xCntrVal - diyJuliaLoopLt / zoomCntrVal;
+				double yMinImgVal = yCntrVal - diyJuliaLoopLt / zoomCntrVal;
+				double xMaxRealVal = xCntrVal + diyJuliaLoopLt / zoomCntrVal;
+				double yMaxImgVal = yCntrVal + diyJuliaLoopLt / zoomCntrVal;
+				
+				jj.setRefocusDraw(true);
+				jj.setRangeMinMaxVals(xMinRealVal, yMinImgVal, xMaxRealVal, yMaxImgVal);
+				jj.createFocalFractalShape(ff, new ComplexNumber(xMinRealVal,yMinImgVal), new ComplexNumber(xMaxRealVal,yMaxImgVal));
+			} catch (NumberFormatException  | NullPointerException e2) {
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+				return null;
+			}
 		}
+		
 		ff = null;
 
 		jj.setVisible(true);
@@ -9784,6 +9887,7 @@ System.out.println("space2DIs __ "+space2D);*/
 		// for diy mandelbrot
 		boolean doExplore = this.diyMandExplore;
 		boolean useRngEst = this.useRangeEstimation;
+		boolean useZoomCntr = this.zoomCntr;
 		boolean useCP = this.colorChoice.equals("ColorPalette");
 		boolean useBw = this.colorChoice.equals("BlackWhite");
 		
@@ -9943,7 +10047,31 @@ System.out.println("space2DIs __ "+space2D);*/
 				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
 				return null;
 			}
+		}//else if
+		
+		if (useZoomCntr) {
+			try {
+				double xCntrVal = Double.parseDouble(this.xCntrTf.getText());
+				double yCntrVal = Double.parseDouble(this.yCntrTf.getText());
+				double zoomCntrVal = Double.parseDouble(this.zoomCntrTf.getText());
+				
+				double xMinRealVal = xCntrVal - diyMandLoopLt / zoomCntrVal;
+				double yMinImgVal = yCntrVal - diyMandLoopLt / zoomCntrVal;
+				double xMaxRealVal = xCntrVal + diyMandLoopLt / zoomCntrVal;
+				double yMaxImgVal = yCntrVal + diyMandLoopLt / zoomCntrVal;
+				
+				Mandelbrot mand = (Mandelbrot)ff;
+				
+				mand.setRefocusDraw(true);
+				mand.setRangeMinMaxVals(xMinRealVal, yMinImgVal, xMaxRealVal, yMaxImgVal);
+				mand.createFocalFractalShape(ff, new ComplexNumber(xMinRealVal,yMinImgVal), new ComplexNumber(xMaxRealVal,yMaxImgVal));
+			} catch (NumberFormatException  | NullPointerException e2) {
+				e2.printStackTrace();
+				JOptionPane.showMessageDialog(null, "Please enter a valid Decimal Number\n"+e2.getMessage(), "Error - Not a Decimal", JOptionPane.ERROR_MESSAGE);
+				return null;
+			}
 		}
+		
 		return ff;
 	}
 
@@ -10781,7 +10909,8 @@ System.out.println("space2DIs __ "+space2D);*/
 				baseInfo += "Center [x,y] is  (" + ((this.fBase.x_min + this.fBase.x_max) / 2) + ", " + ((this.fBase.y_min + this.fBase.y_max) / 2) + ")" + eol;
 				if(this.fBase.isCaptureOrbit())
 					baseInfo += "Orbit Trap Captured at " + this.orbitPointsCombo.getSelectedItem() + ", TrapShape is " + this.fBase.trapShape + ", TrapSize is " + this.fBase.trapSize + eol;
-				
+				if(this.zoomCntr)
+					baseInfo += "ZoomFocus Center at ("+this.xCntrTf.getText().trim()+","+this.yCntrTf.getText().trim()+")  Zoom: x " +this.zoomCntrTf.getText().trim()+ eol;
 				baseInfo += "Maximum Iterations: " + this.polyMaxIter + eol;
 				baseInfo += " Scaled Size: " + this.polyScaleSize + "}" + eol + eol;
 	
@@ -10813,7 +10942,8 @@ System.out.println("space2DIs __ "+space2D);*/
 				baseInfo += "Center [x,y] is  (" + ((this.fBase.x_min + this.fBase.x_max) / 2) + ", " + ((this.fBase.y_min + this.fBase.y_max) / 2) + ")" + eol;
 				if(this.fBase.isCaptureOrbit())
 					baseInfo += "Orbit Trap Captured at " + this.orbitPointsCombo.getSelectedItem() + ", TrapShape is " + this.fBase.trapShape + ", TrapSize is " + this.fBase.trapSize + eol;
-				
+				if(this.zoomCntr)
+					baseInfo += "ZoomFocus Center at ("+this.xCntrTf.getText().trim()+","+this.yCntrTf.getText().trim()+")  Zoom: x " +this.zoomCntrTf.getText().trim()+ eol;
 				baseInfo += "Maximum Iterations: " + this.mandMaxIter + eol;
 				baseInfo += " Scaled Size: " + this.mandScaleSize + "}" + eol + eol;
 	
@@ -10844,7 +10974,8 @@ System.out.println("space2DIs __ "+space2D);*/
 				baseInfo += "Center [x,y] is  (" + ((this.fBase.x_min + this.fBase.x_max) / 2) + ", " + ((this.fBase.y_min + this.fBase.y_max) / 2) + ")" + eol;
 				if(this.fBase.isCaptureOrbit())
 					baseInfo += "Orbit Trap Captured at " + this.orbitPointsCombo.getSelectedItem() + ", TrapShape is " + this.fBase.trapShape + ", TrapSize is " + this.fBase.trapSize + eol;
-				
+				if(this.zoomCntr)
+					baseInfo += "ZoomFocus Center at ("+this.xCntrTf.getText().trim()+","+this.yCntrTf.getText().trim()+")  Zoom: x " +this.zoomCntrTf.getText().trim()+ eol;
 				baseInfo += "Maximum Iterations: " + this.juliaMaxIter + eol;
 				baseInfo += " Scaled Size: " + this.juliaScaleSize + "}" + eol + eol;
 	
@@ -10907,7 +11038,8 @@ System.out.println("space2DIs __ "+space2D);*/
 				baseInfo += "Center [x,y] is  (" + ((this.fBase.x_min + this.fBase.x_max) / 2) + ", " + ((this.fBase.y_min + this.fBase.y_max) / 2) + ")" + eol;
 				if(this.fBase.isCaptureOrbit())
 					baseInfo += "Orbit Trap Captured at " + this.orbitPointsCombo.getSelectedItem() + ", TrapShape is " + this.fBase.trapShape + ", TrapSize is " + this.fBase.trapSize + eol;
-				
+				if(this.zoomCntr)
+					baseInfo += "ZoomFocus Center at ("+this.xCntrTf.getText().trim()+","+this.yCntrTf.getText().trim()+")  Zoom: x " +this.zoomCntrTf.getText().trim()+ eol;
 				baseInfo += "Maximum Iterations: " + this.diyMandMaxIter + eol;
 				baseInfo += " Scaled Size: " + this.diyMandScaleSize + "}" + eol + eol;
 	
@@ -10957,7 +11089,8 @@ System.out.println("space2DIs __ "+space2D);*/
 				baseInfo += "Center [x,y] is  (" + ((this.fBase.x_min + this.fBase.x_max) / 2) + ", " + ((this.fBase.y_min + this.fBase.y_max) / 2) + ")" + eol;
 				if(this.fBase.isCaptureOrbit())
 					baseInfo += "Orbit Trap Captured at " + this.orbitPointsCombo.getSelectedItem() + ", TrapShape is " + this.fBase.trapShape + ", TrapSize is " + this.fBase.trapSize + eol;
-				
+				if(this.zoomCntr)
+					baseInfo += "ZoomFocus Center at ("+this.xCntrTf.getText().trim()+","+this.yCntrTf.getText().trim()+")  Zoom: x " +this.zoomCntrTf.getText().trim()+ eol;
 				baseInfo += "Maximum Iterations: " + this.diyJuliaMaxIter + eol;
 				baseInfo += " Scaled Size: " + this.diyJuliaScaleSize + "}" + eol + eol;
 	
@@ -11586,9 +11719,9 @@ System.out.println("space2DIs __ "+space2D);*/
             @Override
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
-					doUseRangeExtimates(true);
+					doUseRangeEstimates(true);
 				} else if(event.getStateChange()==ItemEvent.DESELECTED){
-					doUseRangeExtimates(false);
+					doUseRangeEstimates(false);
 				}
 			}
         });
@@ -11632,6 +11765,21 @@ System.out.println("space2DIs __ "+space2D);*/
 				String trapShapeOption = (String)cb.getSelectedItem();
 				doSetTrapShapeCombosCommand(trapShapeOption);				
 			}});
+		
+		
+
+		
+		this.zoomCntrCb.setActionCommand("ZoomCenter");
+		this.zoomCntrCb.addItemListener(new ItemListener() {
+            @Override
+			public void itemStateChanged(ItemEvent event) {
+				if (event.getStateChange() == ItemEvent.SELECTED) {
+					doUseZoomCenter(true);
+				} else if(event.getStateChange()==ItemEvent.DESELECTED){
+					doUseZoomCenter(false);
+				}
+			}
+        });
 		
 		this.buFirst.addActionListener(new ActionListener() {
 			@Override
@@ -11748,15 +11896,38 @@ System.out.println("space2DIs __ "+space2D);*/
 		//System.out.println(this.fBase.bufferedImage.equals(this.fractalImage));
 		this.fBase.setVisible(true);
 	}
+	
+	private void doUseZoomCenter(boolean useZoomC) {
+		this.zoomCntr = useZoomC;
 
-	private void doUseRangeExtimates(boolean useRangeE) {
+		if (this.zoomCntr) {
+			this.xCntrTf.setEnabled(true);
+			this.yCntrTf.setEnabled(true);
+			this.zoomCntrTf.setEnabled(true);
+			this.xMinTf.setEnabled(false);
+			this.yMinTf.setEnabled(false);
+			this.xMaxTf.setEnabled(false);
+			this.yMaxTf.setEnabled(false);
+			
+		} else {
+			this.xCntrTf.setEnabled(false);
+			this.yCntrTf.setEnabled(false);
+			this.zoomCntrTf.setEnabled(false);
+		}
+		
+	}
+
+	private void doUseRangeEstimates(boolean useRangeE) {
 		this.useRangeEstimation = useRangeE;
 
 		if (this.useRangeEstimation) {
 			this.xMinTf.setEnabled(true);
 			this.yMinTf.setEnabled(true);
 			this.xMaxTf.setEnabled(true);
-			this.yMaxTf.setEnabled(true);
+			this.yMaxTf.setEnabled(true);			
+			this.xCntrTf.setEnabled(false);
+			this.yCntrTf.setEnabled(false);
+			this.zoomCntrTf.setEnabled(false);
 		} else {
 			this.xMinTf.setEnabled(false);
 			this.yMinTf.setEnabled(false);
