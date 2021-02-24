@@ -162,7 +162,7 @@ public class BurningShip extends FractalBase {
 				bS.setUseDiff(false);//setUseDiff(true);//
 				
 				final FractalBase frame = bS;		
-				frame.setColorChoice("ColorGradient6");//("ComputeColor");/*("ColorPalette");/*("BlackWhite");*/
+				frame.setColorChoice("ColorBlowout");//("ColorGradient6");//("ComputeColor");/*("ColorPalette");/*("BlackWhite");*/
 				frame.setScaleSize(2);
 				frame.setMaxIter(10000);//(100);//
 				frame.setBound(10);//(40);//

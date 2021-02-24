@@ -3,6 +3,8 @@
  */
 package org.bawaweb.ui.sierpinkski;
 
+import java.util.Arrays;
+
 /**
  * @author Navroz
  *
@@ -370,5 +372,23 @@ public class FractalDtlInfo {
 	public void setfBase(FractalBase fBase) {
 		this.fBase = fBase;
 	}
+	
+	
+	@Override
+	public String toString() {
+		return "FractalDtlInfo [fBase=" + fBase + ", name=" + name + ", x_min=" + x_min + ", y_min=" + y_min
+				+ ", x_max=" + x_max + ", y_max=" + y_max + ", xC=" + xC + ", yC=" + yC + ", scaleSize=" + scaleSize
+				+ ", rotation=" + rotation + ", magnification=" + magnification + ", power=" + power + ", useDiff="
+				+ useDiff + ", pxConstOperation=" + pxConstOperation + ", pxXTransformation=" + pxXTransformation
+				+ ", pxYTransformation=" + pxYTransformation + ", pixXYOperation=" + pixXYOperation + ", useFuncPixel="
+				+ useFuncPixel + ", useFuncConst=" + useFuncConst + ", running=" + running + ", colorChoice="
+				+ colorChoice + ", bound=" + bound + ", reversePixelCalculation=" + reversePixelCalculation
+				+ ", rgbDivisors=" + Arrays.toString(rgbDivisors) + ", rgbStartVals=" + Arrays.toString(rgbStartVals)
+				+ ", maxIter=" + maxIter + ", areaSize=" + areaSize + ", isComplexNumConst=" + isComplexNumConst
+				+ ", complex=" + complex + ", isConstFuncApplied=" + isConstFuncApplied + ", applyCustomFormula="
+				+ applyCustomFormula + "]";
+	}
+
+
 
 }

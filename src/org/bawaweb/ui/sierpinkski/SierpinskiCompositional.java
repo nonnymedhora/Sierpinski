@@ -618,6 +618,10 @@ class SierpinskiComboPanel extends JPanel {
 	private JButton diyJuliaGen2FolderBu = new JButton("Generate Julia 2Folder");
 	private String diyJuliaGen2FolderPath = null;
 	private boolean diyJuliaGen2Folder = false;
+	private JButton diyJuliaGenMultiClrBu = new JButton("Gen MutiClrJulia 2Folder");
+	private String diyJuliaGenMultiClrFolderPath = null;
+	private boolean diyJuliaGenMultiClr = false;
+	
 	///////////////////////////////////////////////////////////////////////////
 	//	Generator	Mandelbrot
 
@@ -728,6 +732,10 @@ class SierpinskiComboPanel extends JPanel {
 	private JButton diyMandGen2FolderBu = new JButton("Generate Mandelbrot 2Folder");
 	private String diyMandGen2FolderPath = null;
 	private boolean diyMandGen2Folder = false;
+
+	private JButton diyMandGenMultiClrBu = new JButton("Gen MutiClrMand 2Folder");
+	private String diyMandGenMultiClrFolderPath = null;
+	private boolean diyMandGenMultiClr = false;
 	///////////////////////////////////////////////////////////////////////////
 //	Generator	PolyFract
 
@@ -2115,8 +2123,10 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.diyJuliaGenBu.setVisible(false);
 		this.diyJuliaGen2FolderBu.setVisible(false);
+		this.diyJuliaGenMultiClrBu.setVisible(false);
 		this.diyJuliaPanel.add(this.diyJuliaGenBu);
 		this.diyJuliaPanel.add(this.diyJuliaGen2FolderBu);
+		this.diyJuliaPanel.add(this.diyJuliaGenMultiClrBu);
 	}
 
 	private void createDiyMandelbrotPanel() {
@@ -2292,8 +2302,10 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.diyMandGenBu.setVisible(false);
 		this.diyMandGen2FolderBu.setVisible(false);
+		this.diyMandGenMultiClrBu.setVisible(false);
 		this.diyMandPanel.add(this.diyMandGenBu);
 		this.diyMandPanel.add(this.diyMandGen2FolderBu);
+		this.diyMandPanel.add(this.diyMandGenMultiClrBu);
 	}
 
 	private void createMandelbrotPanel() {
@@ -12285,6 +12297,7 @@ System.out.println("space2DIs __ "+space2D);*/
 					
 					diyJuliaGenBu.setVisible(true);	
 					diyJuliaGen2FolderBu.setVisible(true);
+					diyJuliaGenMultiClrBu.setVisible(true);
 
 					/*diyJuliaRealTf.setEnabled(false);
 					diyJuliaImgTf.setEnabled(false);
@@ -12358,7 +12371,7 @@ System.out.println("space2DIs __ "+space2D);*/
 					
 					diyJuliaGenBu.setVisible(false);
 					diyJuliaGen2FolderBu.setVisible(false);
-					
+					diyJuliaGenMultiClrBu.setVisible(false);
 
 					/*diyJuliaRealTf.setEnabled(true);
 					diyJuliaImgTf.setEnabled(true);
@@ -12819,6 +12832,47 @@ System.out.println("space2DIs __ "+space2D);*/
 				
 				doJuliaGenerateCommand();				
 			}});
+		
+		this.diyJuliaGenMultiClrBu.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Runtime.getRuntime().gc();
+				diyJuliaGenMultiClr = true;
+				
+				// create an object of JFileChooser class 
+				JFileChooser chooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); 
+				
+				chooser.setFileFilter( new FileFilter(){
+	                @Override
+	                public boolean accept(File f) {
+	                    return f.isDirectory();
+	                }
+	                @Override
+	                public String getDescription() {
+	                    return "Any folder";
+	                }
+	            });
+
+				
+				// invoke the showsSaveDialog function to show the save dialog
+				int r = chooser.showSaveDialog(null);
+				
+				// if the user selects a file
+				if (r == JFileChooser.APPROVE_OPTION) {
+					diyJuliaGenMultiClrFolderPath  = chooser.getSelectedFile().getAbsolutePath();
+//					doSaveImageCommand("save2File");
+				}
+				
+				doMultiClrJuliaGenerateCommand(getFractalDtlInfo());				
+			}
+
+			private void doMultiClrJuliaGenerateCommand(FractalDtlInfo fD) {
+				new MultiClrJuliaGenerator(diyJuliaGenMultiClrFolderPath, fD);
+
+			}
+		});
+		
 		//////////////////////////endsGeneratorListeners/////////////////////////
 		/////////////////////////////////////////////////////////////////////////
 	}
@@ -13040,6 +13094,7 @@ System.out.println("space2DIs __ "+space2D);*/
 					
 					diyMandGenBu.setVisible(true);	
 					diyMandGen2FolderBu.setVisible(true);
+					diyMandGenMultiClrBu.setVisible(true);
 
 					/*diyMandRealTf.setEnabled(false);
 					diyMandImgTf.setEnabled(false);
@@ -13107,7 +13162,7 @@ System.out.println("space2DIs __ "+space2D);*/
 					
 					diyMandGenBu.setVisible(false);	
 					diyMandGen2FolderBu.setVisible(false);
-					
+					diyMandGenMultiClrBu.setVisible(false);
 
 					/*diyMandRealTf.setEnabled(true);
 					diyMandImgTf.setEnabled(true);
@@ -13546,6 +13601,45 @@ System.out.println("space2DIs __ "+space2D);*/
 				}
 				
 				doMandelbrotGenerateCommand();				
+			}});
+		
+		this.diyMandGenMultiClrBu.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Runtime.getRuntime().gc();
+				diyMandGenMultiClr = true;
+				
+				// create an object of JFileChooser class 
+				JFileChooser chooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY); 
+				
+				chooser.setFileFilter( new FileFilter(){
+	                @Override
+	                public boolean accept(File f) {
+	                    return f.isDirectory();
+	                }
+	                @Override
+	                public String getDescription() {
+	                    return "Any folder";
+	                }
+	            });
+
+				
+				// invoke the showsSaveDialog function to show the save dialog
+				int r = chooser.showSaveDialog(null);
+				
+				// if the user selects a file
+				if (r == JFileChooser.APPROVE_OPTION) {
+					diyMandGenMultiClrFolderPath  = chooser.getSelectedFile().getAbsolutePath();
+//					doSaveImageCommand("save2File");
+					doMultiClrMandelbrotGenerateCommand(getFractalDtlInfo());	
+				}
+							
+			}
+
+			private void doMultiClrMandelbrotGenerateCommand(FractalDtlInfo fD) {
+				new MultiClrMandelbrotGenerator(diyMandGenMultiClrFolderPath,fD);
+				
 			}});
 		
 		//////////////////////////endsGeneratorListeners/////////////////////////
@@ -15852,6 +15946,80 @@ private void setupPolyGeneratorListeners() {
 
 	public void setMandMotionParam(double moParamJumpVal) {
 		this.mandMotionParamJumpVal = moParamJumpVal;
+	}
+	
+	FractalDtlInfo getFractalDtlInfo() {
+		// fractal art choice
+		String choice = this.getComboChoice();
+		System.out.println("choice--startC--is=" + choice);
+
+		FractalDtlInfo fDtlInfo = null;
+
+		if ((choice.startsWith("DIY") || choice.endsWith("Yourself"))) {
+			if (this.diyMandRb.isSelected()) {
+				fDtlInfo = new FractalDtlInfo(MANDELBROT);
+				fDtlInfo.setComplexNumConst(true);
+				fDtlInfo.setMagnification((int) this.diyMandMagCombos.getSelectedItem());
+				fDtlInfo.setAreaSize((int) this.diyMandAreaSizeCombos.getSelectedItem());
+				fDtlInfo.setScaleSize((double)this.diyMandScaleSizeCombos.getSelectedItem());
+				fDtlInfo.setPower((int) this.diyMandExpCombos.getSelectedItem());
+				fDtlInfo.setBound((double)this.diyMandBoundCombos.getSelectedItem());
+				fDtlInfo.setxC((double) this.diyMandXCCombos.getSelectedItem());
+				fDtlInfo.setyC((double) this.diyMandYCCombos.getSelectedItem());
+				fDtlInfo.setMaxIter((int)this.diyMandMaxIterCombos.getSelectedItem());
+				fDtlInfo.setUseDiff(this.diyMandUseDiffCb.isSelected());
+			
+				
+			} else if (this.diyJuliaRb.isSelected()) {
+				fDtlInfo = new FractalDtlInfo(JULIA);
+				fDtlInfo.setComplexNumConst(false);
+				double r = Double.parseDouble(this.diyJuliaRealTf.getText().trim());
+				double i = Double.parseDouble(this.diyJuliaImgTf.getText().trim());
+				fDtlInfo.setComplex(new ComplexNumber(r ,i));
+				
+				fDtlInfo.setAreaSize((int) this.diyJuliaAreaSizeCombos.getSelectedItem());
+				fDtlInfo.setScaleSize((double)this.diyJuliaScaleSizeCombos.getSelectedItem());
+				fDtlInfo.setPower((int) this.diyJuliaPowerCombos.getSelectedItem());
+				fDtlInfo.setBound((double)this.diyJuliaBoundCombos.getSelectedItem());
+				fDtlInfo.setxC((double) this.diyJuliaXCCombos.getSelectedItem());
+				fDtlInfo.setyC((double) this.diyJuliaYCCombos.getSelectedItem());
+				fDtlInfo.setMaxIter((int)this.diyJuliaMaxIterCombos.getSelectedItem());
+				fDtlInfo.setUseDiff(this.diyJuliaUseDiffCb.isSelected());
+			
+			}
+			
+			//	from actionControlsPanel/////////////////////
+			
+			//we-dont-use-the-one-below-for-multi-color-displaygeneration
+			fDtlInfo.setColorChoice(this.colorChoice);
+			
+			fDtlInfo.setPxConstOperation((String) this.pxConstOprnCombo.getSelectedItem());
+			fDtlInfo.setUseFuncPixel((String) this.pxFuncCombo.getSelectedItem());
+			fDtlInfo.setUseFuncConst((String) this.constFuncCombo.getSelectedItem());
+			fDtlInfo.setPxXTransformation((String) this.pxXTransformCombo.getSelectedItem());
+			fDtlInfo.setPxYTransformation((String) this.pxYTransformCombo.getSelectedItem());
+			fDtlInfo.setPixXYOperation((String) this.intraPixOperationCombo.getSelectedItem());
+			fDtlInfo.setReversePixelCalculation(this.invertPixelsCb.isSelected());
+			
+			if (this.diyMandApplyFormulaZCb.isSelected()) {
+				fDtlInfo.setApplyCustomFormula(true);
+				fDtlInfo.setUseFuncPixel(this.diyMandApplyFormulaTf.getText().trim());
+			} else {
+				fDtlInfo.setApplyCustomFormula(false);
+			}
+			
+			if (this.useRangeCb.isSelected()) {
+				fDtlInfo.setX_min(Double.parseDouble(this.xMinTf.getSelectedText().trim()));
+				fDtlInfo.setX_max(Double.parseDouble(this.xMaxTf.getSelectedText().trim()));
+				fDtlInfo.setY_min(Double.parseDouble(this.yMinTf.getSelectedText().trim()));
+				fDtlInfo.setY_max(Double.parseDouble(this.yMaxTf.getSelectedText().trim()));
+			}
+			
+		} 
+		
+		
+		
+		return fDtlInfo;
 	}
 	
 	///////////////////tosdos////////////////////////////////
