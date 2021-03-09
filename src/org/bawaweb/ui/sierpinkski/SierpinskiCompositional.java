@@ -10773,7 +10773,9 @@ System.out.println("space2DIs __ "+space2D);*/
 		
 		outputfile = new File(imageFilePath);
 		
-		fractalImage = (this.fBase.isRefocusDraw()&&!this.fBase.isGenerated())?this.fBase.getBufferedImage():fractalImage;
+		if (!choice.equals(ATTRACTORS)) {
+			fractalImage = (this.fBase.isRefocusDraw()&&!this.fBase.isGenerated())?this.fBase.getBufferedImage():fractalImage;
+		}
 		
 	    try {
 			if (saveCommand.equals("saveWithData") || saveCommand.equals("save2FileWithData")) {

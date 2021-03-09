@@ -100,8 +100,8 @@ public class BurningShip extends FractalBase {
 		double ytemp;
 		
 		
-		while (z.real * z.real + z.imaginary * z.imaginary < boundary && iter < maxIterations) {
-			xtemp = z.real * z.real - z.imaginary * z.imaginary - cX;
+		while (z.real * z.real + z.imaginary * z.imaginary < 4/*boundary*/ && iter < maxIterations) {
+			xtemp = z.real * z.real - z.imaginary * z.imaginary + cX;
 
 			ytemp = Math.abs(2 * z.real * z.imaginary) - cY;
 
@@ -151,6 +151,12 @@ public class BurningShip extends FractalBase {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {		
+				//wholeShip from https://commons.wikimedia.org/wiki/File:Burning_ship_fractal_entire.png
+				// cx = -0.45, cy = -0.5, w = 3.4, max_iter=50000,='burning_ship_fractal_entire
+				//	https://commons.wikimedia.org/wiki/File:Burning_ship_fractal_first_small_enlarged.png
+				//	 cx = -1.755, cy = -0.03, w = 0.3, max_iter=50000, 
+//				final BurningShip bS = new BurningShip(0.3,-1.755,-0.03);		//Burning_ship_fractal_first_small_enlarged
+//				final BurningShip bS = new BurningShip(3.4,-0.45,-0.5);			//'burning_ship_fractal_entire
 //				final BurningShip bS = new BurningShip(0.02,-1.66,0.0055);	
 //				final BurningShip bS = new BurningShip(5.7,0.45,0.5);			//wholeShip
 				final BurningShip bS = new BurningShip(1.7,0.45,0.5);			//wholeShip
@@ -164,8 +170,8 @@ public class BurningShip extends FractalBase {
 				final FractalBase frame = bS;		
 				frame.setColorChoice("ColorBlowout");//("ColorGradient6");//("ComputeColor");/*("ColorPalette");/*("BlackWhite");*/
 				frame.setScaleSize(2);
-				frame.setMaxIter(10000);//(100);//
-				frame.setBound(10);//(40);//
+				frame.setMaxIter(1000);//(50000);//(100);//
+				frame.setBound(0.0);//(40);//
 				/*frame.setUseColorPalette(false);
 				frame.setUseBlackWhite(true);*/
 				frame.setTitle(frame.getFractalShapeTitle());
