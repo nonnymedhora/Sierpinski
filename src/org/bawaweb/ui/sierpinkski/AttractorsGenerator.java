@@ -85,6 +85,7 @@ public class AttractorsGenerator extends JFrame {
 	 */
 	@Override
 	public void paint(Graphics g1) {
+		long cur = System.currentTimeMillis();
 		super.paint(g1);
 		/*System.out.println("AG[paint-1] space2d is = "+this.getSpace2d());
 		System.out.println("this.attractors[0].space2dAxes is = "+this.attractors[0].space2dAxes);
@@ -105,6 +106,7 @@ public class AttractorsGenerator extends JFrame {
 			g2.drawImage(this.getBufferedImage(), 0, 0, null);*/
 		}/*System.out.println("AG[paint-2] space2d is = "+this.getSpace2d());*/
 		System.out.println("Done with AttractorsGenerator - paint ^__^");
+		System.out.println("Done in "+( System.currentTimeMillis()-cur )/1000 + " seconds");
 		g2.dispose();
 		offScreenGraphics.dispose();
 	}
@@ -337,12 +339,18 @@ public class AttractorsGenerator extends JFrame {
 			public void run() {
 				final AttractorsGenerator lorenz_Attractor = new AttractorsGenerator("lorenz");//("dejong");//("aizawa");//
 				
+				final LorenzAttractor l1 = new LorenzAttractor(0.0, 20.00, 25.0, Color.blue);
+				final LorenzAttractor l2 = new LorenzAttractor(0.0, 20.01, 25.0, Color.red);
+				final LorenzAttractor l3 = new LorenzAttractor(0.0, 20.00, 25.01, Color.green);
+				l1.setPixellated(true);
+				l2.setPixellated(true);
+				l3.setPixellated(true);
 				lorenz_Attractor.setAttractors(new Attractor[] { 
-						new LorenzAttractor(0.0, 20.00, 25.0, Color.blue),
-						new LorenzAttractor(0.0, 20.01, 25.0, Color.red),
-						new LorenzAttractor(0.0, 20.00, 25.01, Color.green) });
+						l1,
+						l2,
+						l3 });
 				
-				lorenz_Attractor.setMaxIter(500000);
+				lorenz_Attractor.setMaxIter(5000/*00*/);
 				lorenz_Attractor.setSpace2d("x-z");
 				
 				final JFrame frame = lorenz_Attractor;//("dejong");//("aizawa");//
@@ -353,7 +361,9 @@ public class AttractorsGenerator extends JFrame {
 				frame.setVisible(true);
 			}
 		});
-
+		
+		
+		
 	}
 
 	public void setAttractors(Attractor[] attrs) {
