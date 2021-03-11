@@ -213,6 +213,17 @@ public abstract class Attractor {
 	}
 	
 	private void drawRect(Graphics2D g, Tuple3d existing, Tuple3d updated) {
+		/*existing.x = AttractorsGenerator.HEIGHT - existing.x;
+		updated.x = AttractorsGenerator.HEIGHT - updated.x;*/
+		existing.y = AttractorsGenerator.HEIGHT - existing.y;
+		updated.y = AttractorsGenerator.HEIGHT - updated.y;
+		
+
+		if (is3D) {
+			existing.z = AttractorsGenerator.HEIGHT - existing.z;
+			updated.z = AttractorsGenerator.HEIGHT - updated.z;
+		}
+		
 		if (this.space2dAxes.equals("x-z")) {
 			g.drawRect((int) existing.x, (int) existing.z, 0, 0);
 			g.drawRect((int) updated.x, (int) updated.z, 0, 0);
@@ -283,7 +294,7 @@ public abstract class Attractor {
 	void drawAxes(Graphics2D g2) {
 		int xCentr = AttractorsGenerator.WIDTH / 2;
 		int yCentr = AttractorsGenerator.HEIGHT / 2;
-		int zCentr=Integer.MIN_VALUE;
+		int zCentr = Integer.MIN_VALUE;
 		if (this.is3D) {
 			zCentr = AttractorsGenerator.DEPTH / 2;
 		}

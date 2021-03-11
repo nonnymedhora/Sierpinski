@@ -115,7 +115,7 @@ public class CustomAttractor extends Attractor {
 		// store original formula to temp
 		final String tempXFormula = this.deltaXFormula;
 		final String tempYFormula = this.deltaYFormula;
-		final String tempZFormula = this.is3D ? null: this.deltaZFormula;
+		final String tempZFormula = this.is3D ? this.deltaZFormula : null;
 				
 		// replace all t or T with iterTime value
 		if (this.deltaXFormula.contains("t") || this.deltaXFormula.contains("T")) {

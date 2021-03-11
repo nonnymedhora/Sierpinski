@@ -3,10 +3,18 @@
  */
 package org.bawaweb.ui.sierpinkski;
 
+import java.awt.AWTException;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.imageio.stream.ImageOutputStream;
+import javax.imageio.stream.FileImageOutputStream;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -38,11 +48,14 @@ public class AttractorsGenerator extends JFrame {
 	private int pauseTime = 10;
 	BufferedImage bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 
+	private BufferedImage[] gifImages;
+
 	public AttractorsGenerator() {
 
 	}
 
 	public AttractorsGenerator(String p) {
+		this.setLocation(100,100);
 		this.setSize(WIDTH, HEIGHT);
 		this.attractorName = p;
 	}
@@ -93,13 +106,15 @@ public class AttractorsGenerator extends JFrame {
 		*/
 		this.setAttractorsSpace2D(this.space2d);
 		Graphics2D g2 = (Graphics2D) g1;
-		Graphics2D offScreenGraphics = this.getBufferedImage().createGraphics();
+		Graphics2D offScreenGraphics = this.getBufferedImage() != null ? this.getBufferedImage().createGraphics()
+				: null;
 		this.setSpace2d(this.space2d);
 		if (this.isInstantDraw) {
 			final BufferedImage attractorsImage = this.drawAttractors(offScreenGraphics);
 			this.setImage(attractorsImage);
 			g2.drawImage(attractorsImage, 0, 0, null);
 		} else {
+			this.gifImages = new BufferedImage[this.maxIter];
 			this.drawAttractors(g2, offScreenGraphics, this.pauseTime);
 			
 			/*this.setImage(this.drawAttractors(offScreenGraphics));
@@ -121,26 +136,86 @@ public class AttractorsGenerator extends JFrame {
 		return this.bufferedImage;
 	}
 	
-	private void drawAttractors(Graphics2D offScreenGraphics, Graphics2D g, int pauseInterval) {
+	private void drawAttractors(Graphics2D g, Graphics2D offScrnG, int pauseInterval) {
 		Attractor[] attrs = this.attractors;
 		if (attrs != null && attrs.length > 0) {
 			Map<String, Double> rangeMap = new HashMap<String, Double>();
 
 			for (int j = 0; j < attrs.length; j++) {
 				Map<String, Double> attrSpaceMap = attrs[j].setSpace();
-				attrs[j].drawAxes(g);
+				attrs[j].drawAxes(offScrnG);
 				rangeMap = this.setRangeMapVals(rangeMap, attrSpaceMap);
 			}
+			/*Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+			Robot r  = null;
+			try {
+				r  = new Robot();
+			} catch (AWTException e) {
+				e.printStackTrace();
+			}*/
 
 			for (int i = 0; i < this.maxIter; i++) {
 				for (int j = 0; j < attrs.length; j++) {
-					attrs[j].draw(i, offScreenGraphics, rangeMap);
-					this.pause(g,pauseInterval);
+					attrs[j].draw(i, g, rangeMap);
+					
+					/*this.gifImages[i] = r.createScreenCapture(new Rectangle(100,100,WIDTH,HEIGHT));//(new Rectangle(dim));*/					
+					/*this.gifImages[i] = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+					this.gifImages[i] = this.takeScreenShot(this.getContentPane(),this.gifImages[i]);*/
+					this.pause(offScrnG, pauseInterval);
 					/*g.drawImage(this.getBufferedImage(), 0, 0, null);*/
 				}
+				
+				/*System.out.println("Here i====="+i);
+				
+				this.gifImages[i] = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+				boolean drwn = g.drawImage(this.gifImages[i],0,0,null);
+				System.out.println("For [i] ("+i+")   drwn=="+drwn);*/
+/*				
+//				this.gifImages[i] = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+				g.drawImage(this.getBufferedImage(),0,0,this);
+				this.gifImages[i] = this.getBufferedImage();*/
 			}
-			System.out.println("Done" + System.currentTimeMillis());
+			/*System.out.println("NumGifs==="+this.gifImages.length);
+			this.createGif(this.gifImages);
+			System.out.println("Done " + System.currentTimeMillis());*/
 		}
+	}
+
+	private BufferedImage takeScreenShot(Component comp, BufferedImage image) {
+		//comp.paint( image.getGraphics());
+		
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		Robot r;
+			try {
+				r = new Robot();
+				image = r.createScreenCapture(new Rectangle(dim));
+			} catch (AWTException e) {
+				e.printStackTrace();
+			}
+		
+		return image;
+	}
+
+	private void createGif(BufferedImage[] images) {
+		System.out.println("in_createGif");
+		 BufferedImage first = images[0];
+	     try {
+			File outputfile = new File("C:\\Users\\Navroz\\Desktop\\" + System.currentTimeMillis() + "gif.mp4");
+			ImageOutputStream output = new FileImageOutputStream(outputfile);//new File("/tmp/example.gif"));
+			GifSequenceWriter writer = new GifSequenceWriter(output, first.getType(), this.pauseTime/*250*/, true);
+	        writer.writeToSequence(first);
+	        
+	        for(int i = 1; i <images.length;i++){
+	        	writer.writeToSequence(images[i]);
+	        }
+
+	        writer.close();
+	        output.close();
+	        System.out.println("Created gif at "+ outputfile.getAbsolutePath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	private BufferedImage drawAttractors(Graphics2D g) {
@@ -167,7 +242,7 @@ public class AttractorsGenerator extends JFrame {
 					attrs[j].draw(i, g, rangeMap);
 				}
 			}
-			System.out.println("Done" + System.currentTimeMillis());
+			System.out.println("Done instantDraw  " + System.currentTimeMillis());
 		}
 		return this.getBufferedImage();
 
@@ -342,15 +417,15 @@ public class AttractorsGenerator extends JFrame {
 				final LorenzAttractor l1 = new LorenzAttractor(0.0, 20.00, 25.0, Color.blue);
 				final LorenzAttractor l2 = new LorenzAttractor(0.0, 20.01, 25.0, Color.red);
 				final LorenzAttractor l3 = new LorenzAttractor(0.0, 20.00, 25.01, Color.green);
-				l1.setPixellated(true);
-				l2.setPixellated(true);
-				l3.setPixellated(true);
+				l1.setPixellated(false);	//l1.setPixellated(true);
+				l2.setPixellated(false);	//l2.setPixellated(true);
+				l3.setPixellated(false);	//l3.setPixellated(true);
 				lorenz_Attractor.setAttractors(new Attractor[] { 
 						l1,
 						l2,
 						l3 });
 				
-				lorenz_Attractor.setMaxIter(5000/*00*/);
+				lorenz_Attractor.setMaxIter(500/*000*/);
 				lorenz_Attractor.setSpace2d("x-z");
 				
 				final JFrame frame = lorenz_Attractor;//("dejong");//("aizawa");//
