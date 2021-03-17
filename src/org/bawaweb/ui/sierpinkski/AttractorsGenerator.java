@@ -49,6 +49,9 @@ public class AttractorsGenerator extends JFrame {
 	BufferedImage bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 
 	private BufferedImage[] gifImages;
+	private boolean isOriginUpperLeft = false;
+	
+	private boolean isDebug = false;//true;//
 
 	public AttractorsGenerator() {
 
@@ -108,6 +111,9 @@ public class AttractorsGenerator extends JFrame {
 		Graphics2D g2 = (Graphics2D) g1;
 		Graphics2D offScreenGraphics = this.getBufferedImage() != null ? this.getBufferedImage().createGraphics()
 				: null;
+		if (this.isDebug) {
+			System.out.println("offScreenGraphicsIs==NUll???" + (offScreenGraphics == null));
+		}
 		this.setSpace2d(this.space2d);
 		if (this.isInstantDraw) {
 			final BufferedImage attractorsImage = this.drawAttractors(offScreenGraphics);
@@ -119,9 +125,13 @@ public class AttractorsGenerator extends JFrame {
 			
 			/*this.setImage(this.drawAttractors(offScreenGraphics));
 			g2.drawImage(this.getBufferedImage(), 0, 0, null);*/
-		}/*System.out.println("AG[paint-2] space2d is = "+this.getSpace2d());*/
-		System.out.println("Done with AttractorsGenerator - paint ^__^");
-		System.out.println("Done in "+( System.currentTimeMillis()-cur )/1000 + " seconds");
+		}
+		/*System.out.println("AG[paint-2] space2d is = "+this.getSpace2d());*/
+		if (this.isDebug) {
+			System.out.println("Done with AttractorsGenerator - paint ^__^");
+			System.out.println("Done in " + (System.currentTimeMillis() - cur) / 1000 + " seconds");
+			
+		}
 		g2.dispose();
 		offScreenGraphics.dispose();
 	}
@@ -197,8 +207,10 @@ public class AttractorsGenerator extends JFrame {
 	}
 
 	private void createGif(BufferedImage[] images) {
-		System.out.println("in_createGif");
-		 BufferedImage first = images[0];
+		if (isDebug) {
+			System.out.println("in_createGif");
+		}
+		BufferedImage first = images[0];
 	     try {
 			File outputfile = new File("C:\\Users\\Navroz\\Desktop\\" + System.currentTimeMillis() + "gif.mp4");
 			ImageOutputStream output = new FileImageOutputStream(outputfile);//new File("/tmp/example.gif"));
@@ -229,14 +241,17 @@ public class AttractorsGenerator extends JFrame {
 				rangeMap = this.setRangeMapVals(rangeMap, attrSpaceMap);
 			}
 			
-			this.printRangeMap(rangeMap);
-			System.out.println(this.checkRangeMap(rangeMap,attrs[0].is3D()));
-			String isNotOk = "rangeMap is NOT ok    Gr@#$^$";
-			if (isNotOk.equals(this.checkRangeMap(rangeMap,attrs[0].is3D()))) {
-				System.out.println("Uh-Oh  spaceMap ranges undefined");
-				return null;
+			
+			if (this.isDebug) {
+				this.printRangeMap(rangeMap);
+				System.out.println(this.checkRangeMap(rangeMap, attrs[0].is3D()));
+				String isNotOk = "rangeMap is NOT ok    Gr@#$^$";
+				if (isNotOk.equals(this.checkRangeMap(rangeMap, attrs[0].is3D()))) {
+					System.out.println("Uh-Oh  spaceMap ranges undefined");
+					return null;
+				} 
 			}
-
+			
 			for (int i = 0; i < this.maxIter; i++) {
 				for (int j = 0; j < attrs.length; j++) {
 					attrs[j].draw(i, g, rangeMap);
@@ -427,7 +442,7 @@ public class AttractorsGenerator extends JFrame {
 				
 				lorenz_Attractor.setMaxIter(500/*000*/);
 				lorenz_Attractor.setSpace2d("x-z");
-				
+				lorenz_Attractor.setDebug(false);
 				final JFrame frame = lorenz_Attractor;//("dejong");//("aizawa");//
 				
 				frame.setTitle("BawazAttractor");
@@ -468,6 +483,34 @@ public class AttractorsGenerator extends JFrame {
 
 	public void setPauseTime(int pauseTime) {
 		this.pauseTime = pauseTime;
+	}
+
+	public boolean isOriginUpperLeft() {
+		return this.isOriginUpperLeft;
+	}
+
+	public void setOriginUpperLeft(boolean isOrigUprLft) {
+		this.isOriginUpperLeft = isOrigUprLft;
+
+		if (this.attractors != null && this.attractors.length > 0) {
+			for (Attractor a : this.attractors) {
+				a.setOriginUpperLeft(isOrigUprLft);
+			}
+		}
+	}
+
+	public boolean isDebug() {
+		return this.isDebug;
+	}
+
+	public void setDebug(boolean isDbg) {
+		this.isDebug = isDbg;
+
+		if (this.attractors != null && this.attractors.length > 0) {
+			for (Attractor a : this.attractors) {
+				a.setDebug(isDbg);
+			}
+		}
 	}
 
 

@@ -3,8 +3,10 @@ package org.bawaweb.ui.sierpinkski;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class Attractor {
 	
@@ -16,12 +18,15 @@ public abstract class Attractor {
 	private double cumulativeTime;
 	private String name;
 	protected boolean is3D = true;
-	String space2dAxes;
-	private Map<Integer,Tuple3d> updatedTuples = new LinkedHashMap<Integer,Tuple3d>();
-	private Map<Integer,Color> updatedColors = new LinkedHashMap<Integer,Color>();
-	private boolean isPixellated = false;		//	Fractal rendered by lines, or pixels
+	protected String space2dAxes;
+	protected Map<Integer,Tuple3d> updatedTuples = new LinkedHashMap<Integer,Tuple3d>();
+	protected Map<Integer,Color> updatedColors = new LinkedHashMap<Integer,Color>();
+	protected boolean isPixellated = false;		//	Fractal rendered by lines, or pixels
 	
-	private boolean isTimeIterDependant = false;
+	protected boolean isTimeIterDependant = false;
+	protected boolean isOriginUpperLeft = false;
+	
+	private boolean isDebug = false;//true;//
 
 	public Attractor(double x, double y, double z, Color c) {
 		this.setT3d(new Tuple3d(x, y, z));
@@ -207,21 +212,23 @@ public abstract class Attractor {
 		String info = "("+index+")  "+"X[" + tuple.x + "], Y[" + tuple.y + "]";
 		if (is3D)
 			info += ", Z[" + tuple.z + "]";
-//		System.out.println(info);
-//		g2.setColor(Color.blue);
+		if (isDebug) {
+			System.out.println(info);
+		}
+		//		g2.setColor(Color.blue);
 		g2.drawString(info, 20, startPos);
 	}
 	
 	private void drawRect(Graphics2D g, Tuple3d existing, Tuple3d updated) {
-		/*existing.x = AttractorsGenerator.HEIGHT - existing.x;
-		updated.x = AttractorsGenerator.HEIGHT - updated.x;*/
-		existing.y = AttractorsGenerator.HEIGHT - existing.y;
-		updated.y = AttractorsGenerator.HEIGHT - updated.y;
-		
-
-		if (is3D) {
-			existing.z = AttractorsGenerator.HEIGHT - existing.z;
-			updated.z = AttractorsGenerator.HEIGHT - updated.z;
+		if (!this.isOriginUpperLeft) {
+			/*existing.x = AttractorsGenerator.HEIGHT - existing.x;
+				updated.x = AttractorsGenerator.HEIGHT - updated.x;*/
+			existing.y = AttractorsGenerator.HEIGHT - existing.y;
+			updated.y = AttractorsGenerator.HEIGHT - updated.y;
+			if (is3D) {
+				existing.z = AttractorsGenerator.HEIGHT - existing.z;
+				updated.z = AttractorsGenerator.HEIGHT - updated.z;
+			} 
 		}
 		
 		if (this.space2dAxes.equals("x-z")) {
@@ -246,6 +253,17 @@ public abstract class Attractor {
 	}
 
 	private void drawLine(Graphics2D g2, Tuple3d scaledExistingTuple, Tuple3d scaledUpdatedTuple) {
+		if (!this.isOriginUpperLeft) {
+			/*	existing.x = AttractorsGenerator.HEIGHT - scaledExistingTuple.x;
+				scaledUpdatedTuple.x = AttractorsGenerator.HEIGHT - scaledUpdatedTuple.x;*/
+			scaledExistingTuple.y = AttractorsGenerator.HEIGHT - scaledExistingTuple.y;
+			scaledUpdatedTuple.y = AttractorsGenerator.HEIGHT - scaledUpdatedTuple.y;
+			if (is3D) {
+				scaledExistingTuple.z = AttractorsGenerator.HEIGHT - scaledExistingTuple.z;
+				scaledUpdatedTuple.z = AttractorsGenerator.HEIGHT - scaledUpdatedTuple.z;
+			} 
+		}
+		
 		if (this.space2dAxes.equals("x-z")) {
 			g2.drawLine(
 					(int) scaledExistingTuple.x, (int) scaledExistingTuple.z, 
@@ -274,6 +292,9 @@ public abstract class Attractor {
 	}
 	
 	private void doScaleCheck(Tuple3d t) {
+		if (isDebug) {
+			System.out.println("inDoScaleCheck---tuple==" + t);
+		}
 		boolean xOk = t.x <= AttractorsGenerator.WIDTH || t.x >= 0;
 		boolean yOk = t.y <= AttractorsGenerator.HEIGHT || t.y >= 0;
 		if (this.is3D) {
@@ -365,6 +386,22 @@ public abstract class Attractor {
 		this.name = nme;
 	}
 
+	public boolean isOriginUpperLeft() {
+		return this.isOriginUpperLeft;
+	}
+
+	public void setOriginUpperLeft(boolean isOrgnUprLft) {
+		this.isOriginUpperLeft = isOrgnUprLft;
+	}
+
+	public boolean isDebug() {
+		return this.isDebug;
+	}
+
+	public void setDebug(boolean isDbug) {
+		this.isDebug = isDbug;
+	}
+
 	/**
 	 * determines range
 	 *	and puts tuples into map	- @see	this.updatedTuples
@@ -383,7 +420,7 @@ public abstract class Attractor {
 		double z_min_r = Double.POSITIVE_INFINITY;
 		double z_max_r = Double.NEGATIVE_INFINITY;
 		
-		final Tuple3d extistingDummyTuple = this.getT3d();
+//		final Tuple3d extistingDummyTuple = this.getT3d();
 		
 		Tuple3d tempDummyTuple = this.getT3d();
 		x_min_r = tempDummyTuple.x < x_min_r ? tempDummyTuple.x : x_min_r;
@@ -421,7 +458,8 @@ public abstract class Attractor {
 		for (int i = 0; i < this.maxIter; i++) {
 			Tuple3d existingTuple = tempDummyTuple;
 
-			if (! (Double.isNaN(existingTuple.x) || Double.isNaN(existingTuple.y) || Double.isNaN(existingTuple.z) )) {
+			if (!(Double.isNaN(existingTuple.x) || Double.isNaN(existingTuple.y)
+					|| (this.is3D && Double.isNaN(existingTuple.z)))) {
 				Tuple3d updatedTuple = null;
 				Color updatedColor = null;
 				if (!isTimeIterCalcNeeded) {
@@ -437,7 +475,10 @@ public abstract class Attractor {
 						this.addUpdatedColors(i,updatedColor);
 					}
 				}
-				if (Double.isNaN(updatedTuple.x) || Double.isNaN(updatedTuple.y) || Double.isNaN(updatedTuple.z)) {
+				if (Double.isNaN(updatedTuple.x) || Double.isNaN(updatedTuple.y) || (this.is3D&&Double.isNaN(updatedTuple.z))) {
+//					if(isDebug)
+						System.out.println("i-is--"+i+"inDetermineRange--updatedTuple---NAN=="+updatedTuple);
+					
 					return spaceMap;
 				}
 
@@ -455,6 +496,8 @@ public abstract class Attractor {
 				}
 				
 			} else {
+//				if(isDebug)
+					System.out.println("i-is--"+i+"inDetermineRange--existingTuple---NAN=="+existingTuple);
 				return spaceMap;
 			}
 		}
@@ -470,13 +513,28 @@ public abstract class Attractor {
 			spaceMap.put("zmax", z_max_r);//50.0);
 		}
 		
-		/*//revert		//todo	-	do we need this
+	/*//revert		//todo	-	do we need this
 		this.setT3d(extistingDummyTuple);
 		this.setCumulativeTime(0.0);*/
+		if (isDebug) {
+			System.out.println("Space_map_is");
+			this.printSpaceMap(spaceMap);
+		}
 		return spaceMap;		
 	
 	}
 	
+	private void printSpaceMap(Map<String, Double> spMap) {
+		Set<String> kSet = spMap.keySet();
+		Iterator<String> itr = kSet.iterator();
+		while(itr.hasNext()) {
+			String key = itr.next();
+			Double value = spMap.get(key);
+			
+			System.out.println("["+key+"] ===>  ["+value+"]");
+		}
+	}
+
 	private void addUpdatedTuples(int index, Tuple3d existingTuple, Tuple3d updatedTuple) {
 		this.updatedTuples.put(index,updatedTuple);
 	}

@@ -117,19 +117,20 @@ public class CustomAttractor extends Attractor {
 		final String tempYFormula = this.deltaYFormula;
 		final String tempZFormula = this.is3D ? this.deltaZFormula : null;
 				
-		// replace all t or T with iterTime value
-		if (this.deltaXFormula.contains("t") || this.deltaXFormula.contains("T")) {
-			this.deltaXFormula = this.deltaXFormula.replaceAll("t|T", String.valueOf(iterTime));
-		}
-		if (this.deltaYFormula.contains("t") || this.deltaYFormula.contains("T")) {
-			this.deltaYFormula = this.deltaYFormula.replaceAll("t|T", String.valueOf(iterTime));
-		}
-		if (this.is3D) {
-			if (this.deltaZFormula.contains("t") || this.deltaZFormula.contains("T")) {
-				this.deltaZFormula = this.deltaZFormula.replaceAll("t|T", String.valueOf(iterTime));
+		if (this.isTimeIterDependant) {
+			// replace all t or T with iterTime value
+			if (this.deltaXFormula.contains("t") || this.deltaXFormula.contains("T")) {
+				this.deltaXFormula = this.deltaXFormula.replaceAll("t|T", String.valueOf(iterTime));
 			}
+			if (this.deltaYFormula.contains("t") || this.deltaYFormula.contains("T")) {
+				this.deltaYFormula = this.deltaYFormula.replaceAll("t|T", String.valueOf(iterTime));
+			}
+			if (this.is3D) {
+				if (this.deltaZFormula.contains("t") || this.deltaZFormula.contains("T")) {
+					this.deltaZFormula = this.deltaZFormula.replaceAll("t|T", String.valueOf(iterTime));
+				}
+			} 
 		}
-		
 		// do the update
 		Tuple3d updatedTuple = this.update(existingTuple, dt);
 		
