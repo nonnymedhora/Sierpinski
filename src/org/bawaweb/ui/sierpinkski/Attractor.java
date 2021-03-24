@@ -295,10 +295,10 @@ public abstract class Attractor {
 		if (isDebug) {
 			System.out.println("inDoScaleCheck---tuple==" + t);
 		}
-		boolean xOk = t.x <= AttractorsGenerator.WIDTH || t.x >= 0;
-		boolean yOk = t.y <= AttractorsGenerator.HEIGHT || t.y >= 0;
+		boolean xOk = t.x <= AttractorsGenerator.WIDTH && t.x >= 0;
+		boolean yOk = t.y <= AttractorsGenerator.HEIGHT && t.y >= 0;
 		if (this.is3D) {
-			boolean zOk = t.z <= AttractorsGenerator.DEPTH || t.z >= 0;
+			boolean zOk = t.z <= AttractorsGenerator.DEPTH && t.z >= 0;
 			if (!(xOk || yOk || zOk))
 				System.out.println("UhOhOttaScale  x[" + t.x + "], y[" + t.y + "], z[" + t.z + "]");
 		} else {
@@ -475,14 +475,16 @@ public abstract class Attractor {
 						this.addUpdatedColors(i,updatedColor);
 					}
 				}
-				if (Double.isNaN(updatedTuple.x) || Double.isNaN(updatedTuple.y) || (this.is3D&&Double.isNaN(updatedTuple.z))) {
-//					if(isDebug)
+				
+				if (Double.isNaN(updatedTuple.x) || Double.isNaN(updatedTuple.y)
+						|| (this.is3D && Double.isNaN(updatedTuple.z))) {
+					if(isDebug)
 						System.out.println("i-is--"+i+"inDetermineRange--updatedTuple---NAN=="+updatedTuple);
 					
 					return spaceMap;
 				}
 
-				this.addUpdatedTuples(i, existingTuple, updatedTuple);
+				this.addUpdatedTuples(i, updatedTuple);
 				tempDummyTuple = updatedTuple;
 				
 				x_min_r = tempDummyTuple.x < x_min_r ? tempDummyTuple.x : x_min_r;
@@ -502,6 +504,9 @@ public abstract class Attractor {
 			}
 		}
 		
+//		if(isDebug)
+			System.out.println("Map is Ok --Yay");
+		
 		spaceMap.put("xmin", x_min_r);//-20.0);
 		spaceMap.put("xmax", x_max_r);//20.0);
 	
@@ -520,6 +525,9 @@ public abstract class Attractor {
 			System.out.println("Space_map_is");
 			this.printSpaceMap(spaceMap);
 		}
+		
+		System.out.println("Space_map_is");
+		this.printSpaceMap(spaceMap);
 		return spaceMap;		
 	
 	}
@@ -531,28 +539,16 @@ public abstract class Attractor {
 			String key = itr.next();
 			Double value = spMap.get(key);
 			
-			System.out.println("["+key+"] ===>  ["+value+"]");
+			System.out.println("[" + key + "] ===>  [" + value + "]");
 		}
 	}
 
-	private void addUpdatedTuples(int index, Tuple3d existingTuple, Tuple3d updatedTuple) {
-		this.updatedTuples.put(index,updatedTuple);
+	private void addUpdatedTuples(int index, Tuple3d updatedTuple) {
+		this.updatedTuples.put(index, updatedTuple);
 	}
-	
+
 	private void addUpdatedColors(int index, Color clr) {
-		this.updatedColors.put(index,clr);
-	}
-
-	/**
-     * Pause for t milliseconds. This method is intended to support computer animations.
-     * @param t number of milliseconds
-     */
-	public static void pause(int t) {
-		try {
-			Thread.sleep(t);
-		} catch (InterruptedException e) {
-			System.out.println("Error sleeping");
-		}
+		this.updatedColors.put(index, clr);
 	}
 
 }

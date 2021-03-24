@@ -15,6 +15,7 @@ import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -48,7 +49,7 @@ public class AttractorsGenerator extends JFrame {
 	private int pauseTime = 10;
 	BufferedImage bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 
-	private BufferedImage[] gifImages;
+	private List<BufferedImage> gifImages = new ArrayList<BufferedImage>();
 	private boolean isOriginUpperLeft = false;
 	
 	private boolean isDebug = false;//true;//
@@ -120,7 +121,7 @@ public class AttractorsGenerator extends JFrame {
 			this.setImage(attractorsImage);
 			g2.drawImage(attractorsImage, 0, 0, null);
 		} else {
-			this.gifImages = new BufferedImage[this.maxIter];
+			this.gifImages.clear();//ensureCapacity(this.maxIter);
 			this.drawAttractors(g2, offScreenGraphics, this.pauseTime);
 			
 			/*this.setImage(this.drawAttractors(offScreenGraphics));
@@ -165,6 +166,7 @@ public class AttractorsGenerator extends JFrame {
 			}*/
 
 			for (int i = 0; i < this.maxIter; i++) {
+				
 				for (int j = 0; j < attrs.length; j++) {
 					attrs[j].draw(i, g, rangeMap);
 					
@@ -173,7 +175,7 @@ public class AttractorsGenerator extends JFrame {
 					this.gifImages[i] = this.takeScreenShot(this.getContentPane(),this.gifImages[i]);*/
 					this.pause(offScrnG, pauseInterval);
 					/*g.drawImage(this.getBufferedImage(), 0, 0, null);*/
-				}
+				}	//ends-forJ
 				
 				/*System.out.println("Here i====="+i);
 				
@@ -182,12 +184,14 @@ public class AttractorsGenerator extends JFrame {
 				System.out.println("For [i] ("+i+")   drwn=="+drwn);*/
 /*				
 //				this.gifImages[i] = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-				g.drawImage(this.getBufferedImage(),0,0,this);
-				this.gifImages[i] = this.getBufferedImage();*/
-			}
-			/*System.out.println("NumGifs==="+this.gifImages.length);
+				g.drawImage(this.getBufferedImage(),0,0,this);*/
+				this.gifImages.add(this.getBufferedImage());
+				
+			}	//	ends-forI
+			
+			System.out.println("NumGifs===" + this.gifImages.size());
 			this.createGif(this.gifImages);
-			System.out.println("Done " + System.currentTimeMillis());*/
+			System.out.println("Done " + System.currentTimeMillis());
 		}
 	}
 
@@ -206,19 +210,19 @@ public class AttractorsGenerator extends JFrame {
 		return image;
 	}
 
-	private void createGif(BufferedImage[] images) {
+	private void createGif(final List<BufferedImage> images) {
 		if (isDebug) {
 			System.out.println("in_createGif");
 		}
-		BufferedImage first = images[0];
+		BufferedImage first = images.get(0);
 	     try {
 			File outputfile = new File("C:\\Users\\Navroz\\Desktop\\" + System.currentTimeMillis() + "gif.mp4");
 			ImageOutputStream output = new FileImageOutputStream(outputfile);//new File("/tmp/example.gif"));
 			GifSequenceWriter writer = new GifSequenceWriter(output, first.getType(), this.pauseTime/*250*/, true);
 	        writer.writeToSequence(first);
 	        
-	        for(int i = 1; i <images.length;i++){
-	        	writer.writeToSequence(images[i]);
+	        for(int i = 1; i <images.size();i++){
+	        	writer.writeToSequence(images.get(i));
 	        }
 
 	        writer.close();
@@ -409,9 +413,9 @@ public class AttractorsGenerator extends JFrame {
 	 * @param g2 
      * @param t number of milliseconds
      */
-    public /*static */void pause(Graphics2D g2, int t) {
+    public void pause(Graphics2D g2, int t) {
         try {
-
+        	this.setImage(this.getBufferedImage());
 			g2.drawImage(this.getBufferedImage(), 0, 0, null);
             Thread.sleep(t);
         }
