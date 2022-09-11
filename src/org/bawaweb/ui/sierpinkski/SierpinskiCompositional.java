@@ -187,6 +187,7 @@ class SierpinskiComboPanel extends JPanel {
 	private static final String[] ATTRACTOR_CHOICES = new String[]{"lorenz","aizawa","dejong","custom"};
 	private static final String[] ATTRACTOR_SPACE_3D_CHOICES = new String[] { "x-y", "x-z", "y-z", "y-x", "z-x", "z-y" };
 	private static final String[] ATTRACTOR_SPACE_2D_CHOICES = new String[] { "x-y", "y-x" };
+	private static final String[] ATTRACTOR_SPACE_SNGL_CHOICE = new String[] { "y-x" };
 	
 	private final String[] comboOptions = new String[]{ DIY, FANNY_CIRCLE, FANNY_TRIANGLES, SIERPINSKI_TRIANGLES, SIERPINSKI_SQUARES, APOLLONIAN_CIRCLES, CST_FRACTAL, SAMPLE, MANDELBROT, JULIA, KOCHSNOWFLAKE, POLY, ATTRACTORS };
 	private final JComboBox<String> combos = new JComboBox<String>(comboOptions);
@@ -1113,6 +1114,20 @@ class SierpinskiComboPanel extends JPanel {
 	
 	private final JCheckBox attractorDimChoiceCb = new JCheckBox("3D", true);
 	private boolean isAttractorDimSpace3D = true;
+	private boolean isAttractorDimSpace1D = false;
+	private boolean isAttractorDimSpace2D = false;
+	
+	
+	private ButtonGroup  attractorDimChoiceBG 		= new ButtonGroup();
+	/**
+	 * 3D ==> deltaX, deltaY,deltaZ 
+	 * 2D ==> deltaX, deltaY 
+	 * 1D ==> deltaX y=f(x)
+	 **/
+	private JRadioButton attractorDimSnglChoiceRB 	= new JRadioButton("1D", false);		//	y=f(x)	---	deltaX
+	private JRadioButton attractorDim2DChoiceRB 	= new JRadioButton("2D", false);		//	deltaY,delatX
+	private JRadioButton attractorDim3DChoiceRB 	= new JRadioButton("3D", true);			//	deltaX,deltaY,deltaZ
+		
 
 	private final JCheckBox attractorPixellateChoiceCb = new JCheckBox("Pixellate", true);
 	private boolean isAttractorPixellated = true;
@@ -1220,6 +1235,7 @@ class SierpinskiComboPanel extends JPanel {
 
 	private JLabel attrCustomFormulaStrLabel = new JLabel("Custom Formula: ");
 	
+	private JLabel attrCustomFormulaStr1DIMXLabel = new JLabel("y = f(x): ");
 	private JLabel attrCustomFormulaStrDeltaXLabel = new JLabel("Delta X or dx: ");
 	private JLabel attrCustomFormulaStrDeltaYLabel = new JLabel("Delta Y or dy: ");
 	private JLabel attrCustomFormulaStrDeltaZLabel = new JLabel("Delta Z or dz: ");
@@ -1552,7 +1568,15 @@ class SierpinskiComboPanel extends JPanel {
 		this.attractorsPanel.add(new JLabel("Choose Atractor:"));
 		this.attractorsPanel.add(this.attractorChoiceCombos);	
 		
-		this.attractorsPanel.add(this.attractorDimChoiceCb);
+		//this.attractorsPanel.add(this.attractorDimChoiceCb);
+		this.attractorDimChoiceBG.add(this.attractorDimSnglChoiceRB);
+		this.attractorDimChoiceBG.add(this.attractorDim2DChoiceRB);
+		this.attractorDimChoiceBG.add(this.attractorDim3DChoiceRB);
+
+		this.attractorsPanel.add(this.attractorDimSnglChoiceRB);
+		this.attractorsPanel.add(this.attractorDim2DChoiceRB);
+		this.attractorsPanel.add(this.attractorDim3DChoiceRB);
+		
 		this.attractorsPanel.add(this.attractorPixellateChoiceCb);
 
 		this.attractorsPanel.add(this.attractorSingularChoiceCb);
@@ -1648,6 +1672,7 @@ class SierpinskiComboPanel extends JPanel {
 		
 		this.attractorsPanel.add(this.attrCustomFormulaStrDeltaXLabel );
 		this.attractorsPanel.add(this.attrCustom_DeltaXFormula_tf );
+		
 		this.attractorsPanel.add(this.attrCustomFormulaStrDeltaYLabel );
 		this.attractorsPanel.add(this.attrCustom_DeltaYFormula_tf );
 		this.attractorsPanel.add(this.attrCustomFormulaStrDeltaZLabel );
@@ -8796,46 +8821,45 @@ class SierpinskiComboPanel extends JPanel {
 	private void doStartAttractorsCommand() {
 		String attractorSelected = this.attractorSelectionChoice;
 		boolean is3D = this.isAttractorDimSpace3D;
+		boolean is2D = this.isAttractorDimSpace2D;
+		boolean is1D = this.isAttractorDimSpace1D;
+		
 		boolean isSingular = this.isSingularAttractor;
 		boolean isPixellated = this.isAttractorPixellated;
 		boolean isTimeInvariant = this.isAttractorTimeInvariant;
 		boolean isTimeIterDependant = this.isAttractorTimeIterDependant;
 		
-		/*////////removeblow
-		double x1S = Double.NaN;
-		double y1S = Double.NaN;
-		double z1S = Double.NaN;
-		Color color1 = this.attractor1Color;
-		Color color2 = this.attractor2Color;
-
-		double x2S = Double.NaN;
-		double y2S = Double.NaN;
-		double z2S = Double.NaN;
-		////////////////////////////
-*/		List<Double> 	attr_XSeedVals 	= new ArrayList<Double>();
+		List<Double> 	attr_XSeedVals 	= new ArrayList<Double>();
 		List<Double> 	attr_YSeedVals 	= new ArrayList<Double>();
 		List<Double> 	attr_ZSeedVals 	= new ArrayList<Double>();
 		List<Color> 	attrColorVals 	= new ArrayList<Color>();
 
 		double dt = Double.NaN;
 		int maxIter = Integer.MIN_VALUE;
-		List<String> space2d = null;
+//		List<String> space2d = null;
 		
 		boolean isDeJong = (attractorSelected.equals("dejong"));
 		
 		try {
-			if (!isSingular) {
+			if (!isSingular) {	//draw multiple attractors
 				for (JTextField xField : attrSeed_X_tfList) {
 					attr_XSeedVals.add(Double.parseDouble(xField.getText()));
 				}
-				for (JTextField yField : attrSeed_Y_tfList) {
-					attr_YSeedVals.add(Double.parseDouble(yField.getText()));
+				if (!is1D) {
+					for (JTextField yField : attrSeed_Y_tfList) {
+						attr_YSeedVals.add(Double.parseDouble(yField.getText()));
+					} 
 				}
 				if (!isDeJong && is3D) {
 					for (JTextField zField : attrSeed_Z_tfList) {
 						attr_ZSeedVals.add(Double.parseDouble(zField.getText()));
 					}
-				} else if (!is3D) {
+				} else if (!is3D || is1D) {
+					if (is1D) {
+						for (JTextField yField : attrSeed_Y_tfList) {
+							attr_YSeedVals.add(0.0);
+						}
+					}
 					for (JTextField zField : attrSeed_Z_tfList) {
 						attr_ZSeedVals.add(0.0);
 					}
@@ -8844,12 +8868,18 @@ class SierpinskiComboPanel extends JPanel {
 				for(Color aColor:attrSeed_ClrChList){
 					attrColorVals.add(aColor);
 				}
-			} else {
+				
+			} else {	//draw SIngl attractor	1only
 				attr_XSeedVals.add(Double.parseDouble(this.attr1SeedX_tf.getText()));
-				attr_YSeedVals.add(Double.parseDouble(this.attr1SeedY_tf.getText()));
+				if (!is1D) {
+					attr_YSeedVals.add(Double.parseDouble(this.attr1SeedY_tf.getText()));
+				}
 				if (!isDeJong && is3D) {
 					attr_ZSeedVals.add(Double.parseDouble(this.attr1SeedZ_tf.getText()));
-				} else if (!is3D) {
+				} else if (!is3D || is1D) {
+					if (is1D) {
+						attr_YSeedVals.add(0.0);
+					}
 					attr_ZSeedVals.add(0.0);
 				}
 				attrColorVals.add(this.attractor1Color);
@@ -8908,6 +8938,7 @@ class SierpinskiComboPanel extends JPanel {
 					aLorenzAttractor.setRho(rho);
 					
 					aLorenzAttractor.setIs3D(is3D);
+					aLorenzAttractor.setIs1D(is1D);
 					aLorenzAttractor.setPixellated(isPixellated);
 					/*aLorenzAttractor.setInstantDraw(isInstantDraw);*/
 					aLorenzAttractor.setTimeInvariant(isTimeInvariant);
@@ -8982,6 +9013,7 @@ class SierpinskiComboPanel extends JPanel {
 					anAizawaAttractor.setF(fVal);
 					
 					anAizawaAttractor.setIs3D(is3D);
+					anAizawaAttractor.setIs1D(is1D);
 					anAizawaAttractor.setPixellated(isPixellated);
 					/*anAizawaAttractor.setInstantDraw(isInstantDraw);*/
 					anAizawaAttractor.setTimeInvariant(isTimeInvariant);
@@ -9062,6 +9094,7 @@ class SierpinskiComboPanel extends JPanel {
 					aDeJongAttractor.setD(dVal);
 
 					aDeJongAttractor.setIs3D(is3D);
+					aDeJongAttractor.setIs1D(is1D);
 					aDeJongAttractor.setPixellated(isPixellated);
 					/*aDeJongAttractor.setInstantDraw(isInstantDraw);*/
 					aDeJongAttractor.setTimeInvariant(isTimeInvariant);
@@ -9121,29 +9154,36 @@ class SierpinskiComboPanel extends JPanel {
 			try {
 
 				String deltaXFormula = this.attrCustom_DeltaXFormula_tf.getText().trim();
-				String deltaYFormula = this.attrCustom_DeltaYFormula_tf.getText().trim();
-				String deltaZFormula = is3D?this.attrCustom_DeltaZFormula_tf.getText().trim():null;
+				String deltaYFormula = is1D?this.attrCustom_DeltaYFormula_tf.getText().trim():null;
+				String deltaZFormula = (is3D||is1D)?this.attrCustom_DeltaZFormula_tf.getText().trim():null;
 				
 				for (int i = 0; i < numAttractors; i++) {
 					final CustomAttractor aCustomAttractor;
 					if (is3D) {
-						aCustomAttractor = new CustomAttractor(
-							attr_XSeedVals.get(i), attr_YSeedVals.get(i), attr_ZSeedVals.get(i), 
-							attrColorVals.get(i));
-					}else {
-						aCustomAttractor = new CustomAttractor(
-							attr_XSeedVals.get(i), attr_YSeedVals.get(i),0, 
-							attrColorVals.get(i));
+						aCustomAttractor = new CustomAttractor(attr_XSeedVals.get(i), attr_YSeedVals.get(i),
+								attr_ZSeedVals.get(i), attrColorVals.get(i));
+					} else {
+						if (is2D) {
+							aCustomAttractor = new CustomAttractor(attr_XSeedVals.get(i), attr_YSeedVals.get(i), 0,
+									attrColorVals.get(i));
+						} else { // 1D
+							System.out.println("is1D==?=" + is1D);
+							aCustomAttractor = new CustomAttractor(attr_XSeedVals.get(i), 0, 0, attrColorVals.get(i));
+						}
 					}
+
 					aCustomAttractor.setMaxIter(maxIter);
-					
+
 					aCustomAttractor.setDeltaXFormula(deltaXFormula);
-					aCustomAttractor.setDeltaYFormula(deltaYFormula);
+					if (!is1D) {
+						aCustomAttractor.setDeltaYFormula(deltaYFormula);
+					}
 					if (is3D) {
 						aCustomAttractor.setDeltaZFormula(deltaZFormula);
 					}
 					
 					aCustomAttractor.setIs3D(is3D);
+					aCustomAttractor.setIs1D(is1D);
 					aCustomAttractor.setPixellated(isPixellated);
 					/*aCustomAttractor.setInstantDraw(isInstantDraw);*/
 
@@ -14779,8 +14819,12 @@ private void setupPolyGeneratorListeners() {
 				doSelectAttractorChoiceCombosCommand(attractorChoiceVal);				
 			}
 		});
+		
+		this.attractorDimSnglChoiceRB.addActionListener(this.attractorDIMChoiceRBListener());
+		this.attractorDim2DChoiceRB.addActionListener(this.attractorDIMChoiceRBListener());
+		this.attractorDim3DChoiceRB.addActionListener(this.attractorDIMChoiceRBListener());
 
-		this.attractorDimChoiceCb.addItemListener(new ItemListener() {
+		/*this.attractorDimChoiceCb.addItemListener(new ItemListener() {
             @Override
 			public void itemStateChanged(ItemEvent event) {
 				if (event.getStateChange() == ItemEvent.SELECTED) {
@@ -14789,7 +14833,7 @@ private void setupPolyGeneratorListeners() {
 					doSelectAttractorDimChoiceCommand(false);
 				}
 			}
-        });
+        });*/
 
 		this.attractorPixellateChoiceCb.addItemListener(new ItemListener() {
             @Override
@@ -14929,10 +14973,22 @@ private void setupPolyGeneratorListeners() {
 				attrSeed_Y_lbList.add(nxtAttr_Y_Label);
 				attractorsSeedsPanel.add(nxtAttr_Y_Label);
 				JTextField anAttrSeedY_tf = new JTextField(2);
-				attractorsSeedsPanel.add(anAttrSeedY_tf);
-				attrSeed_Y_tfList.add(anAttrSeedY_tf);
+				
+				if (!isAttractorDimSpace1D||!attractorDim3DChoiceRB.isSelected()/*!attractorDimSnglChoiceRB.isSelected()*/) {
+					attractorsSeedsPanel.add(anAttrSeedY_tf);
+					attrSeed_Y_tfList.add(anAttrSeedY_tf);
+				}
 
-				if (attractorDimChoiceCb.isSelected()) {
+				if (attractorDim3DChoiceRB/*attractorDimChoiceCb*/.isSelected()) {
+					final JLabel nxtAttr_Z_Label = new JLabel("   Z:");
+					attrSeed_Z_lbList.add(nxtAttr_Z_Label);
+					attractorsSeedsPanel.add(nxtAttr_Z_Label);
+					JTextField anAttrSeedZ_tf = new JTextField(2);
+					attractorsSeedsPanel.add(anAttrSeedZ_tf);
+					attrSeed_Z_tfList.add(anAttrSeedZ_tf);
+				}
+				
+				if (attractorDimSnglChoiceRB/*attractorDimChoiceCb*/.isSelected()) {
 					final JLabel nxtAttr_Z_Label = new JLabel("   Z:");
 					attrSeed_Z_lbList.add(nxtAttr_Z_Label);
 					attractorsSeedsPanel.add(nxtAttr_Z_Label);
@@ -14983,7 +15039,7 @@ private void setupPolyGeneratorListeners() {
 				JLabel lastAttr_Z_Label = null;
 				JTextField lastAttr_Z_tf = null;
 				
-				if (attractorDimChoiceCb.isSelected()) {
+				if (attractorDim3DChoiceRB	/*attractorDimChoiceCb*/.isSelected()) {
 					lastAttr_Z_Label = attrSeed_Z_lbList.get(attrSeed_Z_lbList.size() - 1);
 					attrSeed_Z_lbList.remove(lastAttr_Z_Label);
 
@@ -15001,7 +15057,7 @@ private void setupPolyGeneratorListeners() {
 				attractorsSeedsPanel.remove(lastAttr_X_tf);
 				attractorsSeedsPanel.remove(lastAttr_Y_tf);
 				
-				if (attractorDimChoiceCb.isSelected()) {
+				if (attractorDim3DChoiceRB/*attractorDimChoiceCb*/.isSelected()) {
 					attractorsSeedsPanel.remove(lastAttr_Z_Label);
 					attractorsSeedsPanel.remove(lastAttr_Z_tf);
 				}
@@ -15138,6 +15194,71 @@ private void setupPolyGeneratorListeners() {
 	private void doSelectAttractorPixellateChoiceCommand(boolean pixellateChoice) {
 		this.isAttractorPixellated = pixellateChoice;
 	}
+	
+	private ActionListener attractorDIMChoiceRBListener() {
+		return new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				doApplyAttractorDIMChoice();			
+			}
+		};
+	}
+	
+	private void doApplyAttractorDIMChoice() {
+		if (this.attractorDimSnglChoiceRB.isSelected()) {
+			this.isAttractorDimSpace1D = true;
+			this.isAttractorDimSpace2D = false;
+			this.isAttractorDimSpace3D = false;
+		} else if (this.attractorDim2DChoiceRB.isSelected()) {
+			this.isAttractorDimSpace1D = false;
+			this.isAttractorDimSpace2D = true;
+			this.isAttractorDimSpace3D = false;
+		} else {
+			this.isAttractorDimSpace1D = false;
+			this.isAttractorDimSpace2D = false;
+			this.isAttractorDimSpace3D = true;
+		}
+
+		this.attr1SeedX_tf.setEnabled(true);
+		this.attr2SeedX_tf.setEnabled(true);
+		this.attrCustom_DeltaXFormula_tf.setEnabled(true);
+		
+		if (this.isAttractorDimSpace2D) {	//2d
+			this.attractorSpace2DChoiceList.setModel(new DefaultComboBoxModel<String>(ATTRACTOR_SPACE_2D_CHOICES));
+			this.attr1SeedY_tf.setEnabled(true);
+			this.attr2SeedY_tf.setEnabled(true);
+			this.attr1SeedZ_tf.setEnabled(false);
+			this.attr2SeedZ_tf.setEnabled(false);
+			this.attrCustom_DeltaYFormula_tf.setEnabled(true);
+			this.attrCustom_DeltaZFormula_tf.setEnabled(false);
+		} else {
+			
+			if (this.isAttractorDimSpace3D) {	//3d
+				this.attractorSpace2DChoiceList.setModel(new DefaultComboBoxModel<String>(ATTRACTOR_SPACE_3D_CHOICES));
+				this.attr1SeedY_tf.setEnabled(true);
+				this.attr2SeedY_tf.setEnabled(true);
+				this.attr1SeedZ_tf.setEnabled(true);
+				this.attr2SeedZ_tf.setEnabled(true);
+
+				this.attrCustom_DeltaXFormula_tf.setEnabled(true);
+				this.attrCustom_DeltaYFormula_tf.setEnabled(true);
+				this.attrCustom_DeltaZFormula_tf.setEnabled(true);
+			} else {	//1d	
+				if (this.isAttractorDimSpace1D) {
+					this.attractorSpace2DChoiceList.setModel(new DefaultComboBoxModel<String>(ATTRACTOR_SPACE_SNGL_CHOICE));
+					this.attr1SeedY_tf.setEnabled(false);
+					this.attr2SeedY_tf.setEnabled(false);
+					this.attr1SeedZ_tf.setEnabled(false);
+					this.attr2SeedZ_tf.setEnabled(false);
+					this.attrCustom_DeltaXFormula_tf.setEnabled(true);
+					this.attrCustom_DeltaXFormula_tf.setToolTipText("y=f(x)");
+					this.attrCustom_DeltaYFormula_tf.setEnabled(false);
+					this.attrCustom_DeltaZFormula_tf.setEnabled(false);
+				}
+			}
+		}
+
+	}
 
 	private void doSelectAttractorDimChoiceCommand(boolean dimChoice) {
 		this.isAttractorDimSpace3D = dimChoice;
@@ -15198,8 +15319,11 @@ private void setupPolyGeneratorListeners() {
 			this.attractorTimeIterDependantCb.setSelected(false);
 			/*this.isAttractorTimeIterDependant = false;*/
 			
-			this.attractorDimChoiceCb.setEnabled(true);
-			this.attractorDimChoiceCb.setSelected(true);
+			/*this.attractorDimChoiceCb.setEnabled(true);
+			this.attractorDimChoiceCb.setSelected(true);*/
+
+			this.attractorDim3DChoiceRB.setEnabled(true);
+			this.attractorDim3DChoiceRB.setSelected(true);
 			this.isAttractorDimSpace3D = true;
 			
 			this.setupAttractorParamChoices();
@@ -15274,9 +15398,14 @@ private void setupPolyGeneratorListeners() {
 			this.attractorTimeIterDependantCb.setSelected(false);
 			this.isAttractorTimeIterDependant = false;
 			
-			this.attractorDimChoiceCb.setEnabled(false);
-			this.attractorDimChoiceCb.setSelected(true);
+			/*this.attractorDimChoiceCb.setEnabled(false);
+			this.attractorDimChoiceCb.setSelected(true);*/
+			
+			this.attractorDim3DChoiceRB.setEnabled(false);
+			this.attractorDim3DChoiceRB.setSelected(true);
 			this.isAttractorDimSpace3D = true;
+			this.isAttractorDimSpace2D = false;
+			this.isAttractorDimSpace1D = false;
 			
 		} else if (this.attractorSelectionChoice.equals("aizawa")) {
 			this.attrAizawaALabel.setVisible(true);
@@ -15335,9 +15464,14 @@ private void setupPolyGeneratorListeners() {
 			this.attractorTimeIterDependantCb .setSelected(false);
 			this.isAttractorTimeIterDependant = false;
 			
-			this.attractorDimChoiceCb.setEnabled(false);
-			this.attractorDimChoiceCb.setSelected(true);
+			/*this.attractorDimChoiceCb.setEnabled(false);
+			this.attractorDimChoiceCb.setSelected(true);*/
+			
+			this.attractorDim3DChoiceRB.setEnabled(false);
+			this.attractorDim3DChoiceRB.setSelected(true);
 			this.isAttractorDimSpace3D = true;
+			this.isAttractorDimSpace2D = false;
+			this.isAttractorDimSpace1D = false;
 			
 		} else if (this.attractorSelectionChoice.equals("dejong")) {
 			this.attrDeJongALabel.setVisible(true);
@@ -15393,9 +15527,15 @@ private void setupPolyGeneratorListeners() {
 			this.attractorTimeIterDependantCb.setSelected(false);
 			this.isAttractorTimeIterDependant  = false;
 			
-			this.attractorDimChoiceCb.setEnabled(false);
-			this.attractorDimChoiceCb.setSelected(false);
+			/*this.attractorDimChoiceCb.setEnabled(false);
+			this.attractorDimChoiceCb.setSelected(false);*/
+			
+			this.attractorDim2DChoiceRB.setEnabled(false);
+			this.attractorDim2DChoiceRB.setSelected(true);
+			
 			this.isAttractorDimSpace3D = false;
+			this.isAttractorDimSpace1D = false;
+			this.isAttractorDimSpace2D = true;
 			
 			
 			

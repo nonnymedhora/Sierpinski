@@ -55,6 +55,7 @@ public class CliffordAttractor extends /*Custom*/Attractor {
 		super(x, y, z, c);
 		this.setName("Clifford");
 		this.setIs3D(false);
+		this.setIs1D(false);
 		this.setTimeInvariant(true);
 		this.setTimeIterDependant(true);
 	}
@@ -70,6 +71,7 @@ public class CliffordAttractor extends /*Custom*/Attractor {
 		super(x, y, z, c, dspace);
 		this.setName("Clifford");
 		this.setIs3D(false);
+		this.setIs1D(false);
 		this.setTimeInvariant(true);
 		this.setTimeIterDependant(true);
 	}
@@ -82,6 +84,7 @@ public class CliffordAttractor extends /*Custom*/Attractor {
 		super(tuple, col);
 		this.setName("Clifford");
 		this.setIs3D(false);
+		this.setIs1D(false);
 		this.setTimeInvariant(true);
 		this.setTimeIterDependant(true);
 	}

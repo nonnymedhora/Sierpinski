@@ -18,6 +18,7 @@ public abstract class Attractor {
 	private double cumulativeTime;
 	private String name;
 	protected boolean is3D = true;
+	protected boolean is1D = false;	//single function dependant - y=f(x)	-	for x=seedx,seedx+deltax,...
 	protected String space2dAxes;
 	protected Map<Integer,Tuple3d> updatedTuples = new LinkedHashMap<Integer,Tuple3d>();
 	protected Map<Integer,Color> updatedColors = new LinkedHashMap<Integer,Color>();
@@ -70,6 +71,14 @@ public abstract class Attractor {
 
 	public void setSpace2dAxes(String spc2d) {
 		this.space2dAxes = spc2d;
+	}
+	
+	public boolean is1D() {
+		return this.is1D;
+	}
+
+	public void setIs1D(boolean is1d) {
+		this.is1D = is1d;
 	}
 
 	public boolean is3D() {
@@ -133,7 +142,10 @@ public abstract class Attractor {
 
 	public Tuple3d update(final Tuple3d tuple, final double dt) {
 		double newX = this.dx(tuple, dt);
-		double newY = this.dy(tuple, dt);
+		double newY = Double.NaN;
+		if (!this.is1D) {
+			newY = this.dy(tuple, dt);
+		}
 		double newZ = Double.NaN;
 		if (this.is3D) {
 			newZ = this.dz(tuple, dt);
@@ -146,6 +158,9 @@ public abstract class Attractor {
 		if (this.is3D) {
 			return new Tuple3d(newX, newY, newZ);
 		} else {
+			if (this.is1D) {
+				return new Tuple3d(tuple.x+ dt, newX, 0);
+			}
 			return new Tuple3d(newX, newY, 0);
 		}
 	}
